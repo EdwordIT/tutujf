@@ -1,0 +1,142 @@
+PODS:
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - EAIntroView (2.12.0):
+    - EARestrictedScrollView (~> 1.1.0)
+  - EARestrictedScrollView (1.1.0)
+  - FMDB (2.7.2):
+    - FMDB/standard (= 2.7.2)
+  - FMDB/standard (2.7.2)
+  - FontAwesome+iOS (0.1.4)
+  - IQKeyboardManager (5.0.7)
+  - Masonry (1.1.0)
+  - MJRefresh (3.1.15.3)
+  - MOBFoundation (3.1.2)
+  - pop (1.0.10)
+  - POP+MCAnimate (2.0.1):
+    - pop (~> 1.0)
+    - POP+MCAnimate/Animations (= 2.0.1)
+    - POP+MCAnimate/Group (= 2.0.1)
+    - POP+MCAnimate/Internal (= 2.0.1)
+    - POP+MCAnimate/Shorthand (= 2.0.1)
+    - POP+MCAnimate/Velocity (= 2.0.1)
+  - POP+MCAnimate/Animations (2.0.1):
+    - pop (~> 1.0)
+    - POP+MCAnimate/Group
+    - POP+MCAnimate/Internal
+    - POP+MCAnimate/Shorthand
+    - POP+MCAnimate/Velocity
+  - POP+MCAnimate/Group (2.0.1):
+    - pop (~> 1.0)
+  - POP+MCAnimate/Internal (2.0.1):
+    - pop (~> 1.0)
+  - POP+MCAnimate/Shorthand (2.0.1):
+    - pop (~> 1.0)
+  - POP+MCAnimate/Velocity (2.0.1):
+    - pop (~> 1.0)
+    - POP+MCAnimate/Internal
+  - PPNetworkHelper (0.4.0):
+    - AFNetworking
+    - YYCache
+  - ReactiveObjC (3.1.0)
+  - RegexKitLite-NoWarning (1.1.0)
+  - SDCycleScrollView (1.75):
+    - SDWebImage (>= 4.0.0)
+  - SDWebImage (4.3.2):
+    - SDWebImage/Core (= 4.3.2)
+  - SDWebImage/Core (4.3.2)
+  - ShareSDK3 (4.0.4):
+    - MOBFoundation
+    - ShareSDK3/ShareSDK (= 4.0.4)
+  - ShareSDK3/ShareSDK (4.0.4):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKExtension (4.0.4):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKPlatforms/Copy (4.0.4):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKPlatforms/QQ (4.0.4):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKPlatforms/SMS (4.0.4):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKPlatforms/WeChat (4.0.4):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKUI (4.0.4):
+    - MOBFoundation
+  - SMPageControl (1.2)
+  - SVProgressHUD (2.2.5)
+  - TTTAttributedLabel (1.13.4)
+  - UICountingLabel (1.4.1)
+  - UMengAnalytics (3.5.10)
+  - XHLaunchAd (3.4.6)
+  - YYCache (1.0.4)
+
+DEPENDENCIES:
+  - AFNetworking (~> 3.1.0)
+  - EAIntroView
+  - FMDB
+  - FontAwesome+iOS (~> 0.1.4)
+  - IQKeyboardManager
+  - Masonry (~> 1.1.0)
+  - MJRefresh
+  - MOBFoundation
+  - POP+MCAnimate (= 2.0.1)
+  - PPNetworkHelper (~> 0.4.0)
+  - ReactiveObjC
+  - RegexKitLite-NoWarning (= 1.1.0)
+  - SDCycleScrollView (~> 1.65)
+  - ShareSDK3
+  - ShareSDK3/ShareSDKExtension
+  - ShareSDK3/ShareSDKPlatforms/Copy
+  - ShareSDK3/ShareSDKPlatforms/QQ
+  - ShareSDK3/ShareSDKPlatforms/SMS
+  - ShareSDK3/ShareSDKPlatforms/WeChat
+  - ShareSDK3/ShareSDKUI
+  - SMPageControl (~> 1.2)
+  - SVProgressHUD
+  - TTTAttributedLabel (= 1.13.4)
+  - UICountingLabel
+  - UMengAnalytics (= 3.5.10)
+  - XHLaunchAd (~> 3.4.4)
+
+SPEC CHECKSUMS:
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  EAIntroView: 249559079ddfdbe80e5bcb755c04c3b964b2ac27
+  EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
+  FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
+  FontAwesome+iOS: 9070b682a9255ca0fdc34bcfb129ad0ba2b73b87
+  IQKeyboardManager: 0bfa4607d39924116b5c0c8b55b5d789288b5cba
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
+  MOBFoundation: 5c7cd437320b5252ebe0ca20283cc1ffe66f7669
+  pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
+  POP+MCAnimate: a99e209148c602512de487f1160a44bf78572024
+  PPNetworkHelper: 1f5f3765d32f742f3ca62c90d8d4e404da6a7097
+  ReactiveObjC: 2a38ea15335de4119d8b17caf1db1484f61db902
+  RegexKitLite-NoWarning: 365d208f8187997e33d9de8baeddfc00728596d8
+  SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
+  SDWebImage: 29bd3c0bc1f01e5eb59720847c64ad4c4ca1af5d
+  ShareSDK3: 75b57bab0cbe3119e281c7668eaad9d48adf3fde
+  SMPageControl: 922892813001cfaf059e86e6801f46a967e9ee29
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  TTTAttributedLabel: 0a2ac7b2dd726d32a070dafb01446026b11e624f
+  UICountingLabel: faf890b505d96312e324a86718f031fafffb0ccb
+  UMengAnalytics: 092c24aef47b6ac3c76ad51543f91156a8d7b645
+  XHLaunchAd: 66ab4431d90ffff0f89d719800d8c2f1738c9ed6
+  YYCache: 8105b6638f5e849296c71f331ff83891a4942952
+
+PODFILE CHECKSUM: 702ec2773da372813e73128adbf0967477d02f1d
+
+COCOAPODS: 1.4.0
