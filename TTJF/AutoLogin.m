@@ -98,7 +98,7 @@
      NSString *  password1=[HttpSignCreate encodeString:password];
       user_name=[HttpSignCreate encodeString:user_name];
       terminal_name=[HttpSignCreate encodeString:terminal_name];
-    urlStr = [NSString stringWithFormat:login,oyApiUrl,user_name,password1,terminal_type,terminal_id,terminal_name,terminal_model,terminal_token,sign];
+    urlStr = [NSString stringWithFormat:loginUrl,oyApiUrl,user_name,password1,terminal_type,terminal_id,terminal_name,terminal_model,terminal_token,sign];
     
     NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
     if([ggHttpFounction getJsonIsOk:data])
@@ -107,20 +107,24 @@
         if(dir!=nil)
         {
             
-            theAppDelegate.user_token=  [dir objectForKey:@"user_token"];
+            theAppDelegate.user_token=  [dir objectForKey:kToken];
             theAppDelegate.user_name= user_name;
             NSString * temp=[[dir objectForKey:@"expiration_date"] substringWithRange:NSMakeRange(0,10)];
             theAppDelegate.expirationdate=temp;
             theAppDelegate.IsLogin=TRUE;
-            [TTJFUserDefault setStr:[dir objectForKey:@"user_token"] key:kToken];
-                [_delegate didAutoLoginSelect:self.MobileNum pswd:self.password isvalid:self.IsValid];
+            [TTJFUserDefault setStr:[dir objectForKey:kToken] key:kToken];
+            [TTJFUserDefault setStr:user_name key:kUsername];
+
+            [_delegate didAutoLoginSelect:self.MobileNum pswd:self.password isvalid:self.IsValid];
            // [self getYUancheng];
         }
         
     }
+    //token失效
     else
     {
-         [_delegate didAutoLoginSelect:self.MobileNum pswd:self.password isvalid:FALSE];
+        //清除token记录
+        [TTJFUserDefault removeStrForKey:kToken];
         
     }
     

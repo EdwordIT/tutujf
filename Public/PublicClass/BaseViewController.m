@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
 #import "AppDelegate.h"
 #import <Masonry.h>
+#import "LoginViewController.h"
 @interface BaseViewController ()<UINavigationControllerDelegate,UIGestureRecognizerDelegate>
 
 @end
@@ -180,12 +181,18 @@
     [self.backBtn addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
     
 }
-
+#pragma mark --自定义按钮点击事件
 -(void)backPressed:(UIButton *)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
+-(void)goLoginVC{
+    
+    LoginViewController *loginVC = InitObject(LoginViewController);
+    [self presentViewController:loginVC animated:YES completion:^{
+        
+    }];
+}
 #pragma mark - UINavigationControllerDelegate
 -(void)viewWillAppear:(BOOL)animated
 {

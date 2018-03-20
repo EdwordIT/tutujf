@@ -22,10 +22,12 @@
 
 
 @property(nonatomic, assign) id<ImmediateDelegate> delegate;
-
-@property(nonatomic, strong) UILabel *shouyi;
-@property(nonatomic, strong) UILabel *shengyueje;
-@property(nonatomic, strong) UILabel *xianmuqx;
+/**收益*/
+@property(nonatomic, strong) UILabel *incomeLabel;
+/**起投金额*/
+@property(nonatomic, strong) UILabel *minPointLabel;
+/**投资时间*/
+@property(nonatomic, strong) UILabel *timeLabel;
 
 -(void)setImmediateModel:(ImmediateModel *)mode;
 

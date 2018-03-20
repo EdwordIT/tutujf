@@ -21,10 +21,12 @@
 @property(nonatomic, assign) id<QuicklyDelegate> delegate;
 @property(nonatomic, strong) UILabel *title;
 @property(nonatomic, strong) UIImageView *typeimgsrc;
-@property(nonatomic, strong) UILabel *yuqiinh;
-@property(nonatomic, strong) UILabel *yuqisj;
+@property(nonatomic, strong) UILabel *percentLabel;
+@property(nonatomic, strong) UILabel *timeLabel;
 @property(strong,nonatomic) UIView *timeView;
+@property(nonatomic,strong)UIView *sepView;//分割段落
 
 -(void)setQuicklyModel:(QuicklyModel *)model;
+
 
 @end

@@ -12,13 +12,15 @@
 #import "MJRefresh.h"
 #import "NSBundle+MJRefresh.h"
 #import "MJExtension.h"
-#import "DMLoginViewController.h"
 #import "HomeBanner.h"
 #import "BannerModel.h"
 #import "ReturnCode.h"
 #import "HotProgramCell.h"
 #import "ImmediateCell.h"
 #import "QuicklyCell.h"
+#import "PlatformDataCell.h"
+#import "GuideRegisterCell.h"
+#import "ClubeCell.h"
 #import "OpenAdvertView.h"
 #import "WinChageType.h"
 #import "NewsDynamicsCell.h"
@@ -32,7 +34,9 @@
 #import "RushPurchaseController.h"
 #import "ProgrameNewDetailController.h"
 #import "TTJFRefreshStateHeader.h"
-
+#import "RegisterViewController.h"//注册页面
+#import "TotalTradesView.h"//总成交金额
+#import "CustomerServiceView.h"//客户服务
 
 @interface MainViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,UIWebViewDelegate,BannerDelegate,ImmediateDelegate,ProgramDelegate,QuicklyDelegate,OpenShowAdvertDelegate,NewsDynamicsDelegate,QuicklyDelegate,AutoLoginDelegate,OpenVersionDelegate>
 {
@@ -65,24 +69,28 @@
 
 }
 @property (nonatomic ,strong) NavHomeView *navView; //导航栏视图
+Strong TotalTradesView *tradesView;//交易总金额视图
+Strong CustomerServiceView *serviceView;//客服热线
+Strong UIButton *serviceBtn;//客服按钮
 @end
 
 
 @implementation MainViewController
-
+#pragma mark --buttonClick
+-(void)serviceBtnClick:(UIButton *)sender{
+    
+    [self.serviceView setHidden:NO];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
       self.view.backgroundColor =RGB(243,243,243);
     additionalstatus=1;//1 有数据  0无数据
     isExeute=FALSE;
-     footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 34)];
     [self initData];
-    // [self setNav];
     /**数据广告**/
     [self getAdvertData];
-   /**数据广告**/
     /****自动登录****/
-    if (BBUserDefault.isNoFirstLaunch)
+    if ([CommonUtils isLogin])
     {
         NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
         NSString *isSet = [userDefaultes stringForKey:@"IsSet"];
@@ -123,49 +131,6 @@
        self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:3];
     }
 }
-
-
-//设置头部数据变化
--(void) setBanndrNum
-{
-    if(bannercell!=nil)
-    {
-        HotQueueModel * tmodel1=[_lijiTouZiArray objectAtIndex:0];
-        if(tmodel1!=nil)
-        {
-        CGFloat num=[tmodel1.trans_num intValue];
-        [bannercell setTopJinE:num];
-        }
-        
-    }
-}
-/****
--(void)viewWillAppear:(BOOL)animated{
-    
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-}
--(void+++)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-}
-****/
-/**iOS导航栏的正确隐藏方式**/
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
-}*/
-/**iOS导航栏的正确隐藏方式**/
-/**界面初始化操作**/
 //导航返回刷新
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -196,36 +161,66 @@
     _albumTopArray= [[NSMutableArray alloc] init];
     _albumListArray= [[NSMutableArray alloc] init];
     _albumImgurlArray= [[NSMutableArray alloc] init];
-    
-   // _newsDynamicsArray= [[NSMutableArray alloc] init];//最新动态数据模板
-
 }
 //初始化主界面
 -(void)initTableView{
+    
+    footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(135))];
+
     if(kDevice_Is_iPhoneX)
     {
-            self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, screen_width, screen_height-50) style:UITableViewStyleGrouped];
-        
+            self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, screen_width, screen_height - kTabbarHeight-50) style:UITableViewStyleGrouped];
         self.tableView.contentInsetAdjustmentBehavior  = UIScrollViewContentInsetAdjustmentNever;
    
     }
     else
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, -kStatusBarHeight, screen_width, screen_height+kStatusBarHeight) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height - kTabbarHeight) style:UITableViewStyleGrouped];
   
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.showsVerticalScrollIndicator = NO;
-
     self.tableView.backgroundColor=separaterColor;
     // 设置表格尾部
-
-   
     footerView.backgroundColor=separaterColor;
     [self.tableView setTableFooterView:footerView];
-    // [self.tableView setSeparatorColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.01]];
     [self.tableView setSeparatorColor:separaterColor];
     [self.view addSubview:self.tableView];
     [self setUpTableView];
+    
+    [self initCustomView];
+
+    
+    
+}
+-(void)initCustomView
+{
+    //累计成交总额
+    self.tradesView = [[TotalTradesView alloc]initWithFrame: RECT(kSizeFrom750(50), kSizeFrom750(342), screen_width - kSizeFrom750(100), kSizeFrom750(290))];
+    [CommonUtils setShadowCornerRadiusToView:self.tradesView];
+    [self.tableView addSubview:self.tradesView];
+    
+    //客服按钮
+    self.serviceBtn = [[UIButton alloc]initWithFrame:RECT(screen_width - kSizeFrom750(114), kSizeFrom750(136), kSizeFrom750(114), kSizeFrom750(46))];
+    [self.serviceBtn addTarget:self action:@selector(serviceBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.serviceBtn setImage:IMAGEBYENAME(@"customer_service") forState:UIControlStateNormal];
+    self.serviceBtn.adjustsImageWhenHighlighted = NO;
+    [self.view addSubview:self.serviceBtn];
+    //客服页面
+    self.serviceView = [[CustomerServiceView alloc]initWithFrame:kScreen_Bounds];
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    [keyWindow addSubview:self.serviceView];
+    [self.serviceView setHidden:YES];
+    self.serviceView.serviceBlock = ^(NSInteger tag) {
+        //
+        if (tag==1) {
+            //拨打客服电话
+            NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",@"400-000-9899"];
+            
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        }else{
+            //跳转到常见问题界面
+        }
+    };
 }
 //界面表格刷新
 -(void)setUpTableView{
@@ -286,15 +281,16 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    if (section ==0 ){
+    if (section ==0 ){//banner
         //return _hotQueueData.count+1;
+        return 2;
+    }
+    else if (section ==1 ){//快速投资
+        return _kstzArray.count;
+    }
+    else if (section ==2 ){//土土社区+平台数据和信息披露
+//        return _kstzArray.count+1;
         return 3;
-    }
-    else if (section ==1 ){
-        return 1;
-    }
-    else if (section ==2 ){
-        return _kstzArray.count+1;
     }
     
     return 1;
@@ -304,92 +300,86 @@
     if (indexPath.section == 0) {
         {
             if(indexPath.row==0)
-                return 215;
+                return kSizeFrom750(380);//banner高度
            else if(indexPath.row==1)
-                return 60;
+                return kSizeFrom750(650);//新手专享
             else
             {
-                if(additionalstatus==1)
-                    return 80;
-                    else
-                return 80; //85
+                return 0;
             }
         
         }
-    }else if(indexPath.section == 1){
-           if(additionalstatus==1)
-               return 190;
-               else
-        return  0.1; //190
-        
+    }else if(indexPath.section == 1){//快速投资
+
+        return kSizeFrom750(258);
     }else if (indexPath.section == 2){
-       
-        if(indexPath.row==0)
-            return 40;
-        else
-            return 135;
+        return kSizeFrom750(185);//土土咨询
         
     }
-   
     else{
-        return 70.0;
+        return 10.0;
     }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if (section == 0) {
-        return 0.1;
+
+    if (section==0) {
+        return 0.01;
     }
-    else if (section == 1) {
-         if(additionalstatus==1)
-             return 5;
-        else
-        return 0.1;  //5
-    } else if (section == 2) {
-        return 0.1;
+  else if (section == 2) {
+        return kSizeFrom750(88);
     }
     else{
-        return 5;
+        return kSizeFrom750(20);
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    if (section == 0) {
-        if(additionalstatus==1)
-            return 5;
-        else
-        return 0.1; //5
+    
+    if (section==1) {
+        return kSizeFrom750(20);
     }
-    else if (section == 1) {
-        return 0.1;
-    } else if (section == 2) {
-        return 0.1;
-    }
-    else{
-        return 15;
-    }
+    return 0.01;
 }
 
-
-
-
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if (section==2) {
+        UIView *clubTitle = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(88))];
+        clubTitle.backgroundColor = [UIColor whiteColor];
+        CALayer *layer = [CALayer layer];
+        layer.frame = RECT(0, kSizeFrom750(88) - 0.5, screen_width, 0.5);
+        [layer setBackgroundColor:[RGB_166 CGColor]];
+        layer.opacity = 0.3;
+        [clubTitle.layer addSublayer:layer];
+        
+        UIButton *title = [[UIButton alloc]initWithFrame:RECT(kSizeFrom750(30), 0, kSizeFrom750(180), kSizeFrom750(40))];
+        title.centerY = clubTitle.centerY;
+        [title setImage:IMAGEBYENAME(@"home_club") forState:UIControlStateNormal];
+        title.userInteractionEnabled = NO;
+        [title setTitle:@"土土社区" forState:UIControlStateNormal];
+        [title.titleLabel setFont:SYSTEMBOLDSIZE(25)];
+        [title setTitleColor:RGB_51 forState:UIControlStateNormal];
+        [title setTitleEdgeInsets:UIEdgeInsetsMake(0, -kSizeFrom750(20), 0, 0)];
+        [title setImageEdgeInsets:UIEdgeInsetsMake(0, -(title.width-title.imageView.width - title.titleLabel.width), 0, 0)];
+        [clubTitle addSubview:title];
+        return clubTitle;
+        
+    }else{
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
     headerView.backgroundColor =separaterColor;
     return headerView;
+        
+    }
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    footerView.backgroundColor = separaterColor;
-    
-    
-    //    footerView.backgroundColor = [UIColor yellowColor];
-    return footerView;
+    UIView *sectionFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
+    sectionFooterView.backgroundColor = separaterColor;
+    return sectionFooterView;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
       
-        
+        //banner
         if(indexPath.row == 0)
         {
             static NSString *cellIndentifier = @"menubanner";
@@ -399,126 +389,68 @@
             {
                 [bannercell setModelArray:_albumImgurlArray];
                 HotQueueModel * tmodel1=[_lijiTouZiArray objectAtIndex:0];
-                CGFloat num=[tmodel1.trans_num intValue];
-                [bannercell setTopJinE:num];
+                //总投资金额
+                [self.tradesView loadInfoWithModel:tmodel1];
             }
             bannercell.selectionStyle = UITableViewCellSelectionStyleNone;
             bannercell.delegate=self;
             return bannercell;
   
-        }
-        else  if(indexPath.row == 1)
-        {
-            static NSString *cellIndentifier = @"NewsDynamics";
-            if(newcell==nil)
-            newcell =  [[NewsDynamicsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            if(daibanArrayURL.count>0)
-            {
-                [newcell setDaiBangSj:daibanArrayURL];
-             
-            }
-            newcell.delegate=self;
-            newcell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [newcell setXuanZhuanDh];
-            return newcell;
-        }
-        
-        
-      else  if(indexPath.row == 2)
-        {
-            static NSString *cellIndentifier = @"HotProgram";
-            HotProgramCell *cell =  [[HotProgramCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            if(_lijiTouZiArray.count>0)
-            {
-                HotQueueModel * tmodel1=[_lijiTouZiArray objectAtIndex:0];
-                [cell setHotQueueData:tmodel1];
-            }
-              cell.delegate=self;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                      return cell;
-        }
-        
-    }else if (indexPath.section == 1){
-        
-        if(indexPath.row == 0)
-        {
-            static NSString *cellIndentifier = @"Immediate";
-            ImmediateCell *cell = [[ImmediateCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            if(tArray.count>0)
-            {
-                ImmediateModel * tmodel1=[tArray objectAtIndex:0];
-                [cell setImmediateModel:tmodel1];
-            }
-              cell.delegate=self;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            if(additionalstatus==1)
-           [cell setHidden:FALSE];
+        }else{
+            if (![CommonUtils isLogin]) {
+              return  [self registerRegisterTableView:tableView indexPath:indexPath];
+            }else{
+                //新手专享或者注册提示
+                static NSString *cellIndentifier = @"Immediate";
+                ImmediateCell *cell = [[ImmediateCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
+                if(tArray.count>0)
+                {
+                    ImmediateModel * tmodel1=[tArray objectAtIndex:0];
+                    [cell setImmediateModel:tmodel1];
+                }
+                cell.delegate=self;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                if(additionalstatus==1)
+                    [cell setHidden:FALSE];
                 else
-            [cell setHidden:TRUE];
-            return cell;
+                    [cell setHidden:TRUE];
+                return cell;
+            }
         }
-       
         
+        
+    }//快速投资
+    else if (indexPath.section == 1){
+        
+        NSString *cellIndentifier =[@"1Quickly" stringByAppendingString:[NSString stringWithFormat:@"%ld",indexPath.row]];
+        QuicklyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
+        if(cell == nil)
+        {
+            cell = [[QuicklyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
+        }
+    
+        [cell.sepView removeFromSuperview];//清除间隔符
+        if(_kstzArray.count>0)
+        {
+            QuicklyModel * tmodel1=[_kstzArray objectAtIndex:indexPath.row];
+            [cell setQuicklyModel:tmodel1];
+            if([tmodel1.status isEqual: @"3"])
+            {
+                cell.delegate=self;
+            }
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        return cell;
         
     }
+    //土土社区
     else if(indexPath.section ==2){
-        if (indexPath.row == 0) {
-            static NSString *CellIdentifier = @"newTitleCell";
-            UITableViewCell *cell = (UITableViewCell*)[tableView  dequeueReusableCellWithIdentifier:CellIdentifier];
-            if(cell == nil)
-            {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            }
-            cell.textLabel.text=@"";
-            
-           UIImageView *typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake(15, 14,4, 15)];
-           [typeimgsrc setImage:[UIImage imageNamed:@"Hone_Column_Rapidinvestment_"]];
-           [cell addSubview:typeimgsrc];
-            
-            UILabel *title=[[UILabel alloc] initWithFrame:CGRectMake(28, 14.5,110, 14)];
-            title.text = @"快速投资";
-            title.font=CHINESE_SYSTEM(14);
-            title.textAlignment=NSTextAlignmentLeft;
-            title.textColor=RGB(31,31,31);
-            [cell addSubview:title];
-            [cell setBackgroundColor:separaterColor];
-            
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.textLabel.textAlignment=NSTextAlignmentCenter;
-            
-             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            //点击事件
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(OnTapClickView:)];
-            [cell addGestureRecognizer:tap];
-            
-            cell.tag=10;
-            
-            return cell;
-            
-        }else{
-            
-           // static NSString *cellIndentifier = @"Quickly";
-            NSString *cellIndentifier =[@"1Quickly" stringByAppendingString:[NSString stringWithFormat:@"%ld",indexPath.row-1]];
-           QuicklyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
-            if(cell == nil)
-            {
-                cell = [[QuicklyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            }
-            //  QuicklyCell *cell = [[QuicklyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            if(_kstzArray.count>0)
-            {
-                QuicklyModel * tmodel1=[_kstzArray objectAtIndex:indexPath.row-1];
-                [cell setQuicklyModel:tmodel1];
-                    if([tmodel1.status isEqual: @"3"])
-                    {
-                           cell.delegate=self;
-                    }
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-           
-            return cell;
-            
-        }
+        
+        if (indexPath.row==2) {
+            return [self registerPlatTableView:tableView indexPath:indexPath];
+        }else
+            return  [self registerClubTableView:tableView indexPath:indexPath];
         
     }
     
@@ -527,45 +459,59 @@
 
 
 
-
+#pragma mark --customCell
+//社区
+-(ClubeCell *)registerClubTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath{
+    
+    static NSString *cellId = @"ClubeCell";
+    ClubeCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (cell==nil) {
+        cell = [[ClubeCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
+    }
+    return cell;
+}
+//注册
+-(GuideRegisterCell *)registerRegisterTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath{
+    static NSString *cellId = @"GuideRegisterCell";
+    GuideRegisterCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (cell==nil) {
+        cell = [[GuideRegisterCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
+    }
+    cell.registerBlock = ^{
+        RegisterViewController *reg = InitObject(RegisterViewController);
+        reg.isRootVC = YES;
+        [self presentViewController:reg animated:YES completion:^{
+            
+        }];
+    };
+    return cell;
+}
+-(PlatformDataCell *)registerPlatTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath{
+    static NSString *cellId = @"PlatformDataCell";
+    PlatformDataCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (cell==nil) {
+        cell = [[PlatformDataCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
+    }
+    //平台数据点击
+    cell.platBlock = ^{
+    };
+    //信息披露
+    cell.infoBlock = ^{
+        
+    };
+    return cell;
+}
+-(void)setBanndrNum
+{
+    [self.tradesView countTradeNum];
+}
 #pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //当手指离开某行时，就让某行的选中状态消失
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 1) {
-        
-        if(indexPath.row>0)
-        {
-           
-        }
-        
+            [self  didSelectedQuicklyAtIndex1:indexPath.row];
     }
-   else  if (indexPath.section == 2) {
-        
-        if(indexPath.row>0)
-        {
-//            QuicklyModel * tmodel1=[_kstzArray objectAtIndex:indexPath.row-1];
-           // if(![tmodel1.status isEqual: @"3"])
-            [self  didSelectedQuicklyAtIndex1:indexPath.row-1];
-        }
-        
-    }
-   else  if (indexPath.section == 3) {
-       
-       if(indexPath.row>0)
-       {
-          
-       }
-       
-   }
-   else  if (indexPath.section == 4) {
-       
-       if(indexPath.row>0)
-       {
-           
-       }
-       
-   }
 
 }
 
@@ -602,7 +548,7 @@
 {
     if(index==1)
     {
-        if(!theAppDelegate.IsLogin)
+        if(![CommonUtils isLogin])
         {
             [self OnLogin];
             return;
@@ -638,24 +584,11 @@
 //立即投资
 -(void)didSelectedImmediateAtIndex:(NSInteger)index
 {
-      if(!theAppDelegate.IsLogin)
+      if(![CommonUtils isLogin])
       {
           [self OnLogin];
           return;
       }
-    /*
-      self.title=@"";
-      self.hidesBottomBarWhenPushed=YES;
-      HomeWebController *discountVC = [[HomeWebController alloc] init];
-          ImmediateModel * model=[tArray objectAtIndex:0];
-      
-      discountVC.urlStr=model.bt_link_url;
-      
-      discountVC.returnmain=@"5"; //页返回
-      [self.navigationController pushViewController:discountVC animated:YES];
-      self.title=@"首页";
-      self.hidesBottomBarWhenPushed=NO;
-     */
    ImmediateModel * model=[tArray objectAtIndex:0];
     RushPurchaseController * vc=[[RushPurchaseController alloc] init];
     vc.vistorType=@"1";
@@ -667,20 +600,6 @@
 }
 -(void)didSelectedQuicklyAtIndex1:(NSInteger)index
 {
-    //if(![tmodel1.status isEqual: @"3"])
-    /*
-    self.title=@"";
-    self.hidesBottomBarWhenPushed=YES;
-    HomeWebController *discountVC = [[HomeWebController alloc] init];
-    QuicklyModel * model=[_kstzArray objectAtIndex:index];
-    
-    discountVC.urlStr=model.link_url;
-    
-    discountVC.returnmain=@"5"; //页返回
-    [self.navigationController pushViewController:discountVC animated:YES];
-    self.title=@"首页";
-    self.hidesBottomBarWhenPushed=NO;
-    */
       QuicklyModel * model=[_kstzArray objectAtIndex:index];
     ProgrameNewDetailController * vc=[[ProgrameNewDetailController alloc] init];
     vc.loan_id=model.loanid;
@@ -691,7 +610,7 @@
 //快速投资
 -(void)didSelectedQuicklyAtIndex:(NSInteger)index
 {
-    if(!theAppDelegate.IsLogin)
+    if(![CommonUtils isLogin])
     {
         [self OnLogin];
         return;
@@ -780,10 +699,10 @@
     NSString *urlStr = @"";
     NSString * user_token=@"";
     NSString * sign=@"";
-    if(theAppDelegate.IsLogin)
+    if([CommonUtils isLogin])
     {
-        user_token=theAppDelegate.user_token;
-        NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[theAppDelegate.user_token] forKeys:@[@"user_token"] ];
+        user_token=[CommonUtils getToken];
+        NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[[CommonUtils getToken]] forKeys:@[kToken] ];
         sign=[HttpSignCreate GetSignStr:dict_data];
     }
     urlStr = [NSString stringWithFormat:getAdvert,oyApiUrl,user_token,sign];
@@ -809,54 +728,8 @@
     }
     else
     {
-        /*
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@""   message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"关闭" style:UIAlertActionStyleCancel handler:nil];
-        [alert addAction:action];
-        [self presentViewController:alert animated:YES completion:nil];
-         */
             [self GetNoviceLoanInfo];
     }
-    
-    /*
-    [PPNetworkHelper GET:urlStr parameters:nil success:^(id responseObject) {
-        //请求成功
-       // NSDictionary *dic = [responseObject objectForKey:@"resultData"];
-        NSString * resultStatus= [responseObject objectForKey:@"resultStatus"];
-        [_albumListArray removeAllObjects];
-        [_albumImgurlArray removeAllObjects];
-        if([resultStatus isEqual:@"0"])
-        {
-                 NSArray * array=[responseObject objectForKey:@"resultData"];
-            for(int k=0;k<[array count];k++)
-            {
-                NSDictionary * dir =  [array  objectAtIndex:k];
-                BannerModel * model=[[BannerModel alloc] init];
-                model.pic_url=[NSString stringWithFormat:@"%@%@",oyApiUrl,[dir objectForKey:@"pic_url"]]; //[dir objectForKey:@"title"];
-                //   model.title=[dir objectForKey:@"title"];
-                model.link_url=[dir objectForKey:@"link_url"];
-                //   model.nrid=[NSString  stringWithFormat:@"%@", [dir objectForKey:@"id"]];
-                [_albumListArray addObject: model];
-                [_albumImgurlArray addObject: model.pic_url];
-                
-            }
-            
-        }
-        else{
-            
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[ReturnCode getSysCMsg:resultStatus]   message:nil preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action = [UIAlertAction actionWithTitle:@"关闭" style:UIAlertActionStyleCancel handler:nil];
-            [alert addAction:action];
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-        [self GetNoviceLoanInfo];
-        //[PPNetworkCache setHttpCache:responseObject URL:urlStr parameters:nil];
-    } failure:^(NSError *error) {
-        //请求失败
-        NSLog(@"Error: %@", error);
-      
-    }];
-    */
 }
 
 -(void) GetNoviceLoanInfo{
@@ -900,53 +773,9 @@
     }
     else
     {
-         /*
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@""  message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"关闭" style:UIAlertActionStyleCancel handler:nil];
-        [alert addAction:action];
-        [self presentViewController:alert animated:YES completion:nil];
-          */
          [self GetInterfaceData];
         
     }
-    
-    /*
-    [PPNetworkHelper GET:urlStr parameters:nil success:^(id responseObject) {
-        //请求成功
-        NSDictionary *dic = [responseObject objectForKey:@"resultData"];
-        NSString * resultStatus= [responseObject objectForKey:@"resultStatus"];
-        [tArray removeAllObjects];
-        if([resultStatus isEqual:@"0"])
-        {
-            NSDictionary * dic=[responseObject objectForKey:@"resultData"];
-            ImmediateModel * model=[[ImmediateModel alloc] init];
-      
-            model.additional_status=[dic objectForKey:@"additional_status"];
-            model.link_url=[dic objectForKey:@"link_url"];
-            
-            model.activity_url_img=[dic objectForKey:@"activity_url_img"];
-            model.apr=[dic objectForKey:@"apr"];
-             model.apr=[dic objectForKey:@"additional_apr"];
-            model.apr=[dic objectForKey:@"period"];
-            model.apr=[dic objectForKey:@"tender_amount_min"];
-           [tArray addObject: model];
-            
-            
-        }
-        else{
-            
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[ReturnCode getSysCMsg:resultStatus]   message:nil preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action = [UIAlertAction actionWithTitle:@"关闭" style:UIAlertActionStyleCancel handler:nil];
-            [alert addAction:action];
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-        [self GetInterfaceData];
-        //[PPNetworkCache setHttpCache:responseObject URL:urlStr parameters:nil];
-    } failure:^(NSError *error) {
-        //请求失败
-        [self GetInterfaceData];
-    }];
-    */
 }
 
 
@@ -971,74 +800,37 @@
         
         model.guarantee_txt=[dic objectForKey:@"guarantee_txt"];
         //guarantee_txt
-        CGFloat ww=[model.guarantee_txt length]*13;
+        CGFloat ww=[model.guarantee_txt length]*CHINESE_SYSTEM(kSizeFrom750(25)).lineHeight;
         
-        UILabel * lilu= [[UILabel alloc] initWithFrame:CGRectMake((screen_width-ww)/2, 7,ww,12)];
+        UILabel * lilu= [[UILabel alloc] initWithFrame:CGRectMake((screen_width-ww)/2, kSizeFrom750(30),ww,kSizeFrom750(30))];
         lilu.textAlignment=NSTextAlignmentCenter;
         lilu.textColor=RGB(103,103,103);
-        lilu.font=CHINESE_SYSTEM(12);
+        lilu.font=CHINESE_SYSTEM(kSizeFrom750(25));
         lilu.text=model.guarantee_txt;
         [footerView addSubview:lilu];
-        UIImageView *typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake((screen_width-ww)/2-18, 5,18, 18)];
+        UIImageView *typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake((screen_width-ww)/2-kSizeFrom750(50), 5,kSizeFrom750(36), kSizeFrom750(40))];
+        typeimgsrc.centerY = lilu.centerY;
         [typeimgsrc setImage:[UIImage imageNamed:@"y.png"]];
         [footerView addSubview:typeimgsrc];
+        
+        UILabel *remindLabel = InitObject(UILabel);
+        remindLabel.frame = RECT(0, lilu.bottom+kSizeFrom750(20), screen_width, kSizeFrom750(20));
+        remindLabel.textAlignment = NSTextAlignmentCenter;
+        remindLabel.textColor=RGB(103,103,103);
+        remindLabel.font = SYSTEMSIZE(20);
+        remindLabel.text = @"—— 理财有风险 投资需谨慎 ——";
+        [footerView addSubview:remindLabel];
+        
         
         [_lijiTouZiArray addObject: model];
         [self GetArticlesNoticeData];
     }
     else
     {
-        /*
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@""  message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"关闭" style:UIAlertActionStyleCancel handler:nil];
-        [alert addAction:action];
-        [self presentViewController:alert animated:YES completion:nil];
-         */
       [self GetArticlesNoticeData];
         
     }
-    /*
-    //HotQueueModel
-    [PPNetworkHelper GET:urlStr parameters:nil success:^(id responseObject) {
-        //请求成功
-        NSDictionary *dic = [responseObject objectForKey:@"resultData"];
-        NSString * resultStatus= [responseObject objectForKey:@"resultStatus"];
-        [_lijiTouZiArray removeAllObjects];
-        if([resultStatus isEqual:@"0"])
-        {
-            NSDictionary * dic=[responseObject objectForKey:@"resultData"];
-            HotQueueModel * model=[[HotQueueModel alloc] init];
-            //trans_num
-            model.trans_num=[dic objectForKey:@"trans_num"];
-            NSDictionary * dleft=[dic objectForKey:@"index_left_ad"];
-          
-            model.left_pic_url=[dleft objectForKey:@"pic_url"];
-            model.left_link_url=[dleft objectForKey:@"link_url"];
-          NSDictionary * dright=[dic objectForKey:@"index_right_ad"];
-            model.right_pic_url=[dright objectForKey:@"pic_url"];
-            model.right_link_url=[dright objectForKey:@"link_url"];
-            
-              model.guarantee_txt=[dic objectForKey:@"guarantee_txt"];
-            //guarantee_txt
-            
-            [_lijiTouZiArray addObject: model];
-              [self GetArticlesNoticeData];
-            
-        }
-        else{
-            
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[ReturnCode getSysCMsg:resultStatus]   message:nil preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action = [UIAlertAction actionWithTitle:@"关闭" style:UIAlertActionStyleCancel handler:nil];
-            [alert addAction:action];
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-              [self GetArticlesNoticeData];
-        //[PPNetworkCache setHttpCache:responseObject URL:urlStr parameters:nil];
-    } failure:^(NSError *error) {
-        //请求失败
-       // [self GetArticlesNoticeData];
-    }];
-    */
+
 }
 
 
@@ -1066,55 +858,10 @@
     }
     else
     {
-        /*
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@""  message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"关闭" style:UIAlertActionStyleCancel handler:nil];
-        [alert addAction:action];
-        [self presentViewController:alert animated:YES completion:nil];
-         */
-        //[self GetArticlesNoticeData];
+ 
         
     }
     
-   //  NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[@"我是测试1号",@"my test 2 num",@"我是测试3号",@"我是测试4号",@"我是测试5号"] forKeys:@[@"testkey1",@"Testkey2",@"aestkey3",@"iestkey4",@"ieqweqy5"] ];
-    //HotQueueModel]
-    /*
-    [PPNetworkHelper GET:urlStr parameters:nil success:^(id responseObject) {
-        //请求成功
-      //  NSDictionary *dic = [responseObject objectForKey:@"resultData"];
-        NSString * resultStatus= [responseObject objectForKey:@"resultStatus"];
-     
-        if([resultStatus isEqual:@"0"])
-        {
-           NSArray * dir=[responseObject objectForKey:@"resultData"];
-            //trans_num
-           [daibanArrayURL removeAllObjects];
-            for(int k=0;k<dir.count;k++)
-            {
-             NewsDynamicsModel * model=[[NewsDynamicsModel alloc] init];
-              NSDictionary * dic=[dir objectAtIndex:k];
-              model.title=[dic objectForKey:@"title"];
-              model.link_url=[dic objectForKey:@"link_url"];
-             //guarantee_txt
-             [daibanArrayURL addObject: model];
-            }
-            [self LoanTopListData];
-            
-        }
-        else{
-            
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[ReturnCode getSysCMsg:resultStatus]   message:nil preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action = [UIAlertAction actionWithTitle:@"关闭" style:UIAlertActionStyleCancel handler:nil];
-            [alert addAction:action];
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-        //[PPNetworkCache setHttpCache:responseObject URL:urlStr parameters:nil];
-    } failure:^(NSError *error) {
-        //请求失败
-           [self LoanTopListData];
-        
-    }];
-    */
 }
 
 -(void) LoanTopListData{
@@ -1167,59 +914,9 @@
     }
     else
     {
-        /*
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@""  message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"关闭" style:UIAlertActionStyleCancel handler:nil];
-        [alert addAction:action];
-        [self presentViewController:alert animated:YES completion:nil];
-         */
-        
+   
     }
-    /*
-    //HotQueueModel
-    [PPNetworkHelper GET:urlStr parameters:nil success:^(id responseObject) {
-        //请求成功
-     //   NSDictionary *dic = [responseObject objectForKey:@"resultData"];
-        NSString * resultStatus= [responseObject objectForKey:@"resultStatus"];
-        [_kstzArray removeAllObjects];
-        if([resultStatus isEqual:@"0"])
-        {
-            NSArray * dir=[responseObject objectForKey:@"resultData"];
-            for(int k=0;k<[dir count];k++)
-            {
-                NSDictionary * dic=[dir objectAtIndex:k];
-            QuicklyModel * model=[[QuicklyModel alloc] init];
-            model.nrid=[NSString stringWithFormat:@"%d",k];
-            model.additional_apr=[dic objectForKey:@"additional_apr"];
-            model.name=[dic objectForKey:@"name"];
-            model.activity_url_img=[dic objectForKey:@"activity_url_img"];
-            model.apr=[dic objectForKey:@"apr"];
-            model.additional_apr=[dic objectForKey:@"additional_apr"];
-             model.period=[dic objectForKey:@"period"];
-             model.progress=[dic objectForKey:@"progress"];
-             model.amount=[dic objectForKey:@"amount"];
-            model.repay_type_name=[dic objectForKey:@"repay_type_name"];
-             model.status_name=[dic objectForKey:@"status_name"];
-            model.status=[dic objectForKey:@"status"];
-            model.link_url=[dic objectForKey:@"link_url"];
-            [_kstzArray addObject: model];
-            }
-                [self setUpTableView];
-            
-        }
-        else{
-            
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[ReturnCode getSysCMsg:resultStatus]   message:nil preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *action = [UIAlertAction actionWithTitle:@"关闭" style:UIAlertActionStyleCancel handler:nil];
-            [alert addAction:action];
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-        //[PPNetworkCache setHttpCache:responseObject URL:urlStr parameters:nil];
-    } failure:^(NSError *error) {
-        //请求失败
-        
-    }];
-    */
+   
 }
 
 
@@ -1227,25 +924,7 @@
 
 
 -(void) OnLogin{
-    //创建动画
-    CATransition * transition = [CATransition animation];
-    //设置动画类型（这个是字符串，可以搜索一些更好看的类型）
-    transition.type = @"moveOut";
-    //动画出现类型
-    transition.subtype = @"fromCenter";
-    //动画时间
-    transition.duration = 0.2;
-    //移除当前window的layer层的动画
-    [self.view.window.layer removeAllAnimations];
-    //将定制好的动画添加到当前控制器window的layer层
-    [self.view.window.layer addAnimation:transition forKey:nil];
-    
-    DMLoginViewController *next=[[DMLoginViewController alloc]init];
-    //把当前控制器作为背景
-    self.definesPresentationContext = YES;
-   [self presentViewController:next animated:YES completion:nil];
-   // [self presentViewController:searchVC animated:YES completion:NULL];
- //   [self.navigationController pushViewController:next animated:YES];
+    [self goLoginVC];
 }
 
 -(void)didAutoLoginSelect:(NSString *)username pswd:(NSString *)pswd isvalid:(Boolean)isvalid
@@ -1255,7 +934,7 @@
         [self getYUancheng];
     }
 }
-/**默认登录操作**/
+/**默认web登录操作**/
 -(void) getYUancheng{
     //Api/Users/GetUsetInfo?user_token={user_token}&sign={sign}
     NSString *user_name=theAppDelegate.user_name;
@@ -1263,12 +942,12 @@
     NSString *urlStr = @"";
     
     user_name=[HttpSignCreate encodeString:user_name];
-    NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_name,user_token] forKeys:@[@"user_name",@"user_token"]];
+    NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_name,user_token] forKeys:@[kUsername,kToken]];
     NSMutableArray * paixu1=[[NSMutableArray alloc] init];
-    [paixu1 addObject:@"user_name"];
-    [paixu1 addObject:@"user_token"];
+    [paixu1 addObject:kUsername];
+    [paixu1 addObject:kToken];
     NSString *sign=[HttpSignCreate GetSignStr:dict_data paixu:paixu1];
-    urlStr = [NSString stringWithFormat:login2,oyUrlAddress,user_name,user_token,sign];
+    urlStr = [NSString stringWithFormat:webLoginUrl,oyUrlAddress,user_name,user_token,sign];
     [self loadPage1:urlStr];
     
     
@@ -1422,29 +1101,6 @@
     return UILayoutFittingExpandedSize;
 }
 
-//修改tabbar高度
-/*
-- (void)viewWillLayoutSubviews {
-    if(theAppDelegate.IS_IPhoneX)
-    {
-       
-        
-        CGRect tabFrame = self.tabBarController.tabBar.frame;
-        tabFrame.size.height = 76;
-        tabFrame.origin.y = screen_height - 57;
-        self.tabBarController.tabBar.frame = tabFrame;
-    }
-}
-*/
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 
 

@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface CommonUtils : NSObject
-//手机号识别
-+ (BOOL)isAvaliableNumber:(NSString *)mobileNum;
 //上送token（非用户唯一标示，为校验码）
 +(NSString *)getToken;
+
++(NSString *)getUsername;
 //获取版本号
 +(NSString *)getVersion;
 //判断是否登录
@@ -32,4 +32,22 @@
 + (BOOL)checkUserIdCard: (NSString *) idCard;
 #pragma 正则匹配URL
 + (BOOL)checkURL : (NSString *) url;
+/*******************常用方法***********************************************/
+/**
+带有行间距的label的高度
+ */
++(CGFloat)getSpaceLabelHeight:(NSString*)str withFont:(UIFont*)font withWidth:(CGFloat)width lineSpace:(CGFloat)lineSpace;
+/**设置带圆角带阴影*/
++(void)setShadowCornerRadiusToView:(UIView *)view;
+
+/**
+ 设置字符串的字体大小和颜色
+ 
+ @param string 当前处理的可变字符串
+ @param range range
+ @param fontValue 字体大小
+ @param colorString 颜色
+ @return
+ */
++ (NSMutableAttributedString *)diffierentFontWithString:(NSString *)string rang:(NSRange)range font:(UIFont *)font color:(UIColor *)color spacingBeforeValue:(CGFloat)spacingBeforeValue lineSpace:(CGFloat)lineSpace;
 @end

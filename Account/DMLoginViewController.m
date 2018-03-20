@@ -329,12 +329,12 @@
     NSString *urlStr = @"";
     
     user_name=[HttpSignCreate encodeString:user_name];
-     NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_name,user_token] forKeys:@[@"user_name",@"user_token"]];
+     NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_name,user_token] forKeys:@[@"user_name",kToken]];
     NSMutableArray * paixu1=[[NSMutableArray alloc] init];
     [paixu1 addObject:@"user_name"];
-    [paixu1 addObject:@"user_token"];
+    [paixu1 addObject:kToken];
     NSString *sign=[HttpSignCreate GetSignStr:dict_data paixu:paixu1];
-    urlStr = [NSString stringWithFormat:login2,urlCheckAddress,user_name,user_token,sign];
+    urlStr = [NSString stringWithFormat:webLoginUrl,urlCheckAddress,user_name,user_token,sign];
     [self loadPage1:urlStr];
 
     
@@ -375,7 +375,7 @@
     NSString *sign=[HttpSignCreate GetSignStr:dict_data paixu:paixu1];
     terminal_name= [terminal_name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *  password1=[HttpSignCreate encodeString:[_passwordTextFiled text]];
-    urlStr = [NSString stringWithFormat:login,oyApiUrl,user_name,password1,terminal_type,terminal_id,terminal_name,terminal_model,terminal_token,sign];
+    urlStr = [NSString stringWithFormat:loginUrl,oyApiUrl,user_name,password1,terminal_type,terminal_id,terminal_name,terminal_model,terminal_token,sign];
     
     NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
     if([ggHttpFounction getJsonIsOk:data])
@@ -384,7 +384,7 @@
         if(dir!=nil)
         {
             
-            theAppDelegate.user_token=  [dir objectForKey:@"user_token"];
+            theAppDelegate.user_token=  [dir objectForKey:kToken];
             theAppDelegate.user_name= user_name;
             NSString * temp=[[dir objectForKey:@"expiration_date"] substringWithRange:NSMakeRange(0,10)];
             theAppDelegate.expirationdate=temp;
@@ -396,7 +396,7 @@
             [userDef setObject:@"1" forKey:@"IsSet"];
             [userDef synchronize];
             theAppDelegate.IsLogin=TRUE;
-            [TTJFUserDefault setStr:[dir objectForKey:@"user_token"] key:kToken];//存储登录成功token值
+            [TTJFUserDefault setStr:[dir objectForKey:kToken] key:kToken];//存储登录成功token值
             [self getYUancheng];
         }
         
@@ -499,7 +499,7 @@
 
 -(void)webViewDidStartLoad:(UIWebView *)webView
 {
-  BBUserDefault.isNoFirstLaunch=YES;
+//  BBUserDefault.isNoFirstLaunch=YES;
 }
 
 /**

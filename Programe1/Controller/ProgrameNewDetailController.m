@@ -18,7 +18,6 @@
 #import "HttpSignCreate.h"
 #import "HttpUrlAddress.h"
 #import "ggHttpFounction.h"
-#import "DMLoginViewController.h"
 #import "AppDelegate.h"
 #import "MBProgressHUD+MP.h"
 #import "RushPurchaseController.h"
@@ -55,28 +54,9 @@
 }
 #pragma 头部
 -(void) initView{
-    
-   
-    // 头部事件
-//    UILabel *navTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 20, 120, 44)];
-//    navTitleLabel.numberOfLines=0;//可能出现多行的标题
-//    [navTitleLabel setAttributedText:[self changeTitle:@"项目详情"]];
-//    navTitleLabel.textAlignment = NSTextAlignmentCenter;
-//    navTitleLabel.backgroundColor = [UIColor clearColor];
-//    self.navigationItem.titleView = navTitleLabel;
-//
-//    [self.navigationController.navigationBar setBackgroundColor:RGB(53, 171, 245)];
-//    self.navigationController.navigationBar.translucent = NO;
-//    navBarHairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
-//    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.leftBtn];
-//    //self.view.backgroundColor=RGB(0, 160, 240);
-//    [self.navigationItem setLeftBarButtonItem:leftBarButton];
-//    CGRect frame = self.navigationItem.leftBarButtonItem.customView.frame;
-//    frame.size.width=80;
-//    frame.size.height=44;
-//    self.navigationItem.leftBarButtonItem.customView.frame = frame;
-    
-    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, screen_height - kBottomButtonHeight)];
+
+
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, screen_height - kBottomButtonHeight - kNavHight)];
     scrollView.backgroundColor =RGB(242,242,242);
     
     scrollView.directionalLockEnabled = YES; //只能一个方向滑动
@@ -87,7 +67,7 @@
     scrollView.delegate = self;
     scrollView.userInteractionEnabled = YES; // 是否滑动
     scrollView.bounces = NO;
-    CGSize size={screen_width,180+1600+265};
+    CGSize size={screen_width,180+500+265};
     scrollView.contentSize =size;
      [self initBody];
     //  [SVProgressHUD showSuccessWithStatus:@"加载完成"];
@@ -95,28 +75,9 @@
    
 }
 #pragma  头部事件
-//- (UIButton *)leftBtn
-//{
-//    UIButton *  _leftBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
-//    [_leftBtn setImage:[UIImage imageNamed:@"nav_back"] forState:UIControlStateNormal];
-//    [_leftBtn setImage:[UIImage imageNamed:@"nav_back"] forState:UIControlStateHighlighted];
-//    [_leftBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-//   // _leftBtn.imageView.frame=CGRectMake(10, 0, 10.5, 21);
-//    _leftBtn.imageEdgeInsets = UIEdgeInsetsMake(-6, -70, 0, 10);
-//    return _leftBtn;
-//}
-////响应事件
-//-(void)leftBtnClick:(UIButton *)sender
-//{
-//    [self.tabBarController.tabBar setHidden:NO];
-//     [self.navigationController setNavigationBarHidden:YES animated:NO];
-//    [self.navigationController popViewControllerAnimated:YES];
-//}
-
-//
 -(void)OnTapClickView:(UIGestureRecognizer*)Tap
 {
-    if(theAppDelegate.IsLogin)
+    if([CommonUtils isLogin])
     {
         if([base.trust_account isEqual:@"1"])
         {
@@ -161,17 +122,6 @@
     }
     return nil;
 }
-#pragma  头部事件
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-   
-//    navBarHairlineImageView.hidden = YES;
-
-}
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-//    navBarHairlineImageView.hidden = NO;
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -189,16 +139,14 @@
     top=[[DetailTop alloc] initWithFrame:CGRectMake(0, 0, screen_width, 174) data:base];
     [scrollView addSubview:top];
     if(middle==nil&&!md)
-        middle=[[DetailMiddle alloc] initWithFrame:CGRectMake(0, 174, screen_width, 260) data:base];
-    
+        middle=[[DetailMiddle alloc] initWithFrame:CGRectMake(0, top.bottom, screen_width, 260) data:base];
     else if(middle==nil)
-         middle=[[DetailMiddle alloc] initWithFrame:CGRectMake(0, 174, screen_width, 215) data:base];
- //   [middle setModel:(LoanBase *)]
+         middle=[[DetailMiddle alloc] initWithFrame:CGRectMake(0, top.bottom, screen_width, 215) data:base];
     [scrollView addSubview:middle];
     if(bottom==nil&&!md)
-        bottom=[[DetailBottom alloc] initWithFrame:CGRectMake(0, 434, screen_width, 1500) data:base];
+        bottom=[[DetailBottom alloc] initWithFrame:CGRectMake(0, middle.bottom, screen_width, scrollView.height - middle.bottom) data:base];
     else if(bottom==nil)
-        bottom=[[DetailBottom alloc] initWithFrame:CGRectMake(0, 389, screen_width, 1500) data:base];
+        bottom=[[DetailBottom alloc] initWithFrame:CGRectMake(0, middle.bottom, screen_width, scrollView.height - middle.bottom) data:base];
     bottom.userInteractionEnabled=YES;
     [scrollView addSubview:bottom];
     bottom.delegate=self;
@@ -289,7 +237,8 @@
 
 -(void)didSelectedBottomAtIndex:(NSInteger)index height:(CGFloat)height
 {
-    CGSize size={screen_width,180+height+265};
+    //60为segmentcontrol的高度  10为间隔符高度
+    CGSize size={screen_width,height+middle.height+top.height+60};
     scrollView.contentSize =size;
   
 }
@@ -300,10 +249,10 @@
     NSString *urlStr = @"";
     NSString * loan_id=self.loan_id;
     NSString * user_token=@"";
-    if(theAppDelegate.IsLogin)
+    if([CommonUtils isLogin])
     user_token=theAppDelegate.user_token;
 
-    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[loan_id,user_token] forKeys:@[@"loan_id",@"user_token"] ];
+    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[loan_id,user_token] forKeys:@[@"loan_id",kToken] ];
     NSString *sign=[HttpSignCreate GetSignStr:dict_data];
     urlStr = [NSString stringWithFormat:getLoanInfoview1,oyApiUrl,loan_id,user_token,sign];
     NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
@@ -424,7 +373,7 @@
         }
             
             base.loan_id=[NSString stringWithFormat:@"%@",[dic1 objectForKey:@"loan_id"]];
-            base.user_token=[dic1 objectForKey:@"user_token"];
+            base.user_token=[dic1 objectForKey:kToken];
             base.repay_type_name=[[dic1 objectForKey:@"repay_type"] objectForKey:@"name"];
             base.islogin=[dic1 objectForKey:@"islogin"];
             base.trust_account=[NSString stringWithFormat:@"%@",[dic1 objectForKey:@"trust_account"]];
@@ -464,23 +413,7 @@
 */
 
 -(void) OnLogin{
-    //创建动画
-    CATransition * transition = [CATransition animation];
-    //设置动画类型（这个是字符串，可以搜索一些更好看的类型）
-    transition.type = @"moveOut";
-    //动画出现类型
-    transition.subtype = @"fromCenter";
-    //动画时间
-    transition.duration = 0.2;
-    //移除当前window的layer层的动画
-    [self.view.window.layer removeAllAnimations];
-    //将定制好的动画添加到当前控制器window的layer层
-    [self.view.window.layer addAnimation:transition forKey:nil];
-    
-    DMLoginViewController *next=[[DMLoginViewController alloc]init];
-    //把当前控制器作为背景
-    self.definesPresentationContext = YES;
-    [self presentViewController:next animated:YES completion:nil];
+    [self goLoginVC];
 }
 
 -(void) countDownAction{

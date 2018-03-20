@@ -34,82 +34,59 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor=lineBg;
-        [self awakeFromNib];
+
     }
     return self;
 }
 
-- (void)awakeFromNib{
-
-
-    
-
-
-}
-
--(void) setModel:(LoanBase *) model
+-(CGFloat) setModel:(LoanBase *) model
 {
     dataAry=model.security_audit;
     self.backgroundColor=[UIColor whiteColor];
     if(dataAry!=nil)
     {
+        CGFloat originBottom = 20;
         for(int k=0;k<dataAry.count;k++)
         {
-            //Hone_Column_Rapidinvestment_
-            
-            UIImageView *typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake(13, 20,3, 15)];
+           
+            UIImageView *typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake(13, originBottom,3, 15)];
             [typeimgsrc setImage:[UIImage imageNamed:@"Hone_Column_Rapidinvestment_"]];
             [self addSubview:typeimgsrc];
             SecurityModel * security=[dataAry objectAtIndex:k];
-            UILabel * title=[[UILabel alloc] initWithFrame:CGRectMake(20, 18, screen_width-40, 13)];
-            if(k==0)
-            {
-                title.frame=CGRectMake(22, 21, screen_width-40, 13);
-            }
-             else if(k==1)
-             {
-                 title.frame=CGRectMake(22, 139.5, screen_width-40, 13);
-                 typeimgsrc.frame=CGRectMake(13, 138,3, 15);
-             }
-            else if(k==2)
-            {
-                title.frame=CGRectMake(22, 301, screen_width-40, 13);
-                   typeimgsrc.frame=CGRectMake(13, 301,3, 15);
-            }
-             title.textColor=RGB(83,83,83);
+            UILabel * title=[[UILabel alloc] initWithFrame:CGRectMake(20, 1+originBottom, screen_width-40, 13)];
+            title.textColor=RGB(83,83,83);
             title.textAlignment=NSTextAlignmentLeft;
             title.text=security.title;
             title.font=CHINESE_SYSTEM(13);
             [self addSubview:title];
             
-            UILabel * content=[[UILabel alloc] initWithFrame:CGRectMake(20, 20, screen_width-35, 200)];
-            if(k==0)
-            {
-                content.frame=CGRectMake(20, -20, screen_width-35, 200);
-            }
-           else  if(k==1)
-            {
-                content.frame=CGRectMake(20, 120, screen_width-35, 200);
-            }
-            else if(k==2)
-            {
-                content.frame=CGRectMake(20, 282, screen_width-35, 200);
-            }
-            content.textAlignment=NSTextAlignmentLeft;
+            UILabel * content=[[UILabel alloc] init];
+            CGFloat contentHeight = [CommonUtils getSpaceLabelHeight:security.contents withFont:CHINESE_SYSTEM(13) withWidth:screen_width-35 lineSpace:9];
+            content.frame = CGRectMake(20, title.bottom+10, screen_width-35, contentHeight);
             content.textColor=RGB(83,83,83);
             content.font=CHINESE_SYSTEM(13);
             content.numberOfLines=0;
-     
-            content=[self setData:security.contents titleLabel:content ];
+            [self setData:security.contents titleLabel:content];
             [self addSubview:content];
+            
+            originBottom = content.bottom+10;
+            
+            if (k==dataAry.count-1) {
+                //总高度
+                self.height = originBottom;
+                self.backgroundColor = [UIColor whiteColor];
+                return  originBottom+10;
+                
+            }
             
    
         }
     
     }
+    return 100;
 }
 
--(UILabel *) setData:(NSString *)title titleLabel:(UILabel *) titleLabel
+-(void)setData:(NSString *)title titleLabel:(UILabel *) titleLabel
 {
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
@@ -121,7 +98,6 @@
     [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [title length])];
     
     titleLabel.attributedText = attributedString;
-    return titleLabel;
 }
 
 

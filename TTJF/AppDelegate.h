@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "UrlJumpHelp.h"
-#import "DMLoginViewController.h"
 #import "GlobeData.h"
+#import "LoginViewController.h"
 
 #define theAppDelegate ((AppDelegate *)[[UIApplication sharedApplication] delegate])
 
@@ -54,7 +54,7 @@
 @property  NSString  *  accountQh;
 @property(nonatomic, strong) UrlJumpHelp * jumpHelp;
 
-@property(nonatomic, strong) DMLoginViewController * userLogin;
+@property(nonatomic, strong) LoginViewController * userLogin;
 @property  NSString  *   httplink;
 //@property  NSString  *   VersionNum;
 @property  NSArray  *   urlJumpList;

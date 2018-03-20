@@ -19,14 +19,15 @@
 //#import "ITTDebug.h"
 //#import "CalendarDateUtil.h"
 #endif
-
+#import "Environment.h"
 #import "Public.h"
 #import "constant.h"
-#import "CommonUtils.h"
 #import "TTJFUserDefault.h"
+#import "CommonUtils.h"
 #import "UIImageView+WebCache.h"
 #import "IQKeyboardManager.h"
-
+#import "UIView+Extension.h"
+#import <Masonry.h>
 //#import "MobClick.h"
 //#import "XBApi.h"
 //#import "XBGlobal.h"

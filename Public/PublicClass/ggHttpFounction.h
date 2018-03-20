@@ -19,7 +19,7 @@
 +(NSString *)asynHttpGet:(NSString *)urlAsString;
 
 //http同步Get请求
-+(NSString *)synHttpGet:(NSString *)urlAsString;
++(NSData *)synHttpGet:(NSString *)urlAsString;
 //http异步Get请求
 +(NSString *)asynQueueHttpGet:(NSString *)urlAsString;
 

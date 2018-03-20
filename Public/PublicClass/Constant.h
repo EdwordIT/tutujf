@@ -13,7 +13,7 @@
 #define kToken @"user_token"
 #define kUsername @"user_name"
 
-#define kVersion @"bundle_version"
+#define kVersion @"bundleVersion"
 //友盟Appkey
 #define UMAPPKEY @"59d656c4a40fa356ff00016a"
 
@@ -54,36 +54,6 @@
 #define kAppUrl  @"http://itunes.apple.com/app/id923676989"
 #define kAppReviewURL   @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=923676989"
 
-#define App_Environment 2 //1.正式环境 2.测试环境
-
-#if(App_Environment==1)
-//app接口域名
-#define oyApiUrl            @"https://api.tutujf.com"
-//图片前置地址
-#define oyImageBigUrl       @"https://www.tutujf.com"
-//#define oyHeadBaseUrl       @"https://api.tutujf.com"
-//webView相关域名
-#define oyUrlAddress        @"https://www.tutujf.com"
-//webView页面跳转域名校验
-#define urlCheckAddress @"www.tutujf.com"
-//系统加密所需要的系统token
-#define systemToken @"!Y9v9OK41w(2"
-
-//#define oyGoodsDetail       @"http://www.xxx.com/android/goods?goodsID=%d&action=getGoodsDetailPageData"%d&EIdx=%d&isCount=1"
-#elif(App_Environment==2)//测试环境
-//app接口域名
-#define oyApiUrl             @"https://cs.api.tutujf.com"
-//图片前置地址
-#define oyImageBigUrl        @"https://cs.www.tutujf.com"
-//#define oyHeadBaseUrl        @"https://cs.api.tutujf.com"
-//webView相关域名
-#define oyUrlAddress       @"https://cs.www.tutujf.com"
-//webView页面跳转域名校验
-#define urlCheckAddress @"cs.www.tutujf.com"
-//系统加密所需要的系统token
-#define systemToken @"!Y9v9OK41w(2"
-#else
-#endif
 
 //版本号
 #define kVersion_Coding [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]

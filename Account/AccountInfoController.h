@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BaseController.h"
+#import "BaseViewController.h"
 
-@interface AccountInfoController : BaseController
+@interface AccountInfoController : BaseViewController
 
 @property(nonatomic, strong) UITableView *tableView;
 

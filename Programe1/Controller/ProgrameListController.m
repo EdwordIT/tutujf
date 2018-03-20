@@ -17,7 +17,6 @@
 #import "HttpSignCreate.h"
 #import "HttpUrlAddress.h"
 #import "ggHttpFounction.h"
-#import "DMLoginViewController.h"
 #import "AppDelegate.h"
 #import "RushPurchaseController.h"
 #import "ProgrameNewDetailController.h"
@@ -118,7 +117,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         {
-            return 135;
+            return kSizeFrom750(278);
         }
     }
     else{
@@ -340,7 +339,7 @@
 //
 -(void)didSelectedQuicklyAtIndex:(NSInteger)index
 {
-    if(!theAppDelegate.IsLogin)
+    if(![CommonUtils isLogin])
     {
         [self OnLogin];
         return;
@@ -367,25 +366,7 @@
 }
 
 -(void) OnLogin{
-    //创建动画
-    CATransition * transition = [CATransition animation];
-    //设置动画类型（这个是字符串，可以搜索一些更好看的类型）
-    transition.type = @"moveOut";
-    //动画出现类型
-    transition.subtype = @"fromCenter";
-    //动画时间
-    transition.duration = 0.2;
-    //移除当前window的layer层的动画
-    [self.view.window.layer removeAllAnimations];
-    //将定制好的动画添加到当前控制器window的layer层
-    [self.view.window.layer addAnimation:transition forKey:nil];
-    
-    DMLoginViewController *next=[[DMLoginViewController alloc]init];
-    //把当前控制器作为背景
-    self.definesPresentationContext = YES;
-    [self presentViewController:next animated:YES completion:nil];
-    // [self presentViewController:searchVC animated:YES completion:NULL];
-    //   [self.navigationController pushViewController:next animated:YES];
+    [self goLoginVC];
 }
 - (CGSize)intrinsicContentSize {
     return UILayoutFittingExpandedSize;

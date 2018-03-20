@@ -19,5 +19,4 @@
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 @property(nonatomic, assign) id<BannerDelegate> delegate;
 -(void)setModelArray:(NSArray *)modelArray;
--(void) setTopJinE:(CGFloat)jine;
 @end

@@ -87,7 +87,7 @@
     _IsJump=FALSE;
     _IsUpdate=FALSE;
     _IsWebRegdit=FALSE;
-    _user_token=@"";
+    _user_token=[TTJFUserDefault strForKey:kToken];
     _device_token=@"";
     _password=@"";
     _MobileNum=@"";
@@ -176,7 +176,7 @@
     else{
         [self registerPushForIOS8];
     }
-    self.userLogin=[[DMLoginViewController alloc] init];
+    self.userLogin=[[LoginViewController alloc] init];
     
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com/"]];
@@ -366,13 +366,14 @@
 -(void)setupIntroductoryPage
 {
     
-    //如果版本号未发生变化，则不重新加载引导页
-    if (![[CommonUtils getVersion] isEqualToString:currentVersion]){
+    //如果版本号发生变化，则重新加载引导页
+    if ([[CommonUtils getVersion] isEqualToString:currentVersion]){
+        [self setLanouceAdt];
+      
+    }else{
+        [TTJFUserDefault setStr:currentVersion key:kVersion];
         NSArray *images=@[@"introductoryPage1",@"introductoryPage2",@"introductoryPage3"];
         [introductoryPagesHelper showIntroductoryPageView:images];
-        [TTJFUserDefault setStr:currentVersion key:kVersion];
-    }else{
-        [self setLanouceAdt];
     }
     
 //    if (BBUserDefault.isNoFirstLaunch)
@@ -625,12 +626,12 @@
 #pragma mark 键盘收回管理
 -(void)configureBoardManager
 {
-    IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
-    manager.enable = YES;
-    manager.shouldResignOnTouchOutside = YES;
-    manager.shouldToolbarUsesTextFieldTintColor = YES;
-    manager.keyboardDistanceFromTextField=60;
-    manager.enableAutoToolbar = NO;
+//    IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
+//    manager.enable = YES;
+//    manager.shouldResignOnTouchOutside = YES;
+//    manager.shouldToolbarUsesTextFieldTintColor = YES;
+//    manager.keyboardDistanceFromTextField=60;
+//    manager.enableAutoToolbar = NO;
 }
 
 #pragma mark - APP运行中接收到通知(推送)处理
@@ -648,7 +649,7 @@
 
 
 //按钮点击事件回调
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler{
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler{
     if([identifier isEqualToString:@"ACCEPT_IDENTIFIER"]){
         NSLog(@"ACCEPT_IDENTIFIER is clicked");
     }

@@ -11,21 +11,10 @@
 @implementation CommonUtils
 
 //******************************输入内容正确性校验*****************************************//
-#pragma 正则匹配手机号
-+ (BOOL)checkTelNumber:(NSString *) telNumber
-{
-    NSString *pattern = @"^1+[3578]+\\d{9}";
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
-    BOOL isMatch = [pred evaluateWithObject:telNumber];
-    return isMatch;
-}
-
-
-#pragma 正则匹配用户密码6-16位数字和字母组合
+#pragma 正则匹配用户密码6-15位数字和字母和符号的组合
 + (BOOL)checkPassword:(NSString *) password
 {
-    //    NSString *pattern = @"^(?![0-9]+$)(?![a-zA-Z]+$)[a-zA-Z0-9]{6,16}";
-    NSString *pattern = @"^[a-zA-Z0-9]{6,16}";
+        NSString *pattern = @"^(?![0-9]+$)(?![a-zA-Z]+$)[a-zA-Z0-9]{6,15}";
     
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
     BOOL isMatch = [pred evaluateWithObject:password];
@@ -64,8 +53,8 @@
 }
 
 //手机号识别
-+ (BOOL)isAvaliableNumber:(NSString *)mobileNum{
-    if (mobileNum.length != 11)
++ (BOOL)checkTelNumber:(NSString *)telNumber{
+    if (telNumber.length != 11)
     {
         return NO;
     }
@@ -99,10 +88,10 @@
     NSPredicate *regextestcu = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CU];
     NSPredicate *regextestct = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CT];
     
-    if (([regextestmobile evaluateWithObject:mobileNum] == YES)
-        || ([regextestcm evaluateWithObject:mobileNum] == YES)
-        || ([regextestct evaluateWithObject:mobileNum] == YES)
-        || ([regextestcu evaluateWithObject:mobileNum] == YES))
+    if (([regextestmobile evaluateWithObject:telNumber] == YES)
+        || ([regextestcm evaluateWithObject:telNumber] == YES)
+        || ([regextestct evaluateWithObject:telNumber] == YES)
+        || ([regextestcu evaluateWithObject:telNumber] == YES))
     {
         return YES;
     }
@@ -112,6 +101,7 @@
     }
     
 }
+//**************************获取当前版本号*********************************************//
 +(NSString *)getVersion{
     NSString *version = [TTJFUserDefault strForKey:kVersion];
     if (IsEmptyStr(version)) {
@@ -129,6 +119,16 @@
         return token;
     }
 }
+//**************************获取userName*********************************************//
++(NSString *)getUsername{
+    NSString *username = [TTJFUserDefault strForKey:kUsername];
+    if (IsEmptyStr(username)) {
+        return @"";
+    }else{
+        return username;
+    }
+}
+
 +(BOOL)isLogin
 {
     NSString *token = [self getToken];
@@ -180,5 +180,60 @@
         }
     }
 }
+//动态获取label高度
++(CGFloat)getSpaceLabelHeight:(NSString*)str withFont:(UIFont*)font withWidth:(CGFloat)width lineSpace:(CGFloat)lineSpace{
+    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
+    paraStyle.lineBreakMode = NSLineBreakByCharWrapping;
+    paraStyle.alignment = NSTextAlignmentLeft;
+    //获得带有行间距为2的高度
+    paraStyle.lineSpacing = lineSpace;
+    paraStyle.hyphenationFactor = 1.0;
+    paraStyle.firstLineHeadIndent = 0.0;
+    paraStyle.paragraphSpacingBefore = 0.0;
+    paraStyle.headIndent = 0;
+    paraStyle.tailIndent = 0;
+    //字间距为0
+    NSDictionary *dic = @{NSFontAttributeName:font, NSParagraphStyleAttributeName:paraStyle, NSKernAttributeName:@0.f
+                          };
+    
+    CGSize size = [str boundingRectWithSize:CGSizeMake(width, 999.f) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine attributes:dic context:nil].size;
+    
+    return size.height ;
+}
+//设置带圆角带阴影
++(void)setShadowCornerRadiusToView:(UIView *)view{
+    view.layer.cornerRadius = kSizeFrom750(10);
+    
+    view.layer.shadowColor = [UIColor grayColor].CGColor;
+    
+    view.layer.shadowOffset = CGSizeMake(0, kSizeFrom750(10));
 
+    view.layer.shadowOpacity = 0.2;
+    
+    view.layer.shadowRadius = kSizeFrom750(8);
+}
+/**
+ 设置字符串的字体大小和颜色
+ 
+ @param string 当前处理的可变字符串
+ @param range range
+ @param fontValue 字体
+ @param colorString 颜色
+ @return
+ */
++ (NSMutableAttributedString *)diffierentFontWithString:(NSString *)string rang:(NSRange)range font:(UIFont *)font color:(UIColor *)color spacingBeforeValue:(CGFloat)spacingBeforeValue lineSpace:(CGFloat)lineSpace{
+    NSMutableAttributedString *attributeString = [[NSMutableAttributedString alloc] initWithString:string];
+    if (string.length) {
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineSpacing:lineSpace];
+        paragraphStyle.hyphenationFactor = 1.0;
+        paragraphStyle.firstLineHeadIndent = 0.0;
+        paragraphStyle.paragraphSpacingBefore = spacingBeforeValue;
+        paragraphStyle.headIndent = 0;
+        paragraphStyle.tailIndent = 0;
+        paragraphStyle.alignment = NSTextAlignmentCenter;
+        [attributeString addAttributes:@{NSFontAttributeName:font, NSForegroundColorAttributeName:color, NSParagraphStyleAttributeName:paragraphStyle} range:range];
+    }
+    return attributeString;
+}
 @end

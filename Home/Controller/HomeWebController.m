@@ -299,6 +299,7 @@
             theAppDelegate.user_token=@"";
             theAppDelegate.IsLogin=FALSE;
             [TTJFUserDefault removeStrForKey:kToken];
+            [TTJFUserDefault removeArrForKey:kUsername];
             [self OnBackBtn2];
             return ;
         }
@@ -350,6 +351,7 @@
             theAppDelegate.jumpLogin=@"1";
             theAppDelegate.IsLogin=FALSE;
             [TTJFUserDefault removeStrForKey:kToken];
+            [TTJFUserDefault removeArrForKey:kUsername];
             theAppDelegate.user_name=@"";
             theAppDelegate.user_token=@"";
             [self cleanCaches];
@@ -357,21 +359,21 @@
         }
         return;
     }
-    else if ([_currentURL rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/member/index"]].location != NSNotFound&&!theAppDelegate.IsLogin)
+    else if ([_currentURL rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/member/index"]].location != NSNotFound&&![CommonUtils isLogin])
     {
         theAppDelegate.jumpLogin=@"1";
         [self.navigationController popToRootViewControllerAnimated:YES];
         return;
     }
     //http://
-    else if([_urlStr rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/page/getPage?action=bribe"]].location != NSNotFound&&[_currentURL rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/system/register2"]].location != NSNotFound&&theAppDelegate.IsLogin)
+    else if([_urlStr rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/page/getPage?action=bribe"]].location != NSNotFound&&[_currentURL rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/system/register2"]].location != NSNotFound&&[CommonUtils isLogin])
     {
         theAppDelegate.xbindex=3;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.navigationController popViewControllerAnimated:YES];
         });
     }
-    else if([_urlStr rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/page/getPage?action=noviceguide"]].location != NSNotFound&&[_currentURL rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/system/register2"]].location != NSNotFound&&theAppDelegate.IsLogin)
+    else if([_urlStr rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/page/getPage?action=noviceguide"]].location != NSNotFound&&[_currentURL rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/system/register2"]].location != NSNotFound&&[CommonUtils isLogin])
     {
         theAppDelegate.xbindex=3;
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -386,11 +388,11 @@
        if([dirlist count]>0)//同步登陆
        {
              [MBProgressHUD showIconMessage:@"" ToView:self.view RemainTime:0.3];
-         NSString * user_token=[dirlist objectForKey:@"user_token"];
+         NSString * user_token=[dirlist objectForKey:kToken];
            NSString * expiration_date=[HttpSignCreate  decodeString:[dirlist objectForKey:@"expiration_date"]] ;
            expiration_date=[expiration_date stringByReplacingOccurrencesOfString:@"+" withString:@" "];
          NSString * sign=[dirlist objectForKey:@"sign"];
-         NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[user_token,expiration_date] forKeys:@[@"user_token",@"expiration_date"] ];
+         NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[user_token,expiration_date] forKeys:@[kToken,@"expiration_date"] ];
                NSString *sign1=[HttpSignCreate GetSignStr:dict_data];
               if([sign1 isEqual:sign])
                {
@@ -498,6 +500,7 @@
         {
             theAppDelegate.IsLogin=FALSE;
             [TTJFUserDefault removeStrForKey:kToken];
+            [TTJFUserDefault removeStrForKey:kUsername];
             theAppDelegate.user_name=@"";
             theAppDelegate.user_token=@"";
         }

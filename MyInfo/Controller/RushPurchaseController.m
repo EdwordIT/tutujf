@@ -13,7 +13,6 @@
 #import "MBProgressHUD+MP.h"
 #import "SecurityModel.h"
 #import "RepayModel.h"
-#import "DMLoginViewController.h"
 #import "AppDelegate.h"
 #import "HomeWebController.h"
 #import "AFNetworking.h"
@@ -367,10 +366,10 @@
     NSString *urlStr = @"";
     NSString * loan_id=self.loan_id;
     NSString * user_token=@"";
-    if(theAppDelegate.IsLogin)
+    if([CommonUtils isLogin])
         user_token=theAppDelegate.user_token;
     
-    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[loan_id,user_token] forKeys:@[@"loan_id",@"user_token"] ];
+    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[loan_id,user_token] forKeys:@[@"loan_id",kToken] ];
     NSString *sign=[HttpSignCreate GetSignStr:dict_data];
     urlStr = [NSString stringWithFormat:getLoanInfoview1,oyApiUrl,loan_id,user_token,sign];
       //  urlStr=@"http://cs.api.tutujf.com/api/Loan/GetLoanInfoview?//loan_id=653&user_token=lmaqvmynascvbisfnllmxrfpuuzdwr&sign=d097e3fafaf9d1d0";
@@ -493,7 +492,7 @@
         }
         
         base.loan_id=[NSString stringWithFormat:@"%@",[dic1 objectForKey:@"loan_id"]];
-        base.user_token=[dic1 objectForKey:@"user_token"];
+        base.user_token=[dic1 objectForKey:kToken];
         base.repay_type_name=[[dic1 objectForKey:@"repay_type"] objectForKey:@"name"];
         base.islogin=[dic1 objectForKey:@"islogin"];
         base.trust_account=[NSString stringWithFormat:@"%@",[dic1 objectForKey:@"trust_account"]];
@@ -540,7 +539,7 @@
 
 -(void)OnChongZhi:(UIButton *) sender
 {
-    if(theAppDelegate.IsLogin)
+    if([CommonUtils isLogin])
     {
         if([base.trust_account isEqual:@"1"])
         {
@@ -798,14 +797,14 @@
     [dict_data setObject:loan_id forKey:@"loan_id"];
     [dict_data setObject:amount forKey:@"amount"];
     [dict_data setObject:loan_password forKey:@"loan_password"];
-    [dict_data setObject:user_token forKey:@"user_token"];
+    [dict_data setObject:user_token forKey:kToken];
    */
-    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[loan_id,amount,loan_password,user_token] forKeys:@[@"loan_id",@"amount",@"loan_password",@"user_token"] ];
+    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[loan_id,amount,loan_password,user_token] forKeys:@[@"loan_id",@"amount",@"loan_password",kToken] ];
     NSMutableArray * array=[[NSMutableArray alloc] init];
     [array addObject:@"loan_id"];
     [array addObject:@"amount"];
     [array addObject:@"loan_password"];
-    [array addObject:@"user_token"];
+    [array addObject:kToken];
     NSString *sign=[HttpSignCreate GetSignStr:dict_data paixu:array];
     urlStr = [NSString stringWithFormat:tenderNow,oyApiUrl,loan_id,amount,loan_password,user_token,sign];
     NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
@@ -909,25 +908,7 @@
 }
 
 -(void) OnLogin{
-    //创建动画
-    CATransition * transition = [CATransition animation];
-    //设置动画类型（这个是字符串，可以搜索一些更好看的类型）
-    transition.type = @"moveOut";
-    //动画出现类型
-    transition.subtype = @"fromCenter";
-    //动画时间
-    transition.duration = 0.2;
-    //移除当前window的layer层的动画
-    [self.view.window.layer removeAllAnimations];
-    //将定制好的动画添加到当前控制器window的layer层
-    [self.view.window.layer addAnimation:transition forKey:nil];
-    
-    DMLoginViewController *next=[[DMLoginViewController alloc]init];
-    //把当前控制器作为背景
-    self.definesPresentationContext = YES;
-    [self presentViewController:next animated:YES completion:nil];
-    // [self presentViewController:searchVC animated:YES completion:NULL];
-    //   [self.navigationController pushViewController:next animated:YES];
+    [self goLoginVC];
 }
 
 //加载网页

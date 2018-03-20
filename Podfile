@@ -36,7 +36,6 @@ pod 'ShareSDK3/ShareSDKPlatforms/SMS'
 pod 'ShareSDK3/ShareSDKExtension'
 
 pod 'XHLaunchAd', '~> 3.4.4'
-pod 'UICountingLabel'
 
 pod 'ReactiveObjC'
 

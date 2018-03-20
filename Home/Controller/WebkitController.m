@@ -11,7 +11,6 @@
 #import "AppDelegate.h"
 #import "MBProgressHUD+NJ.h"
 #import "UrlJumpHelp.h"
-#import "DMLoginViewController.h"
 #import "XXWebKitSupport.h"
 #import "WinChageType.h"
 

@@ -18,107 +18,70 @@
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor=separaterColor;
+        self.backgroundColor=[UIColor whiteColor];
         [self initViews];
     }
     return self;
 }
 
 -(void)initViews {
-    UIView * bgv=[[UIView alloc] initWithFrame:CGRectMake(10, 0, screen_width-20, 190)];
-    bgv.backgroundColor=RGB(255, 255, 255);
-  //  bgv.layer.shadowColor=[UIColor grayColor].CGColor;
-  //  bgv.layer.shadowOffset=CGSizeMake(1,1);
-   // bgv.layer.shadowOpacity=0.5;
-   // bgv.layer.shadowRadius=2;
-    
-    UILabel * lab1= [[UILabel alloc] initWithFrame:CGRectMake((screen_width-30)/2-80, 21,100, 15)];
-    lab1.font = CHINESE_SYSTEM(15);
-    lab1.textColor=RGB(102,102,102);
-    lab1.text=@"新手体验标";
-    lab1.textAlignment=NSTextAlignmentCenter;
-    [bgv addSubview:lab1];
-    
-    rightimg=[[UIImageView alloc] initWithFrame:CGRectMake((screen_width-30)/2+20, 18, 58, 19)];
-    [rightimg setImage:[UIImage imageNamed:@"xinshouzx"]];
-    [bgv addSubview:rightimg];
-    
-    _shouyi= [[UILabel alloc] initWithFrame:CGRectMake((screen_width-30)/2-120, 58,240,36)];
-    _shouyi.text=@"13.20%";
-    _shouyi.textAlignment=NSTextAlignmentCenter;
-    NSInteger index=[ _shouyi.text rangeOfString:@"."].location;
-    NSInteger len=[ _shouyi.text  length];
-    NSMutableAttributedString *textColor = [[NSMutableAttributedString alloc]initWithString: _shouyi.text];
-    [textColor addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica" size:36] range:NSMakeRange(0, index)];
-    [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19) range:NSMakeRange(0, index)];
-    [textColor addAttribute:NSFontAttributeName value:CHINESE_SYSTEM(14) range:NSMakeRange(index,len-index)];
-    [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19)  range:NSMakeRange(index, len-index)];
-    [_shouyi setAttributedText:textColor];
-    [bgv addSubview:_shouyi];
 
-    //xinshouzx
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(154, 21, 0.4f, 17)];
-    lineView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.05];
+   UIImageView * leftImage=[[UIImageView alloc] initWithFrame:CGRectMake(kSizeFrom750(160), kSizeFrom750(290), kSizeFrom750(75), kSizeFrom750(25))];
+    [leftImage setImage:[UIImage imageNamed:@"xinshouzx"]];
+    [self.contentView addSubview:leftImage];
+    
+    
+    UILabel * lab1=  [[UILabel alloc] initWithFrame:CGRectMake(leftImage.right, leftImage.top - kSizeFrom750(5),kSizeFrom750(280),kSizeFrom750(30))];
+    lab1.font = SYSTEMBOLDSIZE(32);
+    lab1.textColor=RGB(102,102,102);
+    NSAttributedString *attr = [CommonUtils diffierentFontWithString:@"新手专享 为您特供" rang:NSMakeRange(0, 4) font:SYSTEMBOLDSIZE(32) color:RGB_Red spacingBeforeValue:0 lineSpace:0];
+    lab1.attributedText=attr;
+    lab1.textAlignment=NSTextAlignmentCenter;
+    [self.contentView addSubview:lab1];
+    
+    rightimg=[[UIImageView alloc] initWithFrame:CGRectMake(screen_width - kSizeFrom750(160), leftImage.top, leftImage.width, leftImage.height)];
+    [rightimg setImage:[UIImage imageNamed:@"xinshouzx"]];
+    [self.contentView addSubview:rightimg];
+    
+    _incomeLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, lab1.bottom+kSizeFrom750(40),kSizeFrom750(200),kSizeFrom750(55))];
+    _incomeLabel.centerX = lab1.centerX;
+    NSString *percentage = @"13.20%";
+    _incomeLabel.textAlignment=NSTextAlignmentCenter;
+    _incomeLabel.font = SYSTEMBOLDSIZE(52);
+    [_incomeLabel setAttributedText:[CommonUtils diffierentFontWithString:@"13.20%" rang:NSMakeRange(percentage.length - 4, 4) font:SYSTEMSIZE(25) color:RGB_Red spacingBeforeValue:0 lineSpace:0]];
+    [self.contentView addSubview:_incomeLabel];
+    
+     self.minPointLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, _incomeLabel.bottom+kSizeFrom750(40),screen_width/2, kSizeFrom750(25))];
+     self.minPointLabel.font = SYSTEMBOLDSIZE(24);
+    self.minPointLabel.textColor=RGB(54,54,54);
+     self.minPointLabel.textAlignment=NSTextAlignmentCenter;
+    [self.minPointLabel setAttributedText:[CommonUtils diffierentFontWithString:@"起投金额 50.00元" rang:NSMakeRange(0, 4) font:SYSTEMSIZE(26) color:RGB_166 spacingBeforeValue:0 lineSpace:0]];
+    [self.contentView addSubview: self.minPointLabel];
+    
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(self.minPointLabel.right, self.minPointLabel.top, 1, self.minPointLabel.height)];
+    lineView.backgroundColor = RGB_166;
     [self.contentView addSubview:lineView];
     
-    UILabel * lab2= [[UILabel alloc] initWithFrame:CGRectMake(0, 108,(screen_width-30)/2-40, 12)];
-    lab2.font = CHINESE_SYSTEM(12);
-    lab2.textColor=RGB(184,184,184);
-     lab2.textAlignment=NSTextAlignmentRight;
-    lab2.text=@"最低投资金额";
-    [bgv addSubview:lab2];
-    
-     self.shengyueje= [[UILabel alloc] initWithFrame:CGRectMake((screen_width-30)/2-35, 108,50, 12)];
-     self.shengyueje.font = CHINESE_SYSTEM(12);
-    self.shengyueje.textColor=RGB(54,54,54);
-     self.shengyueje.textAlignment=NSTextAlignmentLeft;
-     self.shengyueje.text=@"50.00元";
-    [bgv addSubview: self.shengyueje];
-
-    
-    UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake((screen_width-30)/2+18, 105, 0.4f, 17)];
-    lineView1.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.05];
-    [bgv  addSubview:lineView1];
-    
-    //
-    UILabel * lab3= [[UILabel alloc] initWithFrame:CGRectMake((screen_width-30)/2+26, 108,100, 12)];
-    lab3.font = CHINESE_SYSTEM(12);
-    lab3.textColor=RGB(184,184,184);
-    lab3.text=@"投资时间";
-   lab3.textAlignment=NSTextAlignmentLeft;
-    [bgv addSubview:lab3];
-    
-    
-    self.xianmuqx= [[UILabel alloc] initWithFrame:CGRectMake((screen_width-30)/2+82, 108,50, 12)];
-    self.xianmuqx.font = CHINESE_SYSTEM(12);
-    self.xianmuqx.textColor=RGB(54,54,54);
-    self.xianmuqx.text=@"2个月";
-    self.xianmuqx.textAlignment=NSTextAlignmentLeft;
-    [bgv addSubview:self.xianmuqx];
+    //投资时间
+    self.timeLabel= [[UILabel alloc] initWithFrame:CGRectMake((screen_width-30)/2, self.minPointLabel.top,self.minPointLabel.width, self.minPointLabel.height)];
+    self.timeLabel.font = SYSTEMBOLDSIZE(24);
+    self.timeLabel.textColor=RGB(54,54,54);
+    self.timeLabel.textAlignment=NSTextAlignmentCenter;
+    [self.timeLabel setAttributedText:[CommonUtils diffierentFontWithString:@"投资时间 1个月" rang:NSMakeRange(0, 4) font:SYSTEMSIZE(26) color:RGB_166 spacingBeforeValue:0 lineSpace:0]];
+    [self.contentView addSubview:self.timeLabel];
     
     UIButton* btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn1.frame = CGRectMake((screen_width-30)/2-100,140,200, 32);
-    
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGColorRef colorref = RGB(255,46,18).CGColor;
-    
-    [btn1.layer setBorderColor:colorref];//边框颜色
-    
-    //[btn1 setImage:[UIImage imageNamed:@"gogo.png"] forState:UIControlStateNormal];
+    btn1.frame = CGRectMake(0,self.timeLabel.bottom+kSizeFrom750(35),kSizeFrom750(450), kSizeFrom750(72));
+    btn1.centerX = self.incomeLabel.centerX;
     [btn1 addTarget:self action:@selector(button_event:) forControlEvents:UIControlEventTouchUpInside];
     btn1.tag=1;
-    [btn1 setTitle:@"新手抢购" forState:UIControlStateNormal];//button title
-  //  [btn1 setFont:CHINESE_SYSTEM(13)];
-     [btn1.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:16]];
+    [btn1 setTitle:@"立即投资" forState:UIControlStateNormal];//button title
+     [btn1.titleLabel setFont:SYSTEMSIZE(28)];
     [btn1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];//title color
-    
-    btn1.backgroundColor=RGB(255, 46, 18);
-    [btn1.layer setCornerRadius:16]; //设置矩形四个圆角半径
-    [btn1.layer setBorderWidth:0.5]; //边框宽度
-    [bgv addSubview:btn1];
+    btn1.backgroundColor=RGB_Red;
+    [btn1.layer setCornerRadius:btn1.height/2]; //设置矩形四个圆角半径
 
-    
-    [self.contentView addSubview:bgv];
+    [self.contentView addSubview:btn1];
 
 }
 
@@ -145,21 +108,24 @@
     //_hotQueue = hotQueue;
      if([model.additional_status isEqual:@"0"])
          return ;
-     self.shouyi.text=[model.apr stringByAppendingString:@"%"];
-    self.shengyueje.text=[model.tender_amount_min stringByAppendingString:@"元"];
+     self.incomeLabel.text=[model.apr stringByAppendingString:@"%"];
+    NSString *minPoint =[@"起投金额 " stringByAppendingString:[model.tender_amount_min stringByAppendingString:@"元"]];
+    [self.minPointLabel setAttributedText:[CommonUtils diffierentFontWithString:minPoint rang:NSMakeRange(0, 4) font:SYSTEMSIZE(26) color:RGB_166 spacingBeforeValue:0 lineSpace:0]];
+    
+    [self.timeLabel setAttributedText:[CommonUtils diffierentFontWithString:[@"投资时间 " stringByAppendingString:model.period] rang:NSMakeRange(0, 4) font:SYSTEMSIZE(26) color:RGB_166 spacingBeforeValue:0 lineSpace:0]];
+    
     CGFloat f=[model.additional_apr floatValue];
-     self.xianmuqx.text=model.period;
     if(f==0)
     {
   
-    NSInteger index=[ _shouyi.text rangeOfString:@"."].location;
-    NSInteger len=[ _shouyi.text  length];
-    NSMutableAttributedString *textColor = [[NSMutableAttributedString alloc]initWithString: _shouyi.text];
+    NSInteger index=[ _incomeLabel.text rangeOfString:@"."].location;
+    NSInteger len=[ _incomeLabel.text  length];
+    NSMutableAttributedString *textColor = [[NSMutableAttributedString alloc]initWithString: _incomeLabel.text];
     [textColor addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica" size:36] range:NSMakeRange(0, index)];
     [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19) range:NSMakeRange(0, index)];
     [textColor addAttribute:NSFontAttributeName value:CHINESE_SYSTEM(14) range:NSMakeRange(index,len-index)];
     [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19)  range:NSMakeRange(index, len-index)];
-    [_shouyi setAttributedText:textColor];
+    [_incomeLabel setAttributedText:textColor];
     }
     else
     {
@@ -169,11 +135,11 @@
        temp=[temp stringByAppendingString:@"+"];
      temp=[temp stringByAppendingString:ff];
        temp=[temp stringByAppendingString:@"%"];
-          self.shouyi.text=temp;
-        NSInteger index=[ _shouyi.text rangeOfString:@"+"].location;
+          self.incomeLabel.text=temp;
+        NSInteger index=[ _incomeLabel.text rangeOfString:@"+"].location;
            NSInteger index1=[ff rangeOfString:@"."].location;
-        NSInteger len=[ _shouyi.text  length];
-        NSMutableAttributedString *textColor = [[NSMutableAttributedString alloc]initWithString: _shouyi.text];
+        NSInteger len=[ _incomeLabel.text  length];
+        NSMutableAttributedString *textColor = [[NSMutableAttributedString alloc]initWithString: _incomeLabel.text];
         [textColor addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica" size:36] range:NSMakeRange(0, index-4)];
         [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19) range:NSMakeRange(0, index-4)];
         [textColor addAttribute:NSFontAttributeName value:CHINESE_SYSTEM(14) range:NSMakeRange(index-4,5)];
@@ -183,7 +149,7 @@
         [textColor addAttribute:NSFontAttributeName value:CHINESE_SYSTEM(14) range:NSMakeRange(index+1+index1,len-(index+1+index1))];
         [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19)  range:NSMakeRange(index+1+index1,len-(index+1+index1))];
         
-        [_shouyi setAttributedText:textColor];
+        [_incomeLabel setAttributedText:textColor];
     }
    
 }

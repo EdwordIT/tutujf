@@ -8,13 +8,11 @@
 
 #import "MineViewController.h"
 #import "MJRefresh.h"
-#import "DMLoginViewController.h"
 //#import "NavView.h"
 //#import "PPNetworkHelper.h"
 #import "HttpSignCreate.h"
 #import "AppDelegate.h"
 #import "WinChageType.h"
-#import "DMLoginViewController.h"
 
 #import "TopScrollShow.h"
 #import "MineTopCell.h"
@@ -88,13 +86,9 @@ OpenShowAdvertDelegate>
     [self initData];
     isFirstExe=FALSE;;
     isTuanGuan=FALSE;
-    if(theAppDelegate.IsLogin)
-      [self initTableView];
-    else
     [self initTableView];
     keyingjiner=@"";
     zongjiner=@"";
-  
   
     [self setDataNav];
 
@@ -139,7 +133,7 @@ OpenShowAdvertDelegate>
     if(theAppDelegate.IsWebRegdit)//web 注册自动登录
     {
         theAppDelegate.IsWebRegdit=FALSE;
-        if(theAppDelegate.IsLogin)
+        if([CommonUtils isLogin])
         {
             if(!isFirstExe)
             {
@@ -148,13 +142,13 @@ OpenShowAdvertDelegate>
             }
             else if(userinfo!=nil)
             {
-                self.navView.leftName.text=theAppDelegate.user_name;
+                self.navView.leftName.text=[CommonUtils getUsername];
             }
         }
     }
     else
     {
-      if(theAppDelegate.IsLogin)
+      if([CommonUtils isLogin])
       {
         if(!isFirstExe)
         {
@@ -163,7 +157,7 @@ OpenShowAdvertDelegate>
         }
         else if(userinfo!=nil)
         {
-           self.navView.leftName.text=theAppDelegate.user_name;
+            self.navView.leftName.text=[CommonUtils getUsername];
          }
       }
     }
@@ -181,7 +175,7 @@ OpenShowAdvertDelegate>
         self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:theAppDelegate.xbindex];
         theAppDelegate.xbindex=-1;
     }
-    if(!theAppDelegate.IsLogin)
+    if(![CommonUtils isLogin])
     {
         self.navView.leftName.text=@"******";
         if(userinfo!=nil)
@@ -197,7 +191,7 @@ OpenShowAdvertDelegate>
     }
     else if(userinfo!=nil)
     {
-        self.navView.leftName.text=theAppDelegate.user_name;
+        self.navView.leftName.text=[CommonUtils getUsername];
     }
     [self viewWillLayoutSubviews];
     if([theAppDelegate.jumpLogin isEqual:@"1"])
@@ -282,7 +276,7 @@ OpenShowAdvertDelegate>
         // [self getDaiBang];
         dispatch_async(dispatch_get_main_queue(), ^{
             //update UI
-            if(theAppDelegate.IsLogin)
+            if([CommonUtils isLogin])
             {
                 if(!isFirstExe)
                 {
@@ -435,7 +429,7 @@ OpenShowAdvertDelegate>
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if(bt_user_url!=nil&&[bt_user_url count]>0)
         [cell setMenuData:array7 ayr2:array6];
-         else  if(!theAppDelegate.IsLogin)
+         else  if(![CommonUtils isLogin])
          [cell setMenuData:array7 ayr2:array6];
         return cell;
         }
@@ -469,28 +463,7 @@ OpenShowAdvertDelegate>
 
 
 -(void) OnLogin{
-    LoginViewController *next = InitObject(LoginViewController);
-    [self presentViewController:next animated:YES completion:nil];
-//    //创建动画
-//    CATransition * transition = [CATransition animation];
-//    //设置动画类型（这个是字符串，可以搜索一些更好看的类型）
-//    transition.type = @"moveOut";
-//    //动画出现类型
-//    transition.subtype = @"fromCenter";
-//    //动画时间
-//    transition.duration = 0.2;
-//    //移除当前window的layer层的动画
-//    [self.view.window.layer removeAllAnimations];
-//    //将定制好的动画添加到当前控制器window的layer层
-//    [self.view.window.layer addAnimation:transition forKey:nil];
-////    DMLoginViewController *next=[[DMLoginViewController alloc]init];
-//    LoginViewController *next = InitObject(LoginViewController);
-//
-//    //把当前控制器作为背景
-//    self.definesPresentationContext = YES;
-//    [self presentViewController:next animated:YES completion:nil];
-//    // [self presentViewController:searchVC animated:YES completion:NULL];
-//    //   [self.navigationController pushViewController:next animated:YES];
+    [self goLoginVC];
 }
 
 /**表格数据操作**/
@@ -504,7 +477,7 @@ OpenShowAdvertDelegate>
 /**xia**/
 -(void)didNavViewDAtIndex:(NSInteger)index;\
 {
-    if(theAppDelegate.IsLogin)
+    if([CommonUtils isLogin])
     {
         
     }
@@ -519,7 +492,7 @@ OpenShowAdvertDelegate>
 
 -(void)didMyTopAtIndex:(NSInteger)index
 {
-   if(theAppDelegate.IsLogin)
+   if([CommonUtils isLogin])
    {
      
    }
@@ -531,7 +504,7 @@ OpenShowAdvertDelegate>
 
 -(void)didMineMenuAtIndex:(NSInteger)index
 {
-    if(theAppDelegate.IsLogin)
+    if([CommonUtils isLogin])
     {
         NSString * url=[bt_user_url objectAtIndex:index-1];
         self.hidesBottomBarWhenPushed=YES;
@@ -551,7 +524,7 @@ OpenShowAdvertDelegate>
 
 -(void)didMyBottomAtIndex:(NSInteger)index
 {
-    if(theAppDelegate.IsLogin)
+    if([CommonUtils isLogin])
     {
         
     }
@@ -562,7 +535,7 @@ OpenShowAdvertDelegate>
 }
 -(void)didopMineAtIndex:(NSInteger)index
 {
-    if(theAppDelegate.IsLogin)
+    if([CommonUtils isLogin])
     {
         if(index==1)
         {
@@ -670,7 +643,7 @@ OpenShowAdvertDelegate>
 }
 -(void)didTopScrollAtIndex:(NSInteger)index
 {
-    if(theAppDelegate.IsLogin)
+    if([CommonUtils isLogin])
     {
         if(index==1)
         {
@@ -710,7 +683,7 @@ OpenShowAdvertDelegate>
 
 -(void)didopMIneMiddleAtIndex:(NSInteger)index
 {
-    if(theAppDelegate.IsLogin)
+    if([CommonUtils isLogin])
     {
         if(index==1)
         {
@@ -891,9 +864,9 @@ OpenShowAdvertDelegate>
 -(void) GetMyUserDatas{
   __weak typeof(self) weakSelf = self;
     NSString *urlStr = @"";
-    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[theAppDelegate.user_token] forKeys:@[@"user_token"] ];
+    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[[CommonUtils getToken]] forKeys:@[kToken] ];
     NSString *sign=[HttpSignCreate GetSignStr:dict_data];
-    urlStr = [NSString stringWithFormat:getMyUserData,oyApiUrl,theAppDelegate.user_token,sign];
+    urlStr = [NSString stringWithFormat:getMyUserData,oyApiUrl,[CommonUtils getToken],sign];
     NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
     if([ggHttpFounction getJsonIsOk:data])
     {
@@ -960,7 +933,9 @@ OpenShowAdvertDelegate>
             [weakSelf.navView.infolimg setHidden:TRUE];
          }
         //
+       
         theAppDelegate.user_name=userinfo.user_name;
+        [TTJFUserDefault setStr:userinfo.user_name key:kUsername];
         weakSelf.navView.leftName.text=userinfo.user_name;
         
         array1=[NSArray arrayWithObjects:[[bt_user_content objectAtIndex:0] objectForKey:@"link_url"],[[bt_user_content objectAtIndex:1] objectForKey:@"link_url"],[[bt_user_content objectAtIndex:2] objectForKey:@"link_url"],nil];
@@ -986,9 +961,9 @@ OpenShowAdvertDelegate>
 {
     __weak typeof(self) weakSelf = self;
     NSString *urlStr = @"";
-    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[theAppDelegate.user_token] forKeys:@[@"user_token"] ];
+    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[[CommonUtils getToken]] forKeys:@[kToken] ];
     NSString *sign=[HttpSignCreate GetSignStr:dict_data];
-    urlStr = [NSString stringWithFormat:getMyUserData,oyApiUrl,theAppDelegate.user_token,sign];
+    urlStr = [NSString stringWithFormat:getMyUserData,oyApiUrl,[CommonUtils getToken],sign];
     NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
     if([ggHttpFounction getJsonIsOk:data])
     {
@@ -1056,11 +1031,12 @@ OpenShowAdvertDelegate>
         }
         //
         theAppDelegate.user_name=userinfo.user_name;
+        [TTJFUserDefault setStr:userinfo.user_name key:kUsername];
         NSString * temp=[[dir objectForKey:@"expiration_date"] substringWithRange:NSMakeRange(0,10)];
         theAppDelegate.expirationdate=temp;
         NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
         [userDef setObject:temp forKey:@"LoginTime"];
-        [userDef setObject:theAppDelegate.user_name forKey:@"LoginAccount"];
+        [userDef setObject: [CommonUtils getUsername] forKey:@"LoginAccount"];
     //    [userDef setObject:password forKey:@"LoginPassword"];
         [userDef synchronize];
         

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh_CN</string>
 	<key>CFBundleDisplayName</key>
-	<string>土土金服测试</string>
+	<string>土土金服1.4.8</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -192,6 +192,10 @@
 	<string>需要您的同意才能读取媒体资料库</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>需要您的同意,才能访问提醒事项</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SourceHanSansCN-Regular.otf</string>
+	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

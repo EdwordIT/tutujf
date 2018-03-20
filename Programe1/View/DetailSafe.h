@@ -10,5 +10,5 @@
 #import "LoanBase.h"
 
 @interface DetailSafe : UIView
--(void) setModel:(LoanBase *) model;
+-(CGFloat) setModel:(LoanBase *) model;
 @end

@@ -77,7 +77,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
         _passwordTextField.placeholder = @"请输入登录密码";
         _passwordTextField.delegate = self;
         _passwordTextField.secureTextEntry = YES;
-        [_mobileTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        [_passwordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         CALayer *layer = [CALayer layer];
         layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), 1);
         layer.backgroundColor = [RGB(229, 230, 231) CGColor];
@@ -100,11 +100,14 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     if (!_loginBtn) {
         _loginBtn = InitObject(UIButton);
         _loginBtn.adjustsImageWhenHighlighted = NO;
-        [_loginBtn setBackgroundImage:IMAGEBYENAME(@"loginBtn") forState:UIControlStateNormal];
-
+//        [_loginBtn setBackgroundImage:IMAGEBYENAME(@"loginBtn") forState:UIControlStateNormal];
+        [_loginBtn setBackgroundColor:RGB(200,226,242)];
+        _loginBtn.userInteractionEnabled = NO;
         [_loginBtn setTitle:@"登录" forState:UIControlStateNormal];
-        [_loginBtn.titleLabel setFont:SYSTEMBOLDSIZE(16)];
+        [_loginBtn.titleLabel setFont:SYSTEMBOLDSIZE(32)];
         [_loginBtn addTarget:self action:@selector(loginButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        _loginBtn.layer.cornerRadius = kSizeFrom750(88)/2;
+        _loginBtn.layer.masksToBounds = YES;
 
         
     }
@@ -120,7 +123,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
         _registerBtn.layer.borderWidth = 1;
         _registerBtn.layer.cornerRadius = kSizeFrom750(88)/2;
         [_registerBtn setTitleColor:RGB(255, 46, 19) forState:UIControlStateNormal];
-        [_registerBtn.titleLabel setFont:SYSTEMSIZE(14)];
+        [_registerBtn.titleLabel setFont:SYSTEMSIZE(28)];
         [_registerBtn setImageEdgeInsets:UIEdgeInsetsMake(0, -kSizeFrom750(20), 0, 0)];
         [_registerBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -kSizeFrom750(20))];
         [_registerBtn addTarget:self action:@selector(registerBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -133,7 +136,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
         _forgetPdwBtn.adjustsImageWhenHighlighted =  NO;
         [_forgetPdwBtn setTitle:@"忘记密码？" forState:UIControlStateNormal];
         [_forgetPdwBtn setTitleColor:RGB_166 forState:UIControlStateNormal];
-        [_forgetPdwBtn.titleLabel setFont:SYSTEMSIZE(14)];
+        [_forgetPdwBtn.titleLabel setFont:SYSTEMSIZE(28)];
         [_forgetPdwBtn addTarget:self action:@selector(forgotPwdBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _forgetPdwBtn;
@@ -203,14 +206,16 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 #pragma mark --textfieldDelegate
 -(void)textFieldDidChange :(UITextField *)theTextField{
     NSLog( @"text changed: %@", theTextField.text);
-    if(_mobileTextField.text.length>0&&_mobileTextField.text.length >0)
+    if(_mobileTextField.text.length>3&&_passwordTextField.text.length >5)
     {
         [_loginBtn setBackgroundImage:IMAGEBYENAME(@"loginBtn") forState:UIControlStateNormal];
         [_loginBtn setBackgroundColor:[UIColor clearColor]];
+        _loginBtn.userInteractionEnabled = YES;
 
     }
     else
     {
+        _loginBtn.userInteractionEnabled = NO;
         [_loginBtn setBackgroundColor:RGB(200,226,242)];
         [_loginBtn setBackgroundImage:IMAGEBYENAME(@"") forState:UIControlStateNormal];
 
@@ -224,39 +229,20 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 //登录点击事件
 -(void)loginButtonClick:(UIButton *)button
 {
-    if (_mobileTextField.text.length>1 && _passwordTextField.text.length >1 ) {
+    
+    if (![CommonUtils checkPassword:_passwordTextField.text]) {
+        [SVProgressHUD showInfoWithStatus:@"密码格式不正确"];
+        [_passwordTextField shake];
+        return;
+    }
+    //登录老用户的用户名可能是纯数字或者纯字母
+    if (_mobileTextField.text.length>2)
+    {
         // [MBProgressHUD showAutoMessage:@"正在登录..." ToView:nil];
         [SVProgressHUD showWithStatus:@"正在登录..."];
         [self getLogin];
         return ;
     }
-    /*
-     if (_passwordTextFiled.text.length < 6|| _passwordTextFiled.text.length > 16) {
-     [_passwordTextFiled shake];
-     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请输入正确的密码格式" message:nil preferredStyle:UIAlertControllerStyleAlert];
-     UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-     [alert addAction:action];
-     [self presentViewController:alert animated:YES completion:nil];
-     }
-     */
-    if (_mobileTextField.text.length <2) {
-        [_mobileTextField shake];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请输入正确的账号" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-        [alert addAction:action];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    if (_passwordTextField.text.length <2) {
-        [_passwordTextField shake];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请输入正确的密码" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-        [alert addAction:action];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    
-    
-    
-    
     [self.navigationController popViewControllerAnimated:YES];
     
     
@@ -268,7 +254,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     NSString *terminal_id=curDev.identifierForVendor.UUIDString;//curDev.identifierForVendor.UUIDString;
     NSString *terminal_name= [curDev.name stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSString *terminal_model=curDev.model;
-    NSString * terminal_token=[CommonUtils getToken];
+    NSString * terminal_token=theAppDelegate.device_token;
     NSString *urlStr = @"";
     NSString * user_name=[_mobileTextField text];
     NSString *  password=[_passwordTextField text];
@@ -297,7 +283,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     NSString *sign=[HttpSignCreate GetSignStr:dict_data paixu:paixu1];
     terminal_name= [terminal_name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *  password1=[HttpSignCreate encodeString:[_passwordTextField text]];
-    urlStr = [NSString stringWithFormat:login,oyApiUrl,user_name,password1,terminal_type,terminal_id,terminal_name,terminal_model,terminal_token,sign];
+    urlStr = [NSString stringWithFormat:loginUrl,oyApiUrl,user_name,password1,terminal_type,terminal_id,terminal_name,terminal_model,terminal_token,sign];
     
     NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
     if([ggHttpFounction getJsonIsOk:data])
@@ -306,7 +292,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
         if(dir!=nil)
         {
 
-            theAppDelegate.user_token=  [dir objectForKey:@"user_token"];
+            theAppDelegate.user_token=  [dir objectForKey:kToken];
             theAppDelegate.user_name= user_name;
             NSString * temp=[[dir objectForKey:@"expiration_date"] substringWithRange:NSMakeRange(0,10)];
             theAppDelegate.expirationdate=temp;
@@ -318,8 +304,8 @@ Strong UIButton *pwdBtn;//切换是否明文显示
             [userDef setObject:@"1" forKey:@"IsSet"];
             [userDef synchronize];
             theAppDelegate.IsLogin=TRUE;
-            [TTJFUserDefault setStr:[dir objectForKey:@"user_token"] key:kToken];
-            [TTJFUserDefault setStr:user_name key:kUsername];//存储登录成功token值
+            [TTJFUserDefault setStr:[dir objectForKey:kToken] key:kToken];
+            [TTJFUserDefault setStr:user_name key:kUsername];//存储登录成功token值，username
             [self getWebLogin];
         }
         
@@ -339,16 +325,16 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 //同时登录网页版
 -(void) getWebLogin{
     //Api/Users/GetUsetInfo?user_token={user_token}&sign={sign}
-    NSString *user_name=[CommonUtils getToken];
-    NSString *user_token= [TTJFUserDefault strForKey:kUsername];
+    NSString *user_name=[CommonUtils getUsername];
+    NSString *user_token= [TTJFUserDefault strForKey:kToken];
     NSString *urlStr = @"";
     user_name=[HttpSignCreate encodeString:user_name];
-    NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_name,user_token] forKeys:@[@"user_name",@"user_token"]];
+    NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_name,user_token] forKeys:@[kUsername,kToken]];
     NSMutableArray * paixu1=[[NSMutableArray alloc] init];
-    [paixu1 addObject:@"user_name"];
-    [paixu1 addObject:@"user_token"];
+    [paixu1 addObject:kUsername];
+    [paixu1 addObject:kToken];
     NSString *sign=[HttpSignCreate GetSignStr:dict_data paixu:paixu1];
-    urlStr = [NSString stringWithFormat:login2,oyUrlAddress,user_name,user_token,sign];
+    urlStr = [NSString stringWithFormat:webLoginUrl,oyUrlAddress,user_name,user_token,sign];
     [self loadPage1:urlStr];
     
     
@@ -422,7 +408,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 
 -(void)webViewDidStartLoad:(UIWebView *)webView
 {
-    BBUserDefault.isNoFirstLaunch=YES;
+//    BBUserDefault.isNoFirstLaunch=YES;
 }
 
 /**

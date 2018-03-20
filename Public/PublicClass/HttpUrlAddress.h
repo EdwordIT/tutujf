@@ -26,9 +26,9 @@
 //获取项目列表的数据接口 Get
 #define loanList @"%@/api/Loan/LoanList?page=%ld&sign=%@"
 
-#define login @"%@/api/Users/Login?user_name=%@&password=%@&terminal_type=%@&terminal_id=%@&terminal_name=%@&terminal_model=%@&terminal_token=%@&sign=%@"
+#define loginUrl @"%@/api/Users/Login?user_name=%@&password=%@&terminal_type=%@&terminal_id=%@&terminal_name=%@&terminal_model=%@&terminal_token=%@&sign=%@"
 //会员在项目中登录之后，需要在web中调用一次登录接口，使web上的会员同时处于登录状态
-#define login2 @"%@/wap/system/login2?user_name=%@&user_token=%@&sign=%@"
+#define webLoginUrl @"%@/wap/system/login2?user_name=%@&user_token=%@&sign=%@"
 
 #define getMyUserData @"%@/api/Users/getMyUserData?user_token=%@&sign=%@"
 
@@ -66,7 +66,7 @@
 
 #define tenderNow  @"%@/api/Loan/TenderNow?loan_id=%@&amount=%@&loan_password=%@&user_token=%@&sign=%@"
 
-#define webLoginUrl  @"%@/User/Token/Login?user_token=%@&expiration_date=%@&sign=%@"
+//#define webLoginUrl  @"%@/User/Token/Login?user_token=%@&expiration_date=%@&sign=%@"
 
 
 

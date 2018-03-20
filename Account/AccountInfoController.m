@@ -35,13 +35,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithCustomView:self.leftBtn];
-    [self.navigationItem setLeftBarButtonItem:leftBarButton];
     isFirstExe=FALSE;
     ishaveOpen=@"0";
-    if(theAppDelegate.IsLogin)
+    if([CommonUtils isLogin])
     {
-        self.title=@"账户详情";
+        self.titleString = @"账户详情";
         [self GetMyUserDatas];
         isFirstExe=TRUE;
         [self initTableView];
@@ -51,21 +49,7 @@
         [self initTableView];
     // Do any additional setup after loading the view.
 }
-- (UIButton *)leftBtn
-{
-    UIButton *  _leftBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
-    [_leftBtn setImage:[UIImage imageNamed:@"nav_back"] forState:UIControlStateNormal];
-    [_leftBtn setImage:[UIImage imageNamed:@"nav_back"] forState:UIControlStateHighlighted];
-    [_leftBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    // _leftBtn.imageView.frame=CGRectMake(10, 0, 10.5, 21);
-    return _leftBtn;
-}
-//响应事件
--(void)leftBtnClick:(UIButton *)sender
-{
-    
-    [self.navigationController popViewControllerAnimated:YES];
-}
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
    
@@ -77,7 +61,7 @@
     {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    if(theAppDelegate.IsLogin==FALSE&&[ishaveOpen isEqual:@"0"])
+    if((![CommonUtils isLogin])&&[ishaveOpen isEqual:@"0"])
     {
         realname.card_id=@"";
         realname.realname=@"";
@@ -88,7 +72,7 @@
         ishaveOpen=@"1";
         [self OnLogin];
     }
-    else if(theAppDelegate.IsLogin==FALSE&&[ishaveOpen isEqual:@"1"])
+    else if((![CommonUtils isLogin])&&[ishaveOpen isEqual:@"1"])
     {
          [self.navigationController popViewControllerAnimated:YES];
     }
@@ -102,7 +86,7 @@
 
 //初始化主界面
 -(void)initTableView{
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.showsVerticalScrollIndicator = NO;
@@ -143,7 +127,7 @@
         // [self getDaiBang];
         dispatch_async(dispatch_get_main_queue(), ^{
             //update UI
-            if(theAppDelegate.IsLogin)
+            if([CommonUtils isLogin])
             {
                 if(!isFirstExe)
                 {
@@ -416,7 +400,7 @@
 -(void) GetMyUserDatas{
     __weak typeof(self) weakSelf = self;
     NSString *urlStr = @"";
-    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[theAppDelegate.user_token] forKeys:@[@"user_token"] ];
+    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[[CommonUtils getToken]] forKeys:@[kToken] ];
     NSString *sign=[HttpSignCreate GetSignStr:dict_data];
     urlStr = [NSString stringWithFormat:getMyAccountData,oyApiUrl,theAppDelegate.user_token,sign];
     NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
@@ -500,7 +484,7 @@
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitOfflineWebApplicationCacheEnabled"];//自己添加的，原文没有提到。
     [[NSUserDefaults standardUserDefaults] synchronize];
  
-    BBUserDefault.isNoFirstLaunch=YES;
+//    BBUserDefault.isNoFirstLaunch=YES;
  
             //[MBProgressHUD hideHUDForView:self.view animated:YES];
     
@@ -508,6 +492,7 @@
             [SVProgressHUD showSuccessWithStatus:@"退出登录成功"];
             theAppDelegate.IsLogin=FALSE;
             [TTJFUserDefault removeStrForKey:kToken];
+            [TTJFUserDefault removeArrForKey:kUsername];
             theAppDelegate.user_token=@"";
             theAppDelegate.user_name=@"";
             [self.navigationController popViewControllerAnimated:YES];
@@ -541,24 +526,7 @@
 
 
 -(void) OnLogin{
-    //创建动画
-    CATransition * transition = [CATransition animation];
-    //设置动画类型（这个是字符串，可以搜索一些更好看的类型）
-    transition.type = @"moveOut";
-    //动画出现类型
-    transition.subtype = @"fromCenter";
-    //动画时间
-    transition.duration = 0.2;
-    //移除当前window的layer层的动画
-    [self.view.window.layer removeAllAnimations];
-    //将定制好的动画添加到当前控制器window的layer层
-    [self.view.window.layer addAnimation:transition forKey:nil];
-    DMLoginViewController *next=[[DMLoginViewController alloc]init];
-    //把当前控制器作为背景
-    self.definesPresentationContext = YES;
-    [self presentViewController:next animated:YES completion:nil];
-    // [self presentViewController:searchVC animated:YES completion:NULL];
-    //   [self.navigationController pushViewController:next animated:YES];
+    [self goLoginVC];
 }
 /**
  *  清理缓存

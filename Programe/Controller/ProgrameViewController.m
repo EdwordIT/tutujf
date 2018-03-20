@@ -14,7 +14,6 @@
 #import "ProgrameModel.h"
 #import "ProgrameNewModel.h"
 #import "ProgrameDetailController.h"
-#import "DMLoginViewController.h"
 
 @interface ProgrameViewController ()<UITableViewDataSource, UITableViewDelegate,UIGestureRecognizerDelegate>
 {

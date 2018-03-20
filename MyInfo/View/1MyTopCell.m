@@ -44,7 +44,7 @@
         selectbg2.tag=3;
         [selectbg2 addTarget:self action:@selector(OnTapBack:) forControlEvents:UIControlEventTouchUpInside];//
         [self addSubview:selectbg2];
-        if(!theAppDelegate.IsLogin)
+        if(![CommonUtils isLogin])
         {
             UIImageView *imagev3 = [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/2-27, 52, 54,54)];
             [imagev3 setImage:[UIImage imageNamed:@"ttlogintp"]];

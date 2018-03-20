@@ -150,7 +150,7 @@
     //Api/Users/GetUsetInfo?user_token={user_token}&sign={sign}
     NSString *urlStr = @"";
     NSString *user_token=theAppDelegate.user_token;
-    NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_token] forKeys:@[@"user_token"]];
+    NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_token] forKeys:@[kToken]];
     
     NSString *sign=[HttpSignCreate GetSignStr:dict_data];
     urlStr = [NSString stringWithFormat:@"%@/Api/Users/GetUsetInfo?user_token=%@&sign=%@",oyApiUrl,user_token,sign];
@@ -166,7 +166,7 @@
     NSString *urlStr = @"";
     NSString *user_token=theAppDelegate.user_token;
     //   NSDictionary *dict_data = @{@"user_name":user_name,@"password":password};
-    NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_token] forKeys:@[@"user_token"] ];
+    NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_token] forKeys:@[kToken] ];
     NSString *sign=[HttpSignCreate GetSignStr:dict_data];
     urlStr = [NSString stringWithFormat:@"%@/Api/BorrowRecover/GetUserHotCount?user_token=%@&sign=%@",oyApiUrl,user_token,sign];
     NSLog(@"urlStr:%@",urlStr);

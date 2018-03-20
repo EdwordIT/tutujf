@@ -14,10 +14,7 @@
 
 @end
 
-@interface DetailProduct : UIView<UIWebViewDelegate>
-{
-    UIWebView *iWebView;
-}
+@interface DetailProduct : UIView
 
 @property(nonatomic, strong) NSString *currentURL;
 

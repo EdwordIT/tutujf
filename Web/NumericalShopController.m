@@ -8,11 +8,9 @@
 
 #import "NumericalShopController.h"
 #import "AppDelegate.h"
-//#import "DMLoginViewController.h"
 //#import "SVProgressHUD.h"
 #import "MBProgressHUD+NJ.h"
 #import "UrlJumpHelp.h"
-#import "DMLoginViewController.h"
 
 @interface NumericalShopController ()
 {

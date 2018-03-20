@@ -22,8 +22,18 @@
 #define lineBg RGB(233, 233, 233)
 #define lineBg1 RGB(237, 237, 237)
 #define separaterColor RGB(243,243,243)
-//默认显示灰色
+/**亮红色*/
+#define RGB_Red RGB(236,77,72)
+/**淡蓝色*/
+#define RGB_LightBlue RGB(41,181,251)
+/**深蓝色*/
+#define RGB_DarkBlue RGB(23,160,229)
+/**主标题显示黑色*/
+#define RGB_51 RGB(51,51,51)
+/**默认显示灰色*/
 #define RGB_166 RGB(166, 166, 166)
+//副标题灰色
+#define RGB_153 RGB(153, 153, 153)
 #define UIColorFromRGBValue(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 //**  简单的property 定义
 #define Strong          @property(nonatomic, strong)
@@ -44,10 +54,13 @@
 #define Title_Font 18
 //中文字体
 #define CHINESE_FONT_NAME  @"STHeitiK-Light"
-#define CHINESE_SYSTEM(x) [UIFont systemFontOfSize:x]
+
+//#define CHINESE_SYSTEM(x) [UIFont systemFontOfSize:x]
+#define CHINESE_SYSTEM(x) [UIFont fontWithName:@"Source Han Sans CN" size:x]
+
 #define CHINESE_SYSTEM_BOLD(x) [UIFont boldSystemFontOfSize:x]
-#define SYSTEMSIZE(x) [UIFont systemFontOfSize:x]
-#define SYSTEMBOLDSIZE(x)  [UIFont boldSystemFontOfSize:x]
+#define SYSTEMSIZE(x) [UIFont fontWithName:@"Source Han Sans CN" size:kSizeFrom750(x)]
+#define SYSTEMBOLDSIZE(x)  [UIFont boldSystemFontOfSize:kSizeFrom750(x)]
 //Helvetica-Bold
 #define NUMBER_FONT(x)   [UIFont fontWithName:@"Helvetica" size:x]
 #define NUMBER_FONT_BOLD(x)   [UIFont fontWithName:@"Helvetica-Bold" size:x]
@@ -69,6 +82,8 @@
 static CGFloat const space                   = 10;
 // 系统控件默认高度
 #define kStatusBarHeight        20
+//底部标签栏高度
+#define kTabbarHeight 49
 //默认底部按钮高度
 #define kBottomButtonHeight kSizeFrom750(100)
 #define navBarHeight   self.navigationController.navigationBar.frame.size.height
@@ -121,6 +136,8 @@ static CGFloat const space                   = 10;
 //7.系统版本号
 #define IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]
 //8.一些常用自定义方法
+
+#define RECT( a, b, c, d) CGRectMake(a, b, c, d)
 /**
  在主线程刷新UI
  */
