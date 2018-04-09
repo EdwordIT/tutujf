@@ -7,43 +7,45 @@
 //
 
 #import "MineMenuCell.h"
-#import "UIImageView+WebCache.h"
-
+#import "MyAccountModel.h"
 @implementation MineMenuCell
 {
     UIView * ubg;
+    CGFloat cellHeight ;
 }
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-     
-      //  [ubg.layer setCornerRadius:20];
-        
-  
-        
+        cellHeight = kSizeFrom750(125);
+        self.contentView.backgroundColor = RGB_246;
     }
     
     return self;
 }
 
--(UIButton *) getBtnView:(CGFloat)y  index:(NSInteger)index title:(NSString *)title imgurl:(NSString *)imgurl count:(NSInteger)count
+-(UIButton *) getBtnView:(CGFloat)y  index:(NSInteger)index model:(UserContentModel *)model count:(NSInteger)count
 {
-    UIButton *  btn1=[[UIButton alloc] initWithFrame:CGRectMake(0,y, screen_width-30, 54)];
-   // [btn1 setImage:[UIImage imageNamed:@"rmbg12"] forState:UIControlStateNormal];
+    
+    
+    UIButton *  btn1=[[UIButton alloc] initWithFrame:CGRectMake(0,y, screen_width-kOriginLeft*2, cellHeight)];
     [btn1 setImage:[UIImage imageNamed:@"rmbg13"] forState:UIControlStateHighlighted];
     [btn1 setBackgroundColor:[UIColor whiteColor]];
   
-    UIImageView *imagev1 = [[UIImageView alloc] initWithFrame:CGRectMake(12, 16, 24.2,22)];
-    [imagev1 sd_setImageWithURL:[NSURL URLWithString:imgurl]];
+    //图片
+    UIImageView *imagev1 = [[UIImageView alloc] initWithFrame:CGRectMake(kSizeFrom750(25), kSizeFrom750(30), kSizeFrom750(50),kSizeFrom750(44))];
+    imagev1.centerY = cellHeight/2;
+    [imagev1 setImageWithString:model.logo_url];
     [btn1 addSubview:imagev1];
-    UILabel * lab1 = [[UILabel alloc] initWithFrame:CGRectMake(45, 20, screen_width/2,15)];
-    lab1.font = CHINESE_SYSTEM(15);
-    lab1.textColor =  RGB(53,53,53);
-    lab1.text=title;
+    
+    UILabel * lab1 = [[UILabel alloc] initWithFrame:CGRectMake(kSizeFrom750(90), 0, screen_width/2,kSizeFrom750(35))];
+    lab1.centerY = imagev1.centerY;
+    lab1.font = SYSTEMSIZE(30);
+    lab1.textColor =  RGB_51;
+    lab1.text=model.title;
     [btn1 addSubview:lab1];
         UIBezierPath *fieldPath;
-      if(index==1)
+      if(index==0)
       {
       fieldPath = [UIBezierPath bezierPathWithRoundedRect:btn1.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(8 , 8)];
           CAShapeLayer *fieldLayer = [[CAShapeLayer alloc] init];
@@ -51,7 +53,7 @@
           fieldLayer.path = fieldPath.CGPath;
           btn1.layer.mask = fieldLayer;
       }
-      if(index==count)
+      if(index==count-1)
       {
           fieldPath = [UIBezierPath bezierPathWithRoundedRect:btn1.bounds byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight cornerRadii:CGSizeMake(8 , 8)];
           CAShapeLayer *fieldLayer = [[CAShapeLayer alloc] init];
@@ -62,12 +64,13 @@
   
 
    
-    UIImageView * img0=[[UIImageView alloc] initWithFrame:CGRectMake(screen_width-47, 20, 7, 14)];
-    [img0 setImage:[UIImage imageNamed:@"o.png"]];
-    [btn1 addSubview:img0];
+    UIImageView * rightArrow=[[UIImageView alloc] initWithFrame:CGRectMake(btn1.width - kSizeFrom750(45), 0, kSizeFrom750(14), kSizeFrom750(28))];
+    rightArrow.centerY = lab1.centerY;
+    [rightArrow setImage:[UIImage imageNamed:@"rightArrow.png"]];
+    [btn1 addSubview:rightArrow];
     if(index!=count)
     {
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(10, 53.5,screen_width-50 , 0.5)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(kSizeFrom750(20), cellHeight - kLineHeight,btn1.width - kSizeFrom750(20)*2 , kLineHeight)];
     lineView.backgroundColor =lineBg;
     [btn1 addSubview:lineView];
     }
@@ -81,10 +84,10 @@
 {
     [self.delegate didMineMenuAtIndex:button.tag];
 }
-//didpMineMenuAtIndex
--(void) setMenuData:(NSArray *) ary1 ayr2:(NSArray *)ayr2
+
+-(void)setMenuData:(NSArray *)array
 {
-    NSInteger count=[ary1 count];
+    NSInteger count=[array count];
 
     if(ubg==nil)
     {
@@ -92,30 +95,33 @@
     ubg.backgroundColor=RGB(255,255,255);
     ubg.userInteractionEnabled=YES;
     ubg.backgroundColor=[UIColor clearColor];
-    [self addSubview:ubg];
+    [self.contentView addSubview:ubg];
     }
-   ubg.frame=CGRectMake(15, 0, screen_width-30, count*54);
-    for (UIView *subviews in [ubg subviews]) {
-        if ([subviews isKindOfClass:[UIButton class]]) {
-            [subviews removeFromSuperview];
-        }
-    }
+   ubg.frame=CGRectMake(kOriginLeft, 0, screen_width-kOriginLeft*2, count*cellHeight);
+    [ubg removeAllSubViews];
     for(int k=0;k<count;k++)
     {
-      CGFloat hh=(k*54);
-      UIButton *  btn=[self getBtnView:hh index:k+1 title:ary1[k] imgurl:ayr2[k] count:count];
-        btn.tag=k+1;
+        UserContentModel *model = array[k];
+      CGFloat hh=(k*cellHeight);
+        UIButton *  btn=[self getBtnView:hh index:k model:model count:count];
+        btn.tag=k;
       [ubg addSubview:btn];
         
     }
-    
+    //默认显示
+    if (array==nil) {
+      NSArray * iconsArray= [NSArray arrayWithObjects: @"http://www.tutujf.com/wapassets/trust/images/news/mylogo01.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo02.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo04.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo03.png",nil];
+       NSArray *titleArray= [NSArray arrayWithObjects: @"我的邀请",@"我的借款",@"托管账户",@"银行卡管理",nil];
+        NSMutableArray *defArr = InitObject(NSMutableArray);
+        for (int i=0; i<iconsArray.count; i++) {
+            UserContentModel *defaultModel = InitObject(UserContentModel);
+            defaultModel.title = titleArray[i];
+            defaultModel.logo_url = iconsArray[i];
+            [defArr addObject:defaultModel];
+        }
 
-
-}
-
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
+        [self setMenuData:defArr];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

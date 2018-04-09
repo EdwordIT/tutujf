@@ -8,7 +8,6 @@
 
 #import "NoNetController.h"
 #import "AppDelegate.h"
-#import "WinChageType.h"
 
 
 @interface NoNetController ()
@@ -39,11 +38,7 @@
 {
    [myTimer invalidate];
     myTimer=nil;
-    WinChageType * wtype=[[WinChageType alloc] init];
-    wtype.lgointype=@"1"; //
-    wtype.logindeep=@"0"; //初始化
-    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:wtype];
-    
+    //更换web登录
 }
 
 

@@ -17,8 +17,7 @@
 
  @property (nonatomic, strong) SelectedPageBannerAtIndex selectedPageBanne;
  @property (nonatomic, strong) NSMutableArray *dataModel;
- @property (nonatomic, strong)  SDCycleScrollView *cycleScrollView2 ;
- @property (nonatomic, strong)  UIScrollView *demoContainerView;
+ @property (nonatomic, strong)  SDCycleScrollView *cycleScroll ;
 
 //@property (nonatomic, strong) UIView *bgView;
 
@@ -44,11 +43,6 @@
 
  -(void) CategoryUI
 {
-     self.demoContainerView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,0, screen_width, 190)];
-    self.demoContainerView.contentSize = CGSizeMake(screen_width, 190);
-    self.demoContainerView.frame=CGRectMake(0, 0, screen_width, 190);
-    [self addSubview:self.demoContainerView];
-    self.demoContainerView.backgroundColor=[UIColor clearColor];
     if(self.dataModel==nil||[self.dataModel count]<2)
         return;
     TopScrollMode * model=[self.dataModel objectAtIndex:0];
@@ -57,64 +51,70 @@
     NSArray *imagesURLStrings = @[model.image_url,model1.image_url];
     
     
-    self.cycleScrollView2 = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, screen_width, 190) delegate:self placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    self.cycleScroll = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, screen_width, self.height) delegate:self placeholderImage:[UIImage imageNamed:@"placeholder"]];
     
     
-    self.cycleScrollView2.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
-    self.cycleScrollView2.titleLabelBackgroundColor=[UIColor clearColor];
-    self.cycleScrollView2.pageDotColor=RGBA(255,255,255,0.2);
+    self.cycleScroll.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
+    self.cycleScroll.titleLabelBackgroundColor=[UIColor clearColor];
+    self.cycleScroll.pageDotColor=RGBA(255,255,255,0.2);
     
-    self.cycleScrollView2.autoScrollTimeInterval=20;
-    [self.cycleScrollView2 setAutoScroll:FALSE];
-    self.cycleScrollView2.backgroundColor=[UIColor clearColor];
-    //  cycleScrollView2.titlesGroup = titles;
-    self.cycleScrollView2.delegate=self;
-    self.cycleScrollView2.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
-    [self.demoContainerView addSubview:self.cycleScrollView2];
+    self.cycleScroll.autoScrollTimeInterval=20;
+    [self.cycleScroll setAutoScroll:FALSE];
+    self.cycleScroll.backgroundColor=[UIColor clearColor];
+    self.cycleScroll.pageControlBottomOffset = kSizeFrom750(40);
+    self.cycleScroll.delegate=self;
+    self.cycleScroll.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
+    [self addSubview:self.cycleScroll];
      __weak typeof(self) weakSelf = self;
     //         --- 模拟加载延迟
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        weakSelf.cycleScrollView2.imageURLStringsGroup = imagesURLStrings;
+        weakSelf.cycleScroll.imageURLStringsGroup = imagesURLStrings;
     });//http://www.tutujf.com/wapassets/trust/images/news/user01.png
  
     if(self.title1==nil)
     {
-        self.title1=[[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-100, 70, 200, 13)];
+        self.title1=[[UILabel alloc] initWithFrame:CGRectMake(0, kSizeFrom750(160), self.cycleScroll.width, kSizeFrom750(40))];
         self.title1.textColor=RGB(255,255,255);
-             self.title1.font=CHINESE_SYSTEM(13);
+             self.title1.font=SYSTEMSIZE(28);
         self.title1.textAlignment=NSTextAlignmentCenter;
         self.title1.text=model.accountname;
-        [self.cycleScrollView2 addSubview:self.title1];
+        [self.cycleScroll addSubview:self.title1];
     }
     if(self.jiner1==nil)
     {
-        self.jiner1=[[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-100, 93, 200, 24)];
+        self.jiner1=[[UILabel alloc] initWithFrame:CGRectMake(0, self.title1.bottom+kSizeFrom750(10), self.title1.width, kSizeFrom750(60))];
         self.jiner1.textColor=RGB(255,255,255);
         self.jiner1.textAlignment=NSTextAlignmentCenter;
-        self.jiner1.font=NUMBER_FONT_BOLD(24);
+        self.jiner1.font=NUMBER_FONT_BOLD(50);
         self.jiner1.text=model.accountnum;
-         [self.cycleScrollView2 addSubview:self.jiner1];
+         [self.cycleScroll addSubview:self.jiner1];
     }
     if(self.title2==nil)
     {
-        self.title2=[[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-80, 70, 160, 13)];
+        self.title2=[[UILabel alloc] initWithFrame:CGRectMake(0, kSizeFrom750(160), self.cycleScroll.width, kSizeFrom750(40))];
         self.title2.textColor=RGB(255,255,255);
-        self.title2.font=CHINESE_SYSTEM(13);
+        self.title2.font=SYSTEMSIZE(28);
         self.title2.textAlignment=NSTextAlignmentCenter;
         self.title2.text=model1.accountname;
-        [self.cycleScrollView2 addSubview:self.title2];
+        [self.cycleScroll addSubview:self.title2];
         [self.title2 setHidden:TRUE];
     }
     if(self.jiner2==nil)
     {
-        self.jiner2=[[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-80, 93, 160, 24)];
+        self.jiner2=[[UILabel alloc] initWithFrame:CGRectMake(0, self.title2.bottom+kSizeFrom750(10), self.title1.width, kSizeFrom750(60))];
         self.jiner2.textColor=RGB(255,255,255);
         self.jiner2.textAlignment=NSTextAlignmentCenter;
-        self.jiner2.font=NUMBER_FONT_BOLD(24);
+        self.jiner2.font=NUMBER_FONT_BOLD(50);
         self.jiner2.text=model1.accountnum;
-        [self.cycleScrollView2 addSubview:self.jiner2];
+        [self.cycleScroll addSubview:self.jiner2];
          [self.jiner2 setHidden:TRUE];
     }
+    
+    self.title1.text=model.accountname;
+    self.title2.text=model1.accountname;
+    self.jiner1.text=model.accountnum;
+    self.jiner2.text=model1.accountnum;
+
     
 }
 
@@ -149,7 +149,6 @@
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
 {
   
-  //  [self.delegate didSelectedBannerAtIndex:index];
     if(self.dataModel!=nil)
     {
         TopScrollMode * model=[self.dataModel objectAtIndex:index];

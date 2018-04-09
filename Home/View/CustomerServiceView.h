@@ -7,7 +7,10 @@
 //客户服务页面
 
 #import <UIKit/UIKit.h>
+#import "SystemConfigModel.h"
 typedef void (^CustomerServiceBlock)(NSInteger tag);
 @interface CustomerServiceView : UIView
 Copy CustomerServiceBlock serviceBlock;
+
+-(void)reloadInfoWithModel:(SystemConfigModel *)model;
 @end

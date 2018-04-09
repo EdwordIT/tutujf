@@ -6,9 +6,9 @@
 //  Copyright © 2017年 占碧光. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "BaseModel.h"
 
-@interface UserInfo : NSObject
+@interface UserInfo : BaseModel
 
 @property (nonatomic, copy) NSString   *user_name;
 @property (nonatomic, copy) NSString   *is_trust_reg;

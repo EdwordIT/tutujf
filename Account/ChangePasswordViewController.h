@@ -1,0 +1,13 @@
+//
+//  ChangePasswordViewController.h
+//  TTJF
+//
+//  Created by 土土金服ios-01 on 2018/3/28.
+//  Copyright © 2018年 TTJF. All rights reserved.
+//
+
+#import "BaseViewController.h"
+
+@interface ChangePasswordViewController : BaseViewController
+
+@end

@@ -115,7 +115,7 @@
         
         self.backgroundColor  = [UIColor clearColor];
         float viewWidth       = CGRectGetWidth(frame);
-        float viewHeight      = CGRectGetHeight(frame);
+//        float viewHeight      = CGRectGetHeight(frame);
         float init_x          = CGRectGetMinX(frame);
         float init_y          = CGRectGetMinY(frame);
         

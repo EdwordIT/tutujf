@@ -11,7 +11,7 @@
 #import "TopAccount.h"
 #import "TopAccountModel.h"
 #import "UserInfo.h"
-
+#import "MyAccountModel.h"
 
 @protocol MineTopDelegate <NSObject>
 
@@ -24,20 +24,10 @@
 
 @property(nonatomic, assign) id<MineTopDelegate> delegate;
 
-@property(nonatomic, strong) UIButton *leftBtn;
+@property (nonatomic ,strong) TopAccount *account; //充值、提现
 
-@property(nonatomic, strong) UILabel *leftName;
-
-@property(nonatomic, strong) UIView *rightView;
-
-
-@property(nonatomic, strong) UIView *infolimg ;
-
-@property(nonatomic, copy) NSString *ishaveinfo;
-
-@property (nonatomic ,strong) TopAccount *account; //
 @property (nonatomic ,strong) TopScrollBasePage *basepage;
 
--(void)setModelData:(UserInfo *)userinfo;
+-(void)setModelData:(MyAccountModel *)accountModel;
 
 @end

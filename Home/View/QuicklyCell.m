@@ -41,9 +41,7 @@
 
 -(void)initViews {
 
-    self.typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/2-90, 18, 58, 19)];
-    [ self.typeimgsrc setImage:[UIImage imageNamed:@"gqzq.png"]];
-    [self.contentView addSubview:self.typeimgsrc];
+
 
     
     self.title= [[UILabel alloc] initWithFrame:CGRectMake(kSizeFrom750(30), kSizeFrom750(30),screen_width-55, kSizeFrom750(30))];
@@ -53,19 +51,16 @@
     self.title.textAlignment=NSTextAlignmentLeft;
     [self.contentView addSubview: self.title];
     
+    self.typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/2-90, 18, kSizeFrom750(116), kSizeFrom750(38))];
+    self.typeimgsrc.centerY = self.title.centerY;
+    [ self.typeimgsrc setImage:[UIImage imageNamed:@"gqzq.png"]];
+    [self.contentView addSubview:self.typeimgsrc];
 
 
-    self.percentLabel= [[UILabel alloc] initWithFrame:CGRectMake(self.title.left, self.title.bottom+kSizeFrom750(44),kSizeFrom750(130),kSizeFrom750(32))];
+    self.percentLabel= [[UILabel alloc] initWithFrame:CGRectMake(self.title.left, self.title.bottom+kSizeFrom750(40),kSizeFrom750(150),kSizeFrom750(32))];
     self.percentLabel.text=@"8.23%";
-    self.percentLabel.textAlignment=NSTextAlignmentCenter;
-    NSInteger index=[  self.percentLabel.text rangeOfString:@"%"].location;
-    NSInteger len=[  self.percentLabel.text  length];
-    NSMutableAttributedString *textColor = [[NSMutableAttributedString alloc]initWithString:  self.percentLabel.text];
-    [textColor addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica" size:20] range:NSMakeRange(0, index)];
-    [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,48,19) range:NSMakeRange(0, index)];
-    [textColor addAttribute:NSFontAttributeName value:CHINESE_SYSTEM(13) range:NSMakeRange(index,len-index)];
-    [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,48,19)  range:NSMakeRange(index, len-index)];
-    [ self.percentLabel setAttributedText:textColor];
+    [self.percentLabel setFont:NUMBER_FONT(30)];
+    self.percentLabel.textColor = COLOR_Red;
     [self.contentView addSubview: self.percentLabel];
     
     
@@ -73,7 +68,7 @@
     UILabel * lab2= [[UILabel alloc] initWithFrame:CGRectMake(self.percentLabel.left, self.percentLabel.bottom+kSizeFrom750(15),kSizeFrom750(140), kSizeFrom750(25))];
     lab2.font = SYSTEMSIZE(24);
     lab2.textColor=RGB_153;
-    lab2.text=@"年化收益率";
+    lab2.text=@"预期利率";
     [self.contentView addSubview:lab2];
     
     self.timeLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, self.percentLabel.top,self.percentLabel.width, self.percentLabel.height)];
@@ -380,30 +375,15 @@
     
     btn1.tag=[model.nrid intValue];
     self.title.text=model.name;
+    self.typeimgsrc.left = self.title.font.pointSize*model.name.length+self.title.left+kSizeFrom750(20);
     self.timeLabel.text=[NSString stringWithFormat:@"%@",model.period];
     proTextLabel.text= [[NSString stringWithFormat:@"进度%@",model.progress] stringByAppendingString:@"%"];
     CGFloat f=[model.additional_apr floatValue];
     if(f==0)
     {
-        self.percentLabel.textAlignment=NSTextAlignmentCenter;
-        self.percentLabel.frame=CGRectMake(10, 51,70,20);
         NSString * temp=model.apr;
         temp=[temp stringByAppendingString:@"%"];
-        self.percentLabel.text=temp;
-        NSInteger index=[ self.percentLabel.text rangeOfString:@"%"].location;
-        NSInteger len=[ self.percentLabel.text  length];
-        NSMutableAttributedString *textColor = [[NSMutableAttributedString alloc]initWithString: self.percentLabel.text];
-        [textColor addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica" size:20] range:NSMakeRange(0, index)];
-        if(isfinish)
-            [textColor addAttribute:NSForegroundColorAttributeName value:RGB(153,153,153) range:NSMakeRange(0, index)];
-        else
-            [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19) range:NSMakeRange(0, index)];
-        [textColor addAttribute:NSFontAttributeName value:CHINESE_SYSTEM(12) range:NSMakeRange(index,len-index)];
-        if(isfinish)
-            [textColor addAttribute:NSForegroundColorAttributeName value:RGB(153,153,153)  range:NSMakeRange(index, len-index)];
-        else
-            [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19)  range:NSMakeRange(index, len-index)];
-        [self.percentLabel setAttributedText:textColor];
+
     }
     else
     {
@@ -414,34 +394,6 @@
         temp=[temp stringByAppendingString:ff];
         temp=[temp stringByAppendingString:@"%"];
         self.percentLabel.text=temp;
-        self.percentLabel.frame=CGRectMake(10, 51,180,20);
-        self.percentLabel.textAlignment=NSTextAlignmentLeft;
-        NSInteger index=[ self.percentLabel.text rangeOfString:@"+"].location;
-        NSInteger index1=[ff rangeOfString:@"."].location;
-        NSInteger len=[ self.percentLabel.text  length];
-        NSMutableAttributedString *textColor = [[NSMutableAttributedString alloc]initWithString: self.percentLabel.text];
-        [textColor addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica" size:20] range:NSMakeRange(0, index-4)];
-        if(isfinish)
-            [textColor addAttribute:NSForegroundColorAttributeName value:RGB(153,153,153) range:NSMakeRange(0, index-4)];
-        else
-            [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19) range:NSMakeRange(0, index-4)];
-        [textColor addAttribute:NSFontAttributeName value:CHINESE_SYSTEM(12) range:NSMakeRange(index-4,5)];
-        if(isfinish)
-            [textColor addAttribute:NSForegroundColorAttributeName value:RGB(153,153,153)  range:NSMakeRange(index-4, 5)];
-        else
-            [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19)  range:NSMakeRange(index-4, 5)];
-        [textColor addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica" size:20] range:NSMakeRange(index+1, index1)];
-        if(isfinish)
-            [textColor addAttribute:NSForegroundColorAttributeName value:RGB(153,153,153) range:NSMakeRange(index+1, index1)];
-        else
-            [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19) range:NSMakeRange(index+1, index1)];
-        [textColor addAttribute:NSFontAttributeName value:CHINESE_SYSTEM(12) range:NSMakeRange(index+1+index1,len-(index+1+index1))];
-        if(isfinish)
-            [textColor addAttribute:NSForegroundColorAttributeName value:RGB(153,153,153)  range:NSMakeRange(index+1+index1,len-(index+1+index1))];
-        else
-            [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19)  range:NSMakeRange(index+1+index1,len-(index+1+index1))];
-        
-        [self.percentLabel setAttributedText:textColor];
     }
     if([model.activity_url_img isEqual:@""])
         [self.typeimgsrc setHidden:TRUE];
@@ -464,8 +416,6 @@
             }
             else
                 hh=15;
-            CGFloat len=([model.name length]-15)*12;
-            self.typeimgsrc.frame=CGRectMake(screen_width/2-25+len, 55,ww, hh);
         }
         else
         {
@@ -479,7 +429,6 @@
             }
         }
         [self.typeimgsrc sd_setImageWithURL:[NSURL URLWithString:model.activity_url_img]];
-        self.typeimgsrc.frame=CGRectMake([model.name length]*12+20, 17, ww, hh);
     }
     lab5.text=[NSString stringWithFormat:@"%@",model.repay_type_name];
     if(secondsCountDown>0)

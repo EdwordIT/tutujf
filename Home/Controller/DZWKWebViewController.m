@@ -12,7 +12,6 @@
 #import "MBProgressHUD+NJ.h"
 #import "UrlJumpHelp.h"
 #import "XXWebKitSupport.h"
-#import "WinChageType.h"
 
 @interface DZWKWebViewController ()<WKNavigationDelegate,WKUIDelegate,WKScriptMessageHandler>
 @property (nonatomic,strong)WKWebView *dzWebView;
@@ -47,7 +46,6 @@
     isLoad=FALSE;
     isTeshu=FALSE; //返回首页
   //  isFinishExe=FALSE;
-    jumpHelp=theAppDelegate.jumpHelp;
     jumpHelp.rootTempUrl=@"";
     jumpHelp.urlDeep=1;
     //    self.tabBarController.tabBar.hidden=YES;
@@ -58,8 +56,6 @@
         _returnmain=@"0";
     loadUrlStr=_urlStr;
     eventStr=@"";
-    theAppDelegate.httplink=_urlStr;
-    theAppDelegate.tabindex=self.tabBarController.selectedIndex;
     // 添加KVO监听
     [self.dzWebView addObserver:self
                      forKeyPath:@"loading"
@@ -426,14 +422,6 @@
 //导航返回刷新
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-   // NSString * tmp=theAppDelegate.httplink ;
-   // int log=theAppDelegate.webLogin;
-  //  int cur=theAppDelegate.tabindex;
-    if(theAppDelegate.tabindex!=self.tabBarController.selectedIndex)
-    {
-        
-        [self.navigationController popViewControllerAnimated:YES];
-    }
     
 }
 
@@ -536,29 +524,6 @@
             [MBProgressHUD hideHUD];
         });
     });
-   
-    
-    
-    //    NSLog(@"%@", @"00000");
-   // __block typeof(self) weakSelf = self;
-    //  [webView stringByEvaluatingJavaScriptFromString:@" if(typeof(browserVersion)!='undefined') {setBrowserVersionIOS('iphone');} "];
-    // 以 block 形式关联 JavaScript function AppJsHelper.StartShare(platform,type,title,img_url,link_url,desc, callback(state,msg));
-    
-    /*
-    NSArray *tmp = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    if(tmp.count>0)
-    {
-    NSString * cookies=@"";
-    for (NSHTTPCookie * cookie in tmp) {
-        cookies=[cookies stringByAppendingString:[NSString stringWithFormat:@"document.cookie='%@=%@';",cookie.name,cookie.value ]];
-    }
-    
-    [webView evaluateJavaScript:cookies completionHandler:^(id result, NSError *error) {
-        //...
-        NSLog(@"111");
-    }];
-    }
-    */
 }
 
 -(void) setFinishWebLoad:(WKWebView *)webView
@@ -593,7 +558,6 @@
     /* [self setFinishWebLoad:_dzWebView]**/
     isLoad=FALSE;
     loadUrlStr=_currentURL;
-    theAppDelegate.httplink=_currentURL;
 }
 //类似UIWebView的-webView:didFailLoadWithError:页面加载失败时调用
 -(void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error{
@@ -606,7 +570,7 @@
 //类似UIWebView的-webView:shouldStartLoadWithRequest:navigationType:在发送请求之前，决定是否跳转
 -(void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler{
     //    NSLog(@"%@",navigationAction.request);
-        NSString *originHostString=[navigationAction.request.URL.absoluteString  stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//        NSString *originHostString=[navigationAction.request.URL.absoluteString  stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
      decisionHandler(WKNavigationActionPolicyAllow);
     
       //  _currentURL=url;

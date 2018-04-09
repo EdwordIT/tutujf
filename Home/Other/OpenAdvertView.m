@@ -54,7 +54,7 @@
             btn2.frame = CGRectMake(40, 247,192, 33);
         else
         btn2.frame = CGRectMake(25, 214,192, 33);
-        [btn2 setTitle:@"暂未开通" forState:UIControlStateNormal];
+        [btn2 setTitle:@"暂不开通" forState:UIControlStateNormal];
         [btn2 setTitleColor:RGB(0,160,240) forState:UIControlStateNormal];
         btn2.titleLabel.font = [UIFont systemFontOfSize:12];
         btn2.titleLabel.textColor=RGB(0,160,240);
@@ -71,9 +71,8 @@
     return self;
 }
 
--(void) setDataBind:(UserInfo *) userinfo
+-(void) setDataBind:(MyAccountModel *) userinfo
 {
-        //    [imageView sd_setImageWithURL:[NSURL URLWithString:userinfo.trust_reg_log] placeholderImage:[UIImage imageNamed:@"showregedit"]];
 }
 
 -(void)handleTap:(id)sender{

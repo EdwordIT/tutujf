@@ -162,7 +162,7 @@ NSString *const SZCalendarCellIdentifier = @"cell";
     SZCalendarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:SZCalendarCellIdentifier forIndexPath:indexPath];
     NSDate *today = [NSDate date];
     NSCalendar *c = [NSCalendar currentCalendar];
-    NSRange days = [c rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:today];
+    NSRange days = [c rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:today];
  
 
     if (indexPath.section == 0) {
@@ -281,7 +281,7 @@ NSString *const SZCalendarCellIdentifier = @"cell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:self.date];
+//    NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:self.date];
     NSInteger firstWeekday = [self firstWeekdayInThisMonth:_date];
     
     NSInteger day = 0;

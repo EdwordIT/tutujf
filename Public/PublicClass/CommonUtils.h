@@ -7,16 +7,40 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "UIColor+HexString.h"
 @interface CommonUtils : NSObject
+
+#define HEXCOLOR(c) [UIColor colorWithHexString:c]
+/**
+ 获取手机型号
+ */
++(NSString*)getDeviceVersion;
+/**
+ 获取手机UUID
+ */
++(NSString *)getUUID;
+/**
+ 获取手机deviceToken
+ */
++(NSString *)getDeviceToken;
+/**
+ 获取当前时间戳
+ */
++(NSString *)getCurrentTimestamp;
 //上送token（非用户唯一标示，为校验码）
 +(NSString *)getToken;
 
 +(NSString *)getUsername;
+
++(NSString *)getNikename;
 //获取版本号
 +(NSString *)getVersion;
 //判断是否登录
 +(BOOL)isLogin;
+//是否需要版本升级
++(BOOL)isUpdate;
+//是否实名认证过
++(BOOL)isVerifyRealName;
 //判断中英混合的的字符串长度
 + (int)convertToInt:(NSString*)strtemp;
 //校验字符串是否含空格
@@ -32,13 +56,50 @@
 + (BOOL)checkUserIdCard: (NSString *) idCard;
 #pragma 正则匹配URL
 + (BOOL)checkURL : (NSString *) url;
+/*******************缓存处理***********************************************/
+//加入缓存
++ (void)cacheDataWithObject:(NSDictionary *)object WithPathName:(NSString *)withPathName;
+//通过key值取得缓存数据
++(NSDictionary *)getCacheDataWithKey:(NSString *)cacheKey;
+//移除特定缓存
++(void)removeCacheWithKey:(NSString *)cacheKey;
+//移除所有缓存内容
++(void)removeAllCache;
 /*******************常用方法***********************************************/
+
+/**
+ 获取根视图控制器
+ */
++ (UIViewController *)appRootViewController;
+/**
+ 系统自带提示框显示
+ */
++(void)showAlerWithTitle:(NSString*)title withMsg:(NSString*)msg;
+/*!
+ *                      获取时间差
+ *
+ *  @param fromdate     起始时间
+ *  @param todate       结束时间
+ *
+ *  @return             时间差(秒)
+ */
++ (int)getSecondForFromDate:(NSDate *)fromdate toDate:(NSDate *)todate;
+/*!
+ *                      获取给定时间到当前时间的时间差
+ *  @param todate       结束时间
+ *  @return             时间差(秒)
+ */
++ (NSInteger)getDifferenceByDate:(NSString *)creat_time;
 /**
 带有行间距的label的高度
  */
 +(CGFloat)getSpaceLabelHeight:(NSString*)str withFont:(UIFont*)font withWidth:(CGFloat)width lineSpace:(CGFloat)lineSpace;
 /**设置带圆角带阴影*/
 +(void)setShadowCornerRadiusToView:(UIView *)view;
+/**
+ 设置带有行间距的label
+ */
++(void)setAttString:(NSString *)title withLineSpace:(CGFloat)space titleLabel:(UILabel *) titleLabel;
 
 /**
  设置字符串的字体大小和颜色

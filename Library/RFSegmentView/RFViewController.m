@@ -49,7 +49,7 @@
 
 - (void)segmentViewSelectIndex:(NSInteger)index
 {
-    NSLog(@"current index is %d",index);
+    NSLog(@"current index is %ld",index);
 }
 
 - (void)didReceiveMemoryWarning

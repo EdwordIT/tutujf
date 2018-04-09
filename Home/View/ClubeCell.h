@@ -7,8 +7,8 @@
 //社区信息
 
 #import <UIKit/UIKit.h>
-#import "ClubeMsgModel.h"
+#import "HomepageModel.h"
 @interface ClubeCell : UITableViewCell
 
--(void)loadInfoWithModel:(ClubeMsgModel *)model;
+-(void)loadInfoWithModel:(NoticeModel *)model;
 @end

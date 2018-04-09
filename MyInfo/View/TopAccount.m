@@ -33,16 +33,16 @@
 
 -(void) initView
 {
-    UILabel *lab1 = [[UILabel alloc] initWithFrame:CGRectMake(56, 36, 120,14)];
-    lab1.font = CHINESE_SYSTEM(14);
-    lab1.textAlignment=NSTextAlignmentLeft;
+    UILabel *lab1 = [[UILabel alloc] initWithFrame:CGRectMake(0, kSizeFrom750(52), kSizeFrom750(380),kSizeFrom750(30))];
+    lab1.font = SYSTEMSIZE(30);
+    lab1.textAlignment=NSTextAlignmentCenter;
     lab1.textColor =  RGB(83,83,83);
     lab1.text=@"可用金额（元）";
     [self addSubview:lab1];
     
     
-    self.account = [[UILabel alloc] initWithFrame:CGRectMake(30, 57, 144,24)];
-    self.account.font = NUMBER_FONT(24);
+    self.account = [[UILabel alloc] initWithFrame:CGRectMake(0, lab1.bottom+kSizeFrom750(10), lab1.width,kSizeFrom750(50))];
+    self.account.font = NUMBER_FONT(48);
     self.account.textAlignment=NSTextAlignmentCenter;
     self.account.textColor =  RGB(252,18,18);
     self.account.text=@"";
@@ -55,40 +55,27 @@
     }
     [self addSubview:self.account];
     
-    _chongzhi = [UIButton buttonWithType:UIButtonTypeCustom];
-    _chongzhi.frame = CGRectMake(self.frame.size.width-125,15, 110, 35);
-    //  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGColorRef colorref =RGB(252,18,18).CGColor;
-
-    [_chongzhi.layer setBorderColor:colorref];//边框颜色
-    //[btn1 setImage:[UIImage imageNamed:@"gogo.png"] forState:UIControlStateNormal];
-    [_chongzhi addTarget:self action:@selector(button_event:) forControlEvents:UIControlEventTouchUpInside];
-    _chongzhi.tag=5;
-    [_chongzhi setTitle:@"充值" forState:UIControlStateNormal];//button title
-    [_chongzhi.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
-    [_chongzhi setTitleColor:RGB(255,255,255) forState:UIControlStateNormal];//title color
+    _rechargeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    _rechargeBtn.frame = CGRectMake(self.width - kSizeFrom750(285),kSizeFrom750(35),kSizeFrom750(230), kSizeFrom750(56));
+    [_rechargeBtn addTarget:self action:@selector(button_event:) forControlEvents:UIControlEventTouchUpInside];
+    _rechargeBtn.tag=5;
+    [_rechargeBtn setTitle:@"充值" forState:UIControlStateNormal];//button title
+    [_rechargeBtn.titleLabel setFont:SYSTEMSIZE(30)];
+    _rechargeBtn.layer.cornerRadius = kSizeFrom750(56)/2;
+    _rechargeBtn.layer.masksToBounds = YES;
+    _rechargeBtn.backgroundColor = RGB(253, 45, 20);
+    [self addSubview:_rechargeBtn];
     
-    _chongzhi.backgroundColor=RGB(252,18,18);
-    [_chongzhi.layer setCornerRadius:17.5]; //设置矩形四个圆角半径
-    [_chongzhi.layer setBorderWidth:0.0]; //边框宽度
-    [self addSubview:_chongzhi];
-    
-    _tixian = [UIButton buttonWithType:UIButtonTypeCustom];
-    _tixian.frame = CGRectMake(self.frame.size.width-125,59, 110, 35);
-    //  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGColorRef colorref1 =RGB(40,167,252).CGColor;
-    [_tixian.layer setBorderColor:colorref1];//边框颜色
-    //[btn1 setImage:[UIImage imageNamed:@"gogo.png"] forState:UIControlStateNormal];
-    [_tixian addTarget:self action:@selector(button_event:) forControlEvents:UIControlEventTouchUpInside];
-    _tixian.tag=6;
-    [_tixian setTitle:@"提现" forState:UIControlStateNormal];//button title
-    [_tixian.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:14]];
-    [_tixian setTitleColor:RGB(255,255,255) forState:UIControlStateNormal];//title color
-    
-    _tixian.backgroundColor=RGB(40,167,252);
-    [_tixian.layer setCornerRadius:17.5]; //设置矩形四个圆角半径
-    [_tixian.layer setBorderWidth:0.0]; //边框宽度
-    [self addSubview:_tixian];
+    _withdrawBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    _withdrawBtn.frame = CGRectMake(_rechargeBtn.left,_rechargeBtn.bottom+kSizeFrom750(20), _rechargeBtn.width, _rechargeBtn.height);
+    [_withdrawBtn addTarget:self action:@selector(button_event:) forControlEvents:UIControlEventTouchUpInside];
+    _withdrawBtn.tag=6;
+    [_withdrawBtn setTitle:@"提现" forState:UIControlStateNormal];//button title
+    [_withdrawBtn.titleLabel setFont:SYSTEMSIZE(30)];
+    _withdrawBtn.layer.cornerRadius = kSizeFrom750(56)/2;
+    _withdrawBtn.layer.masksToBounds = YES;
+    _withdrawBtn.backgroundColor=RGB(40,167,252);
+    [self addSubview:_withdrawBtn];
     
 }
 -(void)OnTapImage:(UITapGestureRecognizer *)sender{

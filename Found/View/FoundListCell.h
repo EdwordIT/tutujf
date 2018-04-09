@@ -20,10 +20,10 @@
 
 @property(nonatomic, assign) id<TreasureListDelegate> delegate;
 
--(void) setDataBind:(FoundListModel *) model IsLast:(BOOL)IsLast;
+-(void) setDataBind:(FoundListModel *) model;
 @property(nonatomic, strong) UILabel *title;
 @property(nonatomic, strong) UIImageView *typeimgsrc;
 @property(nonatomic, strong) UILabel *date;
-
+Strong     UIView *lineView;
 
 @end

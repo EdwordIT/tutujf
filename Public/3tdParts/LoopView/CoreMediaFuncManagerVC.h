@@ -17,7 +17,7 @@
  *  @param no                   电话号码
  *  @param inViewController     需要打电话的控制器
  */
-+(void)call:(NSString *)no inViewController:(UIViewController *)vc failBlock:(void(^)())failBlock;
++(void)call:(NSString *)no inViewController:(UIViewController *)vc failBlock:(void(^)(void))failBlock;
 
 
 @end

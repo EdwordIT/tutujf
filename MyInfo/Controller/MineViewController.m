@@ -1,78 +1,42 @@
 //
-//  MineViewController.m
+//  MineViewController.h
 //  TTJF
 //
-//  Created by 占碧光 on 2017/3/10.
-//  Copyright © 2017年 占碧光. All rights reserved.
+//  Created by 土土金服ios-01 on 2018/3/6.
+//  Copyright © 2018年 wbzhan. All rights reserved.
 //
 
 #import "MineViewController.h"
-#import "MJRefresh.h"
-//#import "NavView.h"
-//#import "PPNetworkHelper.h"
 #import "HttpSignCreate.h"
-#import "AppDelegate.h"
-#import "WinChageType.h"
-
-#import "TopScrollShow.h"
 #import "MineTopCell.h"
 #import "MIneMiddleCell.h"
 #import "MineMenuCell.h"
-
-#import "HttpSignCreate.h"
-#import "HttpUrlAddress.h"
-#import "ggHttpFounction.h"
 #import "OpenAdvertView.h"
 #import "HomeWebController.h"
 #import "TopScrollMode.h"
-#import "UserInfo.h"
-#import "BtMyUser.h"
 #import "AccountInfoController.h"
 #import "LoginViewController.h"
-
-@interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineNavDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
+#import "AccountTitleView.h"//顶部导航栏
+#import "MyAccountModel.h"
+#import <MJRefreshNormalHeader.h>
+@interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
 {
-    NSArray *array1;// 第一个 cell 行
-    
-    NSArray *array2;/***第二个cell 行*/
-    
-      NSArray *array30;/****  */
-    NSArray *array3;/****  */
-    NSArray *array4;/**<  第三个cell */
-    NSArray *array5; //
-    
-    NSArray *array6;/****  */
-    NSArray *array7;/**< 第四个 cell */
-    NSArray *array8; //
-    
-    NSString * zongjiner;//
-    
-      NSString * keyingjiner;//
-    CGFloat  navxL;
-    CGFloat  navyL;
-    CGFloat  navwL;
-    CGFloat  navhL;
-    
-    CGFloat  navxR;
-    CGFloat  navyR;
-    CGFloat  navwR;
-    CGFloat  navhR;
     UIView *_maskView;
+    //如果未绑定银行卡，则弹出此框
     OpenAdvertView *advertView;
     TopScrollMode * scrollmodel;
-    UserInfo * userinfo;
-    BtMyUser * myuser;
     Boolean isFirstExe;
-    Boolean isTuanGuan;
+    Boolean isReged;
     MineTopCell *topcell;
-    NSMutableArray * bt_user_url;
+    NSArray *middleMenuArray;//我的投资，我的红包，我的资金流向
+    CGFloat navTitleHeight;
 }
-
-
-
-@property (nonatomic ,strong) TopScrollShow *navView; //导航栏视图
-
+Strong AccountTitleView *accountTitleView;//导航栏视图
+Strong MyAccountModel *accountModel;//数据源
+Strong UIView *refreshView;//视觉上刷新
+Strong UILabel *refreshLabel;//刷新内容显示
+Strong UIImageView *refreshImage;//刷新箭头
 @end
 
 
@@ -81,73 +45,29 @@ OpenShowAdvertDelegate>
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    bt_user_url=[[NSMutableArray alloc] init];
-    [self initData];
+    //用于区分X下和普通屏幕下的高度适配问题
+    navTitleHeight = kSizeFrom750(160)+kStatusBarHeight;
     isFirstExe=FALSE;;
-    isTuanGuan=FALSE;
+    isReged=FALSE;
     [self initTableView];
-    keyingjiner=@"";
-    zongjiner=@"";
-  
-    [self setDataNav];
-
-    // Do any additional setup after loading the view.
+ // Do any additional setup after loading the view.
 }
 //
--(void) showRegTuanGuan
+-(void) showRegMaskView
 {
-    isTuanGuan=TRUE;
-    NSString  * temp =[NSString stringWithFormat:@"%@",userinfo.is_trust_reg] ;
+    isReged=TRUE;
+    NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
     if([temp isEqual:@"0"])  //显示托管
     {
-         [self initAdvertMaskView];
-        [advertView setDataBind:userinfo];
+        [self initAdvertMaskView];
+        [advertView setDataBind:self.accountModel];
     }
     
 }
-//头部数据
--(void) setDataNav
-{
-    self.navView = [[TopScrollShow alloc] initWithFrame:CGRectMake(0, 0, screen_height, 90)];
-    self.navView .delegate=self;
-    //[self.navView setHidden:TRUE];
-    [self.view addSubview:self.navView ];
-    navxR= self.navView.rightView.frame.origin.x;
-    navyR= self.navView.rightView.frame.origin.y;
-    navwR= self.navView.rightView.frame.size.width;
-    navhR= self.navView.rightView.frame.size.height;
-    
-    navxL= self.navView.backimg.frame.origin.x;
-    navyL= self.navView.backimg.frame.origin.y;
-    navwL= self.navView.backimg.frame.size.width;
-    navhL= self.navView.backimg.frame.size.height;
-}
-
 //GetMyUserDatas
 //视图出现时操作
 - (void)viewWillAppear:(BOOL)animated {
-     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillAppear:animated];
-    if(theAppDelegate.IsWebRegdit)//web 注册自动登录
-    {
-        theAppDelegate.IsWebRegdit=FALSE;
-        if([CommonUtils isLogin])
-        {
-            if(!isFirstExe)
-            {
-                isFirstExe=TRUE;
-                [self GetMyByWebUserDatas];
-            }
-            else if(userinfo!=nil)
-            {
-                self.navView.leftName.text=[CommonUtils getUsername];
-            }
-        }
-    }
-    else
-    {
       if([CommonUtils isLogin])
       {
         if(!isFirstExe)
@@ -155,148 +75,128 @@ OpenShowAdvertDelegate>
             isFirstExe=TRUE;
             [self GetMyUserDatas];
         }
-        else if(userinfo!=nil)
+        else if(self.accountModel!=nil)
         {
-            self.navView.leftName.text=[CommonUtils getUsername];
+            self.accountTitleView.titleLabel.text=[CommonUtils getNikename];
          }
       }
-    }
-    
-
 }
 
 //导航返回刷新
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self.navigationController.navigationBar setHidden:TRUE];
-    if(theAppDelegate.xbindex!=-1)
-    {
-        if(theAppDelegate.xbindex!=2)
-        self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:theAppDelegate.xbindex];
-        theAppDelegate.xbindex=-1;
-    }
     if(![CommonUtils isLogin])
     {
-        self.navView.leftName.text=@"******";
-        if(userinfo!=nil)
+        self.accountTitleView.titleLabel.text=@"******";
+        if(self.accountModel!=nil)
         {
-            userinfo.total_amount=@"0.0";
-            userinfo.to_interest_award=@"0.0";
-            userinfo.balance_amount=@"0.00";
+            self.accountModel.total_amount=@"0.0";
+            self.accountModel.to_interest_award=@"0.0";
+            self.accountModel.balance_amount=@"0.00";
             if(topcell!=nil)
-            [topcell setModelData:userinfo];
-             if(self.navView!=nil)
-           [self.navView.infolimg setHidden:TRUE];
+            [topcell setModelData:self.accountModel];
         }
     }
-    else if(userinfo!=nil)
+    else if(self.accountModel!=nil)
     {
-        self.navView.leftName.text=[CommonUtils getUsername];
+        self.accountTitleView.hidden = NO;
+        self.accountTitleView.titleLabel.text = [CommonUtils getNikename];
+        
     }
     [self viewWillLayoutSubviews];
-    if([theAppDelegate.jumpLogin isEqual:@"1"])
-    {
-        theAppDelegate.jumpLogin=@"";
-        [self OnLogin];
-    }
-
 }
-//初始化数据
--(void)initData{
-
-    array1 = [[NSArray alloc] init];
-    array2= [[NSArray alloc] init];
+//添加刷新View
+-(void)loadRrereshView
+{
+    self.refreshView = [[UIView alloc]initWithFrame:RECT(0, -screen_height, screen_width, screen_height)];
+    self.refreshView.backgroundColor = navigationBarColor;
+    [self.view addSubview:self.refreshView];
     
-    array30= [NSArray arrayWithObjects: @"user03.png",@"user04.png",@"user05.png",nil];
-    array3= [NSArray arrayWithObjects: @"我的投资",@"我的红包",@"资金记录",nil];
-    array4= [NSArray arrayWithObjects: @"了解投资进度",@"各种红包福利",@"查看资金流向",nil];
+    self.refreshImage = [[UIImageView alloc]initWithFrame:RECT(0, screen_height - kSizeFrom750(90), kSizeFrom750(46), kSizeFrom750(46))];
+    [self.refreshImage setImage:IMAGEBYENAME(@"refresh_mine")];
+    self.refreshImage.centerX = self.refreshView.width/2;
+    [self.refreshView addSubview:self.refreshImage];
     
-//Me_iceo_transfer  Me_iceo_Invitation  Me_iceo_help Me_iceo_Loan
-    array6= [NSArray arrayWithObjects: [oyUrlAddress stringByAppendingString:@"/wapassets/trust/images/news/mylogo01.png"],[oyUrlAddress stringByAppendingString:@"/wapassets/trust/images/news/mylogo02.png"],[oyUrlAddress stringByAppendingString:@"/wapassets/trust/images/news/mylogo04.png"],[oyUrlAddress stringByAppendingString:@"/wapassets/trust/images/news/mylogo03.png"],nil];
-    array7= [NSArray arrayWithObjects: @"我的邀请",@"我的借款",@"托管账户",@"银行卡管理",nil];
-    array8=  [NSArray arrayWithObjects: @"",@"",@"",@"",nil];
+    self.refreshLabel = [[UILabel alloc]initWithFrame:RECT(0, self.refreshImage.bottom+kSizeFrom750(10), self.refreshView.width, kSizeFrom750(30))];
+    self.refreshLabel.textAlignment = NSTextAlignmentCenter;
+    self.refreshLabel.textColor = [UIColor whiteColor];
+    self.refreshLabel.font = SYSTEMSIZE(24);
+    self.refreshLabel.text = @"下拉即可刷新";
+    [self.refreshView addSubview:self.refreshLabel];
     
 }
 /**表格数据操作**/
 //初始化主界面
 -(void)initTableView{
-    if(kDevice_Is_iPhoneX)
-    {
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 10.0) {
-            self.tabBarController.tabBar.subviews[0].subviews[1].hidden = YES;
-        }
-        self.tabBarController.tabBar.backgroundColor=RGB(240,240,240);
-        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, screen_width, screen_height-50) style:UITableViewStyleGrouped];
-        self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
 
-        
-    }
-    else
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, -20, screen_width, screen_height+20) style:UITableViewStyleGrouped];
+    if(iOS11)
+    {
+        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, -kStatusBarHeight, screen_width, screen_height+kStatusBarHeight) style:UITableViewStyleGrouped];
+    }else
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height-kTabbarHeight) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.showsVerticalScrollIndicator = NO;
-    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
-    self.tableView.backgroundColor=RGB(240,240,240);
-   //   self.tableView.backgroundColor=RGB(21,140,241);
+    self.tableView.backgroundColor= RGB_246;
     // 设置表格尾部
      self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    
-    
-    // [self.tableView setSeparatorColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.01]];
     [self.tableView setSeparatorColor:separaterColor];
     
     [self.view addSubview:self.tableView];
     
     [self setUpTableView];
     
+    [self loadRrereshView];
     
-}
+    [self.view addSubview:self.accountTitleView];
 
+        
+}
+//点击顶部按钮进入个人以及消息列表页面(需登录)
+-(AccountTitleView *)accountTitleView{
+    if (!_accountTitleView) {
+        _accountTitleView = InitObject(AccountTitleView);
+        _accountTitleView.frame = RECT(0, 0, screen_width, navTitleHeight);
+        Weak_Self;
+        _accountTitleView.accountTitleBlock = ^(NSInteger tag) {
+          
+            if ([CommonUtils isLogin]) {
+                if(tag==1)
+                {
+                    AccountInfoController * account=[[AccountInfoController alloc] init];
+                    [weakSelf.navigationController pushViewController:account animated:YES];
+                }
+                else if(tag==2)
+                {
+                    //消息列表
+                    HomeWebController *discountVC = [[HomeWebController alloc] init];
+                    discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/message/list",oyUrlAddress];
+                    [weakSelf.navigationController pushViewController:discountVC animated:YES];
+                }
+            }else{
+                [weakSelf goLoginVC];
+            }
+           
+        };
+    }
+    return _accountTitleView;
+}
 //界面表格刷新
 -(void)setUpTableView{
    
    __weak typeof(self) weakSelf = self;
-    TTJFRefreshStateHeader *header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
-        [weakSelf refreshData];
-      
+    MJRefreshHeader *header  = [MJRefreshHeader headerWithRefreshingBlock:^{
+        [weakSelf GetMyUserDatas];
     }];
+    header.backgroundColor = navigationBarColor;
     self.tableView.mj_header = header;
     // 马上进入刷新状态
-    [header beginRefreshing];
+    if ([CommonUtils isLogin]) {
+        [header beginRefreshing];
+    }
 
 }
-
-//重复刷新
--(void)refreshData{
-      __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-        // [self getHttpDatta:@"839" top:@"5"];
-        // [self getDaiBang];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            //update UI
-            if([CommonUtils isLogin])
-            {
-                if(!isFirstExe)
-                {
-                  isFirstExe=TRUE;
-                  [weakSelf GetMyUserDatas];
-                }
-                [weakSelf.tableView.mj_header endRefreshing];
-                [weakSelf.tableView.mj_footer endRefreshing];
-            }
-            else
-            {
-            [weakSelf.tableView.mj_header endRefreshing];
-            [weakSelf.tableView.mj_footer endRefreshing];
-            }
-        });
-    });
-    
-    
-}
-
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
@@ -305,7 +205,6 @@ OpenShowAdvertDelegate>
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     if (section ==0 ){
-        //return _hotQueueData.count+1;
         return 2;
     }
     else if (section ==1 ){
@@ -318,58 +217,38 @@ OpenShowAdvertDelegate>
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         {
-            
             if(indexPath.row==0)
-                return 316;
+                return kSizeFrom750(450)+navTitleHeight;//顶部抬头+资金信息高度
             else
             {
-                if(IS_IPHONE5)
-                    return 120;
-                      if(IS_IPhone6plus)
-                        return 150;
-                    else
-                    {
-                return 140;
-                    }
+                return kSizeFrom750(266);//中间菜单栏高度
             }
             
         }
     }else if(indexPath.section == 1){
-        if([bt_user_url count]>0)
-        return [bt_user_url count]*54;
-        else
-         return [array7 count]*54;
+        if (self.accountModel==nil) {
+            return kSizeFrom750(125)*4;//个人相关操作标签默认高度
+        }
+      return  self.accountModel.bt_user_content.count*kSizeFrom750(125);
         
-    }
-    else{
-        return 56;
-    }
+    }else
+        return 0;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if (section == 0) {
-        return 0.01;
-    }
-    else if (section == 1) {
-        return 0.01;
-    } else if (section == 2) {
-        return 0.1;
-    }
-    else{
-        return 1;
-    }
+    return 0.01;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if (section == 0) {
-        return 0.1;
+        return 0.01;
     }
     else if (section == 1) {
-        return 15;
+        return kSizeFrom750(30);
     } else if (section == 2) {
         return 0.01;
     }
     else{
-        return 0.1;
+        return 0.01;
     }
 }
 
@@ -378,15 +257,13 @@ OpenShowAdvertDelegate>
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    headerView.backgroundColor =RGB(240,240,240);
+    headerView.backgroundColor =RGB_246;
     return headerView;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    footerView.backgroundColor = RGB(240,240,240);
+    footerView.backgroundColor = RGB_246;
     
-    
-    //    footerView.backgroundColor = [UIColor yellowColor];
     return footerView;
 }
 
@@ -400,20 +277,25 @@ OpenShowAdvertDelegate>
             topcell.accessoryType = UITableViewCellAccessoryNone;
             topcell.selectionStyle=UITableViewCellSelectionStyleNone;
             topcell.delegate=self;
-           
-             if(userinfo!=nil)
-            [topcell setModelData:userinfo];
+             if(self.accountModel!=nil)
+            [topcell setModelData:self.accountModel];
             return topcell;
             
         }
         else  if(indexPath.row == 1)
         {
+            //三个菜单栏→我的投资、我的红包、资金记录
             static NSString *cellIndentifier = @"MIneMiddleCell";
-            MIneMiddleCell *cell =  [[MIneMiddleCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
+            
+            MIneMiddleCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
+            if (cell==nil) {
+                cell = [[MIneMiddleCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
+            }
+            
             cell.delegate=self;
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
-            [cell setModelData:array30 ary2:array3 ary3:array4];
+            [cell loadInfoWithArray:middleMenuArray];
             return cell;
         }
     }
@@ -427,10 +309,10 @@ OpenShowAdvertDelegate>
         cell.delegate=self;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if(bt_user_url!=nil&&[bt_user_url count]>0)
-        [cell setMenuData:array7 ayr2:array6];
-         else  if(![CommonUtils isLogin])
-         [cell setMenuData:array7 ayr2:array6];
+            if (!self.accountModel) {
+                [cell setMenuData:nil];
+            }else
+                [cell setMenuData:self.accountModel.bt_user_content];
         return cell;
         }
     }
@@ -440,56 +322,16 @@ OpenShowAdvertDelegate>
 /**在viewWillAppear方法中加入：
  [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];**/
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    //消除cell选择痕迹
-    [self performSelector:@selector(deselect) withObject:nil afterDelay:0.1f];
     if([CommonUtils isLogin])
     {
         
     }
     else
     {
-        [self OnLogin];
-    }
-  
-    
-    //[self JumpLogin];
-}
-- (void)deselect
-{
-    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-}
-
-/**网络访问数据操作**/
-
-
--(void) OnLogin{
-    [self goLoginVC];
-}
-
-/**表格数据操作**/
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-/**xia**/
--(void)didNavViewDAtIndex:(NSInteger)index;\
-{
-    if([CommonUtils isLogin])
-    {
-        
-    }
-    else
-    {
-        [self OnLogin];
+        [self goLoginVC];
     }
 }
-
-
-
-
+//点击顶部菜单栏
 -(void)didMyTopAtIndex:(NSInteger)index
 {
    if([CommonUtils isLogin])
@@ -498,311 +340,162 @@ OpenShowAdvertDelegate>
    }
     else
     {
-        [self OnLogin];
+        [self goLoginVC];
     }
 }
-
+//点击底部四个功能菜单
 -(void)didMineMenuAtIndex:(NSInteger)index
 {
     if([CommonUtils isLogin])
     {
-        NSString * url=[bt_user_url objectAtIndex:index-1];
-        self.hidesBottomBarWhenPushed=YES;
+        UserContentModel *model = [self.accountModel.bt_user_content objectAtIndex:index];
+        NSString * url=model.link_url;
         HomeWebController *discountVC = [[HomeWebController alloc] init];
         discountVC.urlStr=url;
         discountVC.returnmain=@"3"; //页返回
         [self.navigationController pushViewController:discountVC animated:YES];
-        self.hidesBottomBarWhenPushed=NO;
-        
-     
     }
     else
     {
-        [self OnLogin];
+        [self goLoginVC];
     }
 }
 
--(void)didMyBottomAtIndex:(NSInteger)index
-{
-    if([CommonUtils isLogin])
-    {
-        
-    }
-    else
-    {
-        [self OnLogin];
-    }
-}
 -(void)didopMineAtIndex:(NSInteger)index
 {
     if([CommonUtils isLogin])
     {
         if(index==1)
         {
-            /*
-            self.hidesBottomBarWhenPushed=YES;
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-              discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/myaccountdata",oyUrlAddress];
-            discountVC.returnmain=@"3"; //页返回
-            [self.navigationController pushViewController:discountVC animated:YES];
-            self.hidesBottomBarWhenPushed=NO;
-            */
-                self.hidesBottomBarWhenPushed=YES;
             AccountInfoController * account=[[AccountInfoController alloc] init];
            [self.navigationController pushViewController:account animated:YES];
-             self.hidesBottomBarWhenPushed=NO;
         }
         else if(index==2)
         {
-             self.hidesBottomBarWhenPushed=YES;
             HomeWebController *discountVC = [[HomeWebController alloc] init];
               discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/message/list",oyUrlAddress];
             discountVC.returnmain=@"3"; //页返回
             [self.navigationController pushViewController:discountVC animated:YES];
-             self.hidesBottomBarWhenPushed=NO;
         }
         else if(index==3)
         {
-            self.hidesBottomBarWhenPushed=YES;
             HomeWebController *discountVC = [[HomeWebController alloc] init];
              discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/account",oyUrlAddress];
             discountVC.returnmain=@"3"; //页返回
             [self.navigationController pushViewController:discountVC animated:YES];
-            self.hidesBottomBarWhenPushed=NO;
         }
         
         else if(index==4)
         {
-            self.hidesBottomBarWhenPushed=YES;
             HomeWebController *discountVC = [[HomeWebController alloc] init];
              discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/accounttwo",oyUrlAddress];
             discountVC.returnmain=@"3"; //页返回
             [self.navigationController pushViewController:discountVC animated:YES];
-            self.hidesBottomBarWhenPushed=NO;
         }
         else if(index==5)
         {
-            NSString  * temp =[NSString stringWithFormat:@"%@",userinfo.is_trust_reg] ;
+            NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
             if([temp isEqual:@"0"])  //显示托管
             {
-                self.hidesBottomBarWhenPushed=YES;
                 HomeWebController *discountVC = [[HomeWebController alloc] init];
-                discountVC.urlStr=[NSString stringWithFormat:@"%@/%@",oyUrlAddress,userinfo.trust_reg_link];
+                discountVC.urlStr=[NSString stringWithFormat:@"%@/%@",oyUrlAddress,self.accountModel.trust_reg_link];
                 discountVC.returnmain=@"3"; //页返回
                 [self.navigationController pushViewController:discountVC animated:YES];
-                self.hidesBottomBarWhenPushed=NO;
             }
             else
             {
-            self.hidesBottomBarWhenPushed=YES;
             HomeWebController *discountVC = [[HomeWebController alloc] init];
             discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/recharge",oyUrlAddress];
             discountVC.returnmain=@"3"; //页返回
             [self.navigationController pushViewController:discountVC animated:YES];
-            self.hidesBottomBarWhenPushed=NO;
             }
         }
         else if(index==6)
         {
-             NSString  * temp =[NSString stringWithFormat:@"%@",userinfo.is_trust_reg] ;
+             NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
             if([temp isEqual:@"0"])  //显示托管
         {
-            self.hidesBottomBarWhenPushed=YES;
             HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr=[NSString stringWithFormat:@"%@/%@",oyUrlAddress,userinfo.trust_reg_link];
+            discountVC.urlStr=[NSString stringWithFormat:@"%@/%@",oyUrlAddress,self.accountModel.trust_reg_link];
             discountVC.returnmain=@"3"; //页返回
             [self.navigationController pushViewController:discountVC animated:YES];
-            self.hidesBottomBarWhenPushed=NO;
         }
             else
             {
-            self.hidesBottomBarWhenPushed=YES;
             HomeWebController *discountVC = [[HomeWebController alloc] init];
             discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/cash",oyUrlAddress];
             discountVC.returnmain=@"3"; //页返回
             [self.navigationController pushViewController:discountVC animated:YES];
-            self.hidesBottomBarWhenPushed=NO;
             }
         }
-        else if(index==7)
-        {
-            /*
-            self.hidesBottomBarWhenPushed=YES;
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr=@"http://www.tutujf.com/wap/member/accounttwo";
-            discountVC.returnmain=@"3"; //页返回
-            [self.navigationController pushViewController:discountVC animated:YES];
-            self.hidesBottomBarWhenPushed=NO;
-             */
-        }
     }
     else
     {
-        [self OnLogin];
+        [self goLoginVC];
     }
 }
--(void)didTopScrollAtIndex:(NSInteger)index
+//点击我的投资、我的红包、资金记录三个按钮
+-(void)didTapMIneMiddleAtIndex:(NSInteger)index
 {
     if([CommonUtils isLogin])
     {
-        if(index==1)
+        if(index==0)
         {
-            self.hidesBottomBarWhenPushed=YES;
-            AccountInfoController * account=[[AccountInfoController alloc] init];
-            [self.navigationController pushViewController:account animated:YES];
-            self.hidesBottomBarWhenPushed=NO;
-        }
-       else if(index==2)
-        {
-             self.hidesBottomBarWhenPushed=YES;
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/message/list",oyUrlAddress];
-            discountVC.returnmain=@"3"; //页返回
-            [self.navigationController pushViewController:discountVC animated:YES];
-            self.hidesBottomBarWhenPushed=NO;
-         
-        }
-       else if(index==3)
-       {
-           self.hidesBottomBarWhenPushed=YES;
-           HomeWebController *discountVC = [[HomeWebController alloc] init];
-           discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/myaccountdata",oyUrlAddress];
-           discountVC.returnmain=@"3"; //页返回
-           [self.navigationController pushViewController:discountVC animated:YES];
-           self.hidesBottomBarWhenPushed=NO;
-           
-       }
-        //
-    }
-    else
-    {
-        [self OnLogin];
-    }
-    
-}
-
--(void)didopMIneMiddleAtIndex:(NSInteger)index
-{
-    if([CommonUtils isLogin])
-    {
-        if(index==1)
-        {
-        self.hidesBottomBarWhenPushed=YES;
         HomeWebController *discountVC = [[HomeWebController alloc] init];
         discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/mytender",oyUrlAddress];
         discountVC.returnmain=@"3"; //页返回
         [self.navigationController pushViewController:discountVC animated:YES];
-        self.hidesBottomBarWhenPushed=NO;
         }
-       else if(index==2)
+       else if(index==1)
         {
-            self.hidesBottomBarWhenPushed=YES;
             HomeWebController *discountVC = [[HomeWebController alloc] init];
             discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/bounty",oyUrlAddress];
             discountVC.returnmain=@"3"; //页返回
             [self.navigationController pushViewController:discountVC animated:YES];
-            self.hidesBottomBarWhenPushed=NO;
         }
-       else if(index==3)
+       else if(index==2)
         {
-            self.hidesBottomBarWhenPushed=YES;
             HomeWebController *discountVC = [[HomeWebController alloc] init];
             discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/account/accountLog",oyUrlAddress];
             discountVC.returnmain=@"3"; //页返回
             [self.navigationController pushViewController:discountVC animated:YES];
-            self.hidesBottomBarWhenPushed=NO;
         }
     }
     else
     {
-        [self OnLogin];
+        [self goLoginVC];
     }
 }
-/****/
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
+/**
+ scrollView滑动动态改变导航栏内容高度
+ */
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGFloat  yh=10;
-    if(bt_user_url!=nil)
-    {
-        if([bt_user_url count]<5)
-            yh=30;
-        else
-        yh=([bt_user_url count]-4)*54;
-    }
+    //设置渐变区域高度为100
+    CGFloat contentOffset = self.tableView.contentOffset.y - self.tableView.top;
     
-    CGFloat offsetY = scrollView.contentOffset.y+20;
-    if(kDevice_Is_iPhoneX)
-        offsetY=scrollView.contentOffset.y;
-    if (offsetY <=1) {
-        self.navView.rightView.frame=CGRectMake(navxR,navyR,navwR,navhR);
-        [self.navView.rightView.layer setCornerRadius:navwR/2];
-        self.navView.backimg.frame=CGRectMake(navxL,navyL,navwL,navhL);
-        [self.navView.backimg.layer setCornerRadius:navwL/2];
-        self.navView.leftName.frame=CGRectMake(navxL+60,navyL+19,200,15);
-         self.navView.leftName.font=CHINESE_SYSTEM(15);
-         self.navView.infolimg.frame=CGRectMake(20, 6, 10,10);
-           [self.navView.infolimg.layer setCornerRadius:5];
-        self.navView.leftBtn.frame=CGRectMake(4,4,42,42);
-       [self.navView.leftBtn.layer setCornerRadius:21];
+//    NSLog(@"contentoffset = %.2f",contentOffset);
+    if (contentOffset>0&&contentOffset<100) {
         
-      self.navView.image1.frame=CGRectMake(10, 11, 20, 20);
-        
+        [self.accountTitleView reloadNav:contentOffset];
     }
-    else if (offsetY>1&&offsetY <yh) {
-        
-        CGFloat ff=offsetY+10;
-        CGFloat L1=10-10*(yh-ff)/yh;
-        CGFloat Ly=15-15*(yh-ff)/yh;
-        CGFloat R1=5-5*(yh-ff)/yh;
-        CGFloat R3=10-10*(yh-ff)/yh;
-        CGFloat Ry=13-13*(yh-ff)/yh;
-        CGFloat nbxL=7-7*(yh-ff)/yh;
-        CGFloat nbxR=2-2*(yh-ff)/yh;
-        CGFloat fontH=22-22*(yh-ff)/yh;
-        
-        self.navView.rightView.frame=CGRectMake(navxR-nbxR,navyR-Ry,navwR-R3,navwR-R3);
-        self.navView.backimg.frame=CGRectMake(navxL+nbxL,navyL-Ly,navwL-L1,navwL-L1);
-        [self.navView.backimg.layer setCornerRadius:(navwL-L1)/2];
-        [self.navView.rightView.layer setCornerRadius:(navwR-R3)/2];
-        self.navView.frame=CGRectMake(0, 0, screen_height,90);
-        self.navView.backgroundColor=[UIColor clearColor];
-        self.navView.leftName.frame=CGRectMake(navxL+60-nbxR,navyL+19-fontH,200,12);
-        self.navView.leftBtn.frame=CGRectMake(4,4,navwL-L1-6,navwL-L1-6);
-
-        [self.navView.leftBtn.layer setCornerRadius:(navwL-L1-4)/2];
-        self.navView.image1.frame=CGRectMake(10-nbxR, 11-nbxR, 16, 16);
-    }else{
-        self.navView.frame=CGRectMake(0, 0, screen_height,64);
-        self.navView.backgroundColor=navigationBarColor;
-        self.navView.rightView.frame=CGRectMake(navxR-2,navyR-13,navwR-10,navhR-10);
-        self.navView.backimg.frame=CGRectMake(navxL+7,navyL-16,navwL-10,navhL-10);
-        [self.navView.backimg.layer setCornerRadius:(navwL-10)/2];
-       [self.navView.rightView.layer setCornerRadius:(navwR-10)/2];
-       // self.navView.leftBtn.frame=CGRectMake(20,20,navwL-6,navhL-6);
-        [self.navView.leftBtn.layer setCornerRadius:(navwL-10)/2];
-        self.navView.leftName.frame=CGRectMake(navxL+58,navyL-3,200,12);
-        self.navView.leftName.font=CHINESE_SYSTEM(12);
-          self.navView.leftBtn.frame=CGRectMake(4,4,32,32);
-         [self.navView.leftBtn.layer setCornerRadius:16];
-        
-         self.navView.infolimg.frame=CGRectMake(15, 5, 8,8);
-            [self.navView.infolimg.layer setCornerRadius:4];
-          self.navView.image1.frame=CGRectMake(8, 8.5, 14, 14);
-        
+    if(contentOffset>=0){
+        self.refreshView.top = -screen_height;
+        [self.accountTitleView setBackgroundColor:navigationBarColor];//遮挡住tabView，作为导航栏显示，设置背景色
     }
-   
-    // self.view.backgroundColor=RGB(21,140,241);
-    // NSLog(@"dy%f",offsetY); RGB(53, 171, 245)
+   else  {
+       [self.accountTitleView setBackgroundColor:[UIColor clearColor]];
+        self.refreshView.top = -screen_height-contentOffset;
+       if (ABS(contentOffset)<=navTitleHeight/2) {
+           self.refreshImage.transform = CGAffineTransformMakeRotation(M_PI);
+           self.refreshLabel.text = @"下拉刷新";
+       }else{
+           [UIView animateWithDuration:0.3 animations:^{
+               self.refreshImage.transform = CGAffineTransformMakeRotation(M_PI*2);
+           }];
+           self.refreshLabel.text = @"松开即刻刷新";
+       }
+    }
 }
 
 //遮罩页
@@ -811,9 +504,7 @@ OpenShowAdvertDelegate>
     if(_maskView==nil)
     {
         _maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height)];
-        //    _maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 64+40, screen_width, 0)];
         _maskView.backgroundColor = RGBA(0, 0, 0, 0.5);
-        //   [self.view addSubview:_maskView];
         _maskView.hidden = NO;
         //添加手势
         CGFloat  ddw=242;
@@ -843,18 +534,13 @@ OpenShowAdvertDelegate>
     if(type==2)
     {
         _maskView.hidden = YES;
-        
     }
     else if(type==1)
     {
-       // [self OnLogin];
-        _maskView.hidden = YES;
-        self.hidesBottomBarWhenPushed=YES;
         HomeWebController *discountVC = [[HomeWebController alloc] init];
-        discountVC.urlStr=[NSString stringWithFormat:@"%@/%@",oyUrlAddress,userinfo.trust_reg_link];
+        discountVC.urlStr=[NSString stringWithFormat:@"%@/%@",oyUrlAddress,self.accountModel.trust_reg_link];
         discountVC.returnmain=@"3"; //页返回
         [self.navigationController pushViewController:discountVC animated:YES];
-        self.hidesBottomBarWhenPushed=NO;
     }
 }
 
@@ -862,228 +548,54 @@ OpenShowAdvertDelegate>
 
 
 -(void) GetMyUserDatas{
+    if (![CommonUtils isLogin]) {
+        [self.tableView.mj_header endRefreshing];
+        return;
+    }
   __weak typeof(self) weakSelf = self;
-    NSString *urlStr = @"";
-    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[[CommonUtils getToken]] forKeys:@[kToken] ];
-    NSString *sign=[HttpSignCreate GetSignStr:dict_data];
-    urlStr = [NSString stringWithFormat:getMyUserData,oyApiUrl,[CommonUtils getToken],sign];
-    NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
-    if([ggHttpFounction getJsonIsOk:data])
-    {
-           NSDictionary * dir= [ggHttpFounction getJsonData1:data];
-        scrollmodel=[[TopScrollMode alloc] init];
-        myuser=[[BtMyUser alloc] init];
-        userinfo=[[UserInfo alloc] init];
-        
-        userinfo.balance_amount=[dir objectForKey:@"balance_amount"];
-        userinfo.cash_url=[dir objectForKey:@"cash_url"];
-        userinfo.is_trust_reg=[NSString stringWithFormat:@"%@",[dir objectForKey:@"is_trust_reg"]];
-        userinfo.message=[NSString stringWithFormat:@"%@",[dir objectForKey:@"message"]];
-        userinfo.recharge_url=[NSString stringWithFormat:@"%@",[dir objectForKey:@"recharge_url"]];
-        userinfo.to_interest_award=[NSString stringWithFormat:@"%@",[dir objectForKey:@"to_interest_award"]];
-        userinfo.total_amount=[NSString stringWithFormat:@"%@",[dir objectForKey:@"total_amount"]];
-        userinfo.trust_reg_link=[NSString stringWithFormat:@"%@",[dir objectForKey:@"trust_reg_link"]];
-        userinfo.trust_reg_log=[NSString stringWithFormat:@"%@",[dir objectForKey:@"trust_reg_log"]];
-        userinfo.trust_reg_sub_title=[NSString stringWithFormat:@"%@",[dir objectForKey:@"trust_reg_sub_title"]];
-         userinfo.trust_reg_title=[NSString stringWithFormat:@"%@",[dir objectForKey:@"trust_reg_title"]];
-        userinfo.user_name=[dir objectForKey:@"user_name"];
-        userinfo.to_interest_award=[dir objectForKey:@"to_interest_award"];
-         userinfo.total_amount=[dir objectForKey:@"total_amount"];
-        
-        
-        //user_name
-        NSDictionary * bt_my_capital_log=[dir objectForKey:@"bt_my_capital_log"];
-        NSDictionary * bt_my_investment=[dir objectForKey:@"bt_my_investment"];
-        NSDictionary * bt_my_red=[dir objectForKey:@"bt_my_red"];
-       NSArray *  bt_user_content=[dir objectForKey:@"bt_user_content"];
-        NSMutableArray * bt_user_title=[[NSMutableArray alloc] init];
-        NSMutableArray * bt_user_logo=[[NSMutableArray alloc] init];
-        bt_user_url=[[NSMutableArray alloc] init];
-        for(int k=0;k<[bt_user_content count];k++)
-        {
-          [bt_user_url addObject:[bt_user_content[k] objectForKey:@"link_url"]] ;
-          [bt_user_title addObject:[bt_user_content[k] objectForKey:@"title"]] ;
-          [bt_user_logo addObject:[bt_user_content[k] objectForKey:@"logo_url"]] ;
-        }
-        array7 =[bt_user_title copy];
-        array6 =[bt_user_logo copy];
-      
-        array3= [NSArray arrayWithObjects:[bt_my_investment objectForKey:@"title"],[bt_my_red objectForKey:@"title"],[bt_my_capital_log objectForKey:@"title"],nil];
-        array4= [NSArray arrayWithObjects: [bt_my_investment objectForKey:@"sub_title"],[bt_my_red objectForKey:@"sub_title"],[bt_my_capital_log objectForKey:@"sub_title"],nil];
-        array2=[NSArray arrayWithObjects:[bt_my_investment objectForKey:@"link_url"],[bt_my_red objectForKey:@"link_url"],[bt_my_capital_log objectForKey:@"link_url"],nil];
-        
-        if(! [userinfo.message isEqual:@"0"])
-        {
-            if(weakSelf.navView.infolimg==nil)
-            {
-            weakSelf.navView.infolimg=[[UIView alloc] initWithFrame:CGRectMake(20, 6, 10,10)];
-            [weakSelf.navView.infolimg.layer setCornerRadius:5];
-            weakSelf.navView.infolimg.backgroundColor=RGB(252,18,18);
-            [weakSelf.navView.rightView addSubview:self.navView.infolimg];
-            }
-            else
-                 {
-                     [weakSelf.navView.infolimg setHidden:FALSE];
-                 }
-        }
-        else
-         {
-             weakSelf.navView.ishaveinfo=@"0";
-               if(weakSelf.navView.infolimg!=nil)
-            [weakSelf.navView.infolimg setHidden:TRUE];
-         }
-        //
+    NSArray *keys = @[kToken];
+    NSArray *values = @[[CommonUtils getToken]];
+    
+    [[HttpCommunication sharedInstance] getSignRequestWithPath:getMyUserDataUrl keysArray:keys valuesArray:values refresh:self.tableView.mj_header success:^(NSDictionary *successDic) {
+   
+        [weakSelf loadInfoWithDict:successDic];
+    } failure:^(NSDictionary *errorDic) {
        
-        theAppDelegate.user_name=userinfo.user_name;
-        [TTJFUserDefault setStr:userinfo.user_name key:kUsername];
-        weakSelf.navView.leftName.text=userinfo.user_name;
-        
-        array1=[NSArray arrayWithObjects:[[bt_user_content objectAtIndex:0] objectForKey:@"link_url"],[[bt_user_content objectAtIndex:1] objectForKey:@"link_url"],[[bt_user_content objectAtIndex:2] objectForKey:@"link_url"],nil];
-        
-         array8=[NSArray arrayWithObjects:[[bt_user_content objectAtIndex:0] objectForKey:@"title"],[[bt_user_content objectAtIndex:1] objectForKey:@"title"],[[bt_user_content objectAtIndex:2] objectForKey:@"title"],nil];
-        
-           isFirstExe=FALSE;
-        
-           [weakSelf.tableView reloadData];
-      
-              [weakSelf showRegTuanGuan];
-  
-       
-    }
-    else
-    {
-       
-        
-    }
+    }];
+
 
 }
--(void) GetMyByWebUserDatas
-{
-    __weak typeof(self) weakSelf = self;
-    NSString *urlStr = @"";
-    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[[CommonUtils getToken]] forKeys:@[kToken] ];
-    NSString *sign=[HttpSignCreate GetSignStr:dict_data];
-    urlStr = [NSString stringWithFormat:getMyUserData,oyApiUrl,[CommonUtils getToken],sign];
-    NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
-    if([ggHttpFounction getJsonIsOk:data])
-    {
-        NSDictionary * dir= [ggHttpFounction getJsonData1:data];
-        scrollmodel=[[TopScrollMode alloc] init];
-        myuser=[[BtMyUser alloc] init];
-        userinfo=[[UserInfo alloc] init];
-        
-        userinfo.balance_amount=[dir objectForKey:@"balance_amount"];
-        userinfo.cash_url=[dir objectForKey:@"cash_url"];
-        userinfo.is_trust_reg=[NSString stringWithFormat:@"%@",[dir objectForKey:@"is_trust_reg"]];
-        userinfo.message=[NSString stringWithFormat:@"%@",[dir objectForKey:@"message"]];
-        userinfo.recharge_url=[NSString stringWithFormat:@"%@",[dir objectForKey:@"recharge_url"]];
-        userinfo.to_interest_award=[NSString stringWithFormat:@"%@",[dir objectForKey:@"to_interest_award"]];
-        userinfo.total_amount=[NSString stringWithFormat:@"%@",[dir objectForKey:@"total_amount"]];
-        userinfo.trust_reg_link=[NSString stringWithFormat:@"%@",[dir objectForKey:@"trust_reg_link"]];
-        userinfo.trust_reg_log=[NSString stringWithFormat:@"%@",[dir objectForKey:@"trust_reg_log"]];
-        userinfo.trust_reg_sub_title=[NSString stringWithFormat:@"%@",[dir objectForKey:@"trust_reg_sub_title"]];
-        userinfo.trust_reg_title=[NSString stringWithFormat:@"%@",[dir objectForKey:@"trust_reg_title"]];
-        userinfo.user_name=[dir objectForKey:@"user_name"];
-        userinfo.to_interest_award=[dir objectForKey:@"to_interest_award"];
-        userinfo.total_amount=[dir objectForKey:@"total_amount"];
-        
-        
-        //user_name
-        NSDictionary * bt_my_capital_log=[dir objectForKey:@"bt_my_capital_log"];
-        NSDictionary * bt_my_investment=[dir objectForKey:@"bt_my_investment"];
-        NSDictionary * bt_my_red=[dir objectForKey:@"bt_my_red"];
-        NSArray *  bt_user_content=[dir objectForKey:@"bt_user_content"];
-        NSMutableArray * bt_user_title=[[NSMutableArray alloc] init];
-        NSMutableArray * bt_user_logo=[[NSMutableArray alloc] init];
-        bt_user_url=[[NSMutableArray alloc] init];
-        for(int k=0;k<[bt_user_content count];k++)
-        {
-            [bt_user_url addObject:[bt_user_content[k] objectForKey:@"link_url"]] ;
-            [bt_user_title addObject:[bt_user_content[k] objectForKey:@"title"]] ;
-            [bt_user_logo addObject:[bt_user_content[k] objectForKey:@"logo_url"]] ;
-        }
-        array7 =[bt_user_title copy];
-        array6 =[bt_user_logo copy];
-        
-        array3= [NSArray arrayWithObjects:[bt_my_investment objectForKey:@"title"],[bt_my_red objectForKey:@"title"],[bt_my_capital_log objectForKey:@"title"],nil];
-        array4= [NSArray arrayWithObjects: [bt_my_investment objectForKey:@"sub_title"],[bt_my_red objectForKey:@"sub_title"],[bt_my_capital_log objectForKey:@"sub_title"],nil];
-        array2=[NSArray arrayWithObjects:[bt_my_investment objectForKey:@"link_url"],[bt_my_red objectForKey:@"link_url"],[bt_my_capital_log objectForKey:@"link_url"],nil];
-        
-        if(! [userinfo.message isEqual:@"0"])
-        {
-            if(weakSelf.navView.infolimg==nil)
-            {
-                weakSelf.navView.infolimg=[[UIView alloc] initWithFrame:CGRectMake(20, 6, 10,10)];
-                [weakSelf.navView.infolimg.layer setCornerRadius:5];
-                weakSelf.navView.infolimg.backgroundColor=RGB(252,18,18);
-                [weakSelf.navView.rightView addSubview:self.navView.infolimg];
-            }
-            else
-            {
-                [weakSelf.navView.infolimg setHidden:FALSE];
-            }
-        }
-        else
-        {
-            weakSelf.navView.ishaveinfo=@"0";
-            if(weakSelf.navView.infolimg!=nil)
-                [weakSelf.navView.infolimg setHidden:TRUE];
-        }
-        //
-        theAppDelegate.user_name=userinfo.user_name;
-        [TTJFUserDefault setStr:userinfo.user_name key:kUsername];
-        NSString * temp=[[dir objectForKey:@"expiration_date"] substringWithRange:NSMakeRange(0,10)];
-        theAppDelegate.expirationdate=temp;
-        NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
-        [userDef setObject:temp forKey:@"LoginTime"];
-        [userDef setObject: [CommonUtils getUsername] forKey:@"LoginAccount"];
-    //    [userDef setObject:password forKey:@"LoginPassword"];
-        [userDef synchronize];
-        
-        weakSelf.navView.leftName.text=userinfo.user_name;
-        
-        array1=[NSArray arrayWithObjects:[[bt_user_content objectAtIndex:0] objectForKey:@"link_url"],[[bt_user_content objectAtIndex:1] objectForKey:@"link_url"],[[bt_user_content objectAtIndex:2] objectForKey:@"link_url"],nil];
-        
-        array8=[NSArray arrayWithObjects:[[bt_user_content objectAtIndex:0] objectForKey:@"title"],[[bt_user_content objectAtIndex:1] objectForKey:@"title"],[[bt_user_content objectAtIndex:2] objectForKey:@"title"],nil];
-        
-        isFirstExe=FALSE;
-        
-        [weakSelf.tableView reloadData];
-        
-        [weakSelf showRegTuanGuan];
-        
-        
+//刷新数据
+-(void)loadInfoWithDict:(NSDictionary *)dict{
+    self.accountModel = [MyAccountModel yy_modelWithJSON:dict];
+    //中间三个菜单按钮
+    middleMenuArray = @[self.accountModel.bt_my_investment,self.accountModel.bt_my_red,self.accountModel.bt_my_capital_log];
+    //消息个数
+    if([self.accountModel.message integerValue]==0)
+    {//隐藏消息
+        self.accountTitleView.rightImage.selected = NO;
     }
     else
-    {
-        
-        
+    {//显示红点消息
+        self.accountTitleView.rightImage.selected = YES;
     }
+    //设置昵称
+    [TTJFUserDefault setStr:self.accountModel.user_name key:kNikename];
+    self.accountTitleView.titleLabel.text = self.accountModel.user_name;
+    isFirstExe=FALSE;
+    [self.tableView reloadData];
+    [self showRegMaskView];
 }
-
-
 - (CGSize)intrinsicContentSize {
     return UILayoutFittingExpandedSize;
 }
 
-//getMyUserData
+/**表格数据操作**/
 
-
-//修改tabbar高度
-/*
-- (void)viewWillLayoutSubviews {
-    
-    if(theAppDelegate.IS_IPhoneX)
-    {
-        
-    CGRect tabFrame = self.tabBarController.tabBar.frame;
-    tabFrame.size.height = 76;
-    tabFrame.origin.y = screen_height - 57;
-    self.tabBarController.tabBar.frame = tabFrame;
-    }
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
-*/
-
 
 
 @end

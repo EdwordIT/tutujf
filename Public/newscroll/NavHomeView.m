@@ -17,12 +17,12 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self awakeFromNib];
+        [self initSubViews];
     }
     return self;
 }
 
-- (void)awakeFromNib{
+- (void)initSubViews{
     
     self.backgroundColor = [UIColor clearColor];
     

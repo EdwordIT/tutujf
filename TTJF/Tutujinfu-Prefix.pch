@@ -9,40 +9,21 @@
 #ifndef Tutujinfu_Prefix_pch
 #define Tutujinfu_Prefix_pch
 
-#define RGBCOLOR(r,g,b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1]
-#define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
-
 #ifdef __OBJC__
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <SystemConfiguration/SystemConfiguration.h>
-//#import "ITTDebug.h"
-//#import "CalendarDateUtil.h"
 #endif
 #import "Environment.h"
 #import "Public.h"
 #import "constant.h"
 #import "TTJFUserDefault.h"
 #import "CommonUtils.h"
-#import "UIImageView+WebCache.h"
 #import "IQKeyboardManager.h"
 #import "UIView+Extension.h"
+#import "UIImageView+SDImage.h"
+#import <UIImageView+WebCache.h>
 #import <Masonry.h>
-//#import "MobClick.h"
-//#import "XBApi.h"
-//#import "XBGlobal.h"
-//#import "XBParser.h"
-//#import "OneBaseVC.h"
-//#import "OneBaseParser.h"
-//#import "XBBaseVC.h"
-//#import "Jastor.h"
-//#import "UIColor+hexColor.h"
-//#import "UIImageView+NoMapMode.h"
-//   #import "XBDbHandler.h"
-// #import "Jxb_Common_Common.h"
-//#import <IPSP2PSDK/UPPaymentControl.h>
-
-#import "GVUserDefaults+BBProperties.h"
 
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.

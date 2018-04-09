@@ -18,7 +18,8 @@
 #import "AFNetworking.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "SVProgressHUD.h"
-#import  "DZWKWebViewController.h"
+//#import  "DZWKWebViewController.h"
+#import "HomeWebController.h"
 #import "Tender.h"
 
 #define lightfont RGB(255,255,255)
@@ -367,7 +368,7 @@
     NSString * loan_id=self.loan_id;
     NSString * user_token=@"";
     if([CommonUtils isLogin])
-        user_token=theAppDelegate.user_token;
+        user_token=[CommonUtils getToken];
     
     NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[loan_id,user_token] forKeys:@[@"loan_id",kToken] ];
     NSString *sign=[HttpSignCreate GetSignStr:dict_data];
@@ -569,6 +570,7 @@
     BOOL chk=[self checkNum];
     if(chk)
     {
+        //如果已经开通托管账号，去投资
         if([base.trust_account isEqual:@"1"])
         {
         [self getFormData];
@@ -779,7 +781,7 @@
     NSString * amount=str;
     NSString * loan_id=self.loan_id; //
     NSString * loan_password=@""; //
-    NSString * user_token=theAppDelegate.user_token; //
+    NSString * user_token=[CommonUtils getToken]; //
       if([info.password_status isEqual:@"1"])
         {
               loan_password=[_passwordTextFiled text];
@@ -892,17 +894,9 @@
 {
  
     url=[NSString stringWithFormat:@"%@?%@",url,postdata];
-    /*
     HomeWebController *discountVC = [[HomeWebController alloc] init];
-    discountVC.urlStr=url;
-    discountVC.returnmain=@"5"; //页返回
-    [self.navigationController pushViewController:discountVC animated:YES];
-    */
-    DZWKWebViewController *discountVC = [[DZWKWebViewController alloc] init];
     discountVC.returnmain=@"3";
-    discountVC.urlStr=url;
-    
-    
+    discountVC.urlStr=url;    
     [self.navigationController pushViewController:discountVC animated:YES];
   
 }

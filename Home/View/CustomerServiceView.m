@@ -69,7 +69,7 @@ Strong UILabel *timeLabel;//客服时间
     self.telNumberLabel = InitObject(UILabel);
     _telNumberLabel.frame = RECT(0, self.titleLabel.bottom+kSizeFrom750(30), self.mainView.width, kSizeFrom750(40));
     [_telNumberLabel setFont:SYSTEMBOLDSIZE(40)];
-    [_telNumberLabel setTextColor:RGB_Red];
+    [_telNumberLabel setTextColor:COLOR_Red];
     _telNumberLabel.textAlignment = NSTextAlignmentCenter;
     _telNumberLabel.text = @"400-000-9899";
     [self.mainView addSubview:self.telNumberLabel];
@@ -77,12 +77,12 @@ Strong UILabel *timeLabel;//客服时间
     self.questionBtn = InitObject(UIButton);
     self.questionBtn.frame = RECT(kSizeFrom750(40), self.telNumberLabel.bottom+kSizeFrom750(46), kSizeFrom750(240), kSizeFrom750(70));
     [self.questionBtn setTitle:@"常见问题" forState:UIControlStateNormal];
-    [self.questionBtn setTitleColor:RGB_LightBlue forState:UIControlStateNormal];
+    [self.questionBtn setTitleColor:COLOR_LightBlue forState:UIControlStateNormal];
     self.questionBtn.adjustsImageWhenHighlighted = NO;
     [self.questionBtn.titleLabel setFont:SYSTEMSIZE(30)];
     self.questionBtn.layer.cornerRadius = kSizeFrom750(70)/2;
     self.questionBtn.layer.masksToBounds = YES;
-    self.questionBtn.layer.borderColor = [RGB_LightBlue CGColor];
+    self.questionBtn.layer.borderColor = [COLOR_LightBlue CGColor];
     self.questionBtn.layer.borderWidth = 1;
     [self.questionBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     self.questionBtn.tag = 0;
@@ -93,7 +93,7 @@ Strong UILabel *timeLabel;//客服时间
     [self.calServiceBtn setTitle:@"立即拨打" forState:UIControlStateNormal];
     [self.calServiceBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.calServiceBtn.adjustsImageWhenHighlighted = NO;
-    [self.calServiceBtn setBackgroundColor:RGB_LightBlue];
+    [self.calServiceBtn setBackgroundColor:COLOR_LightBlue];
     [self.calServiceBtn.titleLabel setFont:SYSTEMSIZE(30)];
     [CommonUtils setShadowCornerRadiusToView:self.calServiceBtn];
     self.calServiceBtn.layer.cornerRadius = kSizeFrom750(70)/2;
@@ -112,6 +112,12 @@ Strong UILabel *timeLabel;//客服时间
     self.timeLabel.text = @"客服服务时间：09:00 - 18:00（工作日）";
     [self.mainView addSubview:self.timeLabel];
 
+}
+-(void)reloadInfoWithModel:(SystemConfigModel *)model{
+    
+    self.timeLabel.text = model.cust_serv_time;
+    self.telNumberLabel.text = model.cust_serv_tel;
+    
 }
 -(void)closeBtnClick:(UIButton *)sender{
     

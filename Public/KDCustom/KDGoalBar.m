@@ -58,10 +58,10 @@
     percentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 75, 75)];
     [percentLabel setFont:[UIFont systemFontOfSize:60]];
     [percentLabel setTextColor:[UIColor colorWithRed:89/255.0 green:89/255.0 blue:89/255.0 alpha:1.0]];
-    [percentLabel setTextAlignment:UITextAlignmentCenter];
+    [percentLabel setTextAlignment:NSTextAlignmentCenter];
     [percentLabel setBackgroundColor:[UIColor clearColor]];
     percentLabel.adjustsFontSizeToFitWidth = YES;
-    percentLabel.minimumFontSize = 10;
+    percentLabel.minimumScaleFactor = 10;
     [self addSubview:percentLabel];
     
     thumbLayer = [CALayer layer];

@@ -44,10 +44,13 @@
             placeholderRect.size.width = CGRectGetWidth(self.frame)-10;
         }
         [self.placeholderColor set];
-        [self.placeholder drawInRect:placeholderRect
-                            withFont:self.font
-                       lineBreakMode:NSLineBreakByWordWrapping
-                           alignment:NSTextAlignmentLeft];
+        NSMutableParagraphStyle* paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        paragraphStyle.lineBreakMode = NSLineBreakByCharWrapping;
+        paragraphStyle.alignment = NSTextAlignmentLeft;
+        NSDictionary*attribute = @{NSFontAttributeName:self.font,NSParagraphStyleAttributeName:paragraphStyle};
+
+        [self.placeholder drawInRect:placeholderRect withAttributes:attribute];
+      
     }
 }
 //但- (void)drawRect:(CGRect)rect在self绘制或大小位置改变的时候被调用,我们输入文字是不会被调用的. 所以要调用self的setNeedsDisplay来重新绘制self里面的内容(placeholder).

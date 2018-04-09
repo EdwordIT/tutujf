@@ -6,9 +6,8 @@
 //  Copyright © 2017年 占碧光. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-@interface FoundListModel : NSObject
+#import "BaseModel.h"
+@interface FoundListModel : BaseModel
 
 @property(nonatomic, strong) NSString *date;
 @property(nonatomic, strong) NSString *title;

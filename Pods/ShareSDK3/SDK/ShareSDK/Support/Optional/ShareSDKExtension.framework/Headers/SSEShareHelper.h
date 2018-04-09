@@ -77,8 +77,8 @@ typedef void(^SSEOneKeyShareStateChangeHandler) (SSDKPlatformType platformType, 
  *  @param willShareHandler    将要分享事件，在此事件中处理要分享的平台、参数
  *  @param stateChangedHandler 状态变更事件
  */
-+ (void)beginShakeShare:(void(^)())beginShakeHandler
-              onEndSake:(void(^)())endShakeHandler
++ (void)beginShakeShare:(void(^)(void))beginShakeHandler
+              onEndSake:(void(^)(void))endShakeHandler
      onWillShareHandler:(SSEShakeWillShareHandler)willShareHandler
          onStateChanged:(SSDKShareStateChangedHandler)stateChangedHandler;
 

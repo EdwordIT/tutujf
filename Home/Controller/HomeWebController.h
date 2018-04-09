@@ -7,8 +7,10 @@
 //webView基础类
 
 #import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import <JavaScriptCore/JavaScriptCore.h>
+#import <WebKit/WebKit.h>
 //#import "SDScanViewController.h"
 
 #define  webUrl [oyUrlAddress stringByAppendingString:@"/trust/back/backRecharge"];
@@ -23,17 +25,14 @@
 // 商户MD5数字证书
 #define MD5_CERT   @"8fJPaXNUNjB6K4rxHOCw72PPRZV4v5k2emqMPh73oRlUSE3tN4qbBhCVOO1nZ4QfOGkrWXP4NHTJQqVRNBvdnps1xMtalWSxCsuvMDOhUlHU7gznJESLVv7u3yGyJh00";
 
-@interface HomeWebController : UIViewController<UIWebViewDelegate>  //JSDemoExport
+@interface HomeWebController : BaseViewController
 {
-    UIWebView *iWebView;
     NSTimer *timer;
 }
 
 @property (retain,nonatomic) CLLocationManager *locManager;
 @property (nonatomic, copy) NSString *orderNum;
-@property (strong, nonatomic) JSContext *context;
 @property (nonatomic, copy) NSString *qCodeString;
-@property (nonatomic, copy) NSString *callbackShare;
 @property (nonatomic, copy) NSString *callbackScan;
 
 @property (nonatomic, copy) NSString *Returnurl;
@@ -44,7 +43,6 @@
 
 @property(nonatomic, strong) NSString *urlStr;
 @property(nonatomic, strong) NSString *currentURL;
-@property(nonatomic, strong) NSString *isreturn;
 @property(nonatomic, strong) NSString *returnmain;
 
 @end

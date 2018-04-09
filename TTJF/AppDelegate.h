@@ -7,62 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UrlJumpHelp.h"
-#import "GlobeData.h"
-#import "LoginViewController.h"
-
+#import "SystemConfigModel.h"
 #define theAppDelegate ((AppDelegate *)[[UIApplication sharedApplication] delegate])
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 
 @property (strong, nonatomic) UIWindow *window;
-@property(nonatomic, strong) UIImageView *advImage;
-@property (nonatomic, assign) double latitude;
-@property (nonatomic, assign) double longitude;
 @property(nonatomic, strong) UITabBarController *rootTabbarCtr;
+//系统配置model
+Strong SystemConfigModel *systemConfigModel;
+//允许访问的域名
+Strong NSArray *urlJumpList;
 
-@property  NSString  * MobileNum;
-@property BOOL IsLogin;
-@property BOOL IsValid;
-@property BOOL IsJump;
-@property BOOL IS_IPhoneX;
-@property BOOL IsUpdate;
-@property BOOL IsWebRegdit;
-
-@property  NSString  *  user_token;
-@property  NSString  *  password;
-@property  NSString  *  certificate_name;
-@property  NSString  *  certificate_no;
-
-@property  NSInteger  xbindex;
-//@property  NSInteger  tmpindex;
-@property  NSInteger  tabindex;
-
-@property  NSString  *  personalImage;
-@property  NSString  *  isrenzheng;
-@property  NSString  *  nick_name;
-@property  NSString  *  user_name;
-@property  NSString  *  vistorjg;
-@property  NSString  *  device_token;
-@property  NSString  *  jumpLogin;
-@property  NSString  *  lockLogin;
-@property  int  webLogin;
-@property  NSString  *  userdxb;
-@property  NSString  *  userhb;
-@property  NSString  *  webJump;
-@property  NSString  *  accountQh;
-@property(nonatomic, strong) UrlJumpHelp * jumpHelp;
-
-@property(nonatomic, strong) LoginViewController * userLogin;
-@property  NSString  *   httplink;
-//@property  NSString  *   VersionNum;
-@property  NSArray  *   urlJumpList;
-@property  NSArray  *   needReturnList;
-
-@property  NSString  *  expirationdate;
-
-@property(nonatomic, strong)  GlobeData * globed;
-
+-(UINavigationController *)currentNav;
 @end
 

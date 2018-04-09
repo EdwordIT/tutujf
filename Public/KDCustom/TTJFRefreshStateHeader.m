@@ -23,8 +23,8 @@
     // 初始化间距
     //设置普通状态的动画图片
     NSMutableArray *idleImages = [NSMutableArray array];
-    for (NSUInteger i = 1; i<=3; ++i) {
-        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"dropdown_anim__000%ld",i]];
+    for (NSUInteger i = 1; i<=12; ++i) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"refresh_0%ld.jpg",i]];
         [idleImages addObject:image];
     }
     
@@ -34,40 +34,54 @@
     self.stateLabel.hidden = YES;
     //设置正在刷新状态的动画图片（发送网络请求等待response的过程）
     NSMutableArray *refreshingImages = [NSMutableArray array];
-    for (NSInteger i = 3; i<=21; i++) {
-        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"dropdown_anim__000%ld",i]];
+    for (NSInteger i = 13; i<=34; i++) {
+        UIImage *image;
+//        if (i>34) {
+//           image = [UIImage imageNamed:[NSString stringWithFormat:@"refresh_0%ld.jpg",i-34]];
+//
+//        }else
+            image = [UIImage imageNamed:[NSString stringWithFormat:@"refresh_0%ld.jpg",i]];
         [refreshingImages addObject:image];
     }
-    //设置下拉过程中的动画图片
     NSMutableArray *pullingImages =[NSMutableArray array];
-    for (NSInteger i = 3; i<=3; i++) {
-        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"dropdown_anim__000%ld",i]];
+    for (NSInteger i = 12; i<=12; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"refresh_0%ld.jpg",i]];
         [pullingImages addObject:image];
     }
     // 普通状态
     [self setImages:idleImages duration:5 forState:MJRefreshStateIdle];
-    // 即将刷新状态
-    [self setImages:pullingImages duration:4 forState:MJRefreshStatePulling];
+    // 即将刷新状态(超过下拉区间，准备开始刷新显示的动画)
+    [self setImages:pullingImages forState:MJRefreshStatePulling];
     // 正在刷新状态
-    [self setImages:refreshingImages duration:0.5 forState:MJRefreshStateRefreshing];
+    [self setImages:refreshingImages duration:0.8 forState:MJRefreshStateRefreshing];
     
+
     
 
 }
-//6P下刷新图片尺寸1125*203
+//刷新图片尺寸1242*400
 -(void)placeSubviews
 {
     [super placeSubviews];
-    if (IS_IPhone6plus) {
-        CGFloat plusHeight = 203.f*(screen_width/1125.f);
-        CGRect gifViewFrame = self.gifView.frame;
-        gifViewFrame.size.width = screen_width;
-        gifViewFrame.origin.y-=plusHeight - gifViewFrame.size.height;
-        gifViewFrame.size.height = plusHeight;
-        self.gifView.frame = gifViewFrame;
-        self.gifView.contentMode = UIViewContentModeScaleAspectFill;//适配iphone6P、7P、8P尺寸下的刷新图片显示不全的问题
-        
-    }
+    CGFloat plusHeight = 400*(screen_width/1242);
+    CGRect gifViewFrame = self.gifView.frame;
+    gifViewFrame.size.width = screen_width;
+    gifViewFrame.size.height = plusHeight;
+    self.gifView.frame = gifViewFrame;
+    self.gifView.contentMode = UIViewContentModeScaleAspectFill;
+    
+    self.mj_w = screen_width;
+    self.mj_h = plusHeight;
+    self.gifView.mj_w = screen_width;
+//    if (IS_IPhone6plus) {
+//        CGFloat plusHeight = 400*(screen_width/1242);
+//        CGRect gifViewFrame = self.gifView.frame;
+//        gifViewFrame.size.width = screen_width;
+//        gifViewFrame.origin.y = - plusHeight;
+//        gifViewFrame.size.height = plusHeight;
+//        self.gifView.frame = gifViewFrame;
+//        self.gifView.contentMode = UIViewContentModeScaleAspectFill;//适配iphone6P、7P、8P尺寸下的刷新图片显示不全的问题
+//    }
 }
 
 @end

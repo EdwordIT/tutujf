@@ -87,7 +87,7 @@
         RemoveBtnHighlighted *button = [RemoveBtnHighlighted buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(buttonX, buttonY, buttonW, buttonH);
         [button setTitle:titles[i] forState:UIControlStateNormal];
-        [button setFont:CHINESE_SYSTEM(15)];
+        [button.titleLabel setFont:CHINESE_SYSTEM(15)];
         [button setTitleColor:GRAY_COLOR_16 forState:UIControlStateNormal];
         [button setTitleColor:BLUE_COLOR_16 forState:UIControlStateSelected];
         [button addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];

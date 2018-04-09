@@ -14,12 +14,12 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self awakeFromNib];
+        [self initSubViews];
     }
     return self;
 }
 
-- (void)awakeFromNib{
+- (void)initSubViews{
     
     self.shapLayer = [[CAShapeLayer alloc] init];
     self.shapLayer.fillColor = [UIColor whiteColor].CGColor;

@@ -6,13 +6,13 @@
 //  Copyright © 2017年 占碧光. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "BaseModel.h"
 
-@interface QuicklyModel : NSObject
+@interface QuicklyModel : BaseModel
 
 @property(nonatomic, strong) NSString *nrid;
 
-@property(nonatomic, strong) NSString *loanid;
+@property(nonatomic, strong) NSString *loan_id;
 @property(nonatomic, strong) NSString *link_url;//链接地址
 @property(nonatomic, strong) NSString *bt_link_url;//抢购地址
 

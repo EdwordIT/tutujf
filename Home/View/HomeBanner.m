@@ -8,7 +8,7 @@
 
 #import "HomeBanner.h"
 #import "SDCycleScrollView.h"
-
+#import "HomepageModel.h"
 @interface HomeBanner() <SDCycleScrollViewDelegate>
 {
     UIScrollView *demoContainerView;
@@ -45,6 +45,8 @@
     cycleScrollView2.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
     [demoContainerView addSubview:cycleScrollView2];
     
+    cycleScrollView2.pageControlBottomOffset = kSizeFrom750(30);
+    
     //         --- 模拟加载延迟
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         cycleScrollView2.imageURLStringsGroup = imagesURLStrings;
@@ -59,12 +61,6 @@
 }
 
 -(void)setModelArray:(NSArray *)modelArray{
-    // 情景二：采用网络图片实现
-   /* NSMutableArray * tempArray= [[NSMutableArray alloc] init];
-    for(int k=0;k<modelArray.count;k++)
-    {
-        [tempArray addObject:[[modelArray objectAtIndex:k] objectForKey:@"imageurl"]];
-    }*/
     
     NSArray *imagesURLStrings = modelArray;
     

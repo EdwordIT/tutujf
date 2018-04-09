@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UserInfo.h"
+#import "MyAccountModel.h"
 
 @protocol OpenShowAdvertDelegate <NSObject>
 
@@ -22,6 +22,6 @@
 
 - (id)initWithFrame:(CGRect)frame ;
 
--(void) setDataBind:(UserInfo *) userinfo;
+-(void) setDataBind:(MyAccountModel *) userinfo;
 
 @end

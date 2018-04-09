@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface ImmediateModel : NSObject
-@property(nonatomic, strong) NSString *loanid;
+@property(nonatomic, strong) NSString *loan_id;//标的id
 @property(nonatomic, strong) NSString *link_url; //链接地址
 
 @property(nonatomic, strong) NSString *bt_link_url;

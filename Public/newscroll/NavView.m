@@ -15,12 +15,12 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self awakeFromNib];
+        [self initSubViews];
     }
     return self;
 }
 
-- (void)awakeFromNib{
+- (void)initSubViews{
     
     self.backgroundColor = [UIColor clearColor];
   //  _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0, screen_width,64)];

@@ -8,60 +8,37 @@
 
 #import "AppDelegate.h"
 #import <CoreLocation/CoreLocation.h>
-//#import "UMSocial.h"
-//#import "UMSocialWechatHandler.h"
-#import "MobClick.h"
-#import "XGPush.h"
-
+#import <MobClick.h>
+#import "AppDelegate+XGPushConfig.h"
 #import "SYSafeCategory.h"
 #import "introductoryPagesHelper.h"
-//#import "AutoLogin.h"
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKConnector/ShareSDKConnector.h>
-
 //腾讯开放平台（对应QQ和QQ空间）SDK头文件
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 //微信SDK头文件
 #import "WXApi.h"
-
 #import "MainViewController.h"
-#import "ProgrameViewController.h"
 #import "MineViewController.h"
-//#import "PPNetworkCache.h"
-#import "EMNavigationController.h"
-#import "WinChageType.h"
 #import "HomeWebController.h"
-
-
 #import "RSA.h"
 #import <CommonCrypto/CommonDigest.h>
-
 #import "NetworkManager.h"
 #import <AlicloudHttpDNS/AlicloudHttpDNS.h>
 #import "CustomURLProtocol.h"
 #import "XHLaunchAd.h"
 #import "UIImage+GIF.h"
 #import "ProgrameListController.h"
-//#import "MobClick.h"
 #import "PPNetworkHelper.h"
-//#import "Reachability.h"
-#import "NoNetController.h"
-#import "WinChageType.h"
-#import "SVProgressHUD.h"
 #import "MineViewController.h"
 #import "FoundController.h"
-#import "HttpSignCreate.h"
-#import "ggHttpFounction.h"
-#import "HttpUrlAddress.h"
 #import "YBLUserManageCenter.h"
 #import "YBLNetWorkHudBar.h"
 #import "ReactiveObjC.h"
 #import "AFNetworkReachabilityManager.h"
 
-#define Banner_Url @"/wapassets/trust/images/news/banner.jpg"//banner页面图片地址为固定地址
-#define Banner_DetailUrl [oyUrlAddress stringByAppendingString:@"/wap/system/register2"]//banner页面详情地址
-@interface AppDelegate ()<HttpDNSDegradationDelegate,XHLaunchAdDelegate>
+@interface AppDelegate ()<HttpDNSDegradationDelegate,XHLaunchAdDelegate,UIWebViewDelegate>
 {
     
     MainViewController *VC1 ;
@@ -74,41 +51,57 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    //判断机型、是否登录等各类系统状态
-    _IS_IPhoneX=FALSE;
-    CGSize resultSize = [[UIScreen mainScreen] bounds].size;
-    resultSize = CGSizeMake(resultSize.width * [UIScreen mainScreen].scale, resultSize.height * [UIScreen mainScreen].scale);
-    if(resultSize.width==1125&&resultSize.height==2436)
-        _IS_IPhoneX=TRUE;
-    //删除所有缓存 http 请求  PPNetworkCache json数据请求可以缓存
-   // [PPNetworkCache removeAllHttpCache];
-    _IsLogin=FALSE;
-    _IsValid=TRUE;
-    _IsJump=FALSE;
-    _IsUpdate=FALSE;
-    _IsWebRegdit=FALSE;
-    _user_token=[TTJFUserDefault strForKey:kToken];
-    _device_token=@"";
-    _password=@"";
-    _MobileNum=@"";
-    _xbindex=-1;
-    _isrenzheng=@"0";
-    _personalImage=@"";
-    _nick_name=@"";
-    _vistorjg=@"";
-    _jumpLogin=@"";
-    _lockLogin=@"";
-    _user_name=@"";
-    _webJump=@"";
-    _webLogin=0;
-    _accountQh=@"";
-    _certificate_no=@"";
-    _httplink=@"";
-    _globed=[[GlobeData alloc] init];
-    _globed.register_txt=@"快速注册";
-      _globed.register_link=@"";
-    _needReturnList= @[ @"https://www.ecailtd.com/M/Account/MyRecharge", @"https://ebspay.boc.cn/PGWPortal/RecvOrder.do",@"https://ibsbjstar.ccb.com.cn/CCBIS/ccbMain",@"https://gateway.95516.com/gateway/api/frontTransReq.do",@"https://cashier.95516.com/b2c/acronym.action?transNumber=",@"https://b2c.bank.ecitic.com/pec/e3rdplaceorder.do",@"https://b2c.bank.ecitic.com/pec/e3rdplaceorder.do",@"https://www.cebbank.com/per/preEpayLogin.do",@"https://netpay.cmbchina.com/mobile-card/BaseHttp.dll?MB_Pay_FromPC",@"https://ebanks.cgbchina.com.cn/payment/parseOrderInfo.do",@"https://ebank.cmbc.com.cn/weblogic/servlets/EService/CSM/NonSignPayPre",@"https://ebank.spdb.com.cn/payment/main",@"https://pbank.psbc.com/psbcpay/main",[oyUrlAddress stringByAppendingString:@"/wap/member/cash"],@"https://lab.chinapnr.com/muser/QUERY/0100/"];
+    //初始化网络请求参数
+    [self checkNetwork];
+    //获取配置信息
+    [self getSystemConfigData];
+    //注册protocol
+    [NSURLProtocol registerClass:[CustomURLProtocol class]];
+    //键盘统一收回处理
+    [self configureBoardManager];
+    //定制SVProgressHUD
+    [self setUpSvpProgress];
     
+    //注册推送通知
+    [self registerPushForIOS8];
+    //信鸽推送
+    [self registerXGPush];
+    //友盟统计
+    [MobClick startWithAppkey:UMAPPKEY reportPolicy:BATCH   channelId:@"GitHub"];
+    
+    //注册shareSDK
+    [self registerShareSDK];
+    //取消引导页
+//    [self setupIntroductoryPage];
+    //初始化
+    [self initRootVC];
+//信鸽推送信息上送到推送端
+    [[XGPush defaultManager] reportXGNotificationInfo:launchOptions];
+    return YES;
+}
+
+//初始化提示框
+- (void)setUpSvpProgress {
+    [SVProgressHUD setMinimumDismissTimeInterval:2];
+    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
+    [SVProgressHUD setBackgroundColor:RGBA(255, 255, 255, 0.8)];
+//    [[UIButton appearance] setExclusiveTouch:YES];
+//    [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
+//    [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
+//    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
+//    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
+//    [SVProgressHUD setCornerRadius:8];
+//    [SVProgressHUD setBackgroundColor:RGBA(0, 0, 0, 0.6)];
+//    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
+//    [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];
+//    [SVProgressHUD setFont:CHINESE_SYSTEM(16)];
+//    [SVProgressHUD setMinimumDismissTimeInterval:1.5];
+//    CGFloat wi = screen_width/3-space;
+//    [SVProgressHUD setMinimumSize:CGSizeMake(wi, wi)];
+    
+}
+-(void)checkNetwork
+{
     /**
      *  网络
      */
@@ -154,53 +147,17 @@
                 [YBLNetWorkHudBar dismissHudView];
             }
             [SVProgressHUD dismiss];
-            //[YBLLogLoadingView dismissInWindow];
         }];
     });
-
-    [self getSystemConfigDara];//获取配置信息
-    //注册protocol
-    [NSURLProtocol registerClass:[CustomURLProtocol class]];
-    //键盘统一收回处理
-    [self configureBoardManager];
-    
-   // [self initAdvView];
-    self.device_token=@"";
-    //信鸽推送
-    [XGPush startApp:2200260064 appKey:@"I192JMQK2N3G"];
-    [XGPush handleLaunching:launchOptions];
-    float sysVer = [[[UIDevice currentDevice] systemVersion] floatValue];
-    if(sysVer < 8){
-        [self registerPush];
-    }
-    else{
-        [self registerPushForIOS8];
-    }
-    self.userLogin=[[LoginViewController alloc] init];
-    
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com/"]];
-    
-    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-  //  [self initRootVC];
-    /**
-     *  设置ShareSDK的appKey，如果尚未在ShareSDK官网注册过App，请移步到http://mob.com/login 登录后台进行应用注册，
-     *  在将生成的AppKey传入到此方法中。
-     *  方法中的第二个第三个参数为需要连接社交平台SDK时触发，
-     *  在此事件中写入连接代码。第四个参数则为配置本地社交平台时触发，根据返回的平台类型来配置平台信息。
-     *  如果您使用的时服务端托管平台信息时，第二、四项参数可以传入nil，第三项参数则根据服务端托管平台来决定要连接的社交SDK。
-     */
-    
-    //
-//    [ShareSDK registerApp:@"1f858b512c6ba"
-//
-//          activePlatforms:@[
+}
+-(void)registerShareSDK
+{
     [ShareSDK registerActivePlatforms:@[
-                            @(SSDKPlatformTypeSMS),
-                            @(SSDKPlatformTypeCopy),
-                            @(SSDKPlatformTypeWechat),
-                            @(SSDKPlatformTypeQQ)]
-                 onImport:^(SSDKPlatformType platformType)
+                                        @(SSDKPlatformTypeSMS),
+                                        @(SSDKPlatformTypeCopy),
+                                        @(SSDKPlatformTypeWechat),
+                                        @(SSDKPlatformTypeQQ)]
+                             onImport:^(SSDKPlatformType platformType)
      {
          switch (platformType)
          {
@@ -214,180 +171,45 @@
                  break;
          }
      }
-          onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo)
+                      onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo)
      {
          
          switch (platformType)
          {
              case SSDKPlatformTypeSinaWeibo:
                  //设置新浪微博应用信息,其中authType设置为使用SSO＋Web形式授权
-     
+                 
              case SSDKPlatformTypeWechat:
-                 [appInfo SSDKSetupWeChatByAppId:@"wx0693ca25b9dda8b8"
-                                       appSecret:@"dc83f73464cbe135b61e8fc16bfefa3d"];
+                 [appInfo SSDKSetupWeChatByAppId:kSocial_WX_ID
+                                       appSecret:kSocial_WX_Secret];
                  break;
              case SSDKPlatformTypeQQ:
-                 [appInfo SSDKSetupQQByAppId:@"1106229820"
-                                      appKey:@"rUrqDzQCUHdXyAoj"
+                 [appInfo SSDKSetupQQByAppId:kSocial_QQ_ID
+                                      appKey:kSocial_QQ_Secret
                                     authType:SSDKAuthTypeBoth];
                  break;
              default:
                  break;
          }
      }];
-    
-   
-
- /*
-    EMNavigationController *navigationController = nil;
-    HomeWebController *    webv=[[HomeWebController alloc] init];
-    
-    navigationController = [[EMNavigationController alloc] initWithRootViewController:webv];
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window setRootViewController:navigationController];
-    [self.window makeKeyAndVisible];
-    
-
-    */
-   /*
-    WinChageType * wtype=[[WinChageType alloc] init];
-    wtype.lgointype=@"1"; //
-    wtype.logindeep=@"2"; //初始化
-    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:wtype];
- */
-    //注册更目录切换监听  登录，主窗体，盟约 之间切换
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loginStateChange:)
-                                                 name:KNOTIFICATION_LOGINCHANGE
-                                               object:nil];
-    WinChageType * wtype=[[WinChageType alloc] init];
-    wtype.lgointype=@"1"; //
-    wtype.logindeep=@"0"; //初始化
-    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:wtype];
-  
- 
-    [self setupIntroductoryPage];
-  //  if(iOS11)
-    {
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero];
-    NSString *userAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-    NSString *newUserAgent = [userAgent stringByAppendingString:@" TutuBrowser/1.1.1 Mobile AliApp(TUnionSDK/0.1.12) AliApp(TUnionSDK/0.1.12)"];//自定义需要拼接的字符串
-    NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:newUserAgent, @"UserAgent", nil];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-    }
-    
-    //通知监测
-   // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-    /*
-    //block监测
-    reach.reachableBlock = ^(Reachability * reachability)
-    {
-        NSString * netWorkName = [NSString stringWithFormat:@"Baidu Block Says Reachable:%@", reachability.currentReachabilityString];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"(%@)网络可用!",netWorkName);
-            if (reachability.isReachableViaWiFi) {
-                NSLog(@"(%@)当前通过wifi连接",netWorkName);
-            } else {
-                NSLog(@"(%@)wifi未开启，不能用",netWorkName);
-            }
-            if (reachability.isReachableViaWWAN) {
-                NSLog(@"(%@)当前通过2g or 3g or 4g连接",netWorkName);
-            } else {
-                NSLog(@"(%@)2g or 3g or 4g网络未使用",netWorkName);
-            }
-  
-        });
-    };
-    
-    reach.unreachableBlock = ^(Reachability * reachability)
-    {
-        NSString * netWorkName = [NSString stringWithFormat:@"GOOGLE Block Says Reachable(%@)", reachability.currentReachabilityString];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"(%@)网络不可用!",netWorkName);
-   
-            
-        });
-    };
-    
-    [reach startNotifier];
-  */
-    
-    /**
-     *  HUD 设置
-     */
-    [self setUpSvpProgress];
-   // self.IsLogin=TRUE;
-    return YES;
 }
-
-//初始化提示框
-- (void)setUpSvpProgress {
-    
-    [[UIButton appearance] setExclusiveTouch:YES];
-    [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
-    [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
-    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
-    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
-    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
-    [SVProgressHUD setCornerRadius:8];
-    [SVProgressHUD setBackgroundColor:RGBA(0, 0, 0, 0.6)];
-    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
-    [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];
-    [SVProgressHUD setFont:CHINESE_SYSTEM(16)];
-    [SVProgressHUD setMinimumDismissTimeInterval:1.5];
-    CGFloat wi = screen_width/3-space;
-    [SVProgressHUD setMinimumSize:CGSizeMake(wi, wi)];
-    
-}
-/*
-- (void)reachabilityChanged:(NSNotification*)note {
-    Reachability * reach = [note object];
-    if(!reach.isReachable) {
-        NSLog(@"网络不可用");
-
-    }else{
-        NSLog(@"网络可用");
-    }
-    if (reach.isReachableViaWiFi) {
-        NSLog(@"当前通过wifi连接");
-    } else {
-        NSLog(@"wifi未开启，不能用");
-    }
-    if (reach.isReachableViaWWAN) {
-        NSLog(@"当前通过2g or 3g连接");
-    } else {
-        NSLog(@"2g or 3g网络未使用");
-    }
-}
-*/
-//http://img.zcool.cn/community/01940257c291760000012e7e0e1470.jpg
-
 #pragma mark 设置引导页相关内容
--(void)setupIntroductoryPage
-{
-    
-    //如果版本号发生变化，则重新加载引导页
-    if ([[CommonUtils getVersion] isEqualToString:currentVersion]){
-        [self setLanouceAdt];
-      
-    }else{
-        [TTJFUserDefault setStr:currentVersion key:kVersion];
-        NSArray *images=@[@"introductoryPage1",@"introductoryPage2",@"introductoryPage3"];
-        [introductoryPagesHelper showIntroductoryPageView:images];
-    }
-    
-//    if (BBUserDefault.isNoFirstLaunch)
-//    {
+//-(void)setupIntroductoryPage
+//{
 //
+//    //如果版本号发生变化，则重新加载引导页，否则直接走倒计时页面
+//    if ([[CommonUtils getVersion] isEqualToString:currentVersion]){
 //        [self setLanouceAdt];
-//        return;
+//
+//    }else{
+//        [TTJFUserDefault setStr:currentVersion key:kVersion];
+//        NSArray *images=@[@"introductoryPage1",@"introductoryPage2",@"introductoryPage3"];
+//        [introductoryPagesHelper showIntroductoryPageView:images];
 //    }
 //
-//    BBUserDefault.isNoFirstLaunch=YES;
-//    NSArray *images=@[@"introductoryPage1",@"introductoryPage2",@"introductoryPage3"];
-//    [introductoryPagesHelper showIntroductoryPageView:images];
-}
-
+//
+//}
+//倒计时页面
 -(void) setLanouceAdt
 {
     //2.自定义配置初始化
@@ -396,69 +218,22 @@
     imageAdconfiguration.duration = 3;
     //广告frame
     imageAdconfiguration.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-    //广告图片URLString/或本地图片名(.jpg/.gif请带上后缀)
-    imageAdconfiguration.imageNameOrURLString =[NSString stringWithFormat:@"%@%@",oyImageBigUrl,Banner_Url];
-    //网络图片缓存机制(只对网络图片有效)
-    imageAdconfiguration.imageOption = XHLaunchAdImageRefreshCached;
-    //图片填充模式
-    imageAdconfiguration.contentMode = UIViewContentModeScaleToFill;
-    //广告点击打开链接
-    imageAdconfiguration.openURLString = Banner_DetailUrl;
-    //广告显示完成动画
-    imageAdconfiguration.showFinishAnimate =ShowFinishAnimateFadein;
-    //跳过按钮类型
-    imageAdconfiguration.skipButtonType = SkipTypeTimeText;
-    //后台返回时,是否显示广告
-    imageAdconfiguration.showEnterForeground = NO;
-    
-    //设置要添加的子视图(可选)
-    //imageAdconfiguration.subViews = ...
-    
-    //显示图片开屏广告
+    //广告图片
+    imageAdconfiguration.imageNameOrURLString =self.systemConfigModel.start_adver_imgurl;
+//    //显示图片开屏广告
     [XHLaunchAd imageAdWithImageAdConfiguration:imageAdconfiguration delegate:self];
-    
+    //广告数据请求
 }
-
-/**
- *  广告点击事件 回调
- */
-- (void)xhLaunchAd:(XHLaunchAd *)launchAd clickAndOpenURLString:(NSString *)openURLString;
-{
-    //跳转到广告详情页面,详见demo
-  //  WebViewController *VC = [[WebViewController alloc] init];
-   // VC.URLString = openURLString;
-//http://www.tutujf.com/wap/system/register2
-    _webJump=Banner_DetailUrl;
-    
+//使用SDWeImage加载图片
+-(void)xhLaunchAd:(XHLaunchAd *)launchAd launchAdImageView:(UIImageView *)launchAdImageView URL:(NSURL *)url{
+    [launchAdImageView sd_setImageWithURL:url];
 }
-
 -(void)xhLaunchShowFinish:(XHLaunchAd *)launchAd
 {
     if(VC1!=nil)
     [VC1 setBanndrNum];
     
 }
-
-- (Boolean)compareOneDay:(NSDate *)fromDate withAnotherDay:(NSDate *)toDate
-{
-    NSCalendar *gregorian = [[NSCalendar alloc]
-                             initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDateComponents *dayComponents = [gregorian components:NSDayCalendarUnit fromDate:fromDate toDate:toDate options:0];
-    // NSLog(@"date1 : %@, date2 : %@", fromDate, toDate);
-    
-    if ((-dayComponents.day)>0) {
-        //NSLog(@"Date1  is in the future");
-        return TRUE;
-    }
-    else if ((-dayComponents.day)<=0){
-        //NSLog(@"Date1 is in the past");
-        return FALSE;
-    }
-    //NSLog(@"Both dates are the same");
-    return TRUE;
-}
-
-
 - (NSDate *)getCurrentTime{
     NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
     [formatter setDateFormat:@"yyyy-MM-dd"];
@@ -468,7 +243,16 @@
     //NSLog(@"---------- currentDate == %@",date);
     return date;
 }
+//获取当前所在的视图控制器
+- (UINavigationController *)currentNav {
+    UIViewController *nav = self.window.rootViewController;
+    if ([nav isKindOfClass:[UITabBarController class]]) {
+        return ((UITabBarController *)nav).selectedViewController;
+    }else{
+        return (UINavigationController *)nav;
+    }
 
+}
 -(void)initRootVC{
     
     //    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -477,7 +261,6 @@
     VC1 = [[MainViewController alloc] init];
     UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:VC1];
     
-    //    InfoViewController *VC2 = [[InfoViewController alloc] init];
     ProgrameListController *VC2 = [[ProgrameListController alloc] init];
     UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:VC2];
     FoundController *VC3 = [[FoundController alloc] init];
@@ -505,16 +288,14 @@
     UITabBarItem *item3 = [tabbar.items objectAtIndex:2];
     UITabBarItem *item4 = [tabbar.items objectAtIndex:3];
     
-    item1.selectedImage = [[UIImage imageNamed:@"xuanzhong"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    item1.image = [[UIImage imageNamed:@"new"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    item2.selectedImage = [[UIImage imageNamed:@"xuanzhong"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    item2.image = [[UIImage imageNamed:@"nian"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //    item2.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
-    item3.selectedImage = [[UIImage imageNamed:@"xuanzhong"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    item3.image = [[UIImage imageNamed:@"kuai"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    item4.selectedImage = [[UIImage imageNamed:@"xuanzhong"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    item4.image = [[UIImage imageNamed:@"le"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item1.selectedImage = [[UIImage imageNamed:@"menu_home_sel"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item1.image = [[UIImage imageNamed:@"menu_home_unsel"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item2.selectedImage = [[UIImage imageNamed:@"menu_program_sel"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item2.image = [[UIImage imageNamed:@"menu_program_unsel"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item3.selectedImage = [[UIImage imageNamed:@"menu_discover_sel"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item3.image = [[UIImage imageNamed:@"menu_discover_unsel"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item4.selectedImage = [[UIImage imageNamed:@"menu_my_sel"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item4.image = [[UIImage imageNamed:@"menu_my_unsel"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     //
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setBarTintColor:RGB(0, 160,240)];
@@ -523,15 +304,9 @@
    NSDictionary *navbarTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
     [[UINavigationBar appearance] setTitleTextAttributes:navbarTitleTextAttributes];
 
-    tabbar.tintColor =RGB(255, 45, 18);
-    //友盟统计
-    [MobClick startWithAppkey:UMAPPKEY reportPolicy:BATCH   channelId:@"GitHub"];
-    //友盟初始化，对未安装QQ，微信的平台进行隐藏
-   // [UMSocialConfig hiddenNotInstallPlatforms:@[UMShareToQQ,UMShareToQzone,UMShareToWechatSession,UMShareToWechatTimeline]];
-  //  [UMSocialConfig hiddenNotInstallPlatforms:@[UMShareToWechatSession,UMShareToWechatTimeline]];
-
+    tabbar.tintColor =HEXCOLOR(@"#53b3ed");
+   
     [self.window makeKeyAndVisible];
-   // [self setupIntroductoryPage];
 }
 
 
@@ -564,59 +339,13 @@
 
 - (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     
-    /*
-    [[UPPaymentControl defaultControl] handlePaymentResult:url completeBlock:^(NSString *code, NSDictionary *data) {
-        if([code isEqualToString:@"success"]) {
-            
-            NSDictionary *myDictionary = [NSDictionary dictionaryWithObject:@"success" forKey:@"IPSStatus"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"StatusNotification" object:nil userInfo:myDictionary];
-        }
-        else if([code isEqualToString:@"fail"]) {
-            //交易失败
-            
-            NSDictionary *myDictionary = [NSDictionary dictionaryWithObject:@"fail" forKey:@"IPSStatus"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"StatusNotification" object:nil userInfo:myDictionary];
-        }
-        else if([code isEqualToString:@"cancel"]) {
-            //交易取消
-            
-            NSDictionary *myDictionary = [NSDictionary dictionaryWithObject:@"cancel" forKey:@"IPSStatus"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"StatusNotification" object:nil userInfo:myDictionary];
-        }
-        
-    }];
-    */
     return YES;
 }
-
 
 
  // NOTE: 9.0以后使用新API接口
  - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
  {
-     /*
- [[UPPaymentControl defaultControl] handlePaymentResult:url completeBlock:^(NSString *code, NSDictionary *data) {
- 
- if([code isEqualToString:@"success"]) {
- 
- NSDictionary *myDictionary = [NSDictionary dictionaryWithObject:@"success" forKey:@"IPSStatus"];
- [[NSNotificationCenter defaultCenter] postNotificationName:@"StatusNotification" object:nil userInfo:myDictionary];
- }
- else if([code isEqualToString:@"fail"]) {
- //交易失败
- 
- NSDictionary *myDictionary = [NSDictionary dictionaryWithObject:@"fail" forKey:@"IPSStatus"];
- [[NSNotificationCenter defaultCenter] postNotificationName:@"StatusNotification" object:nil userInfo:myDictionary];
- }
- else if([code isEqualToString:@"cancel"]) {
- //交易取消
- 
- NSDictionary *myDictionary = [NSDictionary dictionaryWithObject:@"cancel" forKey:@"IPSStatus"];
- [[NSNotificationCenter defaultCenter] postNotificationName:@"StatusNotification" object:nil userInfo:myDictionary];
- }
- 
- }];
- */
  return YES;
  }
 
@@ -626,91 +355,53 @@
 #pragma mark 键盘收回管理
 -(void)configureBoardManager
 {
-//    IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
+    IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
 //    manager.enable = YES;
 //    manager.shouldResignOnTouchOutside = YES;
 //    manager.shouldToolbarUsesTextFieldTintColor = YES;
-//    manager.keyboardDistanceFromTextField=60;
+    manager.keyboardDistanceFromTextField=kSizeFrom750(40);
 //    manager.enableAutoToolbar = NO;
 }
-
-#pragma mark - APP运行中接收到通知(推送)处理
-
-
 //禁止横屏
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
     return UIInterfaceOrientationMaskPortrait;
 }
 
-
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= _IPHONE80_
-
-
-
-//按钮点击事件回调
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)(void))completionHandler{
-    if([identifier isEqualToString:@"ACCEPT_IDENTIFIER"]){
-        NSLog(@"ACCEPT_IDENTIFIER is clicked");
-    }
-    
-    completionHandler();
-}
-
-#endif
--(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
-    //notification是发送推送时传入的字典信息
-    [XGPush localNotificationAtFrontEnd:notification userInfoKey:@"clockID" userInfoValue:@"myid"];
-    
-    //删除推送列表中的这一条
-    [XGPush delLocalNotification:notification];
-    //[XGPush delLocalNotification:@"clockID" userInfoValue:@"myid"];
-    
-    //清空推送列表
-    //[XGPush clearLocalNotifications];
-}
-
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= _IPHONE80_
-
-//注册UserNotification成功的回调
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
-{
-    //用户已经允许接收以下类型的推送
-    //   UIUserNotificationType allowedTypes = [notificationSettings types];
-    
-}
-
-
-
-#endif
-
+#pragma mark - 远程通知(推送)回调
+/** 远程通知注册成功委托 */
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    
-    //NSString * deviceTokenStr = [XGPush registerDevice:deviceToken];
-    
-    void (^successBlock)(void) = ^(void){
-        //成功之后的处理
-    };
-    
-    void (^errorBlock)(void) = ^(void){
-        //失败之后的处理
-        NSLog(@"[XGPush]register errorBlock");
-    };
-    
-    // 设置账号
-    //	[XGPush setAccount:@"test"];
-    //将device token转换为字符串
-    //   NSString *deviceTokenStr1 = [NSString stringWithFormat:@"%@",deviceToken];
-    //注册设备
-    NSString * deviceTokenStr = [XGPush registerDevice:deviceToken successCallback:successBlock errorCallback:errorBlock];
-    
-    //如果不需要回调
-    //[XGPush registerDevice:deviceToken];
-    
-    self.device_token=deviceTokenStr;
-    
-    //打印获取的deviceToken的字符串
-    NSLog(@"[XGPush] deviceTokenStr is %@",deviceTokenStr);
+    //注册用户信息上送给信鸽推送
+    [[XGPushTokenManager defaultTokenManager] registerDeviceToken:deviceToken];
+    NSString *device_token = [XGPushTokenManager defaultTokenManager].deviceTokenString;
+    NSLog(@"deviceToken:%@",device_token);
+    [TTJFUserDefault setStr:device_token key:kDeviceToken];
+    //如果是第一次打开应用，则调用此接口上送deviceToken到服务器
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:isBindUser]) {
+     /*   手机类型 1=android，2=IOS
+       terminal_id IMEI,  UUID
+       terminal_name (设备名称)：如 iPhone 6S
+       terminal_model (设备型号)：iPhone 6S
+        terminal_device_token  信鸽设备推送device_token*/
+        
+        NSString *phone_type = @"2";
+        NSString * terminal_id = [CommonUtils getUUID];
+        NSString * terminal_name = [UIDevice currentDevice].name;
+        NSString *terminal_model = [CommonUtils getDeviceVersion];
+        NSString * terminal_device_token = device_token;
+  
+        NSArray *keys = @[@"phone_type",@"terminal_id",@"terminal_name",@"terminal_model",@"terminal_device_token"];
+        NSArray *values = @[phone_type,terminal_id,terminal_name,terminal_model,terminal_device_token];
+        
+        [[HttpCommunication sharedInstance] getSignRequestWithPath:sendDeviceTokenUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){            //存储device_token
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:isBindUser];
+        } failure:^(NSDictionary *errorDic) {
+            
+        }];
+       
+    }else{
+        
+    }
 }
 
 //如果deviceToken获取不到会进入此事件
@@ -718,45 +409,51 @@
     
     NSString *str = [NSString stringWithFormat: @"Error: %@",err];
     
-    NSLog(@"[XGPush]%@",str);
+    NSLog(@"[XGPush]token获取失败%@",str);
     
 }
-
-- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
+/** APP已经接收到“远程”通知(推送) - 透传推送消息  */
+#pragma mark - APP运行中接收到通知(推送)处理 - iOS 10以下版本收到推送
+//应用在运行当中，（处于后台或者处于前台）收到通知调用此方法
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+   if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive)//当前程序在前台，跳出弹框
+    [self handleNotification:userInfo isRemote:NO];
+    else
+    [self handleNotification:userInfo isRemote:YES];
+    [[XGPush defaultManager] reportXGNotificationInfo:userInfo];
+}
+#pragma mark - iOS 10中收到推送消息
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
+//  信鸽推送ios10: App在前台获取到通知
+-(void)xgPushUserNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
 {
-    //推送反馈(app运行时)
-    [XGPush handleReceiveNotification:userInfo];
+    NSDictionary *userInfo = notification.request.content.userInfo;
+     [self handleNotification:notification.request.content.userInfo isRemote:NO];
+    [[XGPush defaultManager] reportXGNotificationInfo:userInfo];
+}
+//  信鸽推送ios10: App在后台获取到通知，点击通知进入应用调用此方法
+-(void)xgPushUserNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
+{
+    NSLog(@"didReceiveNotification：%@", response.notification.request.content.userInfo);
     
+    // [ GTSdk ]：将收到的APNs信息传给个推统计
     
-    //回调版本示例
-    
-    void (^successBlock)(void) = ^(void){
-        //成功之后的处理
-        NSLog(@"[XGPush]handleReceiveNotification successBlock");
-        //  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-        
-        
-    };
-    
-    void (^errorBlock)(void) = ^(void){
-        //失败之后的处理
-        NSLog(@"[XGPush]handleReceiveNotification errorBlock");
-    };
-    
-    void (^completion)(void) = ^(void){
-        //完成之后的处理
-        NSLog(@"[xg push completion]userInfo is %@",userInfo);
-        //   [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    };
-    
-    [XGPush handleReceiveNotification:userInfo successCallback:successBlock errorCallback:errorBlock completion:completion];
-    
+    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:response.notification.request.content.userInfo];
+    [self handleNotification:userInfo isRemote:YES];
+    completionHandler();
+}
+
+
+#endif
+-(void)application:(UIApplication *)application didRegisterUserNotificationSettings:(nonnull UIUserNotificationSettings *)notificationSettings
+{
+    [application registerForRemoteNotifications];
 }
 
 - (void)registerPushForIOS8{
     //Types
     UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-    
     //Actions
     UIMutableUserNotificationAction *acceptAction = [[UIMutableUserNotificationAction alloc] init];
     
@@ -791,89 +488,6 @@
     [[UIApplication sharedApplication] registerForRemoteNotifications];
 }
 
-- (void)registerPush{
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
-}
-
-#pragma mark - login changed
-
-- (void)loginStateChange:(NSNotification *)notification
-{
-    WinChageType * wtype =notification.object;
-    
-    EMNavigationController *navigationController = nil;
-    if (wtype!=nil&&[wtype.lgointype isEqual:@"0"]) {//登陆成功加载主窗口控制器
-       
-    }
-    else if (wtype!=nil&&[wtype.lgointype isEqual:@"1"]) {//
-           [self initRootVC];
-    }
-  
-    else if (wtype!=nil&&[wtype.lgointype isEqual:@"2"]) {//没有网络
-        NoNetController *    webv=[[NoNetController alloc] init];
-        
-        navigationController = [[EMNavigationController alloc] initWithRootViewController:webv];
-        self.window.backgroundColor = [UIColor clearColor];
-        [self.window setRootViewController:navigationController];
-        
-        [self.window makeKeyAndVisible];
-    }
-     else if (wtype!=nil&&[wtype.lgointype isEqual:@"3"]) {//webview 页面
-   HomeWebController *    webv=[[HomeWebController alloc] init];
-   
-    navigationController = [[EMNavigationController alloc] initWithRootViewController:webv];
-    self.window.backgroundColor = [UIColor clearColor];
-    [self.window setRootViewController:navigationController];
-    [self.window makeKeyAndVisible];
-    
-     }
-    //HomeWebController
-    //设置7.0以下的导航栏
-    if ([UIDevice currentDevice].systemVersion.floatValue < 7.0){
-        navigationController.navigationBar.barStyle = UIBarStyleDefault;
-        [navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"titleBar"]
-                                                 forBarMetrics:UIBarMetricsDefault];
-        [navigationController.navigationBar.layer setMasksToBounds:YES];
-        
-    }
-    
-    
-}
-
-
-/**
- *  设置navigationBar样式
- */
-- (void)setUpNavigationBarAppearance {
-    UINavigationBar *navigationBarAppearance = [UINavigationBar appearance];
-    
-    UIImage *backgroundImage = nil;
-    NSDictionary *textAttributes = nil;
-    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
-        backgroundImage = [UIImage imageNamed:@"navigationbar_background_tall"];
-        
-        textAttributes = @{
-                           NSFontAttributeName : [UIFont boldSystemFontOfSize:18],
-                           NSForegroundColorAttributeName : [UIColor blackColor],
-                           };
-    } else {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-        backgroundImage = [UIImage imageNamed:@"navigationbar_background"];
-        textAttributes = @{
-                           UITextAttributeFont : [UIFont boldSystemFontOfSize:18],
-                           UITextAttributeTextColor : [UIColor blackColor],
-                           UITextAttributeTextShadowColor : [UIColor clearColor],
-                           UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetZero],
-                           };
-#endif
-    }
-    
-    [navigationBarAppearance setBackgroundImage:backgroundImage
-                                  forBarMetrics:UIBarMetricsDefault];
-    [navigationBarAppearance setTitleTextAttributes:textAttributes];
-}
-
-
 /*
  * 降级过滤器，您可以自己定义HTTPDNS降级机制
  */
@@ -893,108 +507,39 @@
     
     return NO;
 }
-
--(void) getSystemConfigDara
+//获取系统配置相关数据
+-(void) getSystemConfigData
 {
-    NSString *urlStr =  [NSString stringWithFormat:getSystemConfig,oyApiUrl,Update_Coding];
-    
-    NSData * data= [ggHttpFounction  synHttpGet:urlStr];
-    if([ggHttpFounction getJsonIsOk:data])
-    {
-        NSDictionary * dir= [ggHttpFounction getJsonData1:data];
-       
-                 NSArray * allows=   [dir objectForKey:@"allow_domain"];
-                  if([allows count]>0)
-                  self.urlJumpList=[allows copy];
-        _globed.register_txt= [dir objectForKey:@"register_txt"];
-        _globed.register_link= [dir objectForKey:@"register_link"];
-          NSArray * links=   [dir objectForKey:@"return_column_link"];
-          if([links count]>0)
-               self.needReturnList=[links copy];
-        
-        NSString * show_state=[NSString stringWithFormat:@"%@",[dir objectForKey:@"show_state"]];
-        if([show_state isEqual:@"0"])
-        {
-            _IsUpdate=TRUE;
-        }
-    }
-    else
-    {
-        
-    }
-}
-/*
--(void) doGetSystemConfig{
-    NSString *urlStr = @"";
-    
-    urlStr = @"http://appapi.tutujf.com/Api/Platform/GetSystemConfig";
-  //  NSLog(@"urlStr:%@",urlStr);
-    [PPNetworkHelper GET:urlStr parameters:nil success:^(id responseObject) {
-        //请求成功
-      //  NSDictionary *dic = [responseObject objectForKey:@"resultData"];
-        NSString * resultStatus= [responseObject objectForKey:@"resultStatus"];
-        
-        if([resultStatus isEqual:@"0"])
-        {
-            NSArray * resultData= [responseObject objectForKey:@"resultData"];
-            
-         //   HttpDnsService *httpdns = [[HttpDnsService alloc] initWithAccountID:194445];//139450
-            
-            // 为HTTPDNS服务设置降级机制
-        //    [httpdns setDelegateForDegradationFilter:self];
-            // 允许返回过期的IP
-         //   [httpdns setExpiredIPEnabled:YES];
-            // 打开HTTPDNS Log，线上建议关闭
-          //  [httpdns setLogEnabled:YES];
-            
-            
-            if([resultData count]<1)
-                self.urlJumpList = @[ @"www.tutujf.com", @"ufunds.ips.com.cn",@"lab.chinapnr.com",@"mertest.chinapnr.com"];
-            else
-                self.urlJumpList=[resultData copy];
-            // NSArray* preResolveHosts = @[@"pic1cdn.igetget.com"];
-            // 设置预解析域名列表
-          //  [httpdns setPreResolveHosts: self.urlJumpList];
+    //设置数据获取等待时间
+    [XHLaunchAd setWaitDataDuration:5];
+    NSString *urlStr =  [NSString stringWithFormat:getSystemConfig,oyApiUrl];
+    [[HttpCommunication sharedInstance] getSignRequestWithPath:urlStr keysArray:nil valuesArray:nil refresh:nil success:^(NSDictionary *successDic) {
+        self.systemConfigModel = [SystemConfigModel yy_modelWithJSON:successDic];
+        //系统配置数据加入缓存
+        [CommonUtils cacheDataWithObject:successDic WithPathName:Cache_SystemConfig];
+        [[NSNotificationCenter defaultCenter] postNotificationName:Noti_GetSystemConfig object:nil];
+        [self setLanouceAdt];//添加广告页面
+        //如果版本号相同，则不需要更新版本
+        if ([self.systemConfigModel.ios_version isEqualToString:currentVersion]) {
+            [TTJFUserDefault setStr:currentVersion key:kVersion];//更新本地版本号
+        }else{
             
         }
+        NSArray * allows=   [successDic objectForKey:@"allow_domain"];
+        if([allows count]>0)
+            self.urlJumpList=[allows copy];
+    } failure:^(NSDictionary *errorDic) {
+        //从缓存中读取广告内容
+        NSDictionary *cache_system = [CommonUtils getCacheDataWithKey:Cache_SystemConfig];
+        if (cache_system!=nil) {
+            self.systemConfigModel = [SystemConfigModel yy_modelWithJSON:cache_system];
+            [self setLanouceAdt];//添加广告页面
+        }
        
-        //[PPNetworkCache setHttpCache:responseObject URL:urlStr parameters:nil];
-    } failure:^(NSError *error) {
-        //请求失败
     }];
+    
 }
-//
--(void) doGetReturnConfig{
-    NSString *urlStr = @"";
-    urlStr = @"http://appapi.tutujf.com/Api/Platform/GetConfig";
-    //  NSLog(@"urlStr:%@",urlStr);
-    [PPNetworkHelper GET:urlStr parameters:nil success:^(id responseObject) {
-        //请求成功
 
-        NSString * resultStatus= [responseObject objectForKey:@"resultStatus"];
-        
-        if([resultStatus isEqual:@"0"])
-        {
-            NSDictionary * resultData= [responseObject objectForKey:@"resultData"];
-            NSArray * list=[resultData objectForKey:@"bak_url"];
-            
-            
-            if([list count]>0)
-                self.needReturnList=[list copy];
-            // NSArray* preResolveHosts = @[@"pic1cdn.igetget.com"];
-            
-        }
-        else{
-            
-            
-        }
-        //[PPNetworkCache setHttpCache:responseObject URL:urlStr parameters:nil];
-    } failure:^(NSError *error) {
-        //请求失败
-        
-    }];
-}
-*/
 //
 - (UINavigationController *)getNavigationCWithWindow:(UIWindow *)window;{
     UITabBarController *tabVC = (UITabBarController  *)window.rootViewController;

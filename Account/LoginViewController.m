@@ -10,6 +10,9 @@
 #import "UITextField+Shake.h"
 #import "AppDelegate.h"
 #import "HomeWebController.h"
+#import "AutoLoginView.h"
+#import "RegisterViewController.h"
+#import "ForgetPasswordViewController.h"
 @interface LoginViewController ()<UITextFieldDelegate,UIWebViewDelegate>
 /**抬头*/
 Strong UIImageView *titleImgView;
@@ -27,6 +30,7 @@ Strong UIButton *forgetPdwBtn;
 Strong UIWebView *loginWebView;
 
 Strong UIButton *pwdBtn;//切换是否明文显示
+
 @end
 
 @implementation LoginViewController
@@ -38,11 +42,15 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     self.titleString = @"登录";
     [self.backBtn setImage:IMAGEBYENAME(@"close_white") forState:UIControlStateNormal];
     self.titleView.backgroundColor = [UIColor clearColor];
     [self initSubViews];
     [self makeViewConstraints];
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [self.mobileTextField becomeFirstResponder];
 }
 -(void)backPressed:(UIButton *)sender{
     [self dismissViewControllerAnimated:YES completion:^{
@@ -62,10 +70,9 @@ Strong UIButton *pwdBtn;//切换是否明文显示
         _mobileTextField = InitObject(UITextField);
         _mobileTextField.placeholder = @"请输入手机号码/邮箱";
         [_mobileTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        _mobileTextField.keyboardType = UIKeyboardTypePhonePad;
         _mobileTextField.delegate = self;
         CALayer *layer = [CALayer layer];
-        layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), 1);
+        layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), kLineHeight);
         layer.backgroundColor = [RGB(229, 230, 231) CGColor];
         [_mobileTextField.layer addSublayer:layer];
     }
@@ -79,7 +86,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
         _passwordTextField.secureTextEntry = YES;
         [_passwordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         CALayer *layer = [CALayer layer];
-        layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), 1);
+        layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), kLineHeight);
         layer.backgroundColor = [RGB(229, 230, 231) CGColor];
         [_passwordTextField.layer addSublayer:layer];
 
@@ -104,7 +111,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
         [_loginBtn setBackgroundColor:RGB(200,226,242)];
         _loginBtn.userInteractionEnabled = NO;
         [_loginBtn setTitle:@"登录" forState:UIControlStateNormal];
-        [_loginBtn.titleLabel setFont:SYSTEMBOLDSIZE(32)];
+        [_loginBtn.titleLabel setFont:SYSTEMBOLDSIZE(36)];
         [_loginBtn addTarget:self action:@selector(loginButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         _loginBtn.layer.cornerRadius = kSizeFrom750(88)/2;
         _loginBtn.layer.masksToBounds = YES;
@@ -119,6 +126,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
         _loginBtn.adjustsImageWhenHighlighted = NO;
         [_registerBtn setTitle:@"注册领取688元红包" forState:UIControlStateNormal];
         [_registerBtn setImage:IMAGEBYENAME(@"redevenlope") forState:UIControlStateNormal];
+        [_registerBtn setImage:IMAGEBYENAME(@"redevenlope") forState:UIControlStateHighlighted];
         _registerBtn.layer.borderColor = [RGB(255, 46, 19) CGColor];;
         _registerBtn.layer.borderWidth = 1;
         _registerBtn.layer.cornerRadius = kSizeFrom750(88)/2;
@@ -249,142 +257,32 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 }
 //登录
 -(void) getLogin{
-    UIDevice* curDev = [UIDevice currentDevice];
-    NSString *terminal_type=@"iphone";
-    NSString *terminal_id=curDev.identifierForVendor.UUIDString;//curDev.identifierForVendor.UUIDString;
-    NSString *terminal_name= [curDev.name stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSString *terminal_model=curDev.model;
-    NSString * terminal_token=theAppDelegate.device_token;
-    NSString *urlStr = @"";
-    NSString * user_name=[_mobileTextField text];
-    NSString *  password=[_passwordTextField text];
-    
-    terminal_name=[terminal_name stringByReplacingOccurrencesOfString:@"'" withString:@""];
-    /*  test
-     terminal_type=@"iphone";
-     terminal_id=@"1EEDE7A1-E953-4FC3-B903-D590D68CA97A";//curDev.identifierForVendor.UUIDString;
-     terminal_name=@"一二A";
-     terminal_model=@"iPhone";
-     terminal_token=@"f3cad1be866d192819a65708111707fd931882bf807b3c452c3b61ac6d3e5556";
-     user_name=@"tt13707985381";
-     password=@"ncepu789";
-     */
-    //   NSString *password1=@"123456";
-    NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_name,password,terminal_type,terminal_id,terminal_name,terminal_model,terminal_token] forKeys:@[@"user_name",@"password",@"terminal_type",@"terminal_id",@"terminal_name",@"terminal_model",@"terminal_token"]];
-    //  paixu
-    NSMutableArray * paixu1=[[NSMutableArray alloc] init];
-    [paixu1 addObject:@"user_name"];
-    [paixu1 addObject:@"password"];
-    [paixu1 addObject:@"terminal_type"];
-    [paixu1 addObject:@"terminal_id"];
-    [paixu1 addObject:@"terminal_name"];
-    [paixu1 addObject:@"terminal_model"];
-    [paixu1 addObject:@"terminal_token"];
-    NSString *sign=[HttpSignCreate GetSignStr:dict_data paixu:paixu1];
-    terminal_name= [terminal_name stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *  password1=[HttpSignCreate encodeString:[_passwordTextField text]];
-    urlStr = [NSString stringWithFormat:loginUrl,oyApiUrl,user_name,password1,terminal_type,terminal_id,terminal_name,terminal_model,terminal_token,sign];
-    
-    NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
-    if([ggHttpFounction getJsonIsOk:data])
-    {
-        NSDictionary * dir= [ggHttpFounction getJsonData1:data];
-        if(dir!=nil)
-        {
 
-            theAppDelegate.user_token=  [dir objectForKey:kToken];
-            theAppDelegate.user_name= user_name;
-            NSString * temp=[[dir objectForKey:@"expiration_date"] substringWithRange:NSMakeRange(0,10)];
-            theAppDelegate.expirationdate=temp;
-            NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
-            [userDef setObject:temp forKey:@"LoginTime"];
-            [userDef setObject:user_name forKey:@"LoginAccount"];
-            [userDef setObject:password forKey:@"LoginPassword"];
-            //存储时，除NSNumber类型使用对应的类型意外，其他的都是使用setObject:forKey:
-            [userDef setObject:@"1" forKey:@"IsSet"];
-            [userDef synchronize];
-            theAppDelegate.IsLogin=TRUE;
-            [TTJFUserDefault setStr:[dir objectForKey:kToken] key:kToken];
-            [TTJFUserDefault setStr:user_name key:kUsername];//存储登录成功token值，username
-            [self getWebLogin];
-        }
-        
-    }
-    else
-    {
-        // [MBProgressHUD showAutoMessage:@"登录失败" ToView:nil];
-        NSString * msg=[ggHttpFounction getJsonMsg:data];
-        [SVProgressHUD showErrorWithStatus:msg];
-        
-    }
-    
-    
-    
-    
-}
-//同时登录网页版
--(void) getWebLogin{
-    //Api/Users/GetUsetInfo?user_token={user_token}&sign={sign}
-    NSString *user_name=[CommonUtils getUsername];
-    NSString *user_token= [TTJFUserDefault strForKey:kToken];
-    NSString *urlStr = @"";
-    user_name=[HttpSignCreate encodeString:user_name];
-    NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_name,user_token] forKeys:@[kUsername,kToken]];
-    NSMutableArray * paixu1=[[NSMutableArray alloc] init];
-    [paixu1 addObject:kUsername];
-    [paixu1 addObject:kToken];
-    NSString *sign=[HttpSignCreate GetSignStr:dict_data paixu:paixu1];
-    urlStr = [NSString stringWithFormat:webLoginUrl,oyUrlAddress,user_name,user_token,sign];
-    [self loadPage1:urlStr];
-    
-    
+    [self.view addSubview:[AutoLoginView defaultView]];
+    [[AutoLoginView defaultView] getLogin:self.mobileTextField.text password:self.passwordTextField.text];
+    [AutoLoginView defaultView].autoLoginBlock = ^{
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            // Do something...
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [SVProgressHUD showSuccessWithStatus:@"登录成功~"];
+                [self dismissViewControllerAnimated:YES completion:NULL];
+            });
+        });
+    };
 }
 
-//加载网页（网页默认不显示）
-- (void)loadPage1: (NSString *) urlstr {
-    
-    self.loginWebView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 0,0)];
-    
-    self.loginWebView.delegate=self;
-    //伸缩内容适应屏幕尺寸
-    self.loginWebView.scalesPageToFit=YES;
-    [self.loginWebView setUserInteractionEnabled:YES];
-    
-    [self cleanCaches];
-    NSURL *url = [[NSURL alloc] initWithString:urlstr];
-    //NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-    
-    request = [NSMutableURLRequest requestWithURL:url];
-    NSLog(@"%@",urlstr);
-    [self.loginWebView loadRequest:request];
-    self.loginWebView.scrollView.bounces = NO;
-    [self.view addSubview:self.loginWebView];
-    //  [self.loginWebView isHidden:TRUE];
-    
-}
 //注册按钮点击事件
 -(void)registerBtnClick:(UIButton *)button
 {
-    //http://www.tutujf.com/wap/system/register2
-    
-    HomeWebController *discountVC = [[HomeWebController alloc] init];
-    // discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/system/register2",urlCheckAddress];
-    discountVC.urlStr=theAppDelegate.globed.register_link;//[NSString stringWithFormat:@"%@/wap/system/register2",urlCheckAddress];
-    //https://cs.www.tutujf.com/wap/system/login2
-    discountVC.returnmain=@"4"; //页返回
-    [self presentViewController:discountVC animated:YES completion:nil];
+    RegisterViewController *regist = InitObject(RegisterViewController);
+    [self.navigationController pushViewController:regist animated:YES];
     
 }
 //忘记密码点击事件
 -(void)forgotPwdBtnClick:(UIButton *)button
 {
-    //http://www.tutujf.com/wap/system/searchPwd
-    
-    HomeWebController *discountVC = [[HomeWebController alloc] init];
-    discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/system/searchPwd",oyUrlAddress];
-    
-    discountVC.returnmain=@"4"; //页返回
-    [self presentViewController:discountVC animated:YES completion:nil];
+    ForgetPasswordViewController *forget = InitObject(ForgetPasswordViewController);
+    [self.navigationController pushViewController:forget animated:YES];
     
 }
 #pragma mark webViewDelegate
@@ -393,18 +291,13 @@ Strong UIButton *pwdBtn;//切换是否明文显示
  */
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        // Do something...
-        dispatch_async(dispatch_get_main_queue(), ^{
-            //将上述数据全部存储到NSUserDefaults中
-            ;
-            [SVProgressHUD showSuccessWithStatus:@"登录成功~"];
-            [self dismissViewControllerAnimated:YES completion:NULL];
-        });
-    });
+    
 }
 
-
+-(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    
+}
 
 -(void)webViewDidStartLoad:(UIWebView *)webView
 {

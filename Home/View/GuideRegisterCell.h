@@ -10,5 +10,5 @@
 typedef void (^RegisterBlock)(void);
 @interface GuideRegisterCell : UITableViewCell
 Copy RegisterBlock registerBlock;
-
+Strong UIButton *registerBtn;
 @end

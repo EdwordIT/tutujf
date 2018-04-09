@@ -7,8 +7,11 @@
 //
 
 #import "RegisterViewController.h"
-
-@interface RegisterViewController ()<UITextFieldDelegate>
+#import "SystemConfigModel.h"
+#import "HomeWebController.h"
+#import "AutoLoginView.h"
+@interface RegisterViewController ()<UITextFieldDelegate,UIWebViewDelegate>
+Strong UIImageView *topImageView;//
 Strong UITextField * mobileTextField;
 Strong UITextField *passwordTextField;
 Strong UIButton *codeBtn;//获取验证码按钮
@@ -19,15 +22,26 @@ Strong UIButton *pwdBtn;//切换明文密文
 Strong UIButton *registerBtn;//完成注册
 Strong UILabel *remindLabel;//
 Strong UIButton *dealBtn;//协议
+Strong SystemConfigModel *model;//
+Strong UIWebView *loginWebView;
 @end
 
 @implementation RegisterViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.titleString = @"手机号码快速注册";
+    self.titleString = @"手机快速注册";
+    self.view.backgroundColor = [UIColor whiteColor];
     [self initSubViews];
     // Do any additional setup after loading the view.
+}
+-(UIImageView *)topImageView
+{
+    if (!_topImageView) {
+        _topImageView = InitObject(UIImageView);
+        [_topImageView setImage:IMAGEBYENAME(@"register_red")];
+    }
+    return _topImageView;
 }
 -(UITextField*)mobileTextField{
     if (!_mobileTextField) {
@@ -37,9 +51,15 @@ Strong UIButton *dealBtn;//协议
         _mobileTextField.keyboardType = UIKeyboardTypePhonePad;
         _mobileTextField.delegate = self;
         CALayer *layer = [CALayer layer];
-        layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), 1);
+        layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), kLineHeight);
         layer.backgroundColor = [RGB(229, 230, 231) CGColor];
         [_mobileTextField.layer addSublayer:layer];
+        _mobileTextField.leftViewMode = UITextFieldViewModeAlways;
+        UIButton *phoneImage = [[UIButton alloc] initWithFrame:CGRectMake(kSizeFrom750(0), 0,kSizeFrom750(100), kSizeFrom750(80))];
+        phoneImage.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [phoneImage setImage:[UIImage imageNamed:@"mobile"] forState:UIControlStateNormal];
+        _mobileTextField.leftView = phoneImage;
+        
     }
     return _mobileTextField;
 }
@@ -48,12 +68,19 @@ Strong UIButton *dealBtn;//协议
         _codeTextField = InitObject(UITextField);
         _codeTextField.placeholder = @"请输入验证码";
         [_codeTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        _codeTextField.keyboardType = UIKeyboardTypePhonePad;
+        _codeTextField.keyboardType = UIKeyboardTypeNumberPad;
         _codeTextField.delegate = self;
         CALayer *layer = [CALayer layer];
-        layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), 1);
+        layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), kLineHeight);
         layer.backgroundColor = [RGB(229, 230, 231) CGColor];
         [_codeTextField.layer addSublayer:layer];
+        _codeTextField.leftViewMode = UITextFieldViewModeAlways;
+
+        
+        UIButton *phoneImage = [[UIButton alloc] initWithFrame:CGRectMake(kSizeFrom750(0), 0,kSizeFrom750(100), kSizeFrom750(80))];
+        phoneImage.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [phoneImage setImage:[UIImage imageNamed:@"mobile_code"] forState:UIControlStateNormal];
+        _codeTextField.leftView = phoneImage;
     }
     return _codeTextField;
 }
@@ -65,10 +92,7 @@ Strong UIButton *dealBtn;//协议
         [_codeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
         [_codeBtn setTitleColor:RGB(3, 147, 247) forState:UIControlStateNormal];
         [_codeBtn addTarget:self action:@selector(codeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-//        _codeBtn.layer.cornerRadius = kSizeFrom750(32)/2;
-//        _codeBtn.layer.masksToBounds = YES;
-//        _codeBtn.layer.borderWidth = kSizeFrom750(1);
-//        _codeBtn.layer.borderColor = RGB(3, 147, 247).CGColor;
+
     }
     return _codeBtn;
     
@@ -81,9 +105,15 @@ Strong UIButton *dealBtn;//协议
         _passwordTextField.secureTextEntry = YES;
         [_passwordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         CALayer *layer = [CALayer layer];
-        layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), 1);
+        layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), kLineHeight);
         layer.backgroundColor = [RGB(229, 230, 231) CGColor];
         [_passwordTextField.layer addSublayer:layer];
+        _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
+
+        UIButton *phoneImage = [[UIButton alloc] initWithFrame:CGRectMake(kSizeFrom750(0), 0,kSizeFrom750(100), kSizeFrom750(80))];
+        phoneImage.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [phoneImage setImage:[UIImage imageNamed:@"password_lock"] forState:UIControlStateNormal];
+        _passwordTextField.leftView = phoneImage;
         
     }
     return _passwordTextField;
@@ -104,9 +134,9 @@ Strong UIButton *dealBtn;//协议
         _registerBtn.adjustsImageWhenHighlighted = NO;
         [_registerBtn setBackgroundImage:IMAGEBYENAME(@"loginBtn") forState:UIControlStateNormal];
         [_registerBtn setTitle:@"完成注册" forState:UIControlStateNormal];
-        [_registerBtn.titleLabel setFont:SYSTEMBOLDSIZE(32)];
+        [_registerBtn.titleLabel setFont:SYSTEMBOLDSIZE(36)];
         [_registerBtn addTarget:self action:@selector(registerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        _registerBtn.layer.cornerRadius = kSizeFrom750(88)/2;
+        _registerBtn.layer.cornerRadius = kSizeFrom750(100)/2;
         _registerBtn.layer.masksToBounds = YES;
         
         
@@ -137,15 +167,17 @@ Strong UIButton *dealBtn;//协议
 }
 -(void)initSubViews{
     
+    self.countDownNum = 60;
     if (_isRootVC) {
         [self.backBtn setImage:IMAGEBYENAME(@"close_white") forState:UIControlStateNormal];
     }
+    [self.view addSubview:self.topImageView];
     
     [self.view addSubview:self.mobileTextField];
     
     [self.view addSubview:self.codeTextField];//验证码
     
-    [self.codeTextField addSubview:self.codeBtn];//验证码获取按钮
+    [self.view addSubview:self.codeBtn];//验证码获取按钮
     
     [self.view addSubview:self.passwordTextField];
         
@@ -164,12 +196,20 @@ Strong UIButton *dealBtn;//协议
 }
 -(void)makeViewConstraints
 {
+    
+    [self.topImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(kSizeFrom750(258));
+        make.height.mas_equalTo(kSizeFrom750(228));
+        make.top.mas_equalTo(kNavHight+kSizeFrom750(75));
+        make.centerX.mas_equalTo(self.view);
+    }];
+    
    
     [self.mobileTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(kSizeFrom750(625));
         make.height.mas_equalTo(kSizeFrom750(90));
         make.centerX.mas_equalTo(self.view);
-        make.top.mas_equalTo(self.titleView.mas_bottom).offset(kSizeFrom750(250));
+        make.top.mas_equalTo(self.topImageView.mas_bottom).offset(kSizeFrom750(80));
     }];
     
     [self.codeTextField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -194,7 +234,7 @@ Strong UIButton *dealBtn;//协议
     [self.registerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.passwordTextField.mas_bottom).offset(kSizeFrom750(100));
         make.width.mas_equalTo(kSizeFrom750(625));
-        make.height.mas_equalTo(kSizeFrom750(88));
+        make.height.mas_equalTo(kSizeFrom750(100));
         make.centerX.mas_equalTo(self.passwordTextField);
     }];
 
@@ -235,18 +275,32 @@ Strong UIButton *dealBtn;//协议
 -(void)codeBtnClick:(UIButton *)sender{
     if ([CommonUtils checkTelNumber:self.mobileTextField.text]) {
         //发送验证码
-        self.codeTime = [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
-            self.countDownNum --;
-            NSString * num = [NSString stringWithFormat:@"%lds",self.countDownNum];
-            [self.codeBtn setTitle:num forState:UIControlStateNormal];
-            if (self.countDownNum == 0)
-            {
-                [self.codeTime invalidate];
-                self.countDownNum = 60;
-                [self.codeBtn setTitle:@"重新获取" forState:UIControlStateNormal];
-                self.codeBtn.userInteractionEnabled = YES;
-            }
+        
+        NSString *phone = self.mobileTextField.text;
+        NSString *type = @"reg";
+        NSString *time_stamp = [CommonUtils getCurrentTimestamp];
+   
+        NSArray *keys = @[@"phone",@"type",@"time_stamp"];
+        NSArray *values = @[phone,type,time_stamp];
+    
+        [[HttpCommunication sharedInstance] getSignRequestWithPath:getMessageCodeUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){            [SVProgressHUD showSuccessWithStatus:@"验证码发送成功"];
+            self.codeTime = [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+                self.codeBtn.userInteractionEnabled = NO;
+                self.countDownNum --;
+                NSString * num = [NSString stringWithFormat:@"%lds",self.countDownNum];
+                [self.codeBtn setTitle:num forState:UIControlStateNormal];
+                if (self.countDownNum == 0)
+                {
+                    [self.codeTime invalidate];
+                    self.countDownNum = 60;
+                    [self.codeBtn setTitle:@"重新获取" forState:UIControlStateNormal];
+                    self.codeBtn.userInteractionEnabled = YES;
+                }
+            }];
+        } failure:^(NSDictionary *errorDic) {
+            
         }];
+        
     }else{
         [SVProgressHUD showErrorWithStatus:@"手机号格式不正确"];
     }
@@ -254,15 +308,21 @@ Strong UIButton *dealBtn;//协议
 }
 -(void)dealBtnClick:(UIButton *)sender{
     
+    HomeWebController *web = InitObject(HomeWebController);
+    if (self.model==nil) {
+        self.model = [SystemConfigModel yy_modelWithJSON:[CommonUtils getCacheDataWithKey:Cache_SystemConfig]];
+    }
+    web.urlStr = self.model.reg_agreement_link;
+    [self.navigationController pushViewController:web animated:YES];
     
 }
 //注册按钮点击
 -(void)registerButtonClick:(UIButton *)sender{
-    NSString *mobile = self.mobileTextField.text;
-    NSString *code = self.codeTextField.text;
+    NSString *phone = self.mobileTextField.text;
+    NSString *sms_code = self.codeTextField.text;
     NSString *password = self.passwordTextField.text;
-    
-    if (![CommonUtils checkTelNumber:mobile]) {
+    NSString *referrer = @"";
+    if (![CommonUtils checkTelNumber:phone]) {
         [SVProgressHUD showErrorWithStatus:@"手机号格式不正确"];
         return;
     }
@@ -271,14 +331,35 @@ Strong UIButton *dealBtn;//协议
         [SVProgressHUD showErrorWithStatus:@"密码为6~15位数字和字母的组合"];
         return;
     }
-    if (code.length<4) {
+    if (sms_code.length!=6) {
         [SVProgressHUD showErrorWithStatus:@"验证码错误"];
         return;
     }
+   
+    NSArray *keys = @[@"phone",@"password",@"sms_code",@"referrer"];
+    NSArray *values = @[phone,password,sms_code,referrer];
     
-    
-    
+    [[HttpCommunication sharedInstance] getSignRequestWithPath:registerUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){
+        if (!IsEmptyStr([successDic objectForKey:kToken])) {
+            [TTJFUserDefault setStr:phone key:kUsername];
+            [TTJFUserDefault setStr:password key:kPassword];
+            [TTJFUserDefault setStr:[successDic objectForKey:kToken] key:kToken];
+            [TTJFUserDefault setStr:[successDic objectForKey:kExpirationTime] key:kExpirationTime];
+            [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];
+        }
+        //默认登录webView
+        [self.view addSubview:[AutoLoginView defaultView]];
+        [[AutoLoginView defaultView] loginWebView];
+        [AutoLoginView defaultView].autoLoginBlock = ^{
+          //webView加载完成回调方法
+            [SVProgressHUD showSuccessWithStatus:@"注册成功"];
+        };
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
 }
+
+
 -(void)pwdBtnClick:(UIButton *)sender{
     sender.selected = !sender.selected;
     self.passwordTextField.secureTextEntry = !sender.selected;

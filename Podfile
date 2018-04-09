@@ -5,7 +5,6 @@ pod 'AFNetworking', '~> 3.1.0'
 pod 'PPNetworkHelper', '~> 0.4.0'
 #pod 'ReactiveCocoa', '~> 2.0.1'
 #pod 'MMProgressHUD', '~> 0.3.2'
-#pod 'MJExtension'
 pod 'MJRefresh'
 pod 'SVProgressHUD'
 #pod 'AMap3DMap'
@@ -22,7 +21,7 @@ pod 'RegexKitLite-NoWarning', '1.1.0'
 #pod 'TouchJSON'
 pod 'FMDB'
 pod 'IQKeyboardManager'
-    
+pod 'QQ_XGPush', '~> 3.0.1'
 pod 'Masonry', '~> 1.1.0'
 pod 'EAIntroView'
 pod 'SMPageControl', '~> 1.2'
@@ -34,9 +33,8 @@ pod 'ShareSDK3/ShareSDKPlatforms/WeChat'
 pod 'ShareSDK3/ShareSDKPlatforms/Copy'
 pod 'ShareSDK3/ShareSDKPlatforms/SMS'
 pod 'ShareSDK3/ShareSDKExtension'
-
+pod 'YYModel', '~> 1.0.4'
 pod 'XHLaunchAd', '~> 3.4.4'
-
+pod 'LYEmptyView', '~> 1.0.2'
 pod 'ReactiveObjC'
-
 end

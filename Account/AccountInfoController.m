@@ -19,6 +19,7 @@
 #import "SVProgressHUD.h"
 #import "TTJFRefreshStateHeader.h"
 #import "LoginViewController.h"
+#import "ChangePasswordViewController.h"
 @interface AccountInfoController ()<UITableViewDataSource, UITableViewDelegate,UIWebViewDelegate>
 {
     Boolean isFirstExe;
@@ -28,7 +29,6 @@
     UIWebView * iWebView;
     NSString * ishaveOpen;
 }
-
 @end
 
 @implementation AccountInfoController
@@ -61,6 +61,7 @@
     {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
+    
     if((![CommonUtils isLogin])&&[ishaveOpen isEqual:@"0"])
     {
         realname.card_id=@"";
@@ -76,9 +77,9 @@
     {
          [self.navigationController popViewControllerAnimated:YES];
     }
-    else if([theAppDelegate.isrenzheng isEqual:@"1"])
+    else if([CommonUtils isVerifyRealName])
     {
-        theAppDelegate.isrenzheng=@"0";
+        [TTJFUserDefault setBool:NO key:isCertificationed];
         [self GetMyUserDatas];
         [self initTableView];
     }
@@ -99,6 +100,7 @@
     [self.tableView setSeparatorColor:separaterColor];
     
     [self.view addSubview:self.tableView];
+    
     
     [self setUpTableView];
     
@@ -258,14 +260,14 @@
             right.text=temp;
             [cell addSubview:right];
             
-            UIView * lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 54,screen_width-30 , 0.5)];
+            UIView * lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 54,screen_width-30 , kLineHeight)];
             lineView.backgroundColor = lineBg;
             [cell addSubview:lineView];
             
             if([realname.card_id isEqual:@""])
                {
                    UIImageView * img0=[[UIImageView alloc] initWithFrame:CGRectMake(screen_width-22, 20, 7, 14)];
-                   [img0 setImage:[UIImage imageNamed:@"o.png"]];
+                   [img0 setImage:[UIImage imageNamed:@"rightArrow.png"]];
                    [cell addSubview:img0];
                }
             
@@ -295,7 +297,7 @@
             if([phone.phone_num isEqual:@""])
             {
                 UIImageView * img0=[[UIImageView alloc] initWithFrame:CGRectMake(screen_width-22, 20, 7, 14)];
-                [img0 setImage:[UIImage imageNamed:@"o.png"]];
+                [img0 setImage:[UIImage imageNamed:@"rightArrow.png"]];
                 [cell addSubview:img0];
             }
             
@@ -319,7 +321,7 @@
             [cell addSubview:left];
             
             UIImageView * img0=[[UIImageView alloc] initWithFrame:CGRectMake(screen_width-22, 20, 7, 14)];
-            [img0 setImage:[UIImage imageNamed:@"o.png"]];
+            [img0 setImage:[UIImage imageNamed:@"rightArrow.png"]];
             [cell addSubview:img0];
             return cell;
         }
@@ -357,7 +359,7 @@
         {
             if([realname.card_id isEqual:@""]&&![realname.url isEqual:@""])
             {
-                theAppDelegate.isrenzheng=@"1";
+                [TTJFUserDefault setBool:YES key:isCertificationed];
                 self.hidesBottomBarWhenPushed=YES;
                 HomeWebController *discountVC = [[HomeWebController alloc] init];
                 discountVC.urlStr=realname.url;
@@ -380,12 +382,8 @@
         }
     }
      if (indexPath.section == 1) {
-         self.hidesBottomBarWhenPushed=YES;
-         HomeWebController *discountVC = [[HomeWebController alloc] init];
-         discountVC.urlStr=account.update_pwd_link;
-         discountVC.returnmain=@"3"; //页返回
-         [self.navigationController pushViewController:discountVC animated:YES];
-         self.hidesBottomBarWhenPushed=NO;
+         ChangePasswordViewController *change = InitObject(ChangePasswordViewController);
+         [self.navigationController pushViewController:change animated:YES];
      }
     if (indexPath.section == 2) {
         [SVProgressHUD showWithStatus:@"正在退出登录..."];
@@ -398,11 +396,11 @@
 }
 
 -(void) GetMyUserDatas{
-    __weak typeof(self) weakSelf = self;
     NSString *urlStr = @"";
     NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[[CommonUtils getToken]] forKeys:@[kToken] ];
     NSString *sign=[HttpSignCreate GetSignStr:dict_data];
-    urlStr = [NSString stringWithFormat:getMyAccountData,oyApiUrl,theAppDelegate.user_token,sign];
+    
+    urlStr = [NSString stringWithFormat:getMyAccountData,oyApiUrl,[CommonUtils getToken],sign];
     NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
     if([ggHttpFounction getJsonIsOk:data])
     {
@@ -483,20 +481,14 @@
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitDiskImageCacheEnabled"];//自己添加的，原文没有提到。
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitOfflineWebApplicationCacheEnabled"];//自己添加的，原文没有提到。
     [[NSUserDefaults standardUserDefaults] synchronize];
- 
-//    BBUserDefault.isNoFirstLaunch=YES;
- 
-            //[MBProgressHUD hideHUDForView:self.view animated:YES];
     
-                [self exitLogin];
-            [SVProgressHUD showSuccessWithStatus:@"退出登录成功"];
-            theAppDelegate.IsLogin=FALSE;
-            [TTJFUserDefault removeStrForKey:kToken];
-            [TTJFUserDefault removeArrForKey:kUsername];
-            theAppDelegate.user_token=@"";
-            theAppDelegate.user_name=@"";
-            [self.navigationController popViewControllerAnimated:YES];
-
+    
+    [self exitLoginStatus];
+    [SVProgressHUD showSuccessWithStatus:@"退出登录成功"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    
 }
 
 -(void)webViewDidStartLoad:(UIWebView *)webView
@@ -511,19 +503,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
--(Boolean) exitLogin
-{
-    
-    NSUserDefaults *userDef = [NSUserDefaults standardUserDefaults];
-    [userDef setObject:@"2015-01-01" forKey:@"LoginTime"];
-    [userDef synchronize];
-    
-    
-    return TRUE;
-    
-}
-
 
 -(void) OnLogin{
     [self goLoginVC];

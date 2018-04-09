@@ -136,12 +136,7 @@
 #pragma mark ====旋转动画======
 -(CABasicAnimation *)rotation:(float)dur degree:(float)degree direction:(int)direction repeatCount:(int)repeatCount
 {
-    CATransform3D rotationTransform = CATransform3DMakeRotation(degree, 0, 0, direction);
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-  
-  //  animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    
-    
     animation.fromValue = [NSNumber numberWithFloat:0.f];
     animation.toValue =  [NSNumber numberWithFloat: M_PI *2];
     animation.duration  = 3;

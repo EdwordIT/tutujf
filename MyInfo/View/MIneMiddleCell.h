@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
 @protocol MIneMiddleDelegate <NSObject>
 
 @optional
--(void)didopMIneMiddleAtIndex:(NSInteger)index;
+-(void)didTapMIneMiddleAtIndex:(NSInteger)index;
 
 @end
 
@@ -20,6 +19,6 @@
 
 @property(nonatomic, assign) id<MIneMiddleDelegate> delegate;
 
--(void) setModelData:(NSArray *) ary1 ary2:(NSArray *)ary2 ary3:(NSArray *)ary3;
+-(void)loadInfoWithArray:(NSArray *)dataArray;
 
 @end

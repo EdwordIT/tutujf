@@ -65,7 +65,7 @@ Strong UILabel *watchTimesLabel;//浏览次数
     if (!_timeLabel) {
         _timeLabel = InitObject(UILabel);
         _timeLabel.textColor = RGB_166;
-        _timeLabel.font = SYSTEMSIZE(22);
+        _timeLabel.font = NUMBER_FONT(24);
         _timeLabel.text = @"2018-03-11";
     }
     return _timeLabel;
@@ -75,7 +75,7 @@ Strong UILabel *watchTimesLabel;//浏览次数
     if (!_watchTimesLabel) {
         _watchTimesLabel = InitObject(UILabel);
         _watchTimesLabel.textColor = RGB_166;
-        _watchTimesLabel.font = SYSTEMSIZE(22);
+        _watchTimesLabel.font = SYSTEMSIZE(24);
         _watchTimesLabel.text = @"浏览次数：123次";
     }
     return _watchTimesLabel;
@@ -102,11 +102,26 @@ Strong UILabel *watchTimesLabel;//浏览次数
         make.centerY.mas_equalTo(self.contentView.centerY);
         make.right.mas_equalTo(self.contentView).offset(-kSizeFrom750(30));
         make.width.mas_equalTo(kSizeFrom750(200));
-        make.height.mas_equalTo(kSizeFrom750(125));
+        make.height.mas_equalTo(kSizeFrom750(124));
     }];
 }
--(void)loadInfoWithModel:(ClubeMsgModel *)model{
-    
+//如果有imgUrl，则是行业资讯，如果没有，则为公告
+-(void)loadInfoWithModel:(NoticeModel *)model{
+    self.titleLabel.text = model.title;
+    self.timeLabel.text = model.add_time;
+    self.watchTimesLabel.text = [NSString stringWithFormat:@"浏览次数：%@次",model.hits];
+    if ([model isKindOfClass:[InformationModel class]]) {
+        //行业资讯
+        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(kSizeFrom750(460));
+        }];
+        [self.iconImageView setImageWithString:((InformationModel *)model).link_url];
+    }else{
+        //公告
+        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(screen_width - kSizeFrom750(60));
+        }];
+    }
     
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

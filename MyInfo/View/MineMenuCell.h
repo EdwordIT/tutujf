@@ -4,7 +4,7 @@
 //
 //  Created by 占碧光 on 2017/10/14.
 //  Copyright © 2017年 占碧光. All rights reserved.
-//
+//我的页面最下边儿功能栏
 
 #import <UIKit/UIKit.h>
 
@@ -20,6 +20,6 @@
 
   @property(nonatomic, assign) id<MineMenuDelegate> delegate;
 
--(void) setMenuData:(NSArray *) ary1 ayr2:(NSArray *)ayr2;
+-(void) setMenuData:(NSArray *)array;
 
 @end

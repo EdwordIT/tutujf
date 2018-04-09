@@ -36,10 +36,12 @@
     [rightimg setImage:[UIImage imageNamed:@"wings_right"]];
     [self.contentView addSubview:rightimg];
     
-    NSArray *nameArr = @[@"注册账号",@"实名认证",@"开通存管账户",@"安心投资"];
+    NSArray *nameArr = @[@"注册账号",@"实名认证",@"开通托管账户",@"安心投资"];
     
     CGFloat space = (screen_width - kSizeFrom750(40)*2 - kSizeFrom750(150)*4)/3+kSizeFrom750(150);
     for (int i=0; i<4; i++) {
+        
+        
         
         UILabel *textLabel = [[UILabel alloc]initWithFrame:RECT(kSizeFrom750(40)+space*i, lab1.bottom+kSizeFrom750(112), kSizeFrom750(150), kSizeFrom750(24))];
         [textLabel setFont:SYSTEMSIZE(24)];
@@ -52,19 +54,27 @@
         NSString *iconsImage = [NSString stringWithFormat:@"home_0%d",i+1];
         [img setImage:IMAGEBYENAME(iconsImage)];
         [self.contentView addSubview:img];
+        
+        if (i!=3) {
+            UIView *lineView = [[UIView alloc]initWithFrame:RECT(img.right+kSizeFrom750(25), 0, kSizeFrom750(70), 0.5)];
+            lineView.backgroundColor = RGB(251, 246, 230);
+            lineView.centerY = img.centerY;
+            [self.contentView addSubview:lineView];
+        }
     }
     
-    UIButton *registerBtn  = [UIButton buttonWithType:UIButtonTypeCustom];
-    registerBtn.frame = CGRectMake(0,lab1.bottom+kSizeFrom750(185),kSizeFrom750(450), kSizeFrom750(72));
-    registerBtn.centerX = lab1.centerX;
-    [registerBtn addTarget:self action:@selector(registerClick:) forControlEvents:UIControlEventTouchUpInside];
-    registerBtn.showsTouchWhenHighlighted = NO;
-    [registerBtn setTitle:@"注册即领688红包" forState:UIControlStateNormal];//button title
-    [registerBtn.titleLabel setFont:SYSTEMSIZE(28)];
-    [registerBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];//title color
-    registerBtn.backgroundColor=RGB_Red;
-    [registerBtn.layer setCornerRadius:registerBtn.height/2]; 
-    [self.contentView addSubview:registerBtn];
+    self.registerBtn  = [UIButton buttonWithType:UIButtonTypeCustom];
+    _registerBtn.frame = CGRectMake(0,lab1.bottom+kSizeFrom750(185),kSizeFrom750(450), kSizeFrom750(72));
+    _registerBtn.centerX = lab1.centerX;
+    [_registerBtn addTarget:self action:@selector(registerClick:) forControlEvents:UIControlEventTouchUpInside];
+    _registerBtn.showsTouchWhenHighlighted = NO;
+    [_registerBtn setTitle:@"注册即领688红包" forState:UIControlStateNormal];//button title
+    [_registerBtn.titleLabel setFont:SYSTEMSIZE(30)];
+    [_registerBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];//title color
+    _registerBtn.backgroundColor=COLOR_Red;
+    [CommonUtils setShadowCornerRadiusToView:_registerBtn];
+    [_registerBtn.layer setCornerRadius:_registerBtn.height/2];
+    [self.contentView addSubview:_registerBtn];
 
     
 }

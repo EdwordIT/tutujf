@@ -2,8 +2,8 @@
 //  MineViewController.h
 //  TTJF
 //
-//  Created by 占碧光 on 2017/3/10.
-//  Copyright © 2017年 占碧光. All rights reserved.
+//  Created by 土土金服ios-01 on 2018/3/6.
+//  Copyright © 2018年 wbzhan. All rights reserved.
 //我的页面（4）
 
 #import <UIKit/UIKit.h>

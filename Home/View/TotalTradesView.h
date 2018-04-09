@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "LoanInfo.h"
-#import "HotQueueModel.h"
+#import "HomepageModel.h"
 @interface TotalTradesView : UIView
--(void)loadInfoWithModel:(HotQueueModel *)model;
+-(void)loadInfoWithModel:(HomepageModel *)model;
 //金额变动
 -(void)countTradeNum;
 @end

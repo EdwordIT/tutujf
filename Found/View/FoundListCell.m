@@ -9,10 +9,6 @@
 #import "FoundListCell.h"
 
 @implementation FoundListCell
-{
-    UIView *lineView;
-}
-
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     //self.backgroundColor=RGB(221,221,221);
@@ -23,57 +19,34 @@
 }
 
 -(void)initViews {
-    self.typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake(15, 15,screen_width-30, 130)];
+    self.typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake(kSizeFrom750(30), kSizeFrom750(30),kSizeFrom750(690), kSizeFrom750(260))];
     [ self.typeimgsrc setImage:[UIImage imageNamed:@"gqzq.png"]];
-    [self.typeimgsrc.layer setCornerRadius:2];
+    [self.typeimgsrc.layer setCornerRadius:kSizeFrom750(5)];
     [self.contentView addSubview:self.typeimgsrc];
     
 
-    self.title= [[UILabel alloc] initWithFrame:CGRectMake(15, 156,screen_width-55, 14)];
-    self.title.font = CHINESE_SYSTEM(14);
-    self.title.textColor=RGB(51,51,51);
+    self.title= [[UILabel alloc] initWithFrame:CGRectMake(self.typeimgsrc.left, self.typeimgsrc.bottom+kSizeFrom750(20),self.typeimgsrc.width, kSizeFrom750(30))];
+    self.title.font = SYSTEMSIZE(28);
+    self.title.textColor=RGB_51;
     self.title.text=@"十一月注册送百元";
-    self.title.textAlignment=NSTextAlignmentLeft;
+    self.title.numberOfLines = 0;
     [self.contentView addSubview: self.title];
     
-    self.date= [[UILabel alloc] initWithFrame:CGRectMake(15, 180,screen_width-55, 12)];
-    self.date.font = CHINESE_SYSTEM(12);
-    self.date.textColor=RGB(151,151,151);
+    self.date= [[UILabel alloc] initWithFrame:CGRectMake(self.title.left, self.title.bottom+kSizeFrom750(20),self.title.width, kSizeFrom750(25))];
+    self.date.font = NUMBER_FONT(24);
+    self.date.textColor=RGB_153;
     self.date.text=@"2017-10-17";
-    self.date.textAlignment=NSTextAlignmentLeft;
     [self.contentView addSubview: self.date];
     
-    lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 200,screen_width , 10)];
-    lineView.backgroundColor =separaterColor;
-    [self.contentView  addSubview:lineView];
-}
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
+    self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, kSizeFrom750(400),screen_width , kSizeFrom750(20))];
+    self.lineView.backgroundColor =separaterColor;
+    [self.contentView  addSubview:self.lineView];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
-
--(void) setDataBind:(FoundListModel *) model IsLast:(BOOL)IsLast{
-    [self.typeimgsrc sd_setImageWithURL:[NSURL URLWithString:model.pic_url]];
+-(void) setDataBind:(FoundListModel *) model{
+    [self.typeimgsrc setImageWithString:model.pic_url];
     self.title.text=model.title;
     self.date.text=model.date;
-    CGFloat hh=0;
-    hh=([model.height floatValue]/[model.width floatValue])*screen_width;
-    self.typeimgsrc.frame=CGRectMake(15, 15,screen_width-30, hh);
-    self.title.frame=CGRectMake(15, hh+26,screen_width-55, 14);
-    self.date.frame=CGRectMake(15, hh+50,screen_width-55, 12);
-    lineView.frame=CGRectMake(0, hh+70,screen_width , 10);
-    if(IsLast)
-    {
-      lineView.frame=CGRectMake(0, hh+70,screen_width , 60);
-      [lineView setHidden:FALSE];
-    }
 }
 
 

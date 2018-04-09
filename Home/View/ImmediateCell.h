@@ -28,7 +28,8 @@
 @property(nonatomic, strong) UILabel *minPointLabel;
 /**投资时间*/
 @property(nonatomic, strong) UILabel *timeLabel;
-
+//数据加载
 -(void)setImmediateModel:(ImmediateModel *)mode;
-
+//无数据隐藏视图
+-(void)hiddenSubViews:(BOOL)isHidden;
 @end

@@ -40,8 +40,12 @@
 //删除
 +(void)removeStrForKey:(NSString *)key{
     
-    [self setStr:nil key:key];
+    //获取preference
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
+    [defaults removeObjectForKey:key];
+    //立即同步
+    [defaults synchronize];
 }
 #pragma mark --保存数组
 +(void)setArr:(NSArray *)arr key:(NSString *)key{

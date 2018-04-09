@@ -10,44 +10,24 @@
 
 @implementation UIView (Extension)
 
-- (void)setX:(CGFloat)x
-{
-    CGRect frame = self.frame;
-    frame.origin.x = x;
-    self.frame = frame;
-}
-
-- (CGFloat)x
-{
-    return self.frame.origin.x;
-}
-
-- (void)setY:(CGFloat)y
-{
-    CGRect frame = self.frame;
-    frame.origin.y = y;
-    self.frame = frame;
-}
-
-- (CGFloat)y
-{
-    return self.frame.origin.y;
-}
-- (void)setLeft:(CGFloat)left
-{
-    CGRect frame = self.frame;
-    frame.origin.x = left;
-    self.frame = frame;
-}
-
 - (CGFloat)left
 {
     return self.frame.origin.x;
 }
-
+-(void)setLeft:(CGFloat)left{
+    CGRect frame = self.frame;
+    frame.origin.x = left;
+    self.frame = frame;
+}
 - (CGFloat)right
 {
     return self.frame.origin.x+self.frame.size.width;
+}
+-(void)setRight:(CGFloat)right
+{
+    CGRect frame = self.frame;
+    frame.size.width =right - frame.origin.x;
+    self.frame = frame;
 }
 - (void)setTop:(CGFloat)top
 {
@@ -64,7 +44,12 @@
 {
     return self.frame.origin.y+self.frame.size.height;
 }
-
+-(void)setBottom:(CGFloat)bottom
+{
+    CGRect frame = self.frame;
+    frame.size.height =bottom - frame.origin.y;
+    self.frame = frame;
+}
 - (void)setWidth:(CGFloat)width
 {
     CGRect frame = self.frame;
@@ -114,8 +99,7 @@
 
 - (void)setSize:(CGSize)size
 {
-    //    self.width = size.width;
-    //    self.height = size.height;
+
     CGRect frame = self.frame;
     frame.size = size;
     self.frame = frame;
@@ -125,5 +109,10 @@
 {
     return self.frame.size;
 }
-
+-(void)removeAllSubViews
+{
+    for (UIView *view in self.subviews) {
+        [view removeFromSuperview];
+    }
+}
 @end

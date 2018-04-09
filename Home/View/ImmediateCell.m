@@ -27,28 +27,29 @@
 -(void)initViews {
 
    UIImageView * leftImage=[[UIImageView alloc] initWithFrame:CGRectMake(kSizeFrom750(160), kSizeFrom750(290), kSizeFrom750(75), kSizeFrom750(25))];
-    [leftImage setImage:[UIImage imageNamed:@"xinshouzx"]];
+    [leftImage setImage:[UIImage imageNamed:@"wings_left"]];
     [self.contentView addSubview:leftImage];
     
     
     UILabel * lab1=  [[UILabel alloc] initWithFrame:CGRectMake(leftImage.right, leftImage.top - kSizeFrom750(5),kSizeFrom750(280),kSizeFrom750(30))];
     lab1.font = SYSTEMBOLDSIZE(32);
     lab1.textColor=RGB(102,102,102);
-    NSAttributedString *attr = [CommonUtils diffierentFontWithString:@"新手专享 为您特供" rang:NSMakeRange(0, 4) font:SYSTEMBOLDSIZE(32) color:RGB_Red spacingBeforeValue:0 lineSpace:0];
+    NSAttributedString *attr = [CommonUtils diffierentFontWithString:@"新手专享 为您特供" rang:NSMakeRange(0, 4) font:SYSTEMBOLDSIZE(32) color:COLOR_Red spacingBeforeValue:0 lineSpace:0];
     lab1.attributedText=attr;
     lab1.textAlignment=NSTextAlignmentCenter;
     [self.contentView addSubview:lab1];
     
-    rightimg=[[UIImageView alloc] initWithFrame:CGRectMake(screen_width - kSizeFrom750(160), leftImage.top, leftImage.width, leftImage.height)];
-    [rightimg setImage:[UIImage imageNamed:@"xinshouzx"]];
+    rightimg=[[UIImageView alloc] initWithFrame:CGRectMake(screen_width - kSizeFrom750(160)- kSizeFrom750(75), leftImage.top, leftImage.width, leftImage.height)];
+    [rightimg setImage:[UIImage imageNamed:@"wings_right"]];
     [self.contentView addSubview:rightimg];
     
     _incomeLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, lab1.bottom+kSizeFrom750(40),kSizeFrom750(200),kSizeFrom750(55))];
     _incomeLabel.centerX = lab1.centerX;
     NSString *percentage = @"13.20%";
     _incomeLabel.textAlignment=NSTextAlignmentCenter;
-    _incomeLabel.font = SYSTEMBOLDSIZE(52);
-    [_incomeLabel setAttributedText:[CommonUtils diffierentFontWithString:@"13.20%" rang:NSMakeRange(percentage.length - 4, 4) font:SYSTEMSIZE(25) color:RGB_Red spacingBeforeValue:0 lineSpace:0]];
+    _incomeLabel.font = SYSTEMBOLDSIZE(60);
+    _incomeLabel.textColor = COLOR_Red;
+    [_incomeLabel setAttributedText:[CommonUtils diffierentFontWithString:@"13.20%" rang:NSMakeRange(percentage.length - 4, 4) font:SYSTEMSIZE(25) color:COLOR_Red spacingBeforeValue:0 lineSpace:0]];
     [self.contentView addSubview:_incomeLabel];
     
      self.minPointLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, _incomeLabel.bottom+kSizeFrom750(40),screen_width/2, kSizeFrom750(25))];
@@ -78,7 +79,7 @@
     [btn1 setTitle:@"立即投资" forState:UIControlStateNormal];//button title
      [btn1.titleLabel setFont:SYSTEMSIZE(28)];
     [btn1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];//title color
-    btn1.backgroundColor=RGB_Red;
+    btn1.backgroundColor=COLOR_Red;
     [btn1.layer setCornerRadius:btn1.height/2]; //设置矩形四个圆角半径
 
     [self.contentView addSubview:btn1];
@@ -105,7 +106,6 @@
 }
 
 -(void)setImmediateModel:(ImmediateModel *)model {
-    //_hotQueue = hotQueue;
      if([model.additional_status isEqual:@"0"])
          return ;
      self.incomeLabel.text=[model.apr stringByAppendingString:@"%"];
@@ -114,46 +114,22 @@
     
     [self.timeLabel setAttributedText:[CommonUtils diffierentFontWithString:[@"投资时间 " stringByAppendingString:model.period] rang:NSMakeRange(0, 4) font:SYSTEMSIZE(26) color:RGB_166 spacingBeforeValue:0 lineSpace:0]];
     
-    CGFloat f=[model.additional_apr floatValue];
-    if(f==0)
-    {
-  
-    NSInteger index=[ _incomeLabel.text rangeOfString:@"."].location;
-    NSInteger len=[ _incomeLabel.text  length];
-    NSMutableAttributedString *textColor = [[NSMutableAttributedString alloc]initWithString: _incomeLabel.text];
-    [textColor addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica" size:36] range:NSMakeRange(0, index)];
-    [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19) range:NSMakeRange(0, index)];
-    [textColor addAttribute:NSFontAttributeName value:CHINESE_SYSTEM(14) range:NSMakeRange(index,len-index)];
-    [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19)  range:NSMakeRange(index, len-index)];
-    [_incomeLabel setAttributedText:textColor];
+    //新手年利率
+    if ([model.apr floatValue]<=0) {
+        return;
     }
-    else
-    {
-      NSString * ff=[NSString stringWithFormat:@"%.2f",f];
-        NSString * temp=model.apr;
-        temp=[temp stringByAppendingString:@"%"];
-       temp=[temp stringByAppendingString:@"+"];
-     temp=[temp stringByAppendingString:ff];
-       temp=[temp stringByAppendingString:@"%"];
-          self.incomeLabel.text=temp;
-        NSInteger index=[ _incomeLabel.text rangeOfString:@"+"].location;
-           NSInteger index1=[ff rangeOfString:@"."].location;
-        NSInteger len=[ _incomeLabel.text  length];
-        NSMutableAttributedString *textColor = [[NSMutableAttributedString alloc]initWithString: _incomeLabel.text];
-        [textColor addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica" size:36] range:NSMakeRange(0, index-4)];
-        [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19) range:NSMakeRange(0, index-4)];
-        [textColor addAttribute:NSFontAttributeName value:CHINESE_SYSTEM(14) range:NSMakeRange(index-4,5)];
-        [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19)  range:NSMakeRange(index-4, 5)];
-        [textColor addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica" size:36] range:NSMakeRange(index+1, index1)];
-        [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19) range:NSMakeRange(index+1, index1)];
-        [textColor addAttribute:NSFontAttributeName value:CHINESE_SYSTEM(14) range:NSMakeRange(index+1+index1,len-(index+1+index1))];
-        [textColor addAttribute:NSForegroundColorAttributeName value:RGB(255,46,19)  range:NSMakeRange(index+1+index1,len-(index+1+index1))];
-        
-        [_incomeLabel setAttributedText:textColor];
-    }
-   
-}
+    CGFloat add_apr=[model.additional_apr floatValue];//附加年利率
+    CGFloat newhandApr = add_apr+[model.apr floatValue];
+    NSString *incomeText = [[NSString stringWithFormat:@"%.2f",newhandApr] stringByAppendingString:@"%"];
+    [self.incomeLabel setAttributedText:[CommonUtils diffierentFontWithString:incomeText rang:NSMakeRange(incomeText.length - 4, 4) font:SYSTEMBOLDSIZE(30) color:COLOR_Red spacingBeforeValue:0 lineSpace:0]];
 
+}
+-(void)hiddenSubViews:(BOOL)isHidden
+{
+    for (UIView *view in self.contentView.subviews) {
+        [view setHidden:!isHidden];
+    }
+}
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code

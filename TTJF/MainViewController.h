@@ -7,14 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AppDelegate.h"
 #import "BaseViewController.h"
 typedef void (^NoticeSwitchOffBlock)(BOOL isCancel);
 
 @interface MainViewController : BaseViewController
 
-@property(nonatomic, strong) UITableView *tableView;
 @property(nonatomic, copy)NoticeSwitchOffBlock noticBlock;
+
 -(void) setBanndrNum;
 
 @end
