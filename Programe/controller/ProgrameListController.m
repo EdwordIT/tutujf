@@ -12,35 +12,27 @@
 #import "QuicklyModel.h"
 #import "HomeWebController.h"
 #import "PPNetworkHelper.h"
-#import "HttpSignCreate.h"
-#import "HttpUrlAddress.h"
-#import "ggHttpFounction.h"
-#import "AppDelegate.h"
 #import "RushPurchaseController.h"
 #import "ProgrameNewDetailController.h"
-#import "TTJFRefreshStateHeader.h"
+#import "CountDownManager.h"
 
-
-@interface ProgrameListController ()<UITableViewDataSource, UITableViewDelegate,QuicklyDelegate>
+@interface ProgrameListController ()<UITableViewDataSource, UITableViewDelegate>
 {
     NSInteger _page;/**< 页数 */
-    NSInteger _limit;/**< 每页的个数 */
-    
     NSMutableArray *_dataSourceArray;
-    NSInteger _topindex;/**< 每页的个数 */
-        NSInteger _charge;/**当前的选项 */
     NSInteger total_pages;/**总的页数**/
 }
 
 @end
 
 @implementation ProgrameListController
-
+-(void)dealloc{
+    [[CountDownManager manager] cancel];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.titleString = @"项目列表";
     [self.backBtn setHidden:YES];
-    _topindex=0;
     _page = 1;//默认选项
     total_pages=1;
     _dataSourceArray=[[NSMutableArray alloc] init];
@@ -53,37 +45,38 @@
 -(void)initTableView{
 
     if(iOS11)
-        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight) style:UITableViewStyleGrouped];
+        self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight) style:UITableViewStyleGrouped];
     else
-         self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight-kTabbarHeight) style:UITableViewStyleGrouped];
-    
-
+         self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight-kTabbarHeight) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.rowHeight = kSizeFrom750(278);
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.backgroundColor=separaterColor;
     [self.tableView setSeparatorColor:separaterColor];
     [self.view addSubview:self.tableView];
-    [self setUpTableView];
+    [self loadRefresh];
    
 }
 
 //界面表格刷新
--(void)setUpTableView{
+-(void)loadRefresh{
 
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF;
     TTJFRefreshStateHeader *header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
-        [weakSelf loadNewData];
+        _page = 1;
+        [weakSelf getRequest];
     }];
-    
+    //加载无数据页面内容
+    self.tableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
+        _page = 1;
+        [weakSelf getRequest];
+    }];
     self.tableView.mj_header = header;
 
      self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    // 马上进入刷新状态
-    [header beginRefreshing];
+   
+    [self getRequest];
 }
-
-
 
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -91,34 +84,14 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (section ==0 ){
-         return [_dataSourceArray count];
-    }
-    return 1;
+    return [_dataSourceArray count];
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 0) {
-        {
-            return kSizeFrom750(278);
-        }
-    }
-    else{
-        return 70.0;
-    }
-}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if (section == 0) {
-              return 10;
-    }
-    else{
-        return 5;
-    }
+    return kSizeFrom750(20);
 }
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 0.01;
-}
+
 /**表格数据操作**/
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -137,31 +110,23 @@
     }
 }
 
-
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 0) {
-//         NSString *cellIndentifier =[@"Quickly" stringByAppendingString:[NSString stringWithFormat:@"%ld",indexPath.row]];
-      static  NSString *cellIndentifier = @"QuicklyCell";
-        
-        QuicklyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
-       if(cell == nil)
-        {
-            cell = [[QuicklyCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIndentifier];
-       }
-        if(_dataSourceArray.count>0)
-        {
-            QuicklyModel * tmodel1=[_dataSourceArray objectAtIndex:indexPath.row];
-            [cell setQuicklyModel:tmodel1];
-            if([tmodel1.status isEqual: @"3"])
-            {
-                cell.delegate=self;
-            }
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-    }
     
-    return nil;
+    static  NSString *cellIndentifier = @"QuicklyCell";
+    QuicklyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
+    if(cell == nil)
+    {
+        cell = [[QuicklyCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIndentifier];
+    }
+
+    QuicklyModel * programeModel=[_dataSourceArray objectAtIndex:indexPath.row];
+    [cell setQuicklyModel:programeModel];
+    WEAK_SELF;
+    cell.investBlock = ^{
+        [weakSelf investWithModel:programeModel];
+    };
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -169,40 +134,15 @@
     headerView.backgroundColor =separaterColor;
     return headerView;
 }
--(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    footerView.backgroundColor = separaterColor;
-    return footerView;
-}
 //刷新数据
--(void)loadNewData{
-    _page = 1;
-    [self.tableView.mj_footer endRefreshing];
-    [self doLoanList];
-}
-//上拉加载更多数据
--(void)loadMoreData{
-  if(_page<=total_pages)
-    {
-        __weak __typeof(self) weakSelf = self;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            _page++;
-            [weakSelf doLoanList];
-        });
-    }
-    else{
-        [self.tableView.mj_header endRefreshing];
-        [self.tableView.mj_footer endRefreshingWithNoMoreData];
-    }
-}
+-(void)getRequest{
 
--(void) doLoanList{
-    if(_page==1)
-        [ _dataSourceArray removeAllObjects];
+    
     NSArray *keys = @[@"page"];
     NSArray *values = @[[NSString stringWithFormat:@"%ld",_page]];
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:getLoanListUrl keysArray:keys valuesArray:values refresh:self.tableView.mj_header success:^(NSDictionary *successDic) {
-        
+    [[HttpCommunication sharedInstance] getSignRequestWithPath:getLoanListUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
+        if(_page==1)
+            [ _dataSourceArray removeAllObjects];
         total_pages=[[NSString stringWithFormat:@"%@",[successDic objectForKey:@"total_pages"]] intValue];
         NSArray * ary= [successDic objectForKey:@"items"];
         for(NSInteger k=0;k<[ary count];k++)
@@ -213,36 +153,48 @@
             [_dataSourceArray addObject: model];
         }
         [self.tableView.mj_footer endRefreshing];
+        [[CountDownManager manager] start];
         [self.tableView reloadData];
     } failure:^(NSDictionary *errorDic) {
-
+        
     }];
 }
+//上拉加载更多数据
+-(void)loadMoreData{
+  if(_page<=total_pages)
+    {
+        __weak __typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            _page++;
+            [weakSelf getRequest];
+        });
+    }
+    else{
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+    }
+}
 
+//点击进详情
 -(void)didSelectedQuicklyAtIndex1:(NSInteger)index
 {
     QuicklyModel * model=[_dataSourceArray objectAtIndex:index];
     ProgrameNewDetailController * vc=[[ProgrameNewDetailController alloc] init];
     vc.loan_id=model.loan_id;
     [self.navigationController pushViewController:vc animated:YES];
-//    [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self.tabBarController.tabBar setHidden:TRUE];
 }
 
-//
--(void)didSelectedQuicklyAtIndex:(NSInteger)index
+//点击抢购
+-(void)investWithModel:(QuicklyModel *)model
 {
     if(![CommonUtils isLogin])
     {
         [self OnLogin];
         return;
     }
-    QuicklyModel * model=[_dataSourceArray objectAtIndex:index];
     RushPurchaseController * vc=[[RushPurchaseController alloc] init];
     vc.vistorType=@"1";
     vc.loan_id=model.loan_id;
     [self.navigationController pushViewController:vc animated:YES];
-//    [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 
 -(void) OnLogin{

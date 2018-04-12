@@ -10,9 +10,7 @@
 #import "HttpSignCreate.h"
 #import "HttpCommunication.h"
 #import "AppDelegate.h"
-
-static AutoLoginView *_instance = nil;
-
+static AutoLoginView *defaultView = nil;
 @interface AutoLoginView()<UIWebViewDelegate>
 Strong UIWebView *mainWebView;
 @end
@@ -28,12 +26,12 @@ Strong UIWebView *mainWebView;
 
 + (AutoLoginView *)defaultView
 {
-    static dispatch_once_t once;
-    dispatch_once(&once, ^{
-        _instance = [[self alloc] init];
-        
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        defaultView = [[AutoLoginView alloc] init];
+
     });
-    return _instance;
+    return defaultView;
 }
 -(void) getLogin:(NSString *)user_name  password:(NSString *)password
 {
@@ -106,7 +104,7 @@ Strong UIWebView *mainWebView;
     {
         //当前token有效，不用重新更新token，也不需要重新登录
         [self removeFromSuperview];
-        _instance = nil;
+        defaultView = nil;
         
     }
   
@@ -165,7 +163,7 @@ Strong UIWebView *mainWebView;
     if (self.autoLoginBlock) {
         self.autoLoginBlock();
         [self removeFromSuperview];
-        _instance = nil;
+        defaultView = nil;
     }
 }
 #pragma mark -得到当前时间

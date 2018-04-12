@@ -249,6 +249,7 @@
         return nikename;
     }
 }
+//是否登录
 +(BOOL)isLogin
 {
     NSString *token = [self getToken];
@@ -258,6 +259,7 @@
         return NO;
    
 }
+
 //是否需要版本升级
 +(BOOL)isUpdate{
     NSString *version = [TTJFUserDefault strForKey:kVersion];

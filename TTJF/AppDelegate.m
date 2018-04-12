@@ -83,8 +83,11 @@
 //初始化提示框
 - (void)setUpSvpProgress {
     [SVProgressHUD setMinimumDismissTimeInterval:2];
+    [SVProgressHUD setBackgroundColor:RGBA(255, 255, 255, 0.6)];
     [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
-    [SVProgressHUD setBackgroundColor:RGBA(255, 255, 255, 0.8)];
+    [SVProgressHUD setBorderColor:RGB_183];
+    [SVProgressHUD setBorderWidth:kLineHeight];
+    [SVProgressHUD setCornerRadius:kSizeFrom750(10)];
 //    [[UIButton appearance] setExclusiveTouch:YES];
 //    [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
 //    [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];

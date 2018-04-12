@@ -7,7 +7,12 @@
 //
 
 #import "TenderModel.h"
-
+#import "SecurityModel.h"
 @implementation TenderModel
-
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    
+    return @{@"items":[SecurityModel class]
+             };
+    
+}
 @end

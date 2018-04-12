@@ -54,7 +54,6 @@
 {
 //    return  [[AFNetworkReachabilityManager sharedManager] isReachable];
     return YES;
-
 }
 //获取get请求链接
 -(NSString *)getRequestPath:(NSString *)urlPath keysArray:(NSArray *)keys valuesArray:(NSArray *)values signStr:(NSString *)sign{
@@ -66,14 +65,15 @@
     urlPath = [urlPath stringByAppendingString:[NSString stringWithFormat:@"sign=%@",sign]];
     return urlPath;
 }
-//带sign的get请求
+//带sign签名的get请求
 - (void)getSignRequestWithPath:(NSString *)urlString
                      keysArray:(NSArray *)keys
                    valuesArray:(NSArray *)values
-                       refresh:(MJRefreshComponent *)refresh
+                       refresh:(UIScrollView *)scrollView
                   success:(TTJFCallBackSuccess)success
                   failure:(TTJFCallBackFailed)failure
 {
+    
     NSString *newPath = @"";
     if (keys==nil) {
         newPath = urlString;//不需要sign
@@ -81,25 +81,29 @@
         NSString *sign = [HttpSignCreate GetSignStrWithKeys:keys andValues:values];
         newPath = [self getRequestPath:urlString keysArray:keys valuesArray:values signStr:sign];
     }
-    NSLog(@"requestUrl = %@",newPath);
+    NSLog(@"requestUrl = %@",newPath);//请求地址
+    if (scrollView.ly_emptyView!=nil) {
+        MainThreadFunction( [scrollView ly_startLoading]);
+    }
     if ([HttpCommunication isReachable]) {
     
         [_manager GET:newPath parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
             //数据请求的进度
             //            [SVProgressHUD show];
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject){
-            [refresh endRefreshing];
+            if (scrollView!=nil) {
+                [scrollView.mj_header endRefreshing];
+            }
             //解析response内容
             if([responseObject isKindOfClass:[NSDictionary class]]){
                 NSDictionary *resalut = (NSDictionary *)responseObject;
                 NSLog(@"获取数据 resalut = %@",resalut);
-                
                 NSString *resCode = [NSString stringWithFormat:@"%@",[resalut objectForKey:RESPONSE_CODE]];
                 //返回数据正确 ，则解析到数据接收内容
                 if([resCode isEqualToString:RESPONSE_SUCCESS])
                 {
-                    /*
-                     获取后台给定的正确码200，做逻辑处理
+                    /**
+                     获取后台给定的正确码0，做逻辑处理
                      */
                     dispatch_async(dispatch_get_main_queue(), ^{
                         success([resalut objectForKey:RESPONSE_DATA]);
@@ -111,7 +115,6 @@
                     //如果是token失效，则直接跳转到重新登录页面
                     if ([resCode integerValue]==kLoginError) {
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"autoLogin" object:nil];
-                        
                     }
                     dispatch_async(dispatch_get_main_queue(), ^{
                         //错误信息展示（其他相关错误处理在具体的类里进行）
@@ -121,6 +124,7 @@
                 }
             }
             else{
+               
                 [SVProgressHUD dismiss];
                 NSLog(@"JSON格式错误");
             }
@@ -130,15 +134,30 @@
             if (error) {
                 [SVProgressHUD showErrorWithStatus:@"请求数据失败"];
             }
-            
-            [refresh endRefreshing];
-            NSLog(@"error = %@",error);
+            if (scrollView!=nil) {
+                [scrollView.mj_header endRefreshing];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if ([scrollView isKindOfClass:[UITableView class]]) {
+                    [((UITableView *)scrollView) reloadData];
+                }
+            });
         }];
     }
     else
     {
-        [refresh endRefreshing];
+        if (scrollView!=nil) {
+            [scrollView.mj_header endRefreshing];
+        }
         [SVProgressHUD showErrorWithStatus:@"没有网络"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if ([scrollView isKindOfClass:[UITableView class]]) {
+                [((UITableView *)scrollView) reloadData];
+            }
+        });
+       
     }
 
 }
@@ -209,24 +228,6 @@
         [SVProgressHUD showErrorWithStatus:@"没有网络"];
     }
     
-}
-//显示get的Url链接（Debug专用）
--(NSString *)showGetRequestPath:(NSString *)urlString parameters:(NSDictionary *)dic
-{
-    NSString *urlPath = @"";
-    if (dic) {
-        NSMutableString *requestUrl = [[NSMutableString alloc]init];
-        NSArray* arr = [dic allKeys];
-      
-        for (int i=0; i<[arr count]; i++) {
-            NSString * key = [dic.allKeys objectAtIndex:i];
-            //通过键，找到相对应的值
-            NSString * value = [dic valueForKey:key];
-            [requestUrl appendString:[NSString stringWithFormat:@"%@=%@&",key,value]];
-        }
-        urlPath = [NSString stringWithFormat:@"%@?%@",urlString,requestUrl];
-    }
-    return urlPath;
 }
 
 - (void)postRequestWithURL:(NSString *)urlString

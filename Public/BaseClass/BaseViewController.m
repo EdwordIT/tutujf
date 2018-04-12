@@ -193,6 +193,9 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];
 }
 #pragma mark - UINavigationControllerDelegate
+-(void)viewWillDisappear:(BOOL)animated{
+    [SVProgressHUD dismiss];
+}
 -(void)viewWillAppear:(BOOL)animated
 {
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;

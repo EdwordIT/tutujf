@@ -20,8 +20,8 @@
 
 @property(nonatomic, assign) id<OpenShowAdvertDelegate> delegate;
 
-- (id)initWithFrame:(CGRect)frame ;
+- (id)initWithFrame:(CGRect)frame;
 
--(void) setDataBind:(MyAccountModel *) userinfo;
-
+//-(void) setDataBind:(MyAccountModel *) userinfo;
+-(void) setImageWithUrl:(NSString *) urlString;
 @end

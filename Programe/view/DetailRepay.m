@@ -12,7 +12,7 @@
 
 @interface DetailRepay ()
 {
-    NSMutableArray * dataAry;
+    NSArray * dataAry;
     
     UIView * line1;
 }
@@ -38,7 +38,7 @@
 
 -(void) setModel:(LoanBase *) model
 {
-    dataAry=model.repay_plan;
+    dataAry=model.repay_plan.items;
     self.backgroundColor=[UIColor whiteColor];
     if(dataAry!=nil)
     {

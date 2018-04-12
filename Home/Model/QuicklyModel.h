@@ -7,7 +7,12 @@
 //
 
 #import "BaseModel.h"
-
+typedef NS_ENUM (NSInteger,LoanStatus){
+    LoanStatusBuy =3,//可购买
+    LoanStatusFull = 4,//满标待审
+    LoanStatusRepay = 6,//还款中
+    LoanStatusPayed = 7//已还完
+};
 @interface QuicklyModel : BaseModel
 
 @property(nonatomic, strong) NSString *nrid;
@@ -34,8 +39,8 @@
 
 @property(nonatomic, strong) NSString *activity_img_width;
 
-@property(nonatomic, strong) NSString *open_up_status;
-@property(nonatomic, strong) NSString *open_up_date;
+@property(nonatomic, strong) NSString *open_up_status;//开放购买状态：-1 可购买，显示进度条  1 不可购买 显示倒计时
+@property(nonatomic, strong) NSString *open_up_date;//开放购买时间
 
 
 @end

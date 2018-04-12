@@ -27,7 +27,7 @@
  */
 #define webLoginUrl @"%@/wap/system/login2?user_name=%@&user_token=%@&sign=%@&equipment=%@"
 
-#define getMyAccountData @"%@/api/Users/getMyAccountData?user_token=%@&sign=%@"
+
 
 #define getSystemConfig @"%@/api/Platform/GetSystemConfig"
 
@@ -62,11 +62,17 @@
 //#define webLoginUrl  @"%@/User/Token/Login?user_token=%@&expiration_date=%@&sign=%@"
 /*****************************************~1.4.8************************************************************/
 
+//获取我的账户信息相关接口
+#define getMyAccountUrl oyApiUrl@"/api/Users/getMyAccountData"
 //获取发现页面数据
 #define getDiscoverUrl oyApiUrl@"/api/Platform/GetFindActivity"
 //获取项目列表的数据接口 Get
 //?page=%ld&sign=%@
 #define getLoanListUrl oyApiUrl@"/api/Loan/LoanList"
+/**
+ 标的详情页面接口
+ */
+#define getLoanDetailUrl oyApiUrl@"/api/Loan/GetLoanInfoview"
 /**
  新版获取首页全部数据（土土社区，消息，快速投资，新手标
  ?version=%@&device_id=%@&user_token=%@&sign=%@

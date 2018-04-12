@@ -31,7 +31,7 @@
 #import <UIButton+WebCache.h>
 #import "SystemConfigModel.h"
 
-@interface MainViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,UIWebViewDelegate,BannerDelegate,ImmediateDelegate,QuicklyDelegate,OpenShowAdvertDelegate,QuicklyDelegate,UIAlertViewDelegate>
+@interface MainViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,UIWebViewDelegate,BannerDelegate,ImmediateDelegate,OpenShowAdvertDelegate,UIAlertViewDelegate>
 {
     UIWebView *iWebView;
     NSMutableArray * daibanArrayURL;
@@ -41,7 +41,7 @@
     NSMutableArray *clubDataArray;
 
 }
-Strong UITableView *tableView;
+Strong BaseUITableView *tableView;
 Strong TotalTradesView *tradesView;//交易总金额视图
 Strong CustomerServiceView *serviceView;//客服热线
 Strong AdverAlertView *adAlertView;//广告浮层
@@ -107,7 +107,7 @@ Strong SystemConfigModel *configModel;//
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.titleView.alpha = 0;
     [self.backBtn setHidden:YES];
     self.titleString = @"土土金服";
     clubDataArray = InitObject(NSMutableArray);
@@ -136,10 +136,7 @@ Strong SystemConfigModel *configModel;//
 -(void)initSubViews{
     
     footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(135))];
-    footerView.backgroundColor=separaterColor;
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, -kStatusBarHeight, screen_width, screen_height+kStatusBarHeight) style:UITableViewStylePlain];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
+    self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, -kStatusBarHeight, screen_width, screen_height+kStatusBarHeight) style:UITableViewStylePlain];
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.backgroundColor = separaterColor;
     // 设置表格尾部
@@ -148,15 +145,13 @@ Strong SystemConfigModel *configModel;//
     [self.view addSubview:self.tableView];
 
     __weak typeof(self) weakSelf = self;
-//    self.tableView.ly_emptyView = [NodataView noDataRefreshBlock:^{
-//        [weakSelf getHomePageInfo];
-//    }];
-//    [self.tableView ly_showEmptyView];
+    self.tableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
+        [weakSelf getHomePageInfo];
+    }];
     self.tableView.mj_header =  [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
         [weakSelf  getHomePageInfo];
     }];
-    // 马上进入刷新状态
-    [self.tableView.mj_header beginRefreshing];
+    [self getHomePageInfo];
     
     [self.view bringSubviewToFront:self.titleView];
 
@@ -194,7 +189,7 @@ Strong SystemConfigModel *configModel;//
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     [keyWindow addSubview:self.serviceView];
     [self.serviceView setHidden:YES];
-    Weak_Self;
+    WEAK_SELF;
     self.serviceView.serviceBlock = ^(NSInteger tag) {
         
         [weakSelf.serviceView setHidden:YES];
@@ -229,7 +224,7 @@ Strong SystemConfigModel *configModel;//
     NSArray *keys = @[@"version",@"device_id",kToken];
     NSArray *values = @[version,device_id,user_token];
     
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:getHomePageInfoUrl keysArray:keys valuesArray:values refresh:self.tableView.mj_header success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] getSignRequestWithPath:getHomePageInfoUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
         self.homePageModel = [HomepageModel yy_modelWithJSON:successDic];
         [self.tradesView setHidden:NO];
         [clubDataArray removeAllObjects];
@@ -239,9 +234,10 @@ Strong SystemConfigModel *configModel;//
         if (self.homePageModel.lcgh_items!=nil) {
             [clubDataArray addObjectsFromArray:self.homePageModel.lcgh_items];
         }
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
         [self reloadCustomData];//刷新自定义内容
         [self.tableView reloadData];
-        //        [self.tableView ly_hideEmptyView];
     } failure:^(NSDictionary *errorDic) {
         
     }];
@@ -272,7 +268,7 @@ Strong SystemConfigModel *configModel;//
     UILabel *remindLabel = InitObject(UILabel);
     remindLabel.frame = RECT(0, title.bottom+kSizeFrom750(20), screen_width, kSizeFrom750(20));
     remindLabel.textAlignment = NSTextAlignmentCenter;
-    remindLabel.textColor=RGBCOLOR(204, 204, 204);
+    remindLabel.textColor=RGB(204, 204, 204);
     remindLabel.font = SYSTEMSIZE(20);
     remindLabel.text = [NSString stringWithFormat:@"%@%@%@",@"—— ",self.homePageModel.guarantee_sub_txt,@" ——"];
     [footerView addSubview:remindLabel];
@@ -454,13 +450,12 @@ Strong SystemConfigModel *configModel;//
         }
         
         [cell.sepView removeFromSuperview];//清除间隔符
-        
+        WEAK_SELF;
         QuicklyModel * tmodel1=[self.homePageModel.loan_items objectAtIndex:indexPath.row];
         [cell setQuicklyModel:tmodel1];
-        if([tmodel1.status isEqual: @"3"])
-        {
-            cell.delegate=self;
-        }
+        cell.investBlock = ^{
+            [weakSelf investWithModel:tmodel1];
+        };
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
@@ -526,7 +521,7 @@ Strong SystemConfigModel *configModel;//
         cell = [[PlatformDataCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
     }
     //平台数据点击
-    Weak_Self;
+    WEAK_SELF;
     cell.platBlock = ^{
         [weakSelf goWebViewWithUrl:weakSelf.homePageModel.platformModel.left_link_url];
     };
@@ -586,14 +581,13 @@ Strong SystemConfigModel *configModel;//
     
 }
 //抢购（首页其他标的）
--(void)didSelectedQuicklyAtIndex:(NSInteger)index
+-(void)investWithModel:(QuicklyModel *)model
 {
     if(![CommonUtils isLogin])
     {
         [self goLoginVC];
         return;
     }
-    QuicklyModel * model=[self.homePageModel.loan_items objectAtIndex:index];
     RushPurchaseController * vc=[[RushPurchaseController alloc] init];
     vc.vistorType=@"1";
     vc.loan_id=model.loan_id;

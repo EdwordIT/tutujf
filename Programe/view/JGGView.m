@@ -36,7 +36,7 @@
       
         RFImageView *iv = [[RFImageView alloc]initWithFrame:CGRectMake(0, 0, imageWidth, imageHeight)];
         [self addSubview:iv];
-        [iv setBackgroundColor:[UIColor redColor]];
+        [iv setBackgroundColor:RGB_246];
         if ([dataSource[i] isKindOfClass:[UIImage class]]) {
             iv.image = dataSource[i];
         }else if ([dataSource[i] isKindOfClass:[NSString class]]){

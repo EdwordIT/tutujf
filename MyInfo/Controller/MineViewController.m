@@ -22,12 +22,10 @@
 @interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
 {
-    UIView *_maskView;
     //如果未绑定银行卡，则弹出此框
     OpenAdvertView *advertView;
     TopScrollMode * scrollmodel;
     Boolean isFirstExe;
-    Boolean isReged;
     MineTopCell *topcell;
     NSArray *middleMenuArray;//我的投资，我的红包，我的资金流向
     CGFloat navTitleHeight;
@@ -48,21 +46,20 @@ Strong UIImageView *refreshImage;//刷新箭头
     //用于区分X下和普通屏幕下的高度适配问题
     navTitleHeight = kSizeFrom750(160)+kStatusBarHeight;
     isFirstExe=FALSE;;
-    isReged=FALSE;
     [self initTableView];
+    
+    [self initAdvertMaskView];//托管页面
  // Do any additional setup after loading the view.
 }
 //
 -(void) showRegMaskView
 {
-    isReged=TRUE;
     NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
     if([temp isEqual:@"0"])  //显示托管
     {
-        [self initAdvertMaskView];
-        [advertView setDataBind:self.accountModel];
+        [advertView setHidden:NO];
+        [advertView setImageWithUrl:self.accountModel.trust_reg_imgurl];
     }
-    
 }
 //GetMyUserDatas
 //视图出现时操作
@@ -158,7 +155,7 @@ Strong UIImageView *refreshImage;//刷新箭头
     if (!_accountTitleView) {
         _accountTitleView = InitObject(AccountTitleView);
         _accountTitleView.frame = RECT(0, 0, screen_width, navTitleHeight);
-        Weak_Self;
+        WEAK_SELF;
         _accountTitleView.accountTitleBlock = ^(NSInteger tag) {
           
             if ([CommonUtils isLogin]) {
@@ -193,7 +190,7 @@ Strong UIImageView *refreshImage;//刷新箭头
     self.tableView.mj_header = header;
     // 马上进入刷新状态
     if ([CommonUtils isLogin]) {
-        [header beginRefreshing];
+        [self GetMyUserDatas];
     }
 
 }
@@ -501,39 +498,20 @@ Strong UIImageView *refreshImage;//刷新箭头
 //遮罩页
 -(void)initAdvertMaskView
 {
-    if(_maskView==nil)
-    {
-        _maskView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height)];
-        _maskView.backgroundColor = RGBA(0, 0, 0, 0.5);
-        _maskView.hidden = NO;
-        //添加手势
-        CGFloat  ddw=242;
-        CGFloat  ddh=266;
-        if(IS_IPhone6plus)
-        {
-            ddw=270;
-            ddh=300;
-            advertView = [[OpenAdvertView alloc] initWithFrame:CGRectMake((screen_width-ddw)/2, (screen_height-ddh)/2, ddw, ddh) ];
-        }
-        else
-        advertView = [[OpenAdvertView alloc] initWithFrame:CGRectMake((screen_width-ddw)/2, (screen_height-ddh)/2, ddw, ddh) ];
-        advertView.delegate = self;
-        //UserInfo
-        [_maskView addSubview:advertView];
-        [self.view addSubview:_maskView];
-    }
-    else
-    {
-        _maskView.hidden = NO;
-    }
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    advertView = [[OpenAdvertView alloc] initWithFrame:keyWindow.bounds];
+    advertView.delegate = self;
+    [keyWindow addSubview:advertView];
+    [advertView setHidden:YES];
 }
 
 
 -(void)didOpenAdvertView:(NSInteger)type
 {
+     advertView.hidden = YES;
     if(type==2)
     {
-        _maskView.hidden = YES;
+       
     }
     else if(type==1)
     {
@@ -556,7 +534,7 @@ Strong UIImageView *refreshImage;//刷新箭头
     NSArray *keys = @[kToken];
     NSArray *values = @[[CommonUtils getToken]];
     
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:getMyUserDataUrl keysArray:keys valuesArray:values refresh:self.tableView.mj_header success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] getSignRequestWithPath:getMyUserDataUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
    
         [weakSelf loadInfoWithDict:successDic];
     } failure:^(NSDictionary *errorDic) {

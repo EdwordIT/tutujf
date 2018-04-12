@@ -11,6 +11,6 @@
 
 @interface ProgrameListController : BaseViewController
 
-@property(nonatomic, strong) UITableView *tableView;
+@property(nonatomic, strong) BaseUITableView *tableView;
 
 @end

@@ -6,9 +6,9 @@
 //  Copyright © 2017年 占碧光. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "BaseModel.h"
 
-@interface AccountRealname : NSObject
+@interface AccountRealname : BaseModel
 @property (nonatomic, copy) NSString   *name;
 @property (nonatomic, copy) NSString   *url;
 @property (nonatomic, copy) NSString   *realname;

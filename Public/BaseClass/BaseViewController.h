@@ -13,8 +13,7 @@
 #import "HttpSignCreate.h"
 #import "HttpUrlAddress.h"
 #import "HttpCommunication.h"
-#import "NodataView.h"
-#import <LYEmptyView/LYEmptyViewHeader.h> 
+#import "BaseUITableView.h"
 /**
     基础控件
  */

@@ -27,7 +27,7 @@
     Boolean isExeute ;
     NSString * content_title;
 }
-@property(nonatomic, strong) UITableView *tableView;
+@property(nonatomic, strong) BaseUITableView *tableView;
 @end
 
 @implementation FoundController
@@ -57,9 +57,9 @@
 //初始化主界面
 -(void)initTableView{
     if(iOS11)
-        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight) style:UITableViewStyleGrouped];
+        self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight) style:UITableViewStyleGrouped];
     else
-        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight-kTabbarHeight) style:UITableViewStyleGrouped];
+        self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight-kTabbarHeight) style:UITableViewStyleGrouped];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -77,8 +77,11 @@
     TTJFRefreshStateHeader *header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
         [weakSelf loadNewData];
     }];
+    self.tableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
+        [weakSelf loadNewData];
+    }];
     self.tableView.mj_header = header;
-    [header beginRefreshing];
+    [self loadNewData];
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -199,7 +202,7 @@
 #pragma mark 数据获取
 -(void) doFindList{
     isExeute=TRUE;
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:getDiscoverUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:self.tableView.mj_header success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] getSignRequestWithPath:getDiscoverUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:self.tableView success:^(NSDictionary *successDic) {
         [dataSourceArray removeAllObjects];
         [topArray removeAllObjects];
         NSArray * ary=[successDic objectForKey:@"top_button"];
@@ -224,7 +227,7 @@
         [self.tableView.mj_header endRefreshing];
         isExeute=FALSE;
     } failure:^(NSDictionary *errorDic) {
-        
+       
     }];
 }
 

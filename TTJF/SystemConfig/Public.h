@@ -8,7 +8,14 @@
 
 #ifndef aoyouHH_Public_h
 #define aoyouHH_Public_h
-
+/**
+ 时间格式
+ */
+#define SECOND 1
+#define MINUTE 60
+#define HOUR (60*60)
+#define DAY (60*60*24)
+#define WEEK (60*60*24*7)
 // 1.判断是否为iOS7
 #define iOS7 ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
 #define iOS11 ([[UIDevice currentDevice].systemVersion doubleValue] >= 11.0)
@@ -39,6 +46,12 @@
 #define RGB_166 RGB(166, 166, 166)
 //副标题灰色
 #define RGB_153 RGB(153, 153, 153)
+
+#define RGB_158 RGB(158, 158, 158)
+
+#define RGB_183 RGB(183, 183, 183)
+
+
 //淡灰色背景
 #define RGB_240 RGB(240 ,240, 240)
 //系统默认整体页面背景色
@@ -58,7 +71,7 @@
 //** 初始化***********************************************************************************
 #define InitObject(vc) [[vc alloc]init]
 #define InitROOTVC(vc) [[UINavigationController alloc] initWithRootViewController:[[vc alloc]init]];
-#define Weak_Self __weak typeof(self) weakSelf = self;
+#define WEAK_SELF __weak typeof(self) weakSelf = self
 #define Title_Font 18
 //中文字体
 #define CHINESE_FONT_NAME  @"STHeitiK-Light"

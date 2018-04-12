@@ -13,7 +13,7 @@
 
 @interface DetailSafe ()
 {
-    NSMutableArray * dataAry;
+    NSArray * dataAry;
   
     
 }

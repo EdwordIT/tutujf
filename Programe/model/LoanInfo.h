@@ -6,9 +6,9 @@
 //  Copyright © 2017年 占碧光. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "BaseModel.h"
 
-@interface LoanInfo : NSObject
+@interface LoanInfo : BaseModel
 
 @property(nonatomic, strong) NSString    * id;
 @property(nonatomic, strong) NSString  *  ind; //借款识别码

@@ -34,7 +34,7 @@
 		1B1923A62064DFF8005B0C57 /* AdverAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B1923A52064DFF8005B0C57 /* AdverAlertView.m */; };
 		1B1923A920662500005B0C57 /* ForgetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B1923A820662500005B0C57 /* ForgetPasswordViewController.m */; };
 		1B23E294204E834D007F09BE /* TTJFRefreshStateHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23E293204E834D007F09BE /* TTJFRefreshStateHeader.m */; };
-		1B4EEC67206A46E500117EF0 /* NodataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4EEC66206A46E500117EF0 /* NodataView.m */; };
+		1B4EEC67206A46E500117EF0 /* NoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4EEC66206A46E500117EF0 /* NoDataView.m */; };
 		1B4EEC6A206B709000117EF0 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4EEC69206B709000117EF0 /* ChangePasswordViewController.m */; };
 		1B4EEC6D206BADFA00117EF0 /* AutoLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4EEC6C206BADFA00117EF0 /* AutoLoginView.m */; };
 		1B4EEC82206CEFF800117EF0 /* SDPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B4EEC7B206CEFF600117EF0 /* SDPhotoBrowser.m */; };
@@ -91,6 +91,12 @@
 		1B6281422050E16D00ECFD8D /* TTJFUserDefault.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B6281412050E16D00ECFD8D /* TTJFUserDefault.m */; };
 		1B628148205224F800ECFD8D /* CommonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B628147205224F800ECFD8D /* CommonUtils.m */; };
 		1B788F08207A1A5300F03863 /* AppDelegate+XGPushConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B788F07207A1A5300F03863 /* AppDelegate+XGPushConfig.m */; };
+		1B788F0B207B54EE00F03863 /* CustomProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B788F0A207B54EE00F03863 /* CustomProgressView.m */; };
+		1B788F0E207C654400F03863 /* CountDownManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B788F0D207C654400F03863 /* CountDownManager.m */; };
+		1B788F11207DABDA00F03863 /* BaseUITableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B788F10207DABDA00F03863 /* BaseUITableView.m */; };
+		1B788F14207DB8DB00F03863 /* icons_nodata@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B788F12207DB8DA00F03863 /* icons_nodata@2x.png */; };
+		1B788F15207DB8DB00F03863 /* icons_nodata@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B788F13207DB8DB00F03863 /* icons_nodata@3x.png */; };
+		1B788F18207E03A600F03863 /* EmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B788F17207E03A600F03863 /* EmptyView.m */; };
 		1BCF2233206E2BD300D75662 /* ProgrameListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF2230206E2BD200D75662 /* ProgrameListController.m */; };
 		1BCF2234206E2BD300D75662 /* ProgrameNewDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF2232206E2BD300D75662 /* ProgrameNewDetailController.m */; };
 		1BCF2247206E2BE700D75662 /* LoanBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BCF2235206E2BE000D75662 /* LoanBase.m */; };
@@ -484,8 +490,8 @@
 		1B1923A820662500005B0C57 /* ForgetPasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ForgetPasswordViewController.m; sourceTree = "<group>"; };
 		1B23E292204E834D007F09BE /* TTJFRefreshStateHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTJFRefreshStateHeader.h; sourceTree = "<group>"; };
 		1B23E293204E834D007F09BE /* TTJFRefreshStateHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTJFRefreshStateHeader.m; sourceTree = "<group>"; };
-		1B4EEC65206A46E500117EF0 /* NodataView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodataView.h; sourceTree = "<group>"; };
-		1B4EEC66206A46E500117EF0 /* NodataView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodataView.m; sourceTree = "<group>"; };
+		1B4EEC65206A46E500117EF0 /* NoDataView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoDataView.h; sourceTree = "<group>"; };
+		1B4EEC66206A46E500117EF0 /* NoDataView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoDataView.m; sourceTree = "<group>"; };
 		1B4EEC68206B708F00117EF0 /* ChangePasswordViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangePasswordViewController.h; sourceTree = "<group>"; };
 		1B4EEC69206B709000117EF0 /* ChangePasswordViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordViewController.m; sourceTree = "<group>"; };
 		1B4EEC6B206BADF900117EF0 /* AutoLoginView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoLoginView.h; sourceTree = "<group>"; };
@@ -570,6 +576,16 @@
 		1B628147205224F800ECFD8D /* CommonUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonUtils.m; sourceTree = "<group>"; };
 		1B788F06207A1A5300F03863 /* AppDelegate+XGPushConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+XGPushConfig.h"; sourceTree = "<group>"; };
 		1B788F07207A1A5300F03863 /* AppDelegate+XGPushConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+XGPushConfig.m"; sourceTree = "<group>"; };
+		1B788F09207B54EE00F03863 /* CustomProgressView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomProgressView.h; sourceTree = "<group>"; };
+		1B788F0A207B54EE00F03863 /* CustomProgressView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomProgressView.m; sourceTree = "<group>"; };
+		1B788F0C207C654300F03863 /* CountDownManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CountDownManager.h; sourceTree = "<group>"; };
+		1B788F0D207C654400F03863 /* CountDownManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CountDownManager.m; sourceTree = "<group>"; };
+		1B788F0F207DABDA00F03863 /* BaseUITableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseUITableView.h; sourceTree = "<group>"; };
+		1B788F10207DABDA00F03863 /* BaseUITableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseUITableView.m; sourceTree = "<group>"; };
+		1B788F12207DB8DA00F03863 /* icons_nodata@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_nodata@2x.png"; sourceTree = "<group>"; };
+		1B788F13207DB8DB00F03863 /* icons_nodata@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_nodata@3x.png"; sourceTree = "<group>"; };
+		1B788F16207E03A600F03863 /* EmptyView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EmptyView.h; sourceTree = "<group>"; };
+		1B788F17207E03A600F03863 /* EmptyView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EmptyView.m; sourceTree = "<group>"; };
 		1BCF222F206E2BD200D75662 /* ProgrameListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgrameListController.h; sourceTree = "<group>"; };
 		1BCF2230206E2BD200D75662 /* ProgrameListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgrameListController.m; sourceTree = "<group>"; };
 		1BCF2231206E2BD200D75662 /* ProgrameNewDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgrameNewDetailController.h; sourceTree = "<group>"; };
@@ -1220,6 +1236,10 @@
 		1B4EEC8E206E1BE200117EF0 /* Categorys */ = {
 			isa = PBXGroup;
 			children = (
+				1B19239A2064D14E005B0C57 /* UIColor+HexString.h */,
+				1B19239B2064D14E005B0C57 /* UIColor+HexString.m */,
+				1B1923A12064DD9D005B0C57 /* UIImageView+SDImage.h */,
+				1B1923A22064DD9D005B0C57 /* UIImageView+SDImage.m */,
 				E7D94A761E95A167000E3919 /* UITextField+Shake.m */,
 				E7D94A771E95A167000E3919 /* UITextField+Shake.h */,
 				1B4EEC90206E1BF200117EF0 /* UINavigationController+MBNavigation.h */,
@@ -1359,6 +1379,8 @@
 				1BCF227F206F357400D75662 /* BaseViewController.m */,
 				1BCF2283206F361200D75662 /* BaseView.h */,
 				1BCF2284206F361200D75662 /* BaseView.m */,
+				1B788F0F207DABDA00F03863 /* BaseUITableView.h */,
+				1B788F10207DABDA00F03863 /* BaseUITableView.m */,
 			);
 			path = BaseClass;
 			sourceTree = "<group>";
@@ -1720,12 +1742,14 @@
 				E7067ABB1E60C9AA00E32B86 /* KDGoalBarPercentLayer.m */,
 				1B23E292204E834D007F09BE /* TTJFRefreshStateHeader.h */,
 				1B23E293204E834D007F09BE /* TTJFRefreshStateHeader.m */,
-				1B19239A2064D14E005B0C57 /* UIColor+HexString.h */,
-				1B19239B2064D14E005B0C57 /* UIColor+HexString.m */,
-				1B1923A12064DD9D005B0C57 /* UIImageView+SDImage.h */,
-				1B1923A22064DD9D005B0C57 /* UIImageView+SDImage.m */,
-				1B4EEC65206A46E500117EF0 /* NodataView.h */,
-				1B4EEC66206A46E500117EF0 /* NodataView.m */,
+				1B4EEC65206A46E500117EF0 /* NoDataView.h */,
+				1B4EEC66206A46E500117EF0 /* NoDataView.m */,
+				1B788F09207B54EE00F03863 /* CustomProgressView.h */,
+				1B788F0A207B54EE00F03863 /* CustomProgressView.m */,
+				1B788F0C207C654300F03863 /* CountDownManager.h */,
+				1B788F0D207C654400F03863 /* CountDownManager.m */,
+				1B788F16207E03A600F03863 /* EmptyView.h */,
+				1B788F17207E03A600F03863 /* EmptyView.m */,
 			);
 			path = KDCustom;
 			sourceTree = "<group>";
@@ -1985,6 +2009,8 @@
 		E70D16E21F2303C3007F12D0 /* Img */ = {
 			isa = PBXGroup;
 			children = (
+				1B788F12207DB8DA00F03863 /* icons_nodata@2x.png */,
+				1B788F13207DB8DB00F03863 /* icons_nodata@3x.png */,
 				1BE67371207470E80003A30C /* MJRefresh */,
 				1BE6736020734F720003A30C /* menu_discover_sel@2x.png */,
 				1BE6735720734F6B0003A30C /* menu_discover_sel@3x.png */,
@@ -2714,6 +2740,7 @@
 				1BE673A7207471270003A30C /* refresh_015.jpg in Resources */,
 				1BE673B82074A98F0003A30C /* refresh_mine@3x.png in Resources */,
 				E7113DA01F819DFD00726501 /* rightArrow.png in Resources */,
+				1B788F14207DB8DB00F03863 /* icons_nodata@2x.png in Resources */,
 				E7067B901E60C9AA00E32B86 /* icon_feedCell_star_empty@2x.png in Resources */,
 				1B4FC6C92058BC6F00C7C88E /* close_white@3x.png in Resources */,
 				1B583B3A2060B35200CC70E4 /* service_top@2x.png in Resources */,
@@ -2788,6 +2815,7 @@
 				E7067BC11E60C9AB00E32B86 /* icon_listheader_animation_2@2x.png in Resources */,
 				E70F3CBC1F9357B400B4568C /* aslo02.png in Resources */,
 				E70D16F21F2303C3007F12D0 /* sns_icon_19_s.png in Resources */,
+				1B788F15207DB8DB00F03863 /* icons_nodata@3x.png in Resources */,
 				1BE6736720734F720003A30C /* menu_discover_sel@3x.png in Resources */,
 				1B4FC6D32058BCCC00C7C88E /* loginBtn@3x.png in Resources */,
 				1BE673A2207471270003A30C /* refresh_027.jpg in Resources */,
@@ -2922,6 +2950,7 @@
 				E7A45DDF1E7423C60032613E /* HomeBanner.m in Sources */,
 				E7B063D21E62F419005D6972 /* MainViewController.m in Sources */,
 				E70A76EC1F9F15750083F6E6 /* RushPurchaseController.m in Sources */,
+				1B788F0B207B54EE00F03863 /* CustomProgressView.m in Sources */,
 				1BCF226E206E2BFD00D75662 /* DetailSafe.m in Sources */,
 				E71864C71FE9764B00E7ABA3 /* ZFJSegmentedControl.m in Sources */,
 				E7039A951E751FE100436715 /* QuicklyModel.m in Sources */,
@@ -2951,6 +2980,7 @@
 				E70E1AC01FBFF37300C6EFA6 /* FoundController.m in Sources */,
 				E73B1C581FA6144600273C89 /* JRSwizzle.m in Sources */,
 				E701EDC61EA469C000DC234A /* OpenAdvertView.m in Sources */,
+				1B788F11207DABDA00F03863 /* BaseUITableView.m in Sources */,
 				1B583B472063474400CC70E4 /* SystemConfigModel.m in Sources */,
 				E7067A291E60C88A00E32B86 /* introductoryPagesView.m in Sources */,
 				E73B1C5A1FA6144600273C89 /* UITextField+Extension.m in Sources */,
@@ -2970,9 +3000,10 @@
 				E7067B581E60C9AA00E32B86 /* HeaderView.m in Sources */,
 				1B23E294204E834D007F09BE /* TTJFRefreshStateHeader.m in Sources */,
 				E7071B9E1F21C30C00293B38 /* GestureVerifyViewController.m in Sources */,
-				1B4EEC67206A46E500117EF0 /* NodataView.m in Sources */,
+				1B4EEC67206A46E500117EF0 /* NoDataView.m in Sources */,
 				E7067AAC1E60C93B00E32B86 /* UIImage+FX.m in Sources */,
 				E7067A3D1E60C88B00E32B86 /* RFSegmentView.m in Sources */,
+				1B788F0E207C654400F03863 /* CountDownManager.m in Sources */,
 				E7067B5A1E60C9AA00E32B86 /* NavView.m in Sources */,
 				1B4EEC6A206B709000117EF0 /* ChangePasswordViewController.m in Sources */,
 				1B583B2C205FBD9600CC70E4 /* RegisterViewController.m in Sources */,
@@ -3062,6 +3093,7 @@
 				E7071BA41F21C30C00293B38 /* PCCircle.m in Sources */,
 				1B4FC6A42057C7E100C7C88E /* LoginViewController.m in Sources */,
 				E7071BA61F21C30C00293B38 /* PCCircleViewConst.m in Sources */,
+				1B788F18207E03A600F03863 /* EmptyView.m in Sources */,
 				E7A45DE51E74AFF90032613E /* HotProgramCell.m in Sources */,
 				E7BF5F221E6066F200BCE81E /* AppDelegate.m in Sources */,
 				E70845B51FEBC2190010ADCE /* XXWebKitSupport.m in Sources */,

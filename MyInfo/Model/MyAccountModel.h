@@ -28,9 +28,11 @@ Copy NSString * height   ;//    string    按钮图片高
 Copy NSString * user_name   ;// string    用户名
 Copy NSString * is_trust_reg  ;//   int    是否显示注册托管 ,0  去注册， 1 关闭注册
 Copy NSString * trust_reg_link   ;//   string    托管注册连接
-Copy NSString * trust_reg_log  ;//    string    托管注册log地址
-Copy NSString * trust_reg_title  ;//    string    托管注册标题
-Copy NSString * trust_reg_sub_title  ;//    string    托管注册标题
+//Copy NSString * trust_reg_log  ;//    string    托管注册log地址
+//Copy NSString * trust_reg_title  ;//    string    托管注册标题
+//Copy NSString * trust_reg_sub_title  ;//    string    托管注册标题
+//新版托管
+Copy NSString *trust_reg_imgurl;//单图
 Strong MyCapitalModel * bt_my_investment  ;//我的投资按钮
 Strong MyCapitalModel *bt_my_red;//我的红包
 Strong MyCapitalModel *bt_my_capital_log;//资金记录

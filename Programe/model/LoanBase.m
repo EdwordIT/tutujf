@@ -9,5 +9,10 @@
 #import "LoanBase.h"
 
 @implementation LoanBase
-
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    
+    return @{@"security_audit":[SecurityModel class]
+             };
+    
+}
 @end

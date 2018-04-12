@@ -8,17 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "QuicklyModel.h"
-
-@protocol QuicklyDelegate <NSObject>
-
-@optional
--(void)didSelectedQuicklyAtIndex:(NSInteger)index;
-
-@end
-
+typedef void (^InvestBlock)(void);
 @interface QuicklyCell : UITableViewCell
 
-@property(nonatomic, assign) id<QuicklyDelegate> delegate;
+Copy InvestBlock investBlock;
 @property(nonatomic, strong) UILabel *title;
 @property(nonatomic, strong) UIImageView *typeimgsrc;
 @property(nonatomic, strong) UILabel *percentLabel;

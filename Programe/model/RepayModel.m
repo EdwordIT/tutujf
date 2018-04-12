@@ -7,7 +7,12 @@
 //
 
 #import "RepayModel.h"
-
+#import "SecurityModel.h"
 @implementation RepayModel
-
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    
+    return @{@"items":[SecurityModel class]
+             };
+    
+}
 @end

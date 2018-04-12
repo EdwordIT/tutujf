@@ -42,6 +42,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self exitLoginStatus];
     self.view.backgroundColor = [UIColor whiteColor];
     self.titleString = @"登录";
     [self.backBtn setImage:IMAGEBYENAME(@"close_white") forState:UIControlStateNormal];

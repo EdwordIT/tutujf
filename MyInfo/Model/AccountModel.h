@@ -6,13 +6,15 @@
 //  Copyright © 2017年 占碧光. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "BaseModel.h"
 #import "AccountRealname.h"
 #import "AccountPhone.h"
 
-@interface AccountModel : NSObject
+@interface AccountModel : BaseModel
 @property (nonatomic, copy) NSString   *user_name;
 @property (nonatomic, copy) NSString   *update_pwd_link;
 @property (nonatomic, copy) NSString   *exit_link;
+Strong AccountRealname *is_realname;//是否实名的字典
+Strong AccountPhone *is_phone;//是否绑定手机
 
 @end

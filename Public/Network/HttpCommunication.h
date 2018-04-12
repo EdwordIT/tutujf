@@ -52,8 +52,8 @@ typedef NS_ENUM(NSUInteger, AnalyzeType) {
 - (void)getSignRequestWithPath:(NSString *)urlString
                 keysArray:(NSArray *)keys
                 valuesArray:(NSArray *)values
-                   refresh:(MJRefreshComponent *)refresh
-                   success:(TTJFCallBackSuccess)success
+                       refresh:(UIScrollView *)scrollView
+                       success:(TTJFCallBackSuccess)success
                    failure:(TTJFCallBackFailed)failure;
 
 - (void)postRequestWithURL:(NSString *)urlString
