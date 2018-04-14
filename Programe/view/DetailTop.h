@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "LoanBase.h"
-
+#import "LoanInfo.h"
 @interface DetailTop : UIView
-- (instancetype)initWithFrame:(CGRect)frame data:(LoanBase *) data;
+-(instancetype)init;
+-(void)loadInfoWithModel:(LoanInfo *)infoModel;
 @end

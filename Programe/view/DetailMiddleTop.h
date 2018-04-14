@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface DetailMiddleTop : UIView
-
--(void)setXMMC:(NSString *)mc;
+//设置项目名称
+-(void)setproName:(NSString *)name;
 
 @end

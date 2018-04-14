@@ -11,6 +11,5 @@
 
 @interface DetailMiddle : UIView
 
-//-(void) setModel:(LoanBase *) model;
-- (instancetype)initWithFrame:(CGRect)frame data:(LoanBase *) data;
+-(void)loadInfoWithModel:(LoanBase *)programModel;
 @end

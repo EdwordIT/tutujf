@@ -383,7 +383,7 @@
 
 }
 
-#warning ////// index 从 0 开始
+// index 从 0 开始
 // delegete method
 - (void)changeSegmentedControlWithIndex:(NSInteger)index
 {
