@@ -61,28 +61,26 @@
     [self addSubview:linebg];
     
     NSArray * repalys=  model.repay_plan.items;
-    RepayModel * pp;
+    RepayModel * repayModel;
     if([repalys count]>0)
-        pp=[repalys objectAtIndex:0];
-    NSString * dp=[NSString stringWithFormat:@"%@",pp.display] ;
+        repayModel=[repalys objectAtIndex:0];
+    NSString * dp=[NSString stringWithFormat:@"%@",repayModel.display];
     if([repalys count]>0&&[dp isEqual:@"2"])
     {
         sectionSeg = [[ZFJSegmentedControl alloc]initwithTitleArr:@[@"产品详情", @"安全审核", @"投资记录",@"还款计划"] iconArr:nil SCType:SCType_Underline];
     }
     else
         sectionSeg = [[ZFJSegmentedControl alloc]initwithTitleArr:@[@"产品详情", @"安全审核", @"投资记录"] iconArr:nil SCType:SCType_Underline];
+    
     sectionSeg.frame = CGRectMake(0, kSizeFrom750(20), screen_width, kSizeFrom750(100));
     sectionSeg.backgroundColor = [UIColor whiteColor];
     sectionSeg.titleColor = RGB(83,83,83);
     sectionSeg.userInteractionEnabled=YES;
     sectionSeg.selectIndex =  0;
-    // zvc.selectBtnSpace = 5;//设置按钮间的间距
-    //zvc.selectBtnWID = 70;//设置按钮的宽度 不设就是均分
     sectionSeg.SCType_Underline_HEI = 2;//设置底部横线的高度
-    sectionSeg.titleFont = CHINESE_SYSTEM(15);
+    sectionSeg.titleFont = SYSTEMSIZE(30);
     sectionSeg.selectTitleColor=navigationBarColor;
     [self addSubview:sectionSeg];
-    
     defaultHeight = kSizeFrom750(280);
     
     product = [[DetailProduct alloc]initWithFrame:CGRectMake(0, sectionSeg.bottom, screen_width, defaultHeight)];
@@ -177,6 +175,7 @@
 }
 -(void)sendProductHeight:(CGFloat)height
 {
+    
     if (sectionSeg.selectIndex==0) {
         [self.delegate didSelectedBottomAtIndex:0 height:height];
     }

@@ -197,7 +197,7 @@
     
     [UIView animateWithDuration:0.25f animations:^{
         
-        self->indicatorView.frame = CGRectMake(self->btnWidth * index, 0, self->indicatorView.frame.size.width, self->indicatorView.frame.size.height);
+        indicatorView.frame = CGRectMake(btnWidth * index, 0, indicatorView.frame.size.width, indicatorView.frame.size.height);
         
     } completion:^(BOOL finished) {
         

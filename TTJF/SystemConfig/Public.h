@@ -116,8 +116,7 @@ static CGFloat const space                   = 10;
 #define kLineHeight 1.0f/[[UIScreen mainScreen] scale]
 //底部标签栏高度
 #define kTabbarHeight (kDevice_Is_iPhoneX ? 83 : 49)
-//默认底部按钮高度
-#define kBottomButtonHeight kSizeFrom750(100)
+
 #define navBarHeight   self.navigationController.navigationBar.frame.size.height
 #define kViewHeight (screen_height - kNavHight)
 

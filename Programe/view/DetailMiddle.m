@@ -22,62 +22,48 @@
     DetailMiddleMenu  * m2;
     DetailMiddleMenu  * m3;
     DetailMiddleMenu  * m4;
-    NSString * dsojisj;
-    LoanBase * model;
+    NSString * countDownTime;
+//    LoanBase * model;
     
 }
 @end
 
 @implementation DetailMiddle
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor=lineBg;
-        [self awakeFromNib];
-    }
-    return self;
-}
 
-- (instancetype)initWithFrame:(CGRect)frame data:(LoanBase *) data;
+- (instancetype)init;
 {
-    self = [super initWithFrame:frame];
+    self = [super init];
     if (self) {
-        model=data;
         self.backgroundColor=lineBg;
         [self initSubViews];
     }
     return self;
 }
 
-
-- (void)initSubViews{
+-(void)loadInfoWithModel:(LoanBase *)programModel{
     
-    LoanInfo * info=model.loan_info;
-    mtop=[[DetailMiddleTop alloc] initWithFrame:CGRectMake(0, 0, screen_width, 80)];
-    [self addSubview:mtop];
-    [mtop setXMMC:info.name];
-     m1=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0,80, screen_width, 45)];
-    [self addSubview:m1];
+    LoanInfo * info=programModel.loan_info;
+    
+    [mtop setproName:info.name];//项目名称
+    
     [m1 setMenu:@"最低投标金额" content:info.tender_amount_min];
-     m2=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0, 125, screen_width, 45)];
-    [self addSubview:m2];
-    [m2 setMenu:@"还款方式" content:model.repay_type_name];
-     m3=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0, 170, screen_width, 45)];
-    [self addSubview:m3];
+
+    [m2 setMenu:@"还款方式" content:programModel.repay_type_name];
+    
     [m3 setMenu:@"项目状态" content:info.status_name];
     
-     m4=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0, 215, screen_width, 45)];
-    [self addSubview:m4];
     secondsCountDown = [CommonUtils getDifferenceByDate:info.overdue_time_date];//倒计时秒数(48小时换算成的秒数,项目中需要从服务器获取)
+
+    if (secondsCountDown>=0) {
+        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(kSizeFrom750(520));
+        }];
+    }else{
+        [self mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(kSizeFrom750(430));
+        }];
+    }
     //设置倒计时显示的时间
     NSInteger hour=(secondsCountDown-(secondsCountDown%HOUR))/HOUR;
     NSInteger day=0;
@@ -88,7 +74,7 @@
     NSString *str_second = [NSString stringWithFormat:@"%02ld",secondsCountDown%MINUTE];//秒
     NSString *format_time =@"0天0时0分0秒";
     if(secondsCountDown>0)
-    format_time = [NSString stringWithFormat:@"%ld天%@时%@分%@秒",day,str_hour,str_minute,str_second];
+        format_time = [NSString stringWithFormat:@"%ld天%@时%@分%@秒",day,str_hour,str_minute,str_second];
     [m4 setMenu:@"结束时间" content:format_time];
     if(countDownTimer==nil&&secondsCountDown>0)
         countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDownAction) userInfo:nil repeats:YES]; //启动倒计时后会每秒钟调用一次方法 countDownAction
@@ -96,6 +82,23 @@
     {
         [m4 setHidden:TRUE];
     }
+
+}
+
+- (void)initSubViews{
+    
+    
+    mtop=[[DetailMiddleTop alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(160))];
+    [self addSubview:mtop];
+     m1=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0,mtop.bottom, screen_width, kSizeFrom750(90))];
+    [self addSubview:m1];
+     m2=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0, m1.bottom, screen_width, kSizeFrom750(90))];
+    [self addSubview:m2];
+     m3=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0, m2.bottom, screen_width, kSizeFrom750(90))];
+    [self addSubview:m3];
+     m4=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0, m3.bottom, screen_width, kSizeFrom750(90))];
+    [self addSubview:m4];
+  
 }
 -(UIView *) getTimeShowView:(NSString *) nr index:(NSInteger)index
 {
@@ -111,7 +114,7 @@
     bg.backgroundColor=RGB(255,46,19);
     [bg.layer setCornerRadius:2];
     UILabel * title=[[UILabel alloc] initWithFrame:CGRectMake(1, 5, 20, 11)];
-    title.font = CHINESE_SYSTEM(11);
+    title.font = SYSTEMSIZE(22);
     title.textAlignment=NSTextAlignmentCenter;
     title.textColor=RGB(255,255,255);
     title.text=nr;
@@ -137,8 +140,8 @@
     NSString *str_second = [NSString stringWithFormat:@"%02ld",secondsCountDown%MINUTE];
     // NSString *format_time = [NSString stringWithFormat:@"%@:%@:%@",str_hour,str_minute,str_second];
     //修改倒计时标签现实内容
-    dsojisj=[NSString stringWithFormat:@"%@天%@时%@分%@秒",str_day,str_hour,str_minute, str_second];
-    [m4 setMenu:@"结束时间" content:dsojisj];
+    countDownTime=[NSString stringWithFormat:@"%@天%@时%@分%@秒",str_day,str_hour,str_minute, str_second];
+    [m4 setMenu:@"结束时间" content:countDownTime];
    
 
 }
