@@ -45,7 +45,7 @@
     self.account.font = NUMBER_FONT(48);
     self.account.textAlignment=NSTextAlignmentCenter;
     self.account.textColor =  RGB(252,18,18);
-    self.account.text=@"";
+    self.account.text=@"0.00";
     self.account.tag=7;
     UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(OnTapImage:)];
     [self.account addGestureRecognizer:tap1];

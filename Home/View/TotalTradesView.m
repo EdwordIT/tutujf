@@ -71,7 +71,7 @@ Strong UILabel *interestRateLabel;//近期利率指数
 -(UICountingLabel *)titleLabel{
     if (!_titleLabel) {
         _titleLabel = InitObject(UICountingLabel);
-        _titleLabel.font = NUMBER_FONT_BOLD(42);
+        _titleLabel.font = NUMBER_FONT_BOLD(46);
         _titleLabel.textColor = HEXCOLOR(@"#ed4b47");
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.format = @"%.2f";

@@ -247,25 +247,22 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     //登录老用户的用户名可能是纯数字或者纯字母
     if (_mobileTextField.text.length>2)
     {
-        // [MBProgressHUD showAutoMessage:@"正在登录..." ToView:nil];
-        [SVProgressHUD showWithStatus:@"正在登录..."];
         [self getLogin];
-        return ;
     }
-    [self.navigationController popViewControllerAnimated:YES];
-    
-    
 }
 //登录
 -(void) getLogin{
-
-    [self.view addSubview:[AutoLoginView defaultView]];
-    [[AutoLoginView defaultView] getLogin:self.mobileTextField.text password:self.passwordTextField.text];
-    [AutoLoginView defaultView].autoLoginBlock = ^{
+    
+    [SVProgressHUD showWithStatus:@"正在登录..."];
+    //默认登录webView
+    AutoLoginView *loginView = [[AutoLoginView alloc]init];
+    [self.view addSubview:loginView];
+    [loginView getLogin:self.mobileTextField.text password:self.passwordTextField.text];
+    
+    loginView.autoLoginBlock = ^{
         dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            // Do something...
             dispatch_async(dispatch_get_main_queue(), ^{
-                [SVProgressHUD showSuccessWithStatus:@"登录成功~"];
+                [SVProgressHUD showSuccessWithStatus:@"登录成功"];
                 [self dismissViewControllerAnimated:YES completion:NULL];
             });
         });
@@ -286,46 +283,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     [self.navigationController pushViewController:forget animated:YES];
     
 }
-#pragma mark webViewDelegate
-/**
- *WebView加载完毕的时候调用（请求完毕）
- */
--(void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    
-}
 
--(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    
-}
-
--(void)webViewDidStartLoad:(UIWebView *)webView
-{
-//    BBUserDefault.isNoFirstLaunch=YES;
-}
-
-/**
- *  清理缓存
- */
-// 根据路径删除文件  删除cookies文件
-
-- (void)cleanCaches{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths lastObject];
-    // 利用NSFileManager实现对文件的管理
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:path]) {
-        // 获取该路径下面的文件名
-        NSArray *childrenFiles = [fileManager subpathsAtPath:path];
-        for (NSString *fileName in childrenFiles) {
-            // 拼接路径
-            NSString *absolutePath = [path stringByAppendingPathComponent:fileName];
-            // 将文件删除
-            [fileManager removeItemAtPath:absolutePath error:nil];
-        }
-    }
-}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

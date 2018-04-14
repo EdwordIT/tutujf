@@ -7,10 +7,9 @@
 //
 
 #import "AutoLoginView.h"
-#import "HttpSignCreate.h"
 #import "HttpCommunication.h"
 #import "AppDelegate.h"
-static AutoLoginView *defaultView = nil;
+#import "HttpSignCreate.h"
 @interface AutoLoginView()<UIWebViewDelegate>
 Strong UIWebView *mainWebView;
 @end
@@ -23,47 +22,23 @@ Strong UIWebView *mainWebView;
     return self;
 }
 
-
-+ (AutoLoginView *)defaultView
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        defaultView = [[AutoLoginView alloc] init];
-
-    });
-    return defaultView;
-}
 -(void) getLogin:(NSString *)user_name  password:(NSString *)password
 {
+   /* user_name    string    用户名
+    password    string    密码
+    terminal_type    string    (终端类型)： android安卓,ios    苹果
+    terminal_id    string    安卓时传入接受人设备的：IMEI,  苹果时传入接受人设备的：UUID
+    terminal_name    string    (设备名称)：如 iPhone 6S
+    terminal_model    string    (设备型号)：iPhone 6S
+    terminal_token    string    推送token（为：device_token）
+    sign    string    加密符号
+    */
     
-    UIDevice* curDev = [UIDevice currentDevice];
-    NSString *terminal_type=@"iphone";
-    NSString *terminal_id=curDev.identifierForVendor.UUIDString;//curDev.identifierForVendor.UUIDString;
-    NSString *terminal_name= [curDev.name stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSString *terminal_model=curDev.model;
-    NSString * terminal_token=[CommonUtils getDeviceToken];
-    NSString *urlStr = @"";
-    NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_name,password,terminal_type,terminal_id,terminal_name,terminal_model,terminal_token] forKeys:@[@"user_name",@"password",@"terminal_type",@"terminal_id",@"terminal_name",@"terminal_model",@"terminal_token"]];
-    //  paixu
-    NSMutableArray * paixu1=[[NSMutableArray alloc] init];
-    [paixu1 addObject:@"user_name"];
-    [paixu1 addObject:@"password"];
-    [paixu1 addObject:@"terminal_type"];
-    [paixu1 addObject:@"terminal_id"];
-    [paixu1 addObject:@"terminal_name"];
-    [paixu1 addObject:@"terminal_model"];
-    [paixu1 addObject:@"terminal_token"];
-    NSString *sign=[HttpSignCreate GetSignStr:dict_data paixu:paixu1];
-    NSString *  password1=[HttpSignCreate encodeString:password];
-    user_name=[HttpSignCreate encodeString:user_name];
-    terminal_name=[HttpSignCreate encodeString:terminal_name];
-    urlStr = [NSString stringWithFormat:loginUrl,oyApiUrl,user_name,password1,terminal_type,terminal_id,terminal_name,terminal_model,terminal_token,sign];
-    
-    [[HttpCommunication sharedInstance] getRequestWithURL:urlStr refresh:nil success:^(NSDictionary *successDic) {
-        if(successDic!=nil)
-        {
-            //登陆成功
-            NSString * temp=[[successDic objectForKey:@"expiration_date"] substringWithRange:NSMakeRange(0,10)];
+    NSArray *keys =@[@"user_name",@"password",@"terminal_type",@"terminal_id",@"terminal_name",@"terminal_model",@"terminal_token"];
+    NSArray *values = @[user_name,password,@"ios",[CommonUtils getUUID],[UIDevice currentDevice].name,[CommonUtils getDeviceVersion],[CommonUtils getDeviceToken]];
+    [[HttpCommunication sharedInstance] getSignRequestWithPath:loginUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+        //登陆成功
+            NSString * temp=[[successDic objectForKey:kExpirationTime] substringToIndex:10];
             [TTJFUserDefault setStr:[successDic objectForKey:kToken] key:kToken];
             [TTJFUserDefault setStr:user_name key:kUsername];
             [TTJFUserDefault setStr:password key:kPassword];
@@ -71,13 +46,9 @@ Strong UIWebView *mainWebView;
             [self loginWebView];
             //登录状态改变发送通知
             [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];
-        }else{
-            [self removeUserInfo];
-            
-        }
+        
     } failure:^(NSDictionary *errorDic) {
         [self removeUserInfo];
-        
     }];
 }
 
@@ -91,21 +62,18 @@ Strong UIWebView *mainWebView;
     NSString *password = [TTJFUserDefault strForKey:kPassword];
     if(extime==nil)
         extime=@"2015-01-01";
-    NSDate *expirDate = [dateFormatter dateFromString:[NSString stringWithFormat:@"%@",extime]];
+    NSDate *expirDate = [dateFormatter dateFromString:extime];
     int seconds = [CommonUtils getSecondForFromDate:[self getCurrentTime] toDate:expirDate];
     //测试当前token是否过期，如果过期，则需要重新登录，并清除token等个人信息
     if(seconds<=0)
     {
-        [self cleanCaches];//清理缓存
-        [self removeUserInfo];//时间过期
+        [self exitLogin];
         [self getLogin:user_name password:password];
     }
     else
     {
+        [self loginWebView];//应用打开默认走一遍webView登录接口
         //当前token有效，不用重新更新token，也不需要重新登录
-        [self removeFromSuperview];
-        defaultView = nil;
-        
     }
   
 }
@@ -128,7 +96,6 @@ Strong UIWebView *mainWebView;
     //伸缩内容适应屏幕尺寸
     self.mainWebView.scalesPageToFit=YES;
     [self.mainWebView setUserInteractionEnabled:YES];
-    [self cleanCaches];
     NSURL *url = [[NSURL alloc] initWithString:urlStr];
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
     NSLog(@"%@",urlStr);
@@ -148,7 +115,7 @@ Strong UIWebView *mainWebView;
     [TTJFUserDefault removeStrForKey:kToken];
     [TTJFUserDefault removeStrForKey:kPassword];
     [TTJFUserDefault removeStrForKey:kExpirationTime];
-    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];//登录状态变更，刷新首页数据
 }
 
 #pragma mark webViewDelegate
@@ -157,13 +124,8 @@ Strong UIWebView *mainWebView;
  */
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"WebKitCacheModelPreferenceKey"];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitDiskImageCacheEnabled"];//自己添加的，原文没有提到。
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitOfflineWebApplicationCacheEnabled"];//自己添加的，原文没有提到。
     if (self.autoLoginBlock) {
         self.autoLoginBlock();
-        [self removeFromSuperview];
-        defaultView = nil;
     }
 }
 #pragma mark -得到当前时间

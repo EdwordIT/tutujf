@@ -38,10 +38,10 @@
     self.clipsToBounds = YES;
     _edgeInsetsStyle = ZFJButtonEdgeInsetsStyleTop;
     _animateDuration = 0.01;
-    _selectBtnWID = 0;
+    self.selectBtnWID = 0;
     _selectBtnSpace = 0;
     _selectIndex = 0;//默认选中第一个
-    _SCType_Underline_HEI = 2;
+    self.SCType_Underline_HEI = 2;
     _btnCount = self.titleArr.count!=0 ? self.titleArr.count : self.iconArr.count;
     _titleColor = [UIColor blackColor];
     _selectTitleColor =navigationBarColor;//RGB:238 52 9
@@ -54,19 +54,19 @@
 
 - (void)setFrame:(CGRect)frame{
     [super setFrame:frame];
-    _selectBtnWID = _isSetWID == NO ? (frame.size.width - (_btnCount - 1) * _selectBtnSpace)/_btnCount : _selectBtnWID;
+    self.selectBtnWID = _isSetWID == NO ? (frame.size.width - (_btnCount - 1) * _selectBtnSpace)/_btnCount : self.selectBtnWID;
     [self uiConfig];
 }
 
 - (void)setSelectBtnWID:(CGFloat)selectBtnWID{
     _isSetWID = YES;
-    _selectBtnWID = selectBtnWID;
+    self.selectBtnWID = selectBtnWID;
     [self uiConfig];
 }
 
 - (void)setSelectBtnSpace:(CGFloat)selectBtnSpace{
     _selectBtnSpace = selectBtnSpace;
-    _selectBtnWID = _isSetWID == NO ? (self.frame.size.width - (_btnCount - 1) * _selectBtnSpace)/_btnCount : _selectBtnWID;
+    self.selectBtnWID = _isSetWID == NO ? (self.frame.size.width - (_btnCount - 1) * _selectBtnSpace)/_btnCount : self.selectBtnWID;
     [self uiConfig];
 }
 
@@ -83,7 +83,7 @@
         [view removeFromSuperview];
     }
     self.scrollView.frame = self.bounds;
-    self.scrollView.contentSize = CGSizeMake(_selectBtnWID * _btnCount + _selectBtnSpace * (_btnCount - 1), 0);
+    self.scrollView.contentSize = CGSizeMake(self.selectBtnWID * _btnCount + _selectBtnSpace * (_btnCount - 1), 0);
     [self addSubview:self.scrollView];
     
     //清空数组
@@ -92,7 +92,7 @@
     for (int i= 0; i<_btnCount; i++) {
         UIButton *titleBtn = [[UIButton alloc]init];
         titleBtn.backgroundColor = _titleBtnBackColor;
-        titleBtn.frame = CGRectMake((_selectBtnWID + _selectBtnSpace) * i, 0, _selectBtnWID, self.frame.size.height);
+        titleBtn.frame = CGRectMake((self.selectBtnWID + _selectBtnSpace) * i, 0, self.selectBtnWID, self.frame.size.height);
         if(self.titleArr.count>0){
             [titleBtn setTitle:_titleArr[i] forState:UIControlStateNormal];
         }
@@ -124,23 +124,23 @@
         if(self.stateView==nil){
             self.stateView = [[UIView alloc]init];
         }
-        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x, self.frame.size.height - _SCType_Underline_HEI, _selectBtnWID, _SCType_Underline_HEI);
+        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x, self.frame.size.height - self.SCType_Underline_HEI, self.selectBtnWID, self.SCType_Underline_HEI);
         self.stateView.backgroundColor = _selectTitleColor;
         [self.scrollView addSubview:self.stateView];
     }else if(self.SCType == SCType_Dot){
         if(self.stateView==nil){
             self.stateView = [[UIView alloc]init];
         }
-        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x + (_selectBtnWID - _SCType_Underline_HEI)/2, self.frame.size.height - _SCType_Underline_HEI, _SCType_Underline_HEI, _SCType_Underline_HEI);
+        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x + (self.selectBtnWID - self.SCType_Underline_HEI)/2, self.frame.size.height - self.SCType_Underline_HEI, self.SCType_Underline_HEI, self.SCType_Underline_HEI);
         self.stateView.backgroundColor = _selectTitleColor;
         self.stateView.layer.masksToBounds = YES;
-        self.stateView.layer.cornerRadius = _SCType_Underline_HEI/2;
+        self.stateView.layer.cornerRadius = self.SCType_Underline_HEI/2;
         [self.scrollView addSubview:self.stateView];
     }else if(self.SCType == SCType_Ellipse){
         if(self.stateView==nil){
             self.stateView = [[UIView alloc]init];
         }
-        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x, 0, _selectBtnWID, self.frame.size.height);
+        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x, 0, self.selectBtnWID, self.frame.size.height);
         self.stateView.backgroundColor = _ellipseBackColor;
         self.stateView.layer.masksToBounds = YES;
         self.stateView.layer.cornerRadius = _cornerRadius;
@@ -178,7 +178,7 @@
         self.selectType(_selectIndex,button.currentTitle);
     }
     
-    CGFloat offsetx = (button.frame.origin.x + _selectBtnWID + _selectBtnSpace) - self.scrollView.frame.size.width + _selectBtnWID;
+    CGFloat offsetx = (button.frame.origin.x + self.selectBtnWID + _selectBtnSpace) - self.scrollView.frame.size.width + self.selectBtnWID;
     CGFloat offsetMax = self.scrollView.contentSize.width - self.frame.size.width;
     if (offsetx < 0) {
         offsetx = 0;
@@ -191,21 +191,21 @@
     if(self.SCType == SCType_Underline){
         //下划线
         [UIView animateWithDuration:_animateDuration animations:^{
-            self.stateView.frame = CGRectMake(button.frame.origin.x, self.frame.size.height - _SCType_Underline_HEI, _selectBtnWID, _SCType_Underline_HEI);
+            self.stateView.frame = CGRectMake(button.frame.origin.x, self.frame.size.height - self.SCType_Underline_HEI, self.selectBtnWID, self.SCType_Underline_HEI);
         }];
     }else if(self.SCType == SCType_Dot){
         [UIView animateWithDuration:_animateDuration animations:^{
-            self.stateView.frame = CGRectMake(button.frame.origin.x + (_selectBtnWID - _SCType_Underline_HEI)/2, self.frame.size.height - _SCType_Underline_HEI, _SCType_Underline_HEI, _SCType_Underline_HEI);
+            self.stateView.frame = CGRectMake(button.frame.origin.x + (self.selectBtnWID - self.SCType_Underline_HEI)/2, self.frame.size.height - self.SCType_Underline_HEI, self.SCType_Underline_HEI, self.SCType_Underline_HEI);
         }];
     }else if(self.SCType == SCType_Ellipse){
         [UIView animateWithDuration:_animateDuration animations:^{
-            self.stateView.frame = CGRectMake(button.frame.origin.x, 0, _selectBtnWID, self.frame.size.height);
+            self.stateView.frame = CGRectMake(button.frame.origin.x, 0, self.selectBtnWID, self.frame.size.height);
         }];
     }else if (self.SCType == SCType_SelectChange){
         
     }else if (self.SCType == SCType_BorderStyle){
         [UIView animateWithDuration:_animateDuration animations:^{
-            button.backgroundColor = _titleColor;
+            button.backgroundColor = self.titleColor;
         }];
     }else if (self.SCType == SCType_None){
         
@@ -265,13 +265,13 @@
 }
 
 - (void)setSCType_Underline_HEI:(CGFloat)SCType_Underline_HEI{
-    _SCType_Underline_HEI = SCType_Underline_HEI;
+    self.SCType_Underline_HEI = SCType_Underline_HEI;
     UIButton *selectBtn = (UIButton *)self.scrollView.subviews[_selectIndex];
     if(self.SCType == SCType_Underline){
-        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x, self.frame.size.height - _SCType_Underline_HEI, _selectBtnWID, _SCType_Underline_HEI);
+        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x, self.frame.size.height - self.SCType_Underline_HEI, self.selectBtnWID, self.SCType_Underline_HEI);
     }else if(self.SCType == SCType_Dot){
-        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x + (_selectBtnWID - _SCType_Underline_HEI)/2, self.frame.size.height - _SCType_Underline_HEI, _SCType_Underline_HEI, _SCType_Underline_HEI);
-        self.stateView.layer.cornerRadius = _SCType_Underline_HEI/2;
+        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x + (self.selectBtnWID - self.SCType_Underline_HEI)/2, self.frame.size.height - self.SCType_Underline_HEI, self.SCType_Underline_HEI, self.SCType_Underline_HEI);
+        self.stateView.layer.cornerRadius = self.SCType_Underline_HEI/2;
     }else if(self.SCType == SCType_Ellipse){
         self.stateView.layer.cornerRadius = _cornerRadius;
         self.layer.cornerRadius = _cornerRadius;

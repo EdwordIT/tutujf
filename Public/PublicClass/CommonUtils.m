@@ -7,7 +7,6 @@
 //
 
 #import "CommonUtils.h"
-#import "TTJFUserDefault.h"
 #import <YYCache.h>
 #import <sys/utsname.h>
 @implementation CommonUtils
@@ -200,8 +199,9 @@
     if([phoneType  isEqualToString:@"iPhone10,3"]) return@"iPhone X";
     
     if([phoneType  isEqualToString:@"iPhone10,6"]) return@"iPhone X";
+    
 
-    return phoneType;
+    return @"iPhone";
 }
 /**
  获取当前时间戳
@@ -252,8 +252,8 @@
 //是否登录
 +(BOOL)isLogin
 {
-    NSString *token = [self getToken];
-    if (![token isEqualToString:@""]) {
+   NSString *token = [TTJFUserDefault strForKey:kToken];
+    if (!IsEmptyStr(token)) {
         return YES;
     }else
         return NO;

@@ -108,6 +108,8 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
         //js调用OC的内容名称注册
         [userContentController addScriptMessageHandler:self name:@"openShare"];//分享
         [userContentController addScriptMessageHandler:self name:@"return_link"];//返回链接跳转
+        //对应前端js中调用时候要使用
+       //  window.webkit.messageHandlers.openShare.postMessage({body: 'hello world!'});
 
         if(kDevice_Is_iPhoneX)
         {
@@ -546,7 +548,7 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
          if (messageTitle) {
              UIAlertController *alertController = [UIAlertController alertControllerWithTitle:messageTitle message:nil preferredStyle:UIAlertControllerStyleAlert];
              UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-             [alertController addAction:cancelAction];
+             [alertController addAction:cancelAction];   
              [self presentViewController:alertController animated:YES completion:nil];
          }
      }];
@@ -557,27 +559,5 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-/**
- *  清理缓存
- */
-// 根据路径删除文件  删除cookies文件
-
-- (void)cleanCaches{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths lastObject];
-    // 利用NSFileManager实现对文件的管理
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:path]) {
-        // 获取该路径下面的文件名
-        NSArray *childrenFiles = [fileManager subpathsAtPath:path];
-        for (NSString *fileName in childrenFiles) {
-            // 拼接路径
-            NSString *absolutePath = [path stringByAppendingPathComponent:fileName];
-            // 将文件删除
-            [fileManager removeItemAtPath:absolutePath error:nil];
-        }
-    }
-}
-
 @end
 

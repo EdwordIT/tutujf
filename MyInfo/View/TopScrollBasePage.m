@@ -69,7 +69,7 @@
     //         --- 模拟加载延迟
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         weakSelf.cycleScroll.imageURLStringsGroup = imagesURLStrings;
-    });//http://www.tutujf.com/wapassets/trust/images/news/user01.png
+    });
  
     if(self.title1==nil)
     {

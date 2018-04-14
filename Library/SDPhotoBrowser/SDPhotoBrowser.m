@@ -195,7 +195,7 @@
     [UIView animateWithDuration:SDPhotoBrowserHideImageAnimationDuration animations:^{
         tempView.frame = targetTemp;
         [tempView setRectImageWith:currentImageView.image];
-        _indexLabel.alpha = 0.1;
+        self->_indexLabel.alpha = 0.1;
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
         self.backgroundColor = [UIColor clearColor];
@@ -289,9 +289,9 @@
         tempView.frame = endRect;
         [tempView setRectImageWith:currentImage];
     } completion:^(BOOL finished) {
-        _hasShowedFistView = YES;
+        self->_hasShowedFistView = YES;
         [tempView removeFromSuperview];
-        _scrollView.hidden = NO;
+        self->_scrollView.hidden = NO;
     }];
 
 }

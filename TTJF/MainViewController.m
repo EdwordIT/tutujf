@@ -116,8 +116,9 @@ Strong SystemConfigModel *configModel;//
     /**自定登录*/
     //如果已经存储了token值，则自动登录更新token
     if ([CommonUtils isLogin]) {
-        [self.view addSubview:[AutoLoginView defaultView]];
-        [[AutoLoginView defaultView] autoLogin];
+        AutoLoginView *loginView = InitObject(AutoLoginView);
+        [self.view addSubview:loginView];
+        [loginView autoLogin];
     }else{
         
     }
@@ -177,7 +178,7 @@ Strong SystemConfigModel *configModel;//
     [self.view addSubview:self.serviceBtn];
     
     //消息按钮
-    self.messageBtn = [[UIButton alloc]initWithFrame:RECT(screen_width - kSizeFrom750(60), self.serviceBtn.top, kSizeFrom750(50), kSizeFrom750(46))];
+    self.messageBtn = [[UIButton alloc]initWithFrame:RECT(screen_width - kSizeFrom750(60), self.serviceBtn.top, kSizeFrom750(40), kSizeFrom750(41))];
     self.messageBtn.centerY = self.serviceBtn.centerY;
     [self.messageBtn addTarget:self action:@selector(messageBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.messageBtn setImage:IMAGEBYENAME(@"message_noPoint") forState:UIControlStateNormal];
@@ -227,12 +228,12 @@ Strong SystemConfigModel *configModel;//
     [[HttpCommunication sharedInstance] getSignRequestWithPath:getHomePageInfoUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
         self.homePageModel = [HomepageModel yy_modelWithJSON:successDic];
         [self.tradesView setHidden:NO];
-        [clubDataArray removeAllObjects];
+        [self ->clubDataArray removeAllObjects];
         if (self.homePageModel.notice_items!=nil) {
-            [clubDataArray addObjectsFromArray:self.homePageModel.notice_items];
+            [self ->clubDataArray addObjectsFromArray:self.homePageModel.notice_items];
         }
         if (self.homePageModel.lcgh_items!=nil) {
-            [clubDataArray addObjectsFromArray:self.homePageModel.lcgh_items];
+            [self ->clubDataArray addObjectsFromArray:self.homePageModel.lcgh_items];
         }
         self.tableView.delegate = self;
         self.tableView.dataSource = self;

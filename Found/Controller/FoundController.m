@@ -20,14 +20,15 @@
 @interface FoundController ()<UITableViewDataSource,UITableViewDelegate,TreasureMiddleDelegate,TreasureListDelegate>
 {
   
-    NSMutableArray *dataSourceArray;
-    NSMutableArray *topArray;
-    NSInteger currentIndex;/**< 记录当前分类按钮的下标 */
+        NSInteger currentIndex;/**< 记录当前分类按钮的下标 */
     NSInteger selectIndex;/**< 记录当前分类按钮的下标 */
     Boolean isExeute ;
     NSString * content_title;
 }
 @property(nonatomic, strong) BaseUITableView *tableView;
+Strong NSMutableArray *dataSourceArray;
+Strong NSMutableArray *topArray;
+
 @end
 
 @implementation FoundController
@@ -43,8 +44,8 @@
 
 
 -(void)initData{
-    dataSourceArray = [[NSMutableArray alloc] init];
-    topArray= [[NSMutableArray alloc] init];
+    self.dataSourceArray = [[NSMutableArray alloc] init];
+    self.topArray= [[NSMutableArray alloc] init];
     currentIndex = 0;
     selectIndex=0;
     isExeute=FALSE;
@@ -110,7 +111,7 @@
     
     __weak __typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if(!isExeute)
+        if(!self->isExeute)
         [weakSelf doFindList];
     });
 }
@@ -124,7 +125,7 @@
      if (section ==0 ){
           return 1;
      }
-    return [dataSourceArray count];
+    return [self.dataSourceArray count];
  
 }
 
@@ -136,7 +137,7 @@
     }
     else{
      
-        return kSizeFrom750(192)*topArray.count/3;
+        return kSizeFrom750(192)*self.topArray.count/3;
       
     }
 }
@@ -174,8 +175,8 @@
             cell = [[TreasureMiddleCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIndentifier1];
         }
         cell.delegate=self;
-        if([topArray count]>0)
-            [cell setDataBind:topArray];
+        if([self.topArray count]>0)
+            [cell setDataBind:self.topArray];
         return cell;
     }
     if (indexPath.section ==1) {
@@ -186,9 +187,9 @@
             cell = [[FoundListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
         }
         
-        if(dataSourceArray.count>0)
+        if(self.dataSourceArray.count>0)
         {
-            FoundListModel * tmodel1=[dataSourceArray objectAtIndex:indexPath.row];
+            FoundListModel * tmodel1=[self.dataSourceArray objectAtIndex:indexPath.row];
             [cell setDataBind:tmodel1];
             cell.delegate=self;
         }
@@ -203,29 +204,29 @@
 -(void) doFindList{
     isExeute=TRUE;
     [[HttpCommunication sharedInstance] getSignRequestWithPath:getDiscoverUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:self.tableView success:^(NSDictionary *successDic) {
-        [dataSourceArray removeAllObjects];
-        [topArray removeAllObjects];
+        [self.dataSourceArray removeAllObjects];
+        [self.topArray removeAllObjects];
         NSArray * ary=[successDic objectForKey:@"top_button"];
         for(int k=0;k<[ary count];k++)
         {
             NSDictionary * dic=[ary objectAtIndex:k];
             DiscoverMenuModel * model=[DiscoverMenuModel yy_modelWithJSON:dic];
-            [topArray addObject: model];
+            [self.topArray addObject: model];
         }
-        content_title=[successDic objectForKey:@"content_title"];
+        self->content_title=[successDic objectForKey:@"content_title"];
         
         NSArray * ary1=[successDic objectForKey:@"activity_list"];
         for(int k=0;k<[ary1 count];k++)
         {
             NSDictionary * dic=[ary1 objectAtIndex:k];
             FoundListModel * model=[FoundListModel yy_modelWithJSON:dic];
-            [dataSourceArray addObject: model];
+            [self.dataSourceArray addObject: model];
         }
         //在主线程中刷新UI
         MainThreadFunction([self.tableView reloadData]);
         
         [self.tableView.mj_header endRefreshing];
-        isExeute=FALSE;
+        self->isExeute=FALSE;
     } failure:^(NSDictionary *errorDic) {
        
     }];
@@ -236,7 +237,7 @@
 {
 
         HomeWebController *discountVC = [[HomeWebController alloc] init];
-        DiscoverMenuModel * model=[topArray objectAtIndex:index];
+        DiscoverMenuModel * model=[self.topArray objectAtIndex:index];
         discountVC.urlStr=model.link_url;
         if([model.link_url rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/feedback/add"]].location != NSNotFound)
         {
@@ -255,7 +256,7 @@
     if(index>=0)
     {
         HomeWebController *discountVC = [[HomeWebController alloc] init];
-        FoundListModel * model=[dataSourceArray objectAtIndex:index];
+        FoundListModel * model=[self.dataSourceArray objectAtIndex:index];
         discountVC.urlStr=model.link_url;
         [self.navigationController pushViewController:discountVC animated:YES];
     }

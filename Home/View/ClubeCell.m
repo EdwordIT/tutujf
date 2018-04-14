@@ -84,12 +84,20 @@ Strong UILabel *watchTimesLabel;//浏览次数
 {
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.mas_equalTo(kSizeFrom750(30));
-        make.width.mas_equalTo(screen_width - kSizeFrom750(60));
+        make.width.mas_equalTo(kSizeFrom750(460));
+    }];
+    
+  
+    [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.contentView);
+        make.right.mas_equalTo(self.contentView).offset(-kSizeFrom750(30));
+        make.width.mas_equalTo(kSizeFrom750(200));
+        make.height.mas_equalTo(kSizeFrom750(124));
     }];
     
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.titleLabel);
-        make.bottom.mas_equalTo(self.contentView.mas_bottom).offset(-kSizeFrom750(24));
+        make.bottom.mas_equalTo(self.iconImageView);
         make.width.mas_equalTo(kSizeFrom750(280));
         make.height.mas_equalTo(kSizeFrom750(25));
     }];
@@ -98,29 +106,23 @@ Strong UILabel *watchTimesLabel;//浏览次数
         make.left.mas_equalTo(self.timeLabel.mas_right);
         make.height.bottom.mas_equalTo(self.timeLabel);
     }];
-    [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.mas_equalTo(self.contentView.centerY);
-        make.right.mas_equalTo(self.contentView).offset(-kSizeFrom750(30));
-        make.width.mas_equalTo(kSizeFrom750(200));
-        make.height.mas_equalTo(kSizeFrom750(124));
-    }];
 }
 //如果有imgUrl，则是行业资讯，如果没有，则为公告
 -(void)loadInfoWithModel:(NoticeModel *)model{
-    self.titleLabel.text = model.title;
+    [CommonUtils setAttString:model.title withLineSpace:kSizeFrom750(12) titleLabel:self.titleLabel];
     self.timeLabel.text = model.add_time;
     self.watchTimesLabel.text = [NSString stringWithFormat:@"浏览次数：%@次",model.hits];
     if ([model isKindOfClass:[InformationModel class]]) {
         //行业资讯
-        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.width.mas_equalTo(kSizeFrom750(460));
-        }];
-        [self.iconImageView setImageWithString:((InformationModel *)model).link_url];
+//        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.width.mas_equalTo(kSizeFrom750(460));
+//        }];
+        [self.iconImageView setImageWithString:((InformationModel *)model).pic];
     }else{
-        //公告
-        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.width.mas_equalTo(screen_width - kSizeFrom750(60));
-        }];
+//        //公告
+//        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.width.mas_equalTo(screen_width - kSizeFrom750(60));
+//        }];
     }
     
 }

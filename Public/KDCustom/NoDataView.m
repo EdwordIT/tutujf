@@ -44,12 +44,12 @@
         
         [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.mas_equalTo(self);
-            make.top.mas_equalTo(_imageView.mas_bottom).mas_offset(kSizeFrom750(40));
+            make.top.mas_equalTo(self.imageView.mas_bottom).mas_offset(kSizeFrom750(40));
         }];
         
         [_clickBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.mas_equalTo(self);
-            make.top.mas_equalTo(_titleLabel.mas_bottom).offset(kSizeFrom750(40));
+            make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(kSizeFrom750(40));
         }];
     }
     return self;

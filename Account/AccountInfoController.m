@@ -9,17 +9,13 @@
 #import "AccountInfoController.h"
 #import "MJRefresh.h"
 #import "AppDelegate.h"
-#import "HttpSignCreate.h"
-#import "ggHttpFounction.h"
-#import "HttpUrlAddress.h"
 #import "AccountModel.h"
 #import "HomeWebController.h"
 #import "AccountRealname.h"
 #import "AccountPhone.h"
-#import "SVProgressHUD.h"
-#import "TTJFRefreshStateHeader.h"
 #import "LoginViewController.h"
 #import "ChangePasswordViewController.h"
+#import "AccountSettingCell.h"
 @interface AccountInfoController ()<UITableViewDataSource, UITableViewDelegate,UIWebViewDelegate>
 {
     Boolean isFirstExe;
@@ -28,6 +24,8 @@
 }
 Strong AccountModel * accountModel;
 Strong BaseUITableView *tableView;
+Strong UIButton *existBtn;//退出按钮
+Strong NSArray *titleArr;
 
 @end
 
@@ -39,108 +37,35 @@ Strong BaseUITableView *tableView;
     [super viewDidLoad];
     isFirstExe=FALSE;
     ishaveOpen=@"0";
-    if([CommonUtils isLogin])
-    {
-        self.titleString = @"账户详情";
-        [self GetMyUserDatas];
-        isFirstExe=TRUE;
-        [self initTableView];
-        
-    }
-    else
-        [self initTableView];
-    // Do any additional setup after loading the view.
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-   
-    if ( self.navigationController.navigationBarHidden == YES )
-    {
-        [self.view setBounds:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    }
-    else
-    {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
-    
-    if((![CommonUtils isLogin])&&[ishaveOpen isEqual:@"0"])
-    {
-        self.accountModel.is_realname.card_id = @"";
-        self.accountModel.is_realname.card_id=@"";
-        self.accountModel.is_realname.realname=@"";
-        self.accountModel.is_realname.name=@"";
-        [self initTableView];
-        ishaveOpen=@"1";
-        [self OnLogin];
-    }
-    else if((![CommonUtils isLogin])&&[ishaveOpen isEqual:@"1"])
-    {
-         [self.navigationController popViewControllerAnimated:YES];
-    }
-    else if([CommonUtils isVerifyRealName])
-    {
-        [TTJFUserDefault setBool:NO key:isCertificationed];
-        [self GetMyUserDatas];
-        [self initTableView];
-    }
+    self.titleString = @"设置";
+    self.titleArr = @[@"用户头像",@"用户名",@"我的二维码",@"实名认证",@"我的银行卡",@"绑定手机",@"修改密码"];
+    [self initSubViews];
+    [self GetMyUserDatas];
 }
 
 //初始化主界面
--(void)initTableView{
+-(void)initSubViews{
     self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight) style:UITableViewStyleGrouped];
     self.tableView.showsVerticalScrollIndicator = NO;
-    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
-    self.tableView.backgroundColor=RGB(235,235,235);
-    //   self.tableView.backgroundColor=RGB(21,140,241);
+    self.tableView.backgroundColor=RGB_246;
+    self.tableView.rowHeight = kSizeFrom750(107);
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     // 设置表格尾部
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView setSeparatorColor:separaterColor];
     
     [self.view addSubview:self.tableView];
     
-    
-    [self setUpTableView];
-    
-    
-}
-
-//界面表格刷新
--(void)setUpTableView{
-  
-    __weak typeof(self) weakSelf = self;
-    TTJFRefreshStateHeader *header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
-        [weakSelf refreshData];
-        
-    }];
-    self.tableView.mj_header = header;
-    self.tableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
-        [weakSelf refreshData];
-    }];
-    [self refreshData];
-}
-
-//重复刷新
--(void)refreshData{
-    __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            //update UI
-            if([CommonUtils isLogin])
-            {
-                if(!isFirstExe)
-                {
-                    isFirstExe=TRUE;
-                    [weakSelf GetMyUserDatas];
-                }
-            }
-            [weakSelf.tableView.mj_header endRefreshing];
-            [weakSelf.tableView.mj_footer endRefreshing];
-        });
-    });
-    
-    
+    self.existBtn = [[UIButton alloc]initWithFrame:RECT(kOriginLeft, kSizeFrom750(850), screen_width - kOriginLeft*2, kSizeFrom750(90))];
+    self.existBtn.backgroundColor = navigationBarColor;
+    [self.existBtn setTitleColor:COLOR_White forState:UIControlStateNormal];
+    [self.existBtn.titleLabel setFont:SYSTEMSIZE(34)];
+    [self.existBtn addTarget:self action:@selector(existBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.existBtn setTitle:@"退出账号" forState:UIControlStateNormal];
+    self.existBtn.layer.cornerRadius = kSizeFrom750(90)/2;
+    self.existBtn.layer.masksToBounds = YES;
+    [self.tableView addSubview:self.existBtn];
 }
 
 #pragma mark - UITableViewDataSource
@@ -151,256 +76,163 @@ Strong BaseUITableView *tableView;
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     if (section ==0 ){
-        //return _hotQueueData.count+1;
-        return 2;
+        return 3;
     }
     else if (section ==1 ){
-        return 1;
+        return 3;
     }
     else if (section ==2 ){
         return 1;
     }
     return 1;
 }
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 0) {
-        {
-           
-          return 55;
-          
-            
-        }
-    }else if(indexPath.section == 1){
-        
-        return 55;
-        
-    }
-    else{
-        return 45;
-    }
-}
-
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if (section == 0) {
-        return 0.01;
-    }
-    else if (section == 1) {
-        return 15;
-    } else if (section == 2) {
-        return 15;
-    }
-    else{
-        return 1;
-    }
+    return 0.01;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    if (section == 0) {
-        return 0.01;
-    }
-    else if (section == 1) {
-        return 0.01;
-    } else if (section == 2) {
-        return 0.01;
-    }
-    else{
-        return 0.1;
-    }
+    return kSizeFrom750(30);
 }
-
-
-
-
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    headerView.backgroundColor =RGB(235,235,235);
-    return headerView;
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
+    footerView.backgroundColor = RGB_246;
+    return footerView;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    footerView.backgroundColor = RGB(235,235,235);
-    
-    
-    //    footerView.backgroundColor = [UIColor yellowColor];
+    footerView.backgroundColor = RGB_246;
     return footerView;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 0) {
-        if(indexPath.row == 0)
-        {
-            static NSString *cellIndentifier = @"MineTopCell1";
-            UITableViewCell *cell =  [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            cell.backgroundColor=[UIColor whiteColor];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            UILabel *  left = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, screen_width/2,15)];
-            left.font = CHINESE_SYSTEM(15);
-            left.textColor =  RGB(38,38,38);
-            left.text=@"实名认证";
-            [cell addSubview:left];
-            
-            NSString * temp=self.accountModel.is_realname.realname;
-            temp=[temp stringByAppendingString:@"  "];
-            temp=[temp stringByAppendingString:self.accountModel.is_realname.card_id];
-            
-            
-            UILabel *  right = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-50, 20, screen_width/2+35,12)];
-            right.font = CHINESE_SYSTEM(12);
-            right.textColor =  RGB(165,165,165);
-            right.textAlignment=NSTextAlignmentRight;
-            if([self.accountModel.is_realname.card_id isEqual:@""])
-            {
-                right.frame=CGRectMake(screen_width/2-70, 20, screen_width/2+35,12);
-                temp=@"您未实名认证，请认证";
-            }
-            right.text=temp;
-            [cell addSubview:right];
-            
-            UIView * lineView = [[UIView alloc] initWithFrame:CGRectMake(15, 54,screen_width-30 , kLineHeight)];
-            lineView.backgroundColor = lineBg;
-            [cell addSubview:lineView];
-            
-            if([self.accountModel.is_realname.card_id isEqual:@""])
-               {
-                   UIImageView * img0=[[UIImageView alloc] initWithFrame:CGRectMake(screen_width-22, 20, 7, 14)];
-                   [img0 setImage:[UIImage imageNamed:@"rightArrow.png"]];
-                   [cell addSubview:img0];
-               }
-            
-            return cell;
-            
-        }
-        else  if(indexPath.row == 1)
-        {
-            static NSString *cellIndentifier = @"MIneMiddleCell1";
-            UITableViewCell *cell =  [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            cell.backgroundColor=[UIColor whiteColor];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            UILabel *  left = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, screen_width/2,15)];
-            left.font = CHINESE_SYSTEM(15);
-            left.textColor =  RGB(38,38,38);
-            left.text=@"手机绑定";
-            [cell addSubview:left];
-            
-            UILabel *  right = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-50, 20, screen_width/2+35,12)];
-            right.font = CHINESE_SYSTEM(12);
-            right.textColor =  RGB(165,165,165);
-            right.textAlignment=NSTextAlignmentRight;
-            right.text=self.accountModel.is_phone.phone_num;
-            [cell addSubview:right];
-            if([self.accountModel.is_phone.phone_num isEqual:@""])
-            {
-                UIImageView * img0=[[UIImageView alloc] initWithFrame:CGRectMake(screen_width-22, 20, 7, 14)];
-                [img0 setImage:[UIImage imageNamed:@"rightArrow.png"]];
-                [cell addSubview:img0];
-            }
-            
-            return cell;
-        }
+    
+    static NSString *cellId = @"AccountSettingCell";
+    AccountSettingCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (cell==nil) {
+        cell = [[AccountSettingCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
     }
-    else if (indexPath.section == 1) {
-        if(indexPath.row == 0)
-        {
-            static NSString *cellIndentifier = @"MineMenuCell12";
-            
-            UITableViewCell *cell =  [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            cell.backgroundColor=[UIColor whiteColor];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            UILabel *  left = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, screen_width/2,15)];
-            left.font = CHINESE_SYSTEM(15);
-            left.textColor =  RGB(38,38,38);
-            left.text=@"修改密码";
-            [cell addSubview:left];
-            
-            UIImageView * img0=[[UIImageView alloc] initWithFrame:CGRectMake(screen_width-22, 20, 7, 14)];
-            [img0 setImage:[UIImage imageNamed:@"rightArrow.png"]];
-            [cell addSubview:img0];
-            return cell;
-        }
-    }
-    else if (indexPath.section == 2) {
-        if(indexPath.row == 0)
-        {
-            static NSString *cellIndentifier = @"MineMenuCell2";
-            
-            UITableViewCell *cell =  [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
-            cell.backgroundColor=[UIColor whiteColor];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            UILabel *  left = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-60, 15, 120,15)];
-            left.font = CHINESE_SYSTEM(15);
-            left.textColor = navigationBarColor;
-            left.textAlignment=NSTextAlignmentCenter;
-            left.text=@"退出登录";
-            [cell addSubview:left];
-            
-            return cell;
-        }
-    }
-    return nil;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    [self loadCellInfoWith:cell IndexPath:indexPath];
+    return cell;
 }
-/**在viewWillAppear方法中加入：
- [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];**/
+//数据加载
+-(void)loadCellInfoWith:(AccountSettingCell *)cell IndexPath:(NSIndexPath *)indexPath{
+    NSInteger index = indexPath.section*3+indexPath.row;
+    cell.titleLabel.text = [self.titleArr objectAtIndex:index];
+    [cell.rightArrow setHidden:NO];
+    [cell.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(cell.contentView).offset(-kSizeFrom750(60));
+    }];
+    
+    switch (index) {
+        case 0:
+            {
+                //头像
+                [cell.rightArrow setHidden:YES];
+                [cell.iconImage setHidden:NO];
+                
+                [cell.iconImage setImage:IMAGEBYENAME(@"icons_portrait")];
+            }
+            break;
+        case 1:
+        {
+            //用户名
+            [cell.rightArrow setHidden:YES];
+            cell.contentLabel.text = self.accountModel.user_name;
+            [cell.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.right.mas_equalTo(cell.contentView).offset(-kOriginLeft);
+            }];
+        }
+            break;
+        case 2:
+        {//我的二维码
+            [cell.codeImage setHidden:NO];
+            [cell.codeImage setImage:IMAGEBYENAME(@"icons_code")];
+        }
+            break;
+        case 3:
+        {
+           //实名认证
+            if (IsEmptyStr(self.accountModel.is_realname.card_id)) {
+                cell.contentLabel.text = self.accountModel.is_realname.name;
+            }else
+            {
+                cell.contentLabel.text = [NSString stringWithFormat:@"%@  %@",self.accountModel.is_realname.realname,self.accountModel.is_realname.card_id];
+                [cell.rightArrow setHidden:YES];
+                [cell.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.right.mas_equalTo(cell.contentView).offset(-kOriginLeft);
+                }];
+            }
+        }
+            break;
+        case 4:
+        {
+            cell.contentLabel.text = self.accountModel.my_bank_statusname;
+            //我的银行卡
+        }
+            break;
+        case 5:
+        {
+            //绑定手机号
+             [cell.rightArrow setHidden:YES];
+            cell.contentLabel.text = self.accountModel.is_phone.phone_num;
+            [cell.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.right.mas_equalTo(cell.contentView).offset(-kOriginLeft);
+            }];
+            
+        }
+            break;
+        default:
+            break;
+    }
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    //消除cell选择痕迹
-    [self performSelector:@selector(deselect) withObject:nil afterDelay:0.1f];
+    
+    NSInteger index = indexPath.section*3+indexPath.row;
+    switch (index) {
+        case 2:
+            {
+                //二维码
+                HomeWebController *web = InitObject(HomeWebController);
+                web.urlStr = self.accountModel.qr_code_url;
+                [self.navigationController pushViewController:web animated:YES];
+            }
+            break;
+        case 3:
+        {
+            //实名认证
+            if (IsEmptyStr(self.accountModel.is_realname.card_id)) {
+                HomeWebController *web = InitObject(HomeWebController);
+                web.urlStr = self.accountModel.is_realname.url;
+                [self.navigationController pushViewController:web animated:YES];
+            }
+        }
+            break;
+        case 4:
+        {
+            //银行卡
+            HomeWebController *web = InitObject(HomeWebController);
+            web.urlStr = self.accountModel.my_bank_url;
+            [self.navigationController pushViewController:web animated:YES];
+            
+        }
+            break;
+        case 6:
+        {
+            //修改密码
+            ChangePasswordViewController *change = InitObject(ChangePasswordViewController);
+            [self.navigationController pushViewController:change animated:YES];
+        }
+            break;
+        default:
+            break;
+    }
    
-    if (indexPath.section == 0) {
-        if(indexPath.row == 0)
-        {
-            if([self.accountModel.is_realname.card_id isEqual:@""]&&![self.accountModel.is_realname.url isEqual:@""])
-            {
-                [TTJFUserDefault setBool:YES key:isCertificationed];
-                self.hidesBottomBarWhenPushed=YES;
-                HomeWebController *discountVC = [[HomeWebController alloc] init];
-                discountVC.urlStr=self.accountModel.is_realname.url;
-                discountVC.returnmain=@"3"; //页返回
-                [self.navigationController pushViewController:discountVC animated:YES];
-                self.hidesBottomBarWhenPushed=NO;
-            }
-        }
-        else if(indexPath.row == 1)
-        {
-            if([self.accountModel.is_phone.phone_num isEqual:@""]&&![self.accountModel.is_phone.url isEqual:@""])
-            {
-                self.hidesBottomBarWhenPushed=YES;
-                HomeWebController *discountVC = [[HomeWebController alloc] init];
-                discountVC.urlStr=self.accountModel.is_phone.url;
-                discountVC.returnmain=@"3"; //页返回
-                [self.navigationController pushViewController:discountVC animated:YES];
-                self.hidesBottomBarWhenPushed=NO;
-            }
-        }
-    }
-     if (indexPath.section == 1) {
-         ChangePasswordViewController *change = InitObject(ChangePasswordViewController);
-         [self.navigationController pushViewController:change animated:YES];
-     }
-    if (indexPath.section == 2) {
-        [SVProgressHUD showWithStatus:@"正在退出登录..."];
-        [self exit];
-    }
 }
-- (void)deselect
-{
-    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-}
-
+#pragma mark --数据获取
 -(void) GetMyUserDatas{
    
     [[HttpCommunication sharedInstance] getSignRequestWithPath:getMyAccountUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:self.tableView success:^(NSDictionary *successDic) {
-        self.tableView.delegate = self;
-        self.tableView.dataSource = self;
-
         self.accountModel = [AccountModel yy_modelWithJSON:successDic];
-        
         [self.tableView reloadData];
     } failure:^(NSDictionary *errorDic) {
         
@@ -408,7 +240,11 @@ Strong BaseUITableView *tableView;
    
 }
 
--(void) exit{
+-(void) existBtnClick:(UIButton *)sender{
+    if (IsEmptyStr(self.accountModel.exit_link)) {
+        return;
+    }
+    [SVProgressHUD showWithStatus:@"正在退出登录..."];
     [self loadPage1:self.accountModel.exit_link];
 }
 
@@ -421,30 +257,14 @@ Strong BaseUITableView *tableView;
     //伸缩内容适应屏幕尺寸
     iWebView.scalesPageToFit=YES;
     [iWebView setUserInteractionEnabled:YES];
-       [self cleanCaches];
+    [self cleanCaches];
     [[NSURLCache sharedURLCache] removeAllCachedResponses];//清除缓存  
     NSURL *url = [[NSURL alloc] initWithString:urlstr];
-    //NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
     NSMutableURLRequest *request ;
     request = [NSMutableURLRequest requestWithURL:url];
-    
-    //NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-    /*
-    NSMutableString *cookies = [NSMutableString string];
-    NSArray *tmp = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    for (NSHTTPCookie * cookie in tmp) {
-        [cookies appendFormat:@"%@=%@;",cookie.name,cookie.value];
-    }
-    [request setHTTPShouldHandleCookies:YES];
-    // 注入Cookie
-    [request setValue:cookies forHTTPHeaderField:@"Cookie"];
-     */
-    
     [iWebView loadRequest:request];
     iWebView.scrollView.bounces = NO;
     [self.view addSubview:iWebView];
-    //  [iWebView isHidden:TRUE];
-    
 }
 
 
@@ -453,10 +273,10 @@ Strong BaseUITableView *tableView;
  */
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"WebKitCacheModelPreferenceKey"];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitDiskImageCacheEnabled"];//自己添加的，原文没有提到。
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitOfflineWebApplicationCacheEnabled"];//自己添加的，原文没有提到。
-    [[NSUserDefaults standardUserDefaults] synchronize];
+//    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"WebKitCacheModelPreferenceKey"];
+//    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitDiskImageCacheEnabled"];//自己添加的，原文没有提到。
+//    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitOfflineWebApplicationCacheEnabled"];//自己添加的，原文没有提到。
+//    [[NSUserDefaults standardUserDefaults] synchronize];
     
     
     [self exitLoginStatus];
@@ -467,14 +287,6 @@ Strong BaseUITableView *tableView;
     
 }
 
--(void)webViewDidStartLoad:(UIWebView *)webView
-{
-
-    NSString *  currentURL = [webView stringByEvaluatingJavaScriptFromString:@"document.location.href"];
-    currentURL=[currentURL stringByReplacingOccurrencesOfString:@"https" withString:@"http"];
-   
-    
-}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -489,20 +301,32 @@ Strong BaseUITableView *tableView;
 // 根据路径删除文件  删除cookies文件
 
 - (void)cleanCaches{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths lastObject];
-    // 利用NSFileManager实现对文件的管理
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:path]) {
-        // 获取该路径下面的文件名
-        NSArray *childrenFiles = [fileManager subpathsAtPath:path];
-        for (NSString *fileName in childrenFiles) {
-            // 拼接路径
-            NSString *absolutePath = [path stringByAppendingPathComponent:fileName];
-            // 将文件删除
-            [fileManager removeItemAtPath:absolutePath error:nil];
-        }
+    //清除cookies
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies]){
+        [storage deleteCookie:cookie];
     }
+    //清除UIWebView的缓存
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    NSURLCache * cache = [NSURLCache sharedURLCache];
+    [cache removeAllCachedResponses];
+    [cache setDiskCapacity:0];
+    [cache setMemoryCapacity:0];
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+//    NSString *path = [paths lastObject];
+//    // 利用NSFileManager实现对文件的管理
+//    NSFileManager *fileManager = [NSFileManager defaultManager];
+//    if ([fileManager fileExistsAtPath:path]) {
+//        // 获取该路径下面的文件名
+//        NSArray *childrenFiles = [fileManager subpathsAtPath:path];
+//        for (NSString *fileName in childrenFiles) {
+//            // 拼接路径
+//            NSString *absolutePath = [path stringByAppendingPathComponent:fileName];
+//            // 将文件删除
+//            [fileManager removeItemAtPath:absolutePath error:nil];
+//        }
+//    }
 }
 /*
 #pragma mark - Navigation

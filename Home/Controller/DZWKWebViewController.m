@@ -9,8 +9,8 @@
 #import "DZWKWebViewController.h"
 #import <WebKit/WebKit.h>
 #import "AppDelegate.h"
-#import "MBProgressHUD+NJ.h"
 #import "UrlJumpHelp.h"
+#import "MBProgressHUD+MP.h"
 #import "XXWebKitSupport.h"
 
 @interface DZWKWebViewController ()<WKNavigationDelegate,WKUIDelegate,WKScriptMessageHandler>
@@ -52,8 +52,8 @@
     
     if(_isreturn==nil)
         _isreturn=@"0";
-    if(_returnmain==nil)
-        _returnmain=@"0";
+    if(self.returnmain==nil)
+        self.returnmain=@"0";
     loadUrlStr=_urlStr;
     eventStr=@"";
     // 添加KVO监听
@@ -141,7 +141,7 @@
     self.dzWebView.scrollView.bounces = NO;
     [self.view addSubview:self.dzWebView];
     
-    if([_returnmain isEqual:@"1"])
+    if([self.returnmain isEqual:@"1"])
     {
         
         backBg = [[UIView alloc] initWithFrame:CGRectMake(0, 20, 65, 44)];
@@ -154,7 +154,7 @@
         [self.view addSubview:backBg];
         
     }
-    else if([_returnmain isEqual:@"3"])
+    else if([self.returnmain isEqual:@"3"])
     {
         backBg = [[UIView alloc] initWithFrame:CGRectMake(0, 20, 65, 44)];
         backBg.backgroundColor =[UIColor clearColor];
@@ -165,7 +165,7 @@
         
         [self.view addSubview:backBg];
     }
-   else if([_returnmain isEqual:@"4"])
+   else if([self.returnmain isEqual:@"4"])
     {
         backBg = [[UIView alloc] initWithFrame:CGRectMake(0, 20, 65, 44)];
         backBg.backgroundColor =[UIColor clearColor];
@@ -181,7 +181,7 @@
 }
 
 -(void)OnTapBack:(UITapGestureRecognizer *)sender{
-    if([_returnmain isEqual:@"1"]) //支持内部返回
+    if([self.returnmain isEqual:@"1"]) //支持内部返回
     {
         //[self OnBackBtn];
         if ([_currentURL rangeOfString:@"bak=close"].location != NSNotFound) {
@@ -219,7 +219,7 @@
             
         }
     }
-    else if([_returnmain isEqual:@"3"])
+    else if([self.returnmain isEqual:@"3"])
     {
         if(isTeshu)
         {
@@ -310,9 +310,9 @@
     // [super.navigationController setNavigationBarHidden:NO animated:TRUE];
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-        if([_returnmain isEqual:@"3"])
+        if([self.returnmain isEqual:@"3"])
             [self.tabBarController.tabBar setHidden:FALSE];
-        if([_returnmain isEqual:@"4"])
+        if([self.returnmain isEqual:@"4"])
             [self dismissViewControllerAnimated:YES completion:NULL];
         else
             [self.navigationController popViewControllerAnimated:YES];
@@ -323,7 +323,7 @@
 -(void) setReturnBack
 {
     
-    if([_returnmain isEqual:@"5"]&&[_currentURL isEqual:_urlStr])
+    if([self.returnmain isEqual:@"5"]&&[_currentURL isEqual:_urlStr])
     {
         if(backBtn==nil)
         {
@@ -340,7 +340,7 @@
         }
         [backBtn setHidden:FALSE];
     }
-    else if([_returnmain isEqual:@"3"]&&[_currentURL isEqual:_urlStr])
+    else if([self.returnmain isEqual:@"3"]&&[_currentURL isEqual:_urlStr])
     {
         if(backBtn==nil)
         {
@@ -356,7 +356,7 @@
         }
         [backBtn setHidden:FALSE];
     }
-    else if([_returnmain isEqual:@"4"]&&[_currentURL isEqual:_urlStr])
+    else if([self.returnmain isEqual:@"4"]&&[_currentURL isEqual:_urlStr])
     {
         if(backBtn==nil)
         {
@@ -543,7 +543,7 @@
         [self.navigationController popViewControllerAnimated:YES];
         return ;
     }
-    else if([_returnmain isEqual:@"3"])
+    else if([self.returnmain isEqual:@"3"])
     {
         backBg = [[UIView alloc] initWithFrame:CGRectMake(0, 20, 65, 44)];
         backBg.backgroundColor =[UIColor clearColor];

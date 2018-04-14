@@ -51,6 +51,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
     //初始化网络请求参数
     [self checkNetwork];
     //获取配置信息
@@ -61,21 +62,19 @@
     [self configureBoardManager];
     //定制SVProgressHUD
     [self setUpSvpProgress];
-    
     //注册推送通知
     [self registerPushForIOS8];
     //信鸽推送
     [self registerXGPush];
     //友盟统计
     [MobClick startWithAppkey:UMAPPKEY reportPolicy:BATCH   channelId:@"GitHub"];
-    
     //注册shareSDK
     [self registerShareSDK];
     //取消引导页
-//    [self setupIntroductoryPage];
+    //[self setupIntroductoryPage];
     //初始化
     [self initRootVC];
-//信鸽推送信息上送到推送端
+    //信鸽推送信息上送到推送端
     [[XGPush defaultManager] reportXGNotificationInfo:launchOptions];
     return YES;
 }
@@ -302,9 +301,7 @@
     //
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setBarTintColor:RGB(0, 160,240)];
-    
-    
-   NSDictionary *navbarTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
+    NSDictionary *navbarTitleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
     [[UINavigationBar appearance] setTitleTextAttributes:navbarTitleTextAttributes];
 
     tabbar.tintColor =HEXCOLOR(@"#53b3ed");
@@ -315,18 +312,23 @@
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
+      //进入前台
+   
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
 }
 
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    //进入后台
+
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    //即将进入前台
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
 }
 

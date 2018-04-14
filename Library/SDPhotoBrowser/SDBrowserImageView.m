@@ -121,8 +121,8 @@
             label.textAlignment = NSTextAlignmentCenter;
             [imageViewWeak addSubview:label];
         } else {
-            _scrollImageView.image = image;
-            [_scrollImageView setNeedsDisplay];
+            self->_scrollImageView.image = image;
+            [self->_scrollImageView setNeedsDisplay];
         }
     }];
 }

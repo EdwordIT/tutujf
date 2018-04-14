@@ -35,7 +35,7 @@ Strong NSMutableArray *subTextArray;
         [self.contentView addSubview:bgView];
         
         UIImageView *img = InitObject(UIImageView);
-        img.frame = RECT(0, kSizeFrom750(20), kSizeFrom750(80), kSizeFrom750(80));
+        img.frame = RECT(0, kSizeFrom750(25), kSizeFrom750(80), kSizeFrom750(80));
         img.centerX = bgView.width/2;
         img.layer.cornerRadius = kSizeFrom750(10);
         [bgView addSubview:img];
@@ -52,7 +52,7 @@ Strong NSMutableArray *subTextArray;
         [self.textArray addObject:textLabel];
         
         UILabel *subTextLabel = InitObject(UILabel);
-        subTextLabel.frame = RECT(0, textLabel.bottom+kSizeFrom750(15), bgView.width, kSizeFrom750(30));
+        subTextLabel.frame = RECT(0, textLabel.bottom+kSizeFrom750(5), bgView.width, kSizeFrom750(30));
         subTextLabel.textAlignment = NSTextAlignmentCenter;
         subTextLabel.textColor = RGB_166;
         subTextLabel.text = subTitleArray[i];

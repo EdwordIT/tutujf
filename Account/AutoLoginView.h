@@ -11,7 +11,6 @@ typedef void (^AutoLoginBlock)(void);
 @interface AutoLoginView : UIView
 
 Copy AutoLoginBlock autoLoginBlock;
-+ (AutoLoginView *)defaultView;
 -(void) getLogin:(NSString *)user_name  password:(NSString *)password;
 -(void)autoLogin;//自动登录
 -(void)loginWebView;//webView登录

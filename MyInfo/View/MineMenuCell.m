@@ -66,7 +66,7 @@
    
     UIImageView * rightArrow=[[UIImageView alloc] initWithFrame:CGRectMake(btn1.width - kSizeFrom750(45), 0, kSizeFrom750(14), kSizeFrom750(28))];
     rightArrow.centerY = lab1.centerY;
-    [rightArrow setImage:[UIImage imageNamed:@"rightArrow.png"]];
+    [rightArrow setImage:[UIImage imageNamed:@"rightArrow"]];
     [btn1 addSubview:rightArrow];
     if(index!=count)
     {

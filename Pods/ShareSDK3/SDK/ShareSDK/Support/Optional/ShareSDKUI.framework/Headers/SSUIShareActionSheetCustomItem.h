@@ -24,7 +24,7 @@
  */
 - (instancetype)initWithIcon:(UIImage *)icon
                        label:(NSString *)label
-                clickHandler:(void(^)())clickHandler;
+                clickHandler:(void(^)(void))clickHandler;
 
 /**
  *  触发点击

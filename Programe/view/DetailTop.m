@@ -176,7 +176,7 @@
     yuan.textColor =  RGB(141,200,255);
     yuan.text=[NSString stringWithFormat:@"已经有%@位投资人",info.tender_count];
     yuan.textAlignment=NSTextAlignmentRight;
-    
+    yuan.hidden = YES;
      index=[ yuan.text rangeOfString:@"有"].location+1;
      len=[ yuan.text  length];
       NSInteger lw=[ yuan.text rangeOfString:@"位"].location;

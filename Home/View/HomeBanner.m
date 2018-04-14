@@ -49,7 +49,7 @@
     
     //         --- 模拟加载延迟
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        cycleScrollView2.imageURLStringsGroup = imagesURLStrings;
+        self ->cycleScrollView2.imageURLStringsGroup = imagesURLStrings;
     });
     
     return self;
@@ -66,7 +66,7 @@
     
     //         --- 模拟加载延迟
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        cycleScrollView2.imageURLStringsGroup = imagesURLStrings;
+        self ->cycleScrollView2.imageURLStringsGroup = imagesURLStrings;
     });
 }
 

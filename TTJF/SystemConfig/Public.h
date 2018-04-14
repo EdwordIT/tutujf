@@ -30,6 +30,8 @@
 #define navigationBarColor RGB(53, 171, 245)
 #define lineBg RGB(233, 233, 233)
 #define lineBg1 RGB(237, 237, 237)
+
+#define COLOR_White RGB(255,255,255)
 //分割线颜色
 #define separaterColor RGB(243,243,243)
 /**亮红色*/

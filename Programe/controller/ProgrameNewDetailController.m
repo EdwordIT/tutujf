@@ -28,12 +28,12 @@
     DetailTop * top;
     DetailMiddle * middle;
     DetailBottom * bottom;
-    LoanBase * base;
     NSInteger secondsCountDown;//倒计时总时长
     NSTimer *countDownTimer;
  
 }
 Strong UIButton *footerBtn;//立即投资、满标待审
+Strong LoanBase *base;
 @end
 
 @implementation ProgrameNewDetailController
@@ -53,38 +53,34 @@ Strong UIButton *footerBtn;//立即投资、满标待审
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight - kBottomButtonHeight )];
     scrollView.backgroundColor =RGB(242,242,242);
     
-    scrollView.directionalLockEnabled = YES; //只能一个方向滑动
     scrollView.pagingEnabled = NO; //是否翻页
     scrollView.showsVerticalScrollIndicator =YES; //垂直方向的滚动指示
     scrollView.indicatorStyle = UIScrollViewIndicatorStyleWhite;//滚动指示的风格
     scrollView.showsHorizontalScrollIndicator = NO;//水平方向的滚动指示
     scrollView.delegate = self;
-    scrollView.userInteractionEnabled = YES; // 是否滑动
-    scrollView.bounces = NO;
-    CGSize size={screen_width,180+500+265};
-    scrollView.contentSize =size;
-    
-    //  [SVProgressHUD showSuccessWithStatus:@"加载完成"];
-    
-   
+    WEAK_SELF;
+    scrollView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
+        [weakSelf getRequest];
+    }];
+    [self.view addSubview:scrollView];
 }
-#pragma  头部事件
+#pragma  投资按钮点击事件
 -(void)footerBtnClick:(UIButton*)sender
 {
     if([CommonUtils isLogin])
     {
-        if([base.trust_account isEqual:@"1"])
+        if([self.base.trust_account isEqual:@"1"])
         {
         RushPurchaseController * vc=[[RushPurchaseController alloc] init];
         vc.loan_id=  self.loan_id;
         vc.vistorType=@"2";
-        [vc setBindData:base];
+        [vc setBindData:self.base];
         [self.navigationController pushViewController:vc animated:YES];
         }
         else
         {
             HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr= base.trust_reg_url;
+            discountVC.urlStr= self.base.trust_reg_url;
             discountVC.returnmain=@"3"; //页返回
             [self.navigationController pushViewController:discountVC animated:YES];
         }
@@ -96,26 +92,6 @@ Strong UIButton *footerBtn;//立即投资、满标待审
     
 }
 
--(NSMutableAttributedString *)changeTitle:(NSString *)curTitle
-{
-    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:curTitle];
-    [title addAttribute:NSForegroundColorAttributeName value:RGB(255,255,255) range:NSMakeRange(0, title.length)];
-    [title addAttribute:NSFontAttributeName value:CHINESE_SYSTEM(16) range:NSMakeRange(0, title.length)];
-    return title;
-}
-
-- (UIImageView *)findHairlineImageViewUnder:(UIView *)view {
-    if ([view isKindOfClass:UIImageView.class] && view.bounds.size.height <= 1.0) {
-        return (UIImageView *)view;
-    }
-    for (UIView *subview in view.subviews) {
-        UIImageView *imageView = [self findHairlineImageViewUnder:subview];
-        if (imageView) {
-            return imageView;
-        }
-    }
-    return nil;
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -141,29 +117,27 @@ Strong UIButton *footerBtn;//立即投资、满标待审
 -(void) initBody
 {
     Boolean md=TRUE;
-       if(middle==nil&&[base.loan_info.status_name isEqual:@"借款中"]&&![base.loan_info.buy_name isEqual:@"还未开始"])
+       if(middle==nil&&[self.base.loan_info.status_name isEqual:@"借款中"]&&![self.base.loan_info.buy_name isEqual:@"还未开始"])
            md=FALSE;
     if(top==nil)
-    top=[[DetailTop alloc] initWithFrame:CGRectMake(0, 0, screen_width, 174) data:base];
+    top=[[DetailTop alloc] initWithFrame:CGRectMake(0, 0, screen_width, 174) data:self.base];
     [scrollView addSubview:top];
     if(middle==nil&&!md)
-        middle=[[DetailMiddle alloc] initWithFrame:CGRectMake(0, top.bottom, screen_width, 260) data:base];
+        middle=[[DetailMiddle alloc] initWithFrame:CGRectMake(0, top.bottom, screen_width, 260) data:self.base];
     else if(middle==nil)
-         middle=[[DetailMiddle alloc] initWithFrame:CGRectMake(0, top.bottom, screen_width, 215) data:base];
+         middle=[[DetailMiddle alloc] initWithFrame:CGRectMake(0, top.bottom, screen_width, 215) data:self.base];
     [scrollView addSubview:middle];
    if(bottom==nil)
         bottom=[[DetailBottom alloc] initWithFrame:CGRectMake(0, middle.bottom, screen_width, kSizeFrom750(400))];
     bottom.delegate=self;
     bottom.userInteractionEnabled=YES;
     [scrollView addSubview:bottom];
-    [bottom loadBottomWithModel:base];
-    
-    [self.view addSubview:scrollView];
+    [bottom loadBottomWithModel:self.base];
     
     [self.view addSubview:self.footerBtn];
     
-    if(base!=nil)
-        secondsCountDown = [CommonUtils getDifferenceByDate:base.loan_info.open_up_date];//倒计时秒数(48小时换算成的秒数,项目中需要从服务器获取)
+    if(self.base!=nil)
+        secondsCountDown = [CommonUtils getDifferenceByDate:self.base.loan_info.open_up_date];//倒计时秒数(48小时换算成的秒数,项目中需要从服务器获取)
     if(secondsCountDown>0)
     {
         self.footerBtn.backgroundColor=RGB(231,231,231);
@@ -184,7 +158,7 @@ Strong UIButton *footerBtn;//立即投资、满标待审
             countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDownAction) userInfo:nil repeats:YES]; //启动倒计时后会每秒钟调用一次方法 countDownAction
     }
  
-  LoanInfo * info=  base.loan_info;
+  LoanInfo * info=  self.base.loan_info;
     if(![info.progress isEqual:@"100.00"])
     {
         //点击事件
@@ -195,9 +169,9 @@ Strong UIButton *footerBtn;//立即投资、满标待审
     }
     else
     {
-        if([base.loan_info.status_name isEqual:@"满标待审"])
+        if([self.base.loan_info.status_name isEqual:@"满标待审"])
         {
-            [self.footerBtn setTitle:base.loan_info.status_name forState:UIControlStateNormal];
+            [self.footerBtn setTitle:self.base.loan_info.status_name forState:UIControlStateNormal];
             self.footerBtn.userInteractionEnabled = NO;//满标不可点击投资
             self.footerBtn.backgroundColor=RGB(231,231,231);
         }
@@ -228,10 +202,10 @@ Strong UIButton *footerBtn;//立即投资、满标待审
     NSArray *keys = @[@"loan_id",kToken];
     NSArray *values = @[self.loan_id,[CommonUtils getToken]];
     
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:getLoanDetailUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
-        
-        base = [LoanBase yy_modelWithJSON:successDic];
-        base.repay_type_name=[[successDic objectForKey:@"repay_type"] objectForKey:@"name"];
+    [[HttpCommunication sharedInstance] getSignRequestWithPath:getLoanDetailUrl keysArray:keys valuesArray:values refresh:scrollView success:^(NSDictionary *successDic) {
+    
+        self.base = [LoanBase yy_modelWithJSON:successDic];
+        self.base.repay_type_name=[[successDic objectForKey:@"repay_type"] objectForKey:@"name"];
         [self initBody];
         
     } failure:^(NSDictionary *errorDic) {

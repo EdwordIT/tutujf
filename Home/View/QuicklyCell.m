@@ -132,7 +132,7 @@ Strong NSDate *nowDate;//现在的时间
     proTextLabel.text=@"进度 70%";
     [self.contentView addSubview:proTextLabel];
     
-    self.progressView = [[CustomProgressView alloc]initWithFrame:CGRectMake(kSizeFrom750(30), 0,kSizeFrom750(300), kSizeFrom750(12))];
+    self.progressView = [[CustomProgressView alloc]initWithFrame:CGRectMake(kSizeFrom750(30), 0,kSizeFrom750(300), kSizeFrom750(6))];
     self.progressView.centerY = proTextLabel.centerY;
     [self.progressView setProgressColor:navigationBarColor];
     [self.progressView setDefaultColor:RGB(231,231,231)];

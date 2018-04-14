@@ -135,7 +135,7 @@
     
     //切换_selectLine的位置
     [UIView animateWithDuration:.35 animations:^{
-        _selectLine.center = CGPointMake(button.center.x, button.bottom+3);
+        self->_selectLine.center = CGPointMake(button.center.x, button.bottom+3);
         
     }];
     

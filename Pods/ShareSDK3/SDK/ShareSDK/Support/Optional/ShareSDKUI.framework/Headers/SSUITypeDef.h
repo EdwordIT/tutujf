@@ -23,7 +23,7 @@ typedef void (^SSUIShareActionSheetItemClickHandler) (NSInteger index, SSUIShare
 /**
  *  分享菜单取消事件
  */
-typedef void (^SSUIShareActionSheetCancelHandler) ();
+typedef void (^SSUIShareActionSheetCancelHandler) (void);
 
 /**
  *  分享内容视图提交事件
@@ -37,7 +37,7 @@ typedef void (^SSUIShareContentEditorViewSubmitHandler) (NSArray *platforms, NSS
 /**
  *  分享内容视图取消事件
  */
-typedef void (^SSUIShareContentEditorViewCancelHandler) ();
+typedef void (^SSUIShareContentEditorViewCancelHandler) (void);
 
 /**
  *	@brief	获取视图宽度

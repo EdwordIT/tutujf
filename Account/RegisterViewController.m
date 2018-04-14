@@ -138,8 +138,7 @@ Strong UIWebView *loginWebView;
         [_registerBtn addTarget:self action:@selector(registerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         _registerBtn.layer.cornerRadius = kSizeFrom750(100)/2;
         _registerBtn.layer.masksToBounds = YES;
-        
-        
+
     }
     return _registerBtn;
 }
@@ -318,6 +317,7 @@ Strong UIWebView *loginWebView;
 }
 //注册按钮点击
 -(void)registerButtonClick:(UIButton *)sender{
+    
     NSString *phone = self.mobileTextField.text;
     NSString *sms_code = self.codeTextField.text;
     NSString *password = self.passwordTextField.text;
@@ -338,7 +338,6 @@ Strong UIWebView *loginWebView;
    
     NSArray *keys = @[@"phone",@"password",@"sms_code",@"referrer"];
     NSArray *values = @[phone,password,sms_code,referrer];
-    
     [[HttpCommunication sharedInstance] getSignRequestWithPath:registerUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){
         if (!IsEmptyStr([successDic objectForKey:kToken])) {
             [TTJFUserDefault setStr:phone key:kUsername];
@@ -348,9 +347,10 @@ Strong UIWebView *loginWebView;
             [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];
         }
         //默认登录webView
-        [self.view addSubview:[AutoLoginView defaultView]];
-        [[AutoLoginView defaultView] loginWebView];
-        [AutoLoginView defaultView].autoLoginBlock = ^{
+        AutoLoginView *loginView = [[AutoLoginView alloc]init];
+        [self.view addSubview:loginView];
+        [loginView loginWebView];
+        loginView.autoLoginBlock = ^{
           //webView加载完成回调方法
             [SVProgressHUD showSuccessWithStatus:@"注册成功"];
         };

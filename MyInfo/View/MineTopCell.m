@@ -28,14 +28,12 @@
         TopScrollMode * model=[[TopScrollMode alloc] init];
         model.accountnum=@"0.00";
         model.accountname=@"总资产(元)";
-        model.account_url=[oyUrlAddress stringByAppendingString:@"/wap/member/account"];
         model.index=3;
         model.image_url=[oyUrlAddress stringByAppendingString:@"/wapassets/trust/images/news/user06.png"];
         [data addObject:model];
         TopScrollMode * model1=[[TopScrollMode alloc] init];
         model1.accountnum=@"0.00";
         model1.accountname=@"累计收益(元)";
-        model1.account_url=[oyUrlAddress stringByAppendingString:@"/wap/member/accounttwo"];
         model1.index=4;
         model1.image_url=[oyUrlAddress stringByAppendingString:@"/wapassets/trust/images/news/user07.png"];
         [data addObject:model1];
@@ -81,44 +79,12 @@
     
 }
 
-static TopScrollMode * extracted() {
-    return [TopScrollMode alloc];
-}
-
 -(void)setModelData:(MyAccountModel *)userinfo
 {
-    TopAccountModel * model=[[TopAccountModel alloc] init];
-    model.account_url=@"";
-    model.tj_url=userinfo.cash_url;
-    model.cz_url=userinfo.recharge_url;
-    model.accountnum=userinfo.balance_amount;
-    if(_account!=nil)
-        [_account setDataBind:model];
-    
-    TopScrollMode *   m1=[extracted() init];
-      m1.accountnum=userinfo.total_amount;
-      m1.accountname=@"总资产(元)";
-      m1.account_url=[oyUrlAddress stringByAppendingString:@"/wap/member/account"];
-      m1.index=3;
-       m1.image_url=[oyUrlAddress stringByAppendingString:@"/wapassets/trust/images/news/user06.png"];
-     TopScrollMode *   m2=[[TopScrollMode alloc] init];
-    m2.accountnum=userinfo.to_interest_award;
-    m2.accountname=@"累计收益(元)";
-    m2.account_url=[oyUrlAddress stringByAppendingString:@"/wap/member/accounttwo"];
-    m2.index=4;
-    m2.image_url=[oyUrlAddress stringByAppendingString:@"/wapassets/trust/images/news/user07.png"];
-    NSMutableArray * data=[[NSMutableArray alloc] init];
-    [data addObject:m1];
-     [data addObject:m2];
-    if(_basepage!=nil)
-    {
-        _basepage.title2.text=[NSString stringWithFormat:@"%@",m2.accountname];
-        _basepage.title1.text=[NSString stringWithFormat:@"%@",m1.accountname];
-        
-       _basepage.jiner1.text=[NSString stringWithFormat:@"%.2f",[m1.accountnum floatValue]];
-        _basepage.jiner2.text=[NSString stringWithFormat:@"%.2f",[m2.accountnum floatValue]];
-        //[_basepage setDataBind:data];
-    }
+    //总资产
+    _basepage.jiner1.text=[NSString stringWithFormat:@"%.2f",[userinfo.total_amount floatValue]];
+    //累计收益
+    _basepage.jiner2.text=[NSString stringWithFormat:@"%.2f",[userinfo.to_interest_award floatValue]];
 
 }
 

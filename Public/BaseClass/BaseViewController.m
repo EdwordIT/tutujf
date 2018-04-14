@@ -78,8 +78,8 @@
     }];
     
     [_newsMessage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_rightBtn.mas_top).mas_offset(kSizeFrom750(14));
-        make.right.mas_equalTo(_rightBtn.mas_right).mas_offset(-kSizeFrom750(14));
+        make.top.mas_equalTo(self.rightBtn.mas_top).mas_offset(kSizeFrom750(14));
+        make.right.mas_equalTo(self.rightBtn.mas_right).mas_offset(-kSizeFrom750(14));
         make.width.height.mas_equalTo(kSizeFrom750(14));
         
     }];

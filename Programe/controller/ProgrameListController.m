@@ -18,11 +18,11 @@
 
 @interface ProgrameListController ()<UITableViewDataSource, UITableViewDelegate>
 {
-    NSInteger _page;/**< 页数 */
-    NSMutableArray *_dataSourceArray;
+    NSInteger currentPage;/**< 页数 */
+  
     NSInteger total_pages;/**总的页数**/
 }
-
+Strong   NSMutableArray *dataSourceArray;
 @end
 
 @implementation ProgrameListController
@@ -33,9 +33,9 @@
     [super viewDidLoad];
     self.titleString = @"项目列表";
     [self.backBtn setHidden:YES];
-    _page = 1;//默认选项
+    currentPage = 1;//默认选项
     total_pages=1;
-    _dataSourceArray=[[NSMutableArray alloc] init];
+    self.dataSourceArray=[[NSMutableArray alloc] init];
     [self initTableView];
     // Do any additional setup after loading the view.
 }
@@ -63,17 +63,20 @@
 
     WEAK_SELF;
     TTJFRefreshStateHeader *header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
-        _page = 1;
+        self->currentPage = 1;
         [weakSelf getRequest];
     }];
+    
     //加载无数据页面内容
     self.tableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
-        _page = 1;
+        self->currentPage = 1;
         [weakSelf getRequest];
     }];
     self.tableView.mj_header = header;
 
-     self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        [weakSelf loadMoreData];
+    }];
    
     [self getRequest];
 }
@@ -84,12 +87,27 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [_dataSourceArray count];
+    return [self.dataSourceArray count];
 }
 
-
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.01;
+}
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return kSizeFrom750(20);
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
+    headerView.backgroundColor = RGB_246;
+    return headerView;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
+    footerView.backgroundColor =RGB_246;
+    return footerView;
 }
 
 /**表格数据操作**/
@@ -119,7 +137,7 @@
         cell = [[QuicklyCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIndentifier];
     }
 
-    QuicklyModel * programeModel=[_dataSourceArray objectAtIndex:indexPath.row];
+    QuicklyModel * programeModel=[self.dataSourceArray objectAtIndex:indexPath.row];
     [cell setQuicklyModel:programeModel];
     WEAK_SELF;
     cell.investBlock = ^{
@@ -129,28 +147,23 @@
     return cell;
 }
 
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    headerView.backgroundColor =separaterColor;
-    return headerView;
-}
 //刷新数据
 -(void)getRequest{
 
     
     NSArray *keys = @[@"page"];
-    NSArray *values = @[[NSString stringWithFormat:@"%ld",_page]];
+    NSArray *values = @[[NSString stringWithFormat:@"%ld",currentPage]];
     [[HttpCommunication sharedInstance] getSignRequestWithPath:getLoanListUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
-        if(_page==1)
-            [ _dataSourceArray removeAllObjects];
-        total_pages=[[NSString stringWithFormat:@"%@",[successDic objectForKey:@"total_pages"]] intValue];
+        if(self->currentPage==1)
+            [ self->_dataSourceArray removeAllObjects];
+        self->total_pages=[[NSString stringWithFormat:@"%@",[successDic objectForKey:@"total_pages"]] intValue];
         NSArray * ary= [successDic objectForKey:@"items"];
         for(NSInteger k=0;k<[ary count];k++)
         {
             NSDictionary * dic=[ary objectAtIndex:k];
             QuicklyModel * model=[QuicklyModel yy_modelWithJSON:dic];
-            model.nrid=[NSString stringWithFormat:@"%ld",k+((_page-1)*15)];
-            [_dataSourceArray addObject: model];
+            model.nrid=[NSString stringWithFormat:@"%ld",k+((self->currentPage-1)*15)];
+            [self->_dataSourceArray addObject: model];
         }
         [self.tableView.mj_footer endRefreshing];
         [[CountDownManager manager] start];
@@ -161,11 +174,11 @@
 }
 //上拉加载更多数据
 -(void)loadMoreData{
-  if(_page<=total_pages)
+  if(currentPage<=total_pages)
     {
         __weak __typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            _page++;
+            self->currentPage++;
             [weakSelf getRequest];
         });
     }

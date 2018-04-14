@@ -46,6 +46,6 @@
  *
  *  @return 分享菜单项
  */
-+ (instancetype)itemWithIcon:(UIImage *)icon label:(NSString *)label onClick:(void(^)())clickHandler;
++ (instancetype)itemWithIcon:(UIImage *)icon label:(NSString *)label onClick:(void(^)(void))clickHandler;
 
 @end

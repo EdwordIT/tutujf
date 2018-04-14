@@ -59,8 +59,9 @@
 -(NSString *)getRequestPath:(NSString *)urlPath keysArray:(NSArray *)keys valuesArray:(NSArray *)values signStr:(NSString *)sign{
     urlPath = [urlPath stringByAppendingString:@"?"];
     for (int i=0; i<keys.count; i++) {
-        
-        urlPath = [urlPath stringByAppendingString:[NSString stringWithFormat:@"%@=%@&",keys[i],values[i]]];
+        NSString *keyValue = values[i];
+      NSString *  newValue = [keyValue stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        urlPath = [urlPath stringByAppendingString:[NSString stringWithFormat:@"%@=%@&",keys[i],newValue]];
     }
     urlPath = [urlPath stringByAppendingString:[NSString stringWithFormat:@"sign=%@",sign]];
     return urlPath;
@@ -86,7 +87,7 @@
         MainThreadFunction( [scrollView ly_startLoading]);
     }
     if ([HttpCommunication isReachable]) {
-    
+        [_manager.operationQueue cancelAllOperations];//取消所有网络请求，然后在进行下一步的网络请求
         [_manager GET:newPath parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
             //数据请求的进度
             //            [SVProgressHUD show];
@@ -100,7 +101,7 @@
                 NSLog(@"获取数据 resalut = %@",resalut);
                 NSString *resCode = [NSString stringWithFormat:@"%@",[resalut objectForKey:RESPONSE_CODE]];
                 //返回数据正确 ，则解析到数据接收内容
-                if([resCode isEqualToString:RESPONSE_SUCCESS])
+                if([resCode integerValue]==kReqSuccess)
                 {
                     /**
                      获取后台给定的正确码0，做逻辑处理
@@ -114,7 +115,7 @@
                      */
                     //如果是token失效，则直接跳转到重新登录页面
                     if ([resCode integerValue]==kLoginError) {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"autoLogin" object:nil];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:Noti_AutoLogin object:nil];
                     }
                     dispatch_async(dispatch_get_main_queue(), ^{
                         //错误信息展示（其他相关错误处理在具体的类里进行）

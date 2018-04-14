@@ -21,7 +21,7 @@
 #define isCertificationed @"isCertificationed"//是否实名认证过
 #define Sign_IOS @"?equipment=ios"//webView里的ios标记
 //登录状态发生变化全局通知
-#define Noti_LoginChanged @"LoginStatusChanged"
+#define Noti_LoginChanged @"LoginStatusChanged"//改变首页数据显示
 //token失效重新登录通知
 #define Noti_AutoLogin @"autoLogin"
 //获取系统配置成功通知

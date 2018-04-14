@@ -47,7 +47,6 @@ Strong UIImageView *refreshImage;//刷新箭头
     navTitleHeight = kSizeFrom750(160)+kStatusBarHeight;
     isFirstExe=FALSE;;
     [self initTableView];
-    
     [self initAdvertMaskView];//托管页面
  // Do any additional setup after loading the view.
 }
@@ -61,46 +60,23 @@ Strong UIImageView *refreshImage;//刷新箭头
         [advertView setImageWithUrl:self.accountModel.trust_reg_imgurl];
     }
 }
-//GetMyUserDatas
-//视图出现时操作
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-      if([CommonUtils isLogin])
-      {
-        if(!isFirstExe)
-        {
-            isFirstExe=TRUE;
-            [self GetMyUserDatas];
-        }
-        else if(self.accountModel!=nil)
-        {
-            self.accountTitleView.titleLabel.text=[CommonUtils getNikename];
-         }
-      }
-}
 
-//导航返回刷新
+
+//刷新
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    if(![CommonUtils isLogin])
+    
+    if ([CommonUtils isLogin]) {
+        [self GetMyUserDatas];
+    }else
     {
         self.accountTitleView.titleLabel.text=@"******";
-        if(self.accountModel!=nil)
-        {
-            self.accountModel.total_amount=@"0.0";
-            self.accountModel.to_interest_award=@"0.0";
-            self.accountModel.balance_amount=@"0.00";
-            if(topcell!=nil)
-            [topcell setModelData:self.accountModel];
-        }
+        self.accountModel.total_amount=@"0.0";
+        self.accountModel.to_interest_award=@"0.0";
+        self.accountModel.balance_amount=@"0.00";
+        [self.tableView reloadData];
     }
-    else if(self.accountModel!=nil)
-    {
-        self.accountTitleView.hidden = NO;
-        self.accountTitleView.titleLabel.text = [CommonUtils getNikename];
-        
-    }
-    [self viewWillLayoutSubviews];
+//    [self viewWillLayoutSubviews];
 }
 //添加刷新View
 -(void)loadRrereshView
@@ -168,11 +144,11 @@ Strong UIImageView *refreshImage;//刷新箭头
                 {
                     //消息列表
                     HomeWebController *discountVC = [[HomeWebController alloc] init];
-                    discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/message/list",oyUrlAddress];
+                    discountVC.urlStr = weakSelf.accountModel.message_url;
                     [weakSelf.navigationController pushViewController:discountVC animated:YES];
                 }
             }else{
-                [weakSelf goLoginVC];
+                    [weakSelf goLoginVC];
             }
            
         };
@@ -316,8 +292,7 @@ Strong UIImageView *refreshImage;//刷新箭头
    
         return nil;
 }
-/**在viewWillAppear方法中加入：
- [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];**/
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if([CommonUtils isLogin])
     {
@@ -349,7 +324,6 @@ Strong UIImageView *refreshImage;//刷新箭头
         NSString * url=model.link_url;
         HomeWebController *discountVC = [[HomeWebController alloc] init];
         discountVC.urlStr=url;
-        discountVC.returnmain=@"3"; //页返回
         [self.navigationController pushViewController:discountVC animated:YES];
     }
     else
@@ -357,7 +331,7 @@ Strong UIImageView *refreshImage;//刷新箭头
         [self goLoginVC];
     }
 }
-
+//点击事件
 -(void)didopMineAtIndex:(NSInteger)index
 {
     if([CommonUtils isLogin])
@@ -367,61 +341,54 @@ Strong UIImageView *refreshImage;//刷新箭头
             AccountInfoController * account=[[AccountInfoController alloc] init];
            [self.navigationController pushViewController:account animated:YES];
         }
-        else if(index==2)
+        else if(index==2)//信息列表
         {
             HomeWebController *discountVC = [[HomeWebController alloc] init];
-              discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/message/list",oyUrlAddress];
-            discountVC.returnmain=@"3"; //页返回
+              discountVC.urlStr=self.accountModel.message_url;
             [self.navigationController pushViewController:discountVC animated:YES];
         }
-        else if(index==3)
+        else if(index==3)//总资产
         {
             HomeWebController *discountVC = [[HomeWebController alloc] init];
-             discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/account",oyUrlAddress];
-            discountVC.returnmain=@"3"; //页返回
+            discountVC.urlStr= self.accountModel.total_amount_url;
             [self.navigationController pushViewController:discountVC animated:YES];
         }
         
-        else if(index==4)
+        else if(index==4)//累计收益
         {
             HomeWebController *discountVC = [[HomeWebController alloc] init];
-             discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/accounttwo",oyUrlAddress];
-            discountVC.returnmain=@"3"; //页返回
+             discountVC.urlStr= self.accountModel.to_interest_award_url;
             [self.navigationController pushViewController:discountVC animated:YES];
         }
-        else if(index==5)
+        else if(index==5)//充值
         {
             NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
             if([temp isEqual:@"0"])  //显示托管
             {
                 HomeWebController *discountVC = [[HomeWebController alloc] init];
-                discountVC.urlStr=[NSString stringWithFormat:@"%@/%@",oyUrlAddress,self.accountModel.trust_reg_link];
-                discountVC.returnmain=@"3"; //页返回
+                discountVC.urlStr = self.accountModel.trust_reg_new_link;
                 [self.navigationController pushViewController:discountVC animated:YES];
             }
             else
             {
             HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/recharge",oyUrlAddress];
-            discountVC.returnmain=@"3"; //页返回
+            discountVC.urlStr=self.accountModel.recharge_url;
             [self.navigationController pushViewController:discountVC animated:YES];
             }
         }
-        else if(index==6)
+        else if(index==6)//提现
         {
              NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
-            if([temp isEqual:@"0"])  //显示托管
+            if([temp isEqual:@"0"])  //未托管，进入托管页面
         {
             HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr=[NSString stringWithFormat:@"%@/%@",oyUrlAddress,self.accountModel.trust_reg_link];
-            discountVC.returnmain=@"3"; //页返回
+            discountVC.urlStr = self.accountModel.trust_reg_new_link;
             [self.navigationController pushViewController:discountVC animated:YES];
         }
             else
             {
             HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/cash",oyUrlAddress];
-            discountVC.returnmain=@"3"; //页返回
+            discountVC.urlStr=self.accountModel.cash_url;
             [self.navigationController pushViewController:discountVC animated:YES];
             }
         }
@@ -439,22 +406,19 @@ Strong UIImageView *refreshImage;//刷新箭头
         if(index==0)
         {
         HomeWebController *discountVC = [[HomeWebController alloc] init];
-        discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/mytender",oyUrlAddress];
-        discountVC.returnmain=@"3"; //页返回
+        discountVC.urlStr=self.accountModel.bt_my_investment.link_url;
         [self.navigationController pushViewController:discountVC animated:YES];
         }
        else if(index==1)
         {
             HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/member/bounty",oyUrlAddress];
-            discountVC.returnmain=@"3"; //页返回
+            discountVC.urlStr=self.accountModel.bt_my_red.link_url;
             [self.navigationController pushViewController:discountVC animated:YES];
         }
        else if(index==2)
         {
             HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr=[NSString stringWithFormat:@"%@/wap/account/accountLog",oyUrlAddress];
-            discountVC.returnmain=@"3"; //页返回
+            discountVC.urlStr=self.accountModel.bt_my_capital_log.link_url;
             [self.navigationController pushViewController:discountVC animated:YES];
         }
     }
@@ -516,8 +480,7 @@ Strong UIImageView *refreshImage;//刷新箭头
     else if(type==1)
     {
         HomeWebController *discountVC = [[HomeWebController alloc] init];
-        discountVC.urlStr=[NSString stringWithFormat:@"%@/%@",oyUrlAddress,self.accountModel.trust_reg_link];
-        discountVC.returnmain=@"3"; //页返回
+        discountVC.urlStr=self.accountModel.trust_reg_new_link;
         [self.navigationController pushViewController:discountVC animated:YES];
     }
 }

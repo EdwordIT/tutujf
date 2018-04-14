@@ -43,7 +43,7 @@
     //获取preference
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    [defaults removeObjectForKey:key];
+    [defaults setObject:@"" forKey:key];
     //立即同步
     [defaults synchronize];
 }

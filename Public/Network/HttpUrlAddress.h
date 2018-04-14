@@ -19,7 +19,7 @@
 //获取网站公告数据  Get
 #define getArticlesNotice @"%@/api/Articles/GetArticlesNotice?top=%@&sign=%@"
 
-#define loginUrl @"%@/api/Users/Login?user_name=%@&password=%@&terminal_type=%@&terminal_id=%@&terminal_name=%@&terminal_model=%@&terminal_token=%@&sign=%@"
+
 /**
  会员在项目中登录之后，需要在web中调用一次登录接口，使web上的会员同时处于登录状态
  1、此链接不是接口，是web访问地址
@@ -61,7 +61,7 @@
 
 //#define webLoginUrl  @"%@/User/Token/Login?user_token=%@&expiration_date=%@&sign=%@"
 /*****************************************~1.4.8************************************************************/
-
+#define loginUrl oyApiUrl@"/api/Users/Login"
 //获取我的账户信息相关接口
 #define getMyAccountUrl oyApiUrl@"/api/Users/getMyAccountData"
 //获取发现页面数据
