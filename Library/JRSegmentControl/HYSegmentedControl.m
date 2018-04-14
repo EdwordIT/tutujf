@@ -63,11 +63,11 @@
         if([titles count]*width4btn<HYSegmentedControl_Width)
             leftbtn=(HYSegmentedControl_Width-[titles count]*width4btn)/2;
         
-        self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-        self.scrollView.backgroundColor = self.backgroundColor;
-        self.scrollView.userInteractionEnabled = YES;
-        self.scrollView.contentSize = CGSizeMake([titles count]*width4btn, HYSegmentedControl_Height);
-        self.scrollView.showsHorizontalScrollIndicator = NO;
+        _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        _scrollView.backgroundColor = self.backgroundColor;
+        _scrollView.userInteractionEnabled = YES;
+        _scrollView.contentSize = CGSizeMake([titles count]*width4btn, HYSegmentedControl_Height);
+        _scrollView.showsHorizontalScrollIndicator = NO;
         
         for (int i = 0; i<[titles count]; i++) {
             
@@ -79,7 +79,7 @@
             [btn setTitle:[titles objectAtIndex:i] forState:UIControlStateNormal];
             [btn addTarget:self action:@selector(segmentedControlChange:) forControlEvents:UIControlEventTouchUpInside];
             btn.tag = Define_Tag_add+i;
-            [self.scrollView addSubview:btn];
+            [_scrollView addSubview:btn];
             [_array4Btn addObject:btn];
             
             if (i == 0) {
@@ -95,7 +95,7 @@
         for (int i = 1; i<[titles count]; i++) {
             UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(i*width4btn-1.0f, originY, 1.0f, height4Line)];
             lineView.backgroundColor = UIColorFromRGBValue(0xcccccc);
-            [self.scrollView addSubview:lineView];
+            [_scrollView addSubview:lineView];
         }*/
         
         //
@@ -103,9 +103,9 @@
         //
         _bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, HYSegmentedControl_Height-5, HYSegmentedControl_Width, 1.0f)];
         _bottomLineView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.1];
-        [self.scrollView addSubview:_bottomLineView];
+        [_scrollView addSubview:_bottomLineView];
         
-        [self addSubview:self.scrollView];
+        [self addSubview:_scrollView];
     }
     return self;
 }
@@ -141,11 +141,11 @@
         if([titles count]*width4btn<HYSegmentedControl_Width)
             leftbtn=(HYSegmentedControl_Width-[titles count]*width4btn)/2;
         
-        self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-        self.scrollView.backgroundColor = self.backgroundColor;
-        self.scrollView.userInteractionEnabled = YES;
-        self.scrollView.contentSize = CGSizeMake([titles count]*width4btn, hh);
-        self.scrollView.showsHorizontalScrollIndicator = NO;
+        _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        _scrollView.backgroundColor = self.backgroundColor;
+        _scrollView.userInteractionEnabled = YES;
+        _scrollView.contentSize = CGSizeMake([titles count]*width4btn, hh);
+        _scrollView.showsHorizontalScrollIndicator = NO;
         
         for (int i = 0; i<[titles count]; i++) {
             
@@ -157,7 +157,7 @@
             [btn setTitle:[titles objectAtIndex:i] forState:UIControlStateNormal];
             [btn addTarget:self action:@selector(segmentedControlChangeLine:) forControlEvents:UIControlEventTouchUpInside];
             btn.tag = Define_Tag_add+i;
-            [self.scrollView addSubview:btn];
+            [_scrollView addSubview:btn];
             [_array4Btn addObject:btn];
             
             if (i == 0) {
@@ -174,7 +174,7 @@
          for (int i = 1; i<[titles count]; i++) {
          UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(i*width4btn-1.0f, originY, 1.0f, height4Line)];
          lineView.backgroundColor = RGB(254,85,78);
-         [self.scrollView addSubview:lineView];
+         [_scrollView addSubview:lineView];
         
          }*/
         //
@@ -182,9 +182,9 @@
         //
         _bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(15, hh-5, width4btn-30, 2.0f)];
         _bottomLineView.backgroundColor = RGB(254,85,78);
-        [self.scrollView addSubview:_bottomLineView];
+        [_scrollView addSubview:_bottomLineView];
         
-        [self addSubview:self.scrollView];
+        [self addSubview:_scrollView];
     }
     return self;
 }
@@ -218,11 +218,11 @@
         if([imgs count]*width4btn<HYSegmentedControl_Width)
             leftbtn=(HYSegmentedControl_Width-[imgs count]*width4btn)/2;
         
-        self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-        self.scrollView.backgroundColor = self.backgroundColor;
-        self.scrollView.userInteractionEnabled = YES;
-        self.scrollView.contentSize = CGSizeMake([imgs count]*width4btn, HYSegmentedControl_Height);
-        self.scrollView.showsHorizontalScrollIndicator = NO;
+        _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        _scrollView.backgroundColor = self.backgroundColor;
+        _scrollView.userInteractionEnabled = YES;
+        _scrollView.contentSize = CGSizeMake([imgs count]*width4btn, HYSegmentedControl_Height);
+        _scrollView.showsHorizontalScrollIndicator = NO;
         
         for (int i = 0; i<[imgs count]; i++) {
             
@@ -240,8 +240,8 @@
             
            // [btn addTarget:self action:@selector(segmentedControlChange:) forControlEvents:UIControlEventTouchUpInside];
            
-            [self.scrollView addSubview:imagev];
-            [self.scrollView addSubview:btn];
+            [_scrollView addSubview:imagev];
+            [_scrollView addSubview:btn];
            // [_array4Btn addObject:img];
             
            // if (i == 0) {
@@ -257,7 +257,7 @@
          for (int i = 1; i<[titles count]; i++) {
          UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(i*width4btn-1.0f, originY, 1.0f, height4Line)];
          lineView.backgroundColor = UIColorFromRGBValue(0xcccccc);
-         [self.scrollView addSubview:lineView];
+         [_scrollView addSubview:lineView];
          }*/
         
         //
@@ -265,9 +265,9 @@
         //
         _bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, HYSegmentedControl_Height-5, HYSegmentedControl_Width, 1.0f)];
         _bottomLineView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.1];
-        [self.scrollView addSubview:_bottomLineView];
+        [_scrollView addSubview:_bottomLineView];
         
-        [self addSubview:self.scrollView];
+        [self addSubview:_scrollView];
     }
     return self;
 }
@@ -314,7 +314,7 @@
     
     if (canScrolle) {
         [UIView animateWithDuration:0.3 animations:^{
-            self.scrollView.contentOffset = pt;
+            _scrollView.contentOffset = pt;
         } completion:^(BOOL finished) {
            // [UIView animateWithDuration:0.2 animations:^{
           //      self.bottomLineView.frame = rect4boottomLine;
@@ -364,7 +364,7 @@
     
     if (canScrolle) {
         [UIView animateWithDuration:0.3 animations:^{
-            self.scrollView.contentOffset = pt;
+            _scrollView.contentOffset = pt;
         } completion:^(BOOL finished) {
              [UIView animateWithDuration:0.2 animations:^{
                   self.bottomLineView.frame = rect4boottomLine;
@@ -383,7 +383,7 @@
 
 }
 
-// index 从 0 开始
+#warning ////// index 从 0 开始
 // delegete method
 - (void)changeSegmentedControlWithIndex:(NSInteger)index
 {
