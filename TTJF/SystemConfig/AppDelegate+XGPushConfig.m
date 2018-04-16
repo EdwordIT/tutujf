@@ -109,15 +109,22 @@
          */
         //category 推送自带默认字段名
         //url 自定义扩展字段名
-        NSString *category = [[userInfo objectForKey:@"aps"] objectForKey:@"category"];
-        if(!IsEmptyStr(category)){
-            HomeWebController *web = InitObject(HomeWebController);
-            web.urlStr = category;
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [[BaseViewController appRootViewController].navigationController pushViewController:web animated:YES];
-            });
-            
+        if (userInfo!=nil) {
+            NSDictionary *aps = [userInfo objectForKey:@"aps"];
+            if (aps!=nil) {
+                NSString *category = [aps objectForKey:@"category"];
+                if(!IsEmptyStr(category)){
+                    HomeWebController *web = InitObject(HomeWebController);
+                    web.urlStr = category;
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [[BaseViewController appRootViewController].navigationController pushViewController:web animated:YES];
+                    });
+                    
+                }
+            }
+          
         }
+      
     }
    
     

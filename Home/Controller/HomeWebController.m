@@ -354,6 +354,7 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
 #pragma mark - WKNavigationDelegate
 // 页面开始加载时调用
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
+    
     //首先校验webView是否需要跳转到系统原生态页面
     [self checkIsGoOriginal:webView.URL];
 }

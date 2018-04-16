@@ -52,8 +52,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    //初始化网络请求参数
-    [self checkNetwork];
+//    //网络状态监听
+//    [self checkNetwork];
     //获取配置信息
     [self getSystemConfigData];
     //注册protocol
@@ -67,7 +67,7 @@
     //信鸽推送
     [self registerXGPush];
     //友盟统计
-    [MobClick startWithAppkey:UMAPPKEY reportPolicy:BATCH   channelId:@"GitHub"];
+    [MobClick startWithAppkey:UMAPPKEY reportPolicy:BATCH channelId:@"GitHub"];
     //注册shareSDK
     [self registerShareSDK];
     //取消引导页
@@ -353,9 +353,6 @@
  {
  return YES;
  }
-
-
-
 
 #pragma mark 键盘收回管理
 -(void)configureBoardManager
