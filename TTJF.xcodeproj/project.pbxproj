@@ -294,7 +294,6 @@
 		E70828091F50576700C9F851 /* backimg.gif in Resources */ = {isa = PBXBuildFile; fileRef = E70828081F50576700C9F851 /* backimg.gif */; };
 		E7082C091F9CE3D40058D963 /* user07.png in Resources */ = {isa = PBXBuildFile; fileRef = E7082C081F9CE3D40058D963 /* user07.png */; };
 		E7082C0F1F9CEA230058D963 /* TopScrollBasePage.m in Sources */ = {isa = PBXBuildFile; fileRef = E7082C0E1F9CEA230058D963 /* TopScrollBasePage.m */; };
-		E70845B21FEBC14A0010ADCE /* DZWKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70845B11FEBC14A0010ADCE /* DZWKWebViewController.m */; };
 		E70845B51FEBC2190010ADCE /* XXWebKitSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = E70845B31FEBC2190010ADCE /* XXWebKitSupport.m */; };
 		E709175D1FC2FD1D003CF8E2 /* FoundListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E709175C1FC2FD1D003CF8E2 /* FoundListCell.m */; };
 		E70917601FC2FD9A003CF8E2 /* FoundListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E709175F1FC2FD9A003CF8E2 /* FoundListModel.m */; };
@@ -423,7 +422,6 @@
 		E7D4C1181E717D9000E828A5 /* iCategoryList.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7D4C1121E717D9000E828A5 /* iCategoryList.plist */; };
 		E7D4C1191E717D9000E828A5 /* menuData.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7D4C1131E717D9000E828A5 /* menuData.plist */; };
 		E7D4C11A1E717D9000E828A5 /* MoreData.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7D4C1141E717D9000E828A5 /* MoreData.plist */; };
-		E7D4C11D1E71864300E828A5 /* UrlJumpHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D4C11C1E71864300E828A5 /* UrlJumpHelp.m */; };
 		E7D94A781E95A167000E3919 /* UITextField+Shake.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D94A761E95A167000E3919 /* UITextField+Shake.m */; };
 		E7DBE5971F2559B4000517D7 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = E7DBE58F1F2559B4000517D7 /* background.png */; };
 		E7DBE5981F2559B4000517D7 /* bankAmt.png in Resources */ = {isa = PBXBuildFile; fileRef = E7DBE5901F2559B4000517D7 /* bankAmt.png */; };
@@ -950,8 +948,6 @@
 		E7082C081F9CE3D40058D963 /* user07.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user07.png; sourceTree = "<group>"; };
 		E7082C0D1F9CEA230058D963 /* TopScrollBasePage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopScrollBasePage.h; sourceTree = "<group>"; };
 		E7082C0E1F9CEA230058D963 /* TopScrollBasePage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopScrollBasePage.m; sourceTree = "<group>"; };
-		E70845B01FEBC14A0010ADCE /* DZWKWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZWKWebViewController.h; sourceTree = "<group>"; };
-		E70845B11FEBC14A0010ADCE /* DZWKWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZWKWebViewController.m; sourceTree = "<group>"; };
 		E70845B31FEBC2190010ADCE /* XXWebKitSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXWebKitSupport.m; sourceTree = "<group>"; };
 		E70845B41FEBC2190010ADCE /* XXWebKitSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXWebKitSupport.h; sourceTree = "<group>"; };
 		E709175B1FC2FD1D003CF8E2 /* FoundListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FoundListCell.h; sourceTree = "<group>"; };
@@ -1138,8 +1134,6 @@
 		E7D4C1121E717D9000E828A5 /* iCategoryList.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = iCategoryList.plist; sourceTree = "<group>"; };
 		E7D4C1131E717D9000E828A5 /* menuData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = menuData.plist; sourceTree = "<group>"; };
 		E7D4C1141E717D9000E828A5 /* MoreData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MoreData.plist; sourceTree = "<group>"; };
-		E7D4C11B1E71864300E828A5 /* UrlJumpHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlJumpHelp.h; sourceTree = "<group>"; };
-		E7D4C11C1E71864300E828A5 /* UrlJumpHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlJumpHelp.m; sourceTree = "<group>"; };
 		E7D94A761E95A167000E3919 /* UITextField+Shake.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+Shake.m"; sourceTree = "<group>"; };
 		E7D94A771E95A167000E3919 /* UITextField+Shake.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+Shake.h"; sourceTree = "<group>"; };
 		E7DBE58F1F2559B4000517D7 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
@@ -1765,8 +1759,6 @@
 			children = (
 				E7F81C821F8B91B200A856B3 /* ggHttpFounction.h */,
 				E7F81C831F8B91B200A856B3 /* ggHttpFounction.m */,
-				E7D4C11B1E71864300E828A5 /* UrlJumpHelp.h */,
-				E7D4C11C1E71864300E828A5 /* UrlJumpHelp.m */,
 				E7067ACE1E60C9AA00E32B86 /* HttpSignCreate.h */,
 				E7067ACF1E60C9AA00E32B86 /* HttpSignCreate.m */,
 				E70B16721F8A0B4500F56D88 /* HttpUrlAddress.h */,
@@ -2392,8 +2384,6 @@
 				E712F6C71FFDD5AA005C8C24 /* YBLUtilsVcNetInfoViewController.m */,
 				E712F6C41FFDD54F005C8C24 /* YBLNetWorkHudBar.h */,
 				E712F6C51FFDD54F005C8C24 /* YBLNetWorkHudBar.m */,
-				E70845B01FEBC14A0010ADCE /* DZWKWebViewController.h */,
-				E70845B11FEBC14A0010ADCE /* DZWKWebViewController.m */,
 				E7B063CF1E62F419005D6972 /* MainViewController.h */,
 				E7B063D01E62F419005D6972 /* MainViewController.m */,
 				E70331DE1EAA363F00C1FFD1 /* HomeWebController.h */,
@@ -2974,7 +2964,6 @@
 				E712F6CC1FFDD5AA005C8C24 /* YBLNavigationViewController.m in Sources */,
 				E7067AB31E60C93B00E32B86 /* UIImage+RoundedCorner.m in Sources */,
 				E7067AB41E60C93B00E32B86 /* UIImage+Vector.m in Sources */,
-				E70845B21FEBC14A0010ADCE /* DZWKWebViewController.m in Sources */,
 				E7067AA41E60C93B00E32B86 /* MyPageControl.m in Sources */,
 				E70E1ABD1FBFF30E00C6EFA6 /* TreasureMiddleCell.m in Sources */,
 				1BCF224F206E2BE700D75662 /* ProductDetailModel.m in Sources */,
@@ -3091,7 +3080,6 @@
 				1B788F412081E4F400F03863 /* ZFJSegmentedControl.m in Sources */,
 				E7071BA11F21C30C00293B38 /* CALayer+Anim.m in Sources */,
 				1BCF2282206F357400D75662 /* BaseViewController.m in Sources */,
-				E7D4C11D1E71864300E828A5 /* UrlJumpHelp.m in Sources */,
 				E712F6CF1FFDD5E6005C8C24 /* NSString+XN.m in Sources */,
 				1B788F08207A1A5300F03863 /* AppDelegate+XGPushConfig.m in Sources */,
 				1B583B29205F90A100CC70E4 /* PlatformDataCell.m in Sources */,

@@ -557,14 +557,7 @@ Strong SystemConfigModel *configModel;//
 {
     BannerModel * model=[self.homePageModel.advert_items objectAtIndex:index];
     
-    if ([model.link_url rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/loan/loantender"]].location != NSNotFound)
-    {
-        self.tabBarController.selectedViewController = [self.tabBarController.viewControllers objectAtIndex:1];
-        return;
-    }
-    else{
-        [self goWebViewWithUrl:model.link_url];
-    }
+    [self goWebViewWithUrl:model.link_url];
 }
 //立即投资（新手标）
 -(void)didSelectedImmediateAtIndex:(NSInteger)index

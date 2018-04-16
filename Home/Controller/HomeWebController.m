@@ -47,7 +47,8 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
     [self.rightBtn setImage:IMAGEBYENAME(@"close_white") forState:UIControlStateNormal];
     [self.rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.view.backgroundColor = separaterColor;
-
+    
+    
     if(_urlStr==nil||[_urlStr isEqual:@""])
     {
         [SVProgressHUD showErrorWithStatus:@"链接错误"];

@@ -20,13 +20,12 @@ Strong UILabel *textLabel;
 -(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
-        self.titleImage = [[UIImageView alloc]initWithFrame:RECT(0, kSizeFrom750(10), kSizeFrom750(6), kSizeFrom750(24))];
+        self.titleImage = [[UIImageView alloc]initWithFrame:RECT(0, kSizeFrom750(16), kSizeFrom750(6), kSizeFrom750(24))];
         [self.titleImage setImage:IMAGEBYENAME(@"pro_title_left")];
         [self addSubview:self.titleImage];
      
         
-        self.textLabel = [[UILabel alloc]initWithFrame:RECT(self.titleImage.right+kSizeFrom750(10), 0, kSizeFrom750(500), kSizeFrom750(30))];
-        self.textLabel.centerY = self.titleImage.centerY;
+        self.textLabel = [[UILabel alloc]initWithFrame:RECT(self.titleImage.right+kSizeFrom750(10), kSizeFrom750(10), kSizeFrom750(500), kSizeFrom750(30))];
         self.textLabel.font = SYSTEMSIZE(26);
         self.textLabel.textColor = HEXCOLOR(@"#666666");
         [self addSubview:self.textLabel];

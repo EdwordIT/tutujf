@@ -239,13 +239,10 @@ Strong NSMutableArray *topArray;
         HomeWebController *discountVC = [[HomeWebController alloc] init];
         DiscoverMenuModel * model=[self.topArray objectAtIndex:index];
         discountVC.urlStr=model.link_url;
-        if([model.link_url rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/feedback/add"]].location != NSNotFound)
+        if(![CommonUtils isLogin])
         {
-            if(![CommonUtils isLogin])
-            {
-                [self OnLogin];
-                return ;
-            }
+            [self OnLogin];
+            return ;
         }
         [self.navigationController pushViewController:discountVC animated:YES];
    
