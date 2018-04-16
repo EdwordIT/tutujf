@@ -9,13 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 #import "LoanBase.h"
-
+//立即投资页面
 @interface RushPurchaseController : BaseViewController
-
-@property(nonatomic, strong) NSString *vistorType;
 @property(nonatomic, strong) NSString *loan_id;
 
-
--(void)setBindData:(LoanBase *)data;
 
 @end

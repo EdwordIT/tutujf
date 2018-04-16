@@ -576,7 +576,6 @@ Strong SystemConfigModel *configModel;//
     }
     ImmediateModel * model = self.homePageModel.novice_loan_data;
     RushPurchaseController * vc=[[RushPurchaseController alloc] init];
-    vc.vistorType=@"1";
     vc.loan_id=model.loan_id;
     [self.navigationController pushViewController:vc animated:YES];
     
@@ -590,7 +589,6 @@ Strong SystemConfigModel *configModel;//
         return;
     }
     RushPurchaseController * vc=[[RushPurchaseController alloc] init];
-    vc.vistorType=@"1";
     vc.loan_id=model.loan_id;
     [self.navigationController pushViewController:vc animated:YES];
   

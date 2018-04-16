@@ -40,14 +40,13 @@ Strong UILabel *investLabel;//投资人
    NSMutableAttributedString *attr = [CommonUtils diffierentFontWithString:rate  rang:NSMakeRange(rate.length-1, 1) font:NUMBER_FONT(24) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.rateLabel setAttributedText:attr];
     //总额
-    NSString *totalAmout = [NSString stringWithFormat:@"%@元",[self hanleNums:infoModel.amount]];
+    NSString *totalAmout = [NSString stringWithFormat:@"%@元",[CommonUtils getHanleNums:infoModel.amount]];
     NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:totalAmout  rang:NSMakeRange(totalAmout.length-1, 1) font:SYSTEMSIZE(30) color:RGB(141,200,255) spacingBeforeValue:0 lineSpace:0];
     [self.programTotalLabel setAttributedText:attr1];
     //项目期限
     self.programLimitLabel.text=infoModel.period_name;
     
-    NSString *   numbers=[infoModel.progress stringByReplacingOccurrencesOfString:@".00" withString:@""];
-    self.progressNum=[numbers floatValue]/100;
+    self.progressNum=[[NSString stringWithFormat:@"%.2f",[infoModel.progress floatValue]/100] floatValue];
     myTimer = [NSTimer scheduledTimerWithTimeInterval:0.02
                                                target:self
                                              selector:@selector(download)
@@ -119,7 +118,7 @@ Strong UILabel *investLabel;//投资人
     
     [uv addSubview:self.programTotalLabel];
     
-    self.progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, uv.height - kSizeFrom750(45),kSizeFrom750(140), kSizeFrom750(25))];
+    self.progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, uv.height - kSizeFrom750(45),kSizeFrom750(150), kSizeFrom750(25))];
     self.progressLabel.font = SYSTEMSIZE(24);
     self.progressLabel.textColor=RGB(179,254,246);
     self.progressLabel.text=@"已售0%";
@@ -185,22 +184,6 @@ Strong UILabel *investLabel;//投资人
         self.progressLabel.text=[[NSString stringWithFormat:@"已售%.2f",self.progressNum*100] stringByAppendingString:@"%"];
         }
     }
-}
-
-//添加逗号分隔符
-- (NSString *)hanleNums:(NSString *)numbers{
-     numbers=[numbers stringByReplacingOccurrencesOfString:@".00" withString:@""];
-    NSString *str = [numbers substringWithRange:NSMakeRange(numbers.length%3, numbers.length-numbers.length%3)];
-    NSString *strs = [numbers substringWithRange:NSMakeRange(0, numbers.length%3)];
-    for (int  i =0; i < str.length; i =i+3) {
-        NSString *sss = [str substringWithRange:NSMakeRange(i, 3)];
-        strs = [strs stringByAppendingString:[NSString stringWithFormat:@",%@",sss]];
-    }
-    if ([[strs substringWithRange:NSMakeRange(0, 1)] isEqualToString:@","]) {
-        strs = [strs substringWithRange:NSMakeRange(1, strs.length-1)];
-    }
-    strs = [strs stringByAppendingString:@".00"];
-    return strs;
 }
 
 @end

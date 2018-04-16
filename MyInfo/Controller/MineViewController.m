@@ -200,7 +200,7 @@ Strong UIImageView *refreshImage;//刷新箭头
         }
     }else if(indexPath.section == 1){
         if (self.accountModel==nil) {
-            return kSizeFrom750(125)*4;//个人相关操作标签默认高度
+            return kSizeFrom750(125)*3;//个人相关操作标签默认高度
         }
       return  self.accountModel.bt_user_content.count*kSizeFrom750(125);
         

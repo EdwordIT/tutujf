@@ -63,8 +63,6 @@ Strong LoanBase *baseModel;
         {
         RushPurchaseController * vc=[[RushPurchaseController alloc] init];
         vc.loan_id=  self.loan_id;
-        vc.vistorType=@"2";
-        [vc setBindData:self.baseModel];
         [self.navigationController pushViewController:vc animated:YES];
         }
         else
@@ -103,7 +101,7 @@ Strong LoanBase *baseModel;
         _footerBtn.titleLabel.font = SYSTEMSIZE(34);
         [_footerBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _footerBtn.adjustsImageWhenHighlighted = NO;
-        [_footerBtn setTitle:@"立即投资" forState:UIControlStateNormal];
+//        [_footerBtn setTitle:@"立即投资" forState:UIControlStateNormal];
         [_footerBtn addTarget:self action:@selector(footerBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _footerBtn;
@@ -166,52 +164,29 @@ Strong LoanBase *baseModel;
     
     [self.bottomView loadBottomWithModel:self.baseModel];
     
-    //倒计时
-    secondsCountDown = [CommonUtils getDifferenceByDate:self.baseModel.loan_info.open_up_date];//倒计时秒数(48小时换算成的秒数,项目中需要从服务器获取)
-    if(secondsCountDown>0)
-    {
+    //状态，3 可以购买，4满标待审，6还款中，7已还完， 其他 不可购买
+    if ([self.baseModel.loan_info.buy_state isEqualToString:@"-1"]) {//不可购买状态
         self.footerBtn.backgroundColor=RGB(231,231,231);
-        self.footerBtn.userInteractionEnabled = NO;    //设置倒计时显示的时间
-        NSInteger hour=(secondsCountDown-(secondsCountDown%HOUR))/HOUR;
-        NSInteger day=0;
-        if(hour>24)
-            day= (hour-(hour%24))/24;
-        NSString *str_hour = [NSString stringWithFormat:@"%02ld",hour%24];//时
-        NSString *str_minute = [NSString stringWithFormat:@"%02ld",(secondsCountDown%HOUR)/MINUTE];//分
-        NSString *str_second = [NSString stringWithFormat:@"%02ld",secondsCountDown%MINUTE];//秒
-        NSString *format_time =@"0天0时0分0秒";
+        self.footerBtn.userInteractionEnabled = NO;
+        [self.footerBtn setTitle:self.baseModel.loan_info.status_name forState:UIControlStateNormal];
+    }else{
+        //如果是可购买状态，则判断倒计时是否显示，如果显示倒计时，在倒计时结束之前，依然是不可购买状态
+        //倒计时
+        secondsCountDown = [CommonUtils getDifferenceByDate:self.baseModel.loan_info.open_up_date];//倒计时秒数(48小时换算成的秒数,项目中需要从服务器获取)
         if(secondsCountDown>0)
-            format_time = [NSString stringWithFormat:@"%ld天%@时%@分%@秒",day,str_hour,str_minute,str_second];
-        
-        [self.footerBtn setTitle:format_time forState:UIControlStateNormal];
-        if(countDownTimer==nil&&secondsCountDown>0)
-            countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDownAction) userInfo:nil repeats:YES]; //启动倒计时后会每秒钟调用一次方法 countDownAction
-    }
- 
-  LoanInfo * info=  self.baseModel.loan_info;
-    if(![info.progress isEqual:@"100.00"])
-    {
-        //点击事件
-            if(secondsCountDown==0)
-            {
-                self.footerBtn.userInteractionEnabled = YES;
-            }
-    }
-    else
-    {
-        if([self.baseModel.loan_info.status_name isEqual:@"满标待审"])
         {
+            if(countDownTimer==nil)
+                countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDownAction) userInfo:nil repeats:YES];
+            [countDownTimer fire];
+        }else{//如果不含倒计时或者倒计时结束，直接显示可购买
+            self.footerBtn.backgroundColor=navigationBarColor;
+            self.footerBtn.userInteractionEnabled = YES;
             [self.footerBtn setTitle:self.baseModel.loan_info.status_name forState:UIControlStateNormal];
-            self.footerBtn.userInteractionEnabled = NO;//满标不可点击投资
-            self.footerBtn.backgroundColor=RGB(231,231,231);
+
         }
-        else{
-            //隐藏底部框
-            self.scrollView.frame=CGRectMake(0, kNavHight, screen_width, kViewHeight);
-            self.footerBtn.hidden = YES;
-            
-        }
+        
     }
+   
    
 }
 
@@ -256,6 +231,7 @@ Strong LoanBase *baseModel;
         self.footerBtn.backgroundColor=navigationBarColor;
         [countDownTimer invalidate];
         countDownTimer=nil;
+        self.footerBtn.userInteractionEnabled = YES;
     }
     else
     {
@@ -266,7 +242,6 @@ Strong LoanBase *baseModel;
         NSString *str_hour = [NSString stringWithFormat:@"%02ld",hour%24];
         NSString *str_minute = [NSString stringWithFormat:@"%02ld",(secondsCountDown%HOUR)/MINUTE];
         NSString *str_second = [NSString stringWithFormat:@"%02ld",secondsCountDown%MINUTE];
-        // NSString *format_time = [NSString stringWithFormat:@"%@:%@:%@",str_hour,str_minute,str_second];
         //修改倒计时标签现实内容
         NSString * dsojisj=[NSString stringWithFormat:@"%@天%@时%@分%@秒",str_day,str_hour,str_minute, str_second];
         [self.footerBtn setTitle:dsojisj forState:UIControlStateNormal];

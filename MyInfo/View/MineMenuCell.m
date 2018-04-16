@@ -110,8 +110,8 @@
     }
     //默认显示
     if (array==nil) {
-      NSArray * iconsArray= [NSArray arrayWithObjects: @"http://www.tutujf.com/wapassets/trust/images/news/mylogo01.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo02.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo04.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo03.png",nil];
-       NSArray *titleArray= [NSArray arrayWithObjects: @"我的邀请",@"我的借款",@"托管账户",@"银行卡管理",nil];
+      NSArray * iconsArray= [NSArray arrayWithObjects: @"http://www.tutujf.com/wapassets/trust/images/news/mylogo01.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo02.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo04.png",nil];
+       NSArray *titleArray= [NSArray arrayWithObjects: @"我的邀请",@"我的借款",@"托管账户",nil];
         NSMutableArray *defArr = InitObject(NSMutableArray);
         for (int i=0; i<iconsArray.count; i++) {
             UserContentModel *defaultModel = InitObject(UserContentModel);

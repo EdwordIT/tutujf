@@ -30,7 +30,7 @@
 #import <AlicloudHttpDNS/AlicloudHttpDNS.h>
 #import "HttpSignCreate.h"
 #import "ChangePasswordViewController.h"
-@interface HomeWebController ()<NSURLConnectionDelegate, NSURLConnectionDataDelegate,WKUIDelegate,WKNavigationDelegate,WKScriptMessageHandler>
+@interface HomeWebController ()<NSURLConnectionDelegate, NSURLConnectionDataDelegate,WKNavigationDelegate,WKScriptMessageHandler>
 Strong WKWebView *mainWebView;
 //Strong UIProgressView *progressView;
 Copy NSString *callBack;//分享之后回调方法，写入js的方法名
@@ -39,9 +39,7 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
 @end
 //static HttpDnsService *httpdns;
 @implementation HomeWebController
-{
-    Boolean isOpen;
-}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.titleString = @"土土金服";
@@ -57,7 +55,12 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
     }
     [self.view addSubview:self.mainWebView];
     
-    [self loadRequest:_urlStr];
+    //添加ios客户端标识
+    if ([_urlStr rangeOfString:@"equipment=ios"].location==NSNotFound) {
+        [self refreshUrl:_urlStr];
+    }else{
+        [self loadRequest:_urlStr];
+    }
 }
 -(void)refreshUrl:(NSString *)urlString{
     NSString *resaultUrl = @"";
@@ -121,8 +124,6 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
         }
         
         _mainWebView = [[WKWebView alloc]initWithFrame:CGRectMake(0, kNavHight, screen_width,kViewHeight) configuration:configuration];
-
-        _mainWebView.UIDelegate=self;
         _mainWebView.navigationDelegate = self;
         [_mainWebView setUserInteractionEnabled:YES];
         _mainWebView.backgroundColor = separaterColor;
@@ -334,7 +335,6 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
             UINavigationController *nav = self.navigationController;
             //跳转项目快速购买页
             RushPurchaseController *purchase = InitObject(RushPurchaseController);
-            purchase.vistorType = @"1";
             purchase.isBackToRootVC = YES;
             NSRange range = [urlPath rangeOfString:@"tutujf:home.tenderloanview?loan_id="];
             NSString *loan_id = [urlPath substringFromIndex:range.location+range.length];
@@ -355,11 +355,6 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
     //首先校验webView是否需要跳转到系统原生态页面
     [self checkIsGoOriginal:webView.URL];
-    //添加ios客户端标识
-    if ([webView.URL.absoluteString rangeOfString:@"equipment=ios"].location==NSNotFound) {
-        [self refreshUrl:webView.URL.absoluteString];
-
-    }
 }
 // 当内容开始返回时调用
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation{
@@ -389,13 +384,6 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
 // 在收到响应后，决定是否跳转
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
     
-    // 添加请求头信息
-    //NSString * url =request.URL.absoluteString;
-    if(!isOpen)
-    {
-        isOpen=TRUE;
-//        [self loadDoURL:webView];
-    }
     //允许跳转
     decisionHandler(WKNavigationResponsePolicyAllow);
     //不允许跳转
@@ -410,25 +398,6 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
     //不允许跳转
     //decisionHandler(WKNavigationActionPolicyCancel);
 }
-#pragma mark - WKUIDelegate
-// 创建一个新的WebView
-- (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures{
-    return [[WKWebView alloc]init];
-}
-// 输入框
-- (void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(nullable NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * __nullable result))completionHandler{
-    completionHandler(@"http");
-}
-// 确认框
-- (void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL result))completionHandler{
-    completionHandler(YES);
-}
-// 警告框
-- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler{
-    [SVProgressHUD showInfoWithStatus:message];
-    completionHandler();
-}
-
 #pragma mark --ShareSDK Delegate
 - (void)showShareActionSheet:(NSString *) titlecontent Img_url:(NSString *) img_url Link_url:(NSString *) link_url Desc:(NSString *) desc Callback:(NSString *) callback{
     UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeCustom];

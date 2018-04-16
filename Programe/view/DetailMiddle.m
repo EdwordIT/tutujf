@@ -55,34 +55,30 @@
     
     secondsCountDown = [CommonUtils getDifferenceByDate:info.overdue_time_date];//倒计时秒数(48小时换算成的秒数,项目中需要从服务器获取)
 
-    if (secondsCountDown>=0) {
+    if (secondsCountDown>0) {
         [self mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(kSizeFrom750(520));
         }];
+        //设置倒计时显示的时间
+        NSInteger hour=(secondsCountDown-(secondsCountDown%HOUR))/HOUR;
+        NSInteger day=0;
+        if(hour>24)
+            day= (hour-(hour%24))/24;
+        NSString *str_hour = [NSString stringWithFormat:@"%02ld",hour%24];//时
+        NSString *str_minute = [NSString stringWithFormat:@"%02ld",(secondsCountDown%HOUR)/MINUTE];//分
+        NSString *str_second = [NSString stringWithFormat:@"%02ld",secondsCountDown%MINUTE];//秒
+        NSString *format_time =@"0天0时0分0秒";
+        
+        format_time = [NSString stringWithFormat:@"%ld天%@时%@分%@秒",day,str_hour,str_minute,str_second];
+        if(countDownTimer==nil)
+            countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDownAction) userInfo:nil repeats:YES]; //启动倒计时后会每秒钟调用一次方法 countDownAction
+        [m4 setMenu:@"结束时间" content:format_time];
     }else{
         [self mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(kSizeFrom750(430));
         }];
+         [m4 setHidden:TRUE];
     }
-    //设置倒计时显示的时间
-    NSInteger hour=(secondsCountDown-(secondsCountDown%HOUR))/HOUR;
-    NSInteger day=0;
-    if(hour>24)
-        day= (hour-(hour%24))/24;
-    NSString *str_hour = [NSString stringWithFormat:@"%02ld",hour%24];//时
-    NSString *str_minute = [NSString stringWithFormat:@"%02ld",(secondsCountDown%HOUR)/MINUTE];//分
-    NSString *str_second = [NSString stringWithFormat:@"%02ld",secondsCountDown%MINUTE];//秒
-    NSString *format_time =@"0天0时0分0秒";
-    if(secondsCountDown>0)
-        format_time = [NSString stringWithFormat:@"%ld天%@时%@分%@秒",day,str_hour,str_minute,str_second];
-    [m4 setMenu:@"结束时间" content:format_time];
-    if(countDownTimer==nil&&secondsCountDown>0)
-        countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDownAction) userInfo:nil repeats:YES]; //启动倒计时后会每秒钟调用一次方法 countDownAction
-    else
-    {
-        [m4 setHidden:TRUE];
-    }
-
 }
 
 - (void)initSubViews{
