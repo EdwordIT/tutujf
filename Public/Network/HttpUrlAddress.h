@@ -36,10 +36,16 @@
 
 #define investInterest @"%@/api/Loan/InvestInterest?amount=%@&period=%@&apr=%@&repay_type=%@&sign=%@"
 
-#define tenderNow  @"%@/api/Loan/TenderNow?loan_id=%@&amount=%@&loan_password=%@&user_token=%@&sign=%@"
+
 
 //#define webLoginUrl  @"%@/User/Token/Login?user_token=%@&expiration_date=%@&sign=%@"
 /*****************************************~1.4.8************************************************************/
+/**
+ 立即投资接口
+ ?loan_id=%@&amount=%@&loan_password=%@&user_token=%@&sign=%@
+ */
+#define tenderUrl  oyApiUrl@"/api/Loan/TenderNow"
+//登录接口
 #define loginUrl oyApiUrl@"/api/Users/Login"
 //获取我的账户信息相关接口
 #define getMyAccountUrl oyApiUrl@"/api/Users/getMyAccountData"
@@ -80,7 +86,7 @@
  找回密码
  api/users/phoneGetPwd?phone=%@&password=%@&sms_code=%@&sign=%@
  */
-#define forgetPasswordUrl oyApiUrl@"api/users/phoneGetPwd"
+#define forgetPasswordUrl oyApiUrl@"/api/users/phoneGetPwd"
 
 /**
  修改密码

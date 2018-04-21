@@ -27,20 +27,20 @@
 #define RGBCOLOR(r,g,b)                     [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1]
 #define RGBACOLOR(r,g,b,a)                  [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 
-#define navigationBarColor RGB(6, 159, 241)
+#define navigationBarColor RGB(0, 160, 240)
+
 //#define navigationBarColor RGB(53, 171, 245)
-#define lineBg RGB(233, 233, 233)
-#define lineBg1 RGB(237, 237, 237)
+
 
 #define COLOR_White RGB(255,255,255)
 //分割线颜色
 #define separaterColor RGB(243,243,243)
 /**亮红色*/
-#define COLOR_Red RGB(236,77,72)
+#define COLOR_Red RGB(246,47,25)
 /**淡蓝色*/
-#define COLOR_LightBlue RGB(41,181,251)
+#define COLOR_LightBlue RGB(48,186,255)
 /**深蓝色*/
-#define COLOR_DarkBlue RGB(23,160,229)
+#define COLOR_DarkBlue RGB(0,160,240)
 /**主标题显示黑色*/
 #define RGB_51 RGB(51,51,51)
 /**主标题淡灰色*/
@@ -51,14 +51,17 @@
 #define RGB_153 RGB(153, 153, 153)
 
 #define RGB_158 RGB(158, 158, 158)
+//按钮不可点击时候背景色
+#define COLOR_Btn_Unsel RGB(184, 184, 184)
+//系统默认整体页面背景色
+#define COLOR_Background RGB(246 ,246, 246)
 
-#define RGB_183 RGB(183, 183, 183)
+#define RGB_233 RGB(233, 233, 233)
 
-
+#define RGB_237 RGB(237, 237, 237)
 //淡灰色背景
 #define RGB_240 RGB(240 ,240, 240)
-//系统默认整体页面背景色
-#define RGB_246 RGB(246 ,246, 246)
+
 //**  简单的property 定义
 #define Strong          @property(nonatomic, strong)
 #define Weak            @property(nonatomic, weak)
@@ -75,7 +78,7 @@
 #define InitObject(vc) [[vc alloc]init]
 #define InitROOTVC(vc) [[UINavigationController alloc] initWithRootViewController:[[vc alloc]init]];
 #define WEAK_SELF __weak typeof(self) weakSelf = self
-#define Title_Font 18
+#define Title_Font 17
 //中文字体
 #define CHINESE_FONT_NAME  @"STHeitiK-Light"
 
@@ -163,7 +166,7 @@ static CGFloat const space                   = 10;
 #define  kBackButtonFontSize 16
 #define  kNavTitleFontSize 18
  */
-
+#define LocalVersion @"20"  //当前内部版本号
 //7.系统版本号
 #define IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]
 //8.一些常用自定义方法

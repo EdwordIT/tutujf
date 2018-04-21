@@ -27,13 +27,13 @@
         self.backgroundColor = self.defaultColor;
         self.layer.cornerRadius = self.height*0.5;
         self.layer.masksToBounds = YES;
-        //进度
-        UIView *tView = [[UIView alloc] init];
-        tView.backgroundColor = self.progressColor;
-        tView.layer.cornerRadius = self.bounds.size.height * 0.5;
-        tView.layer.masksToBounds = YES;
-        [self addSubview:tView];
-        self.tView = tView;
+        
+        self.tineView = [[UIView alloc]init];
+        self.tineView.backgroundColor = self.progressColor;
+        self.tineView.layer.cornerRadius = self.bounds.size.height * 0.5;
+        self.tineView.layer.masksToBounds = YES;
+        [self addSubview:self.tineView];
+        self.tView = self.tineView;
     }
     
     return self;

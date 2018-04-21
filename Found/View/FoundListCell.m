@@ -39,7 +39,7 @@
     [self.contentView addSubview: self.date];
     
     self.lineView = [[UIView alloc] initWithFrame:CGRectMake(0, kSizeFrom750(400),screen_width , kSizeFrom750(20))];
-    self.lineView.backgroundColor =separaterColor;
+    self.lineView.backgroundColor =COLOR_Background;
     [self.contentView  addSubview:self.lineView];
 }
 

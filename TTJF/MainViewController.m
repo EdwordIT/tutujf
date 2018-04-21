@@ -9,20 +9,16 @@
 #import "MainViewController.h"
 #import "HttpSignCreate.h"
 #import "HomeBanner.h"
-#import "BannerModel.h"
-#import "ImmediateCell.h"
+#import "ImmediateCell.h"//新手专享
 #import "QuicklyCell.h"//快速投资
 #import "PlatformDataCell.h"//信息公告
 #import "GuideRegisterCell.h"//引导新用户注册
 #import "ClubeCell.h"//社区
-#import "OpenAdvertView.h"
+#import "OpenAdvertView.h"//启动显示的广告页
 #import "HomeWebController.h"
-#import "HttpUrlAddress.h"
-#import "ggHttpFounction.h"
 #import "AutoLoginView.h"
 #import "RushPurchaseController.h"
 #import "ProgrameNewDetailController.h"
-#import "TTJFRefreshStateHeader.h"
 #import "RegisterViewController.h"//注册页面
 #import "TotalTradesView.h"//总成交金额
 #import "CustomerServiceView.h"//客户服务
@@ -30,14 +26,13 @@
 #import "HomepageModel.h"
 #import <UIButton+WebCache.h>
 #import "SystemConfigModel.h"
+#import "CountDownManager.h"
 
 @interface MainViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,UIWebViewDelegate,BannerDelegate,ImmediateDelegate,OpenShowAdvertDelegate,UIAlertViewDelegate>
 {
     UIWebView *iWebView;
     NSMutableArray * daibanArrayURL;
-    OpenAdvertView *advertView;
     UIView *footerView ;
-    Boolean isExeute;
     NSMutableArray *clubDataArray;
 
 }
@@ -49,6 +44,7 @@ Strong UIButton *serviceBtn;//客服按钮
 Strong UIButton *messageBtn;//消息按钮
 Strong HomepageModel *homePageModel;//数据源
 Strong SystemConfigModel *configModel;//
+Strong UIView *functionTopView;//功能按钮
 @end
 
 
@@ -66,29 +62,34 @@ Strong SystemConfigModel *configModel;//
 -(void)showUpdate
 {
     
-    NSString  *downloadStr = self.configModel.ios_downurl;
-    NSInteger isForced = [self.configModel.ios_forceup integerValue];//是否强制升级
-    
-    if (isForced==1) {//强制更新，只有一个按钮
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"土土金服有新内容更新" delegate:self cancelButtonTitle:@"立即更新" otherButtonTitles:nil, nil];
-        [alert show];
+    NSString *updateVersion = self.configModel.ios_version;
+    if((!IsEmptyStr(updateVersion))&&(![updateVersion isEqualToString:currentVersion]))
+    {
+        NSString  *downloadStr = self.configModel.ios_downurl;
+        NSInteger isForced = [self.configModel.ios_forceup integerValue];//是否强制升级
         
-    }else{
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"土土金服有新内容更新" preferredStyle:UIAlertControllerStyleAlert];
-
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"以后再说" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            NSLog(@"cancel Action");
-        }];
-        [alertController addAction:cancelAction];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"立即更新" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSLog(@"OK Action");
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:downloadStr]];
+        if (isForced==1) {//强制更新，只有一个按钮
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:@"土土金服有新内容更新" delegate:self cancelButtonTitle:@"立即更新" otherButtonTitles:nil, nil];
+            [alert show];
+        }else{
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"土土金服有新内容更新" preferredStyle:UIAlertControllerStyleAlert];
             
-        }];
-        [alertController addAction:okAction];
-        [self presentViewController:alertController animated:YES completion:nil];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"以后再说" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                NSLog(@"cancel Action");
+            }];
+            [alertController addAction:cancelAction];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"立即更新" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                NSLog(@"OK Action");
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:downloadStr]];
+                
+            }];
+            [alertController addAction:okAction];
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
     }
+   
 }
+
 //点击进入appStore更新
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSString  *downloadStr = self.configModel.ios_downurl;
@@ -105,14 +106,19 @@ Strong SystemConfigModel *configModel;//
     [super viewDidAppear:animated];
     
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if([self.configModel.ios_forceup integerValue]==1){
+        [self showUpdate];
+    }
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.titleView.alpha = 0;
     [self.backBtn setHidden:YES];
     self.titleString = @"土土金服";
     clubDataArray = InitObject(NSMutableArray);
-    isExeute=FALSE;
-   
+
     /**自定登录*/
     //如果已经存储了token值，则自动登录更新token
     if ([CommonUtils isLogin]) {
@@ -126,9 +132,10 @@ Strong SystemConfigModel *configModel;//
     //注入是否登录更新首页内容通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getHomePageInfo) name:Noti_LoginChanged object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadConfig) name:Noti_GetSystemConfig object:nil];
-    
+    [SVProgressHUD showWithStatus:@"数据加载中..."];
 }
 -(void)dealloc{
+    [[CountDownManager manager] cancel];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_LoginChanged object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_GetSystemConfig object:nil];
 
@@ -137,12 +144,12 @@ Strong SystemConfigModel *configModel;//
 -(void)initSubViews{
     
     footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(135))];
-    self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, -kStatusBarHeight, screen_width, screen_height+kStatusBarHeight) style:UITableViewStylePlain];
+    self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height - kTabbarHeight) style:UITableViewStyleGrouped];
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.backgroundColor = separaterColor;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     // 设置表格尾部
     [self.tableView setTableFooterView:footerView];
-    [self.tableView setSeparatorColor:separaterColor];
     [self.view addSubview:self.tableView];
 
     __weak typeof(self) weakSelf = self;
@@ -155,8 +162,6 @@ Strong SystemConfigModel *configModel;//
     [self getHomePageInfo];
     
     [self.view bringSubviewToFront:self.titleView];
-
-    [self initCustomView];
     
 }
 //自定义视图
@@ -168,23 +173,23 @@ Strong SystemConfigModel *configModel;//
     self.tradesView.hidden = YES;
     [self.tableView addSubview:self.tradesView];
     
+    self.functionTopView = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kNavHight)];
+    [self.view addSubview:self.functionTopView];
+    
     //客服按钮
     self.serviceBtn = [[UIButton alloc]initWithFrame:RECT(0, kNavHight - kSizeFrom750(66), kSizeFrom750(114), kSizeFrom750(46))];
     [self.serviceBtn addTarget:self action:@selector(serviceBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.serviceBtn setImage:IMAGEBYENAME(@"service_unsel") forState:UIControlStateNormal];
-    [self.serviceBtn setImage:IMAGEBYENAME(@"service_sel") forState:UIControlStateSelected];
+    [self.serviceBtn setImage:IMAGEBYENAME(@"service_sel") forState:UIControlStateNormal];
     self.serviceBtn.adjustsImageWhenHighlighted = NO;
-    self.serviceBtn.selected = YES;//默认处于加黑状态
-    [self.view addSubview:self.serviceBtn];
+    [self.functionTopView addSubview:self.serviceBtn];
     
     //消息按钮
-    self.messageBtn = [[UIButton alloc]initWithFrame:RECT(screen_width - kSizeFrom750(60), self.serviceBtn.top, kSizeFrom750(40), kSizeFrom750(41))];
+    self.messageBtn = [[UIButton alloc]initWithFrame:RECT(screen_width - kSizeFrom750(60), self.serviceBtn.top, kSizeFrom750(46), kSizeFrom750(46))];
     self.messageBtn.centerY = self.serviceBtn.centerY;
     [self.messageBtn addTarget:self action:@selector(messageBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.messageBtn setImage:IMAGEBYENAME(@"message_noPoint") forState:UIControlStateNormal];
-    [self.messageBtn setImage:IMAGEBYENAME(@"message_Point") forState:UIControlStateSelected];
     self.messageBtn.adjustsImageWhenHighlighted = NO;
-    [self.view addSubview:self.messageBtn];
+    [self.functionTopView addSubview:self.messageBtn];
     //客服页面
     self.serviceView = [[CustomerServiceView alloc]initWithFrame:kScreen_Bounds];
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
@@ -225,7 +230,11 @@ Strong SystemConfigModel *configModel;//
     NSArray *keys = @[@"version",@"device_id",kToken];
     NSArray *values = @[version,device_id,user_token];
     
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:getHomePageInfoUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getHomePageInfoUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
+        if (self.serviceView==nil) {
+            [self initCustomView];
+        }
+        [[CountDownManager manager] start];
         self.homePageModel = [HomepageModel yy_modelWithJSON:successDic];
         [self.tradesView setHidden:NO];
         [self ->clubDataArray removeAllObjects];
@@ -235,8 +244,7 @@ Strong SystemConfigModel *configModel;//
         if (self.homePageModel.lcgh_items!=nil) {
             [self ->clubDataArray addObjectsFromArray:self.homePageModel.lcgh_items];
         }
-        self.tableView.delegate = self;
-        self.tableView.dataSource = self;
+
         [self reloadCustomData];//刷新自定义内容
         [self.tableView reloadData];
     } failure:^(NSDictionary *errorDic) {
@@ -275,14 +283,17 @@ Strong SystemConfigModel *configModel;//
     [footerView addSubview:remindLabel];
     
     if ([self.homePageModel.unread_msg_num integerValue]>0) {
-        self.messageBtn.selected = YES;
+        [self.messageBtn setImage:IMAGEBYENAME(@"message_point") forState:UIControlStateNormal];
+
     }else{
-        self.messageBtn.selected = NO;
+        [self.messageBtn setImage:IMAGEBYENAME(@"message_noPoint") forState:UIControlStateNormal];
     }
     
     if (!IsEmptyStr(self.homePageModel.activity_ad_info.status)) {
         if ([self.homePageModel.activity_ad_info.status integerValue]==1) {
             [self.adAlertView setHidden:NO];
+            
+            self.adAlertView.frame = RECT(screen_width - [self.homePageModel.activity_ad_info.img_width floatValue] - kSizeFrom750(30), kSizeFrom750(1000), [self.homePageModel.activity_ad_info.img_width floatValue], [self.homePageModel.activity_ad_info.img_height floatValue]);
             [self.adAlertView.iconImage sd_setImageWithURL:[NSURL URLWithString:self.homePageModel.activity_ad_info.images_url] forState:UIControlStateNormal];
         }else
             [self.adAlertView setHidden:YES];
@@ -298,10 +309,7 @@ Strong SystemConfigModel *configModel;//
         self.configModel = [SystemConfigModel yy_modelWithJSON:configDic];
     }
     /**版本更新判断**/
-    if( [CommonUtils isUpdate])
-    {
-        [self showUpdate];
-    }
+    [self showUpdate];
 }
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -311,16 +319,16 @@ Strong SystemConfigModel *configModel;//
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     if (section ==0 ){//banner
-        return 2;
+        return self.homePageModel?2:0;
     }
     else if (section ==1 ){//快速投资
         return self.homePageModel.loan_items.count;
     }
     else if (section ==2 ){//土土社区+平台数据和信息披露
-        return clubDataArray.count+1;
+        return clubDataArray.count+(self.homePageModel?1:0);
     }
     
-    return 1;
+    return 0.01;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -340,31 +348,51 @@ Strong SystemConfigModel *configModel;//
     }else if(indexPath.section == 1){//快速投资
         return kSizeFrom750(258);
     }else if (indexPath.section == 2){
+        if (indexPath.row==0) {
+            return kSizeFrom750(140);
+        }else
         return kSizeFrom750(185);//土土咨询
     }
     else{
-        return 0;
+        return 0.01;
     }
-    return 0;
+    return 0.01;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    
     
     if (section == 2) {//社区
         return kSizeFrom750(88);
     }
     else{
-        return 0;
+        return 0.01;
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    //社区不需要footer
-    if (section==2) {
-        return 0;
-    }else
+    
+    if (section==0) {
         return kSizeFrom750(30);
+    }
+   else if (section==1) {
+       if (self.homePageModel.loan_items.count == 0) {//如果没有快速投资
+           return 0.01;
+       }
+        return kSizeFrom750(30);
+    }
+    //社区不需要tablefooter
+   else if (section==2) {
+        return 0.01;
+    }
+    else
+        return kSizeFrom750(0);
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if (!self.homePageModel) {
+        UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+        header.backgroundColor = COLOR_Background;
+        return header;
+    }
     if (section==2) {
         UIView *clubTitle = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(88))];
         clubTitle.backgroundColor = [UIColor whiteColor];
@@ -387,16 +415,15 @@ Strong SystemConfigModel *configModel;//
         return clubTitle;
         
     }else {
-        return nil;
-        
+        UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+        header.backgroundColor = COLOR_Background;
+        return header;
     }
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    if (section!=2) {
-        return [UIView new];
-    }else{
-        return nil;
-    }
+    UIView *footer = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+    footer.backgroundColor = COLOR_Background;
+    return footer;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -602,7 +629,7 @@ Strong SystemConfigModel *configModel;//
 //滚动视图
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
-    CGFloat offsetY = scrollView.contentOffset.y;
+    CGFloat offsetY = scrollView.contentOffset.y - scrollView.top;
     if (offsetY <= kNavHight && offsetY > 0) {
         self.titleView.alpha = offsetY/kNavHight;
     }else if(offsetY > kNavHight){
@@ -612,19 +639,26 @@ Strong SystemConfigModel *configModel;//
     }
 
     CGFloat halfNav = kNavHight/2.0f;
-    if(offsetY<=0){
-        self.serviceBtn.selected = YES;
+    if(offsetY<=0){//下拉刷新时候
+        [self.serviceBtn setImage:IMAGEBYENAME(@"service_sel") forState:UIControlStateNormal];
         self.serviceBtn.alpha = 1;
     }
    else if (offsetY<=halfNav&&offsetY>0) {
-        self.serviceBtn.selected = YES;
+       [self.serviceBtn setImage:IMAGEBYENAME(@"service_sel") forState:UIControlStateNormal];
         self.serviceBtn.alpha = 1-offsetY/halfNav;
     }else if(offsetY>halfNav&&offsetY<=kNavHight){
-        self.serviceBtn.selected = NO;
+        [self.serviceBtn setImage:IMAGEBYENAME(@"service_unsel") forState:UIControlStateNormal];
         self.serviceBtn.alpha = (offsetY-halfNav)/halfNav;
     }else{
-        self.serviceBtn.selected = NO;
+        [self.serviceBtn setImage:IMAGEBYENAME(@"service_unsel") forState:UIControlStateNormal];
         self.serviceBtn.alpha = 1;
+    }
+    
+    //客服按钮
+    if (offsetY<=0) {
+        self.functionTopView.top = - offsetY;
+    }else{
+        self.functionTopView.top = 0;
     }
 }
 

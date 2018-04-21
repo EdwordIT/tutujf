@@ -18,9 +18,7 @@
 #import "AccountSettingCell.h"
 @interface AccountInfoController ()<UITableViewDataSource, UITableViewDelegate,UIWebViewDelegate>
 {
-    Boolean isFirstExe;
     UIWebView * iWebView;
-    NSString * ishaveOpen;
 }
 Strong AccountModel * accountModel;
 Strong BaseUITableView *tableView;
@@ -35,26 +33,22 @@ Strong NSArray *titleArr;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    isFirstExe=FALSE;
-    ishaveOpen=@"0";
     self.titleString = @"设置";
     self.titleArr = @[@"用户头像",@"用户名",@"我的二维码",@"实名认证",@"我的银行卡",@"绑定手机",@"修改密码"];
     [self initSubViews];
-    [self GetMyUserDatas];
+    [SVProgressHUD showWithStatus:@"数据加载中..."];
+    [self getRequest];
 }
 
 //初始化主界面
 -(void)initSubViews{
     self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight) style:UITableViewStyleGrouped];
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.backgroundColor=RGB_246;
     self.tableView.rowHeight = kSizeFrom750(107);
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    // 设置表格尾部
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView setSeparatorColor:separaterColor];
-    
     [self.view addSubview:self.tableView];
     
     self.existBtn = [[UIButton alloc]initWithFrame:RECT(kOriginLeft, kSizeFrom750(850), screen_width - kOriginLeft*2, kSizeFrom750(90))];
@@ -94,12 +88,12 @@ Strong NSArray *titleArr;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    footerView.backgroundColor = RGB_246;
+    footerView.backgroundColor = COLOR_Background;
     return footerView;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    footerView.backgroundColor = RGB_246;
+    footerView.backgroundColor = COLOR_Background;
     return footerView;
 }
 
@@ -229,9 +223,9 @@ Strong NSArray *titleArr;
    
 }
 #pragma mark --数据获取
--(void) GetMyUserDatas{
+-(void) getRequest{
    
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:getMyAccountUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:self.tableView success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getMyAccountUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:self.tableView success:^(NSDictionary *successDic) {
         self.accountModel = [AccountModel yy_modelWithJSON:successDic];
         [self.tableView reloadData];
     } failure:^(NSDictionary *errorDic) {
@@ -241,51 +235,16 @@ Strong NSArray *titleArr;
 }
 
 -(void) existBtnClick:(UIButton *)sender{
-    if (IsEmptyStr(self.accountModel.exit_link)) {
-        return;
-    }
-    [SVProgressHUD showWithStatus:@"正在退出登录..."];
-    [self loadPage1:self.accountModel.exit_link];
-}
-
-//加载网页
-- (void)loadPage1: (NSString *) urlstr {
-    
-    iWebView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 0,0)];
-    
-    iWebView.delegate=self;
-    //伸缩内容适应屏幕尺寸
-    iWebView.scalesPageToFit=YES;
-    [iWebView setUserInteractionEnabled:YES];
-    [self cleanCaches];
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];//清除缓存  
-    NSURL *url = [[NSURL alloc] initWithString:urlstr];
-    NSMutableURLRequest *request ;
-    request = [NSMutableURLRequest requestWithURL:url];
-    [iWebView loadRequest:request];
-    iWebView.scrollView.bounces = NO;
-    [self.view addSubview:iWebView];
-}
-
-
-/**
- *WebView加载完毕的时候调用（请求完毕）
- */
--(void)webViewDidFinishLoad:(UIWebView *)webView
-{
-//    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"WebKitCacheModelPreferenceKey"];
-//    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitDiskImageCacheEnabled"];//自己添加的，原文没有提到。
-//    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitOfflineWebApplicationCacheEnabled"];//自己添加的，原文没有提到。
-//    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    
+ 
     [self exitLoginStatus];
-    [SVProgressHUD showSuccessWithStatus:@"退出登录成功"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD showSuccessWithStatus:@"退出登录成功"];
+            [self.navigationController popViewControllerAnimated:YES];
+        });
+    });
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -295,39 +254,7 @@ Strong NSArray *titleArr;
 -(void) OnLogin{
     [self goLoginVC];
 }
-/**
- *  清理缓存
- */
-// 根据路径删除文件  删除cookies文件
 
-- (void)cleanCaches{
-    //清除cookies
-    NSHTTPCookie *cookie;
-    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    for (cookie in [storage cookies]){
-        [storage deleteCookie:cookie];
-    }
-    //清除UIWebView的缓存
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    NSURLCache * cache = [NSURLCache sharedURLCache];
-    [cache removeAllCachedResponses];
-    [cache setDiskCapacity:0];
-    [cache setMemoryCapacity:0];
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-//    NSString *path = [paths lastObject];
-//    // 利用NSFileManager实现对文件的管理
-//    NSFileManager *fileManager = [NSFileManager defaultManager];
-//    if ([fileManager fileExistsAtPath:path]) {
-//        // 获取该路径下面的文件名
-//        NSArray *childrenFiles = [fileManager subpathsAtPath:path];
-//        for (NSString *fileName in childrenFiles) {
-//            // 拼接路径
-//            NSString *absolutePath = [path stringByAppendingPathComponent:fileName];
-//            // 将文件删除
-//            [fileManager removeItemAtPath:absolutePath error:nil];
-//        }
-//    }
-}
 /*
 #pragma mark - Navigation
 

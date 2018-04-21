@@ -8,12 +8,13 @@
 
 #import "DetailTop.h"
 #import "OneDetailModel.h"
+#import "CustomProgressView.h"
 @interface DetailTop ()
 {
     NSTimer * myTimer;
     LoanBase * model;
 }
-Strong UIProgressView *progressView;//进度条
+Strong CustomProgressView *progressView;//进度条
 Strong UILabel * rateLabel;//年化收益
 Strong UILabel *programLimitLabel;//项目期限
 Strong UILabel *programTotalLabel;//项目总额
@@ -21,6 +22,7 @@ Strong UILabel *programRemainLabel;//剩余可投金额
 Strong UILabel *progressLabel;//进度
 Assign CGFloat progressNum;//进度
 Strong UILabel *investLabel;//投资人
+Strong UIView *progressTopView;//progressView覆盖层
 @end
 
 @implementation DetailTop
@@ -46,16 +48,16 @@ Strong UILabel *investLabel;//投资人
     //项目期限
     self.programLimitLabel.text=infoModel.period_name;
     
-    self.progressNum=[[NSString stringWithFormat:@"%.2f",[infoModel.progress floatValue]/100] floatValue];
-    myTimer = [NSTimer scheduledTimerWithTimeInterval:0.02
+    self.progressNum=[[NSString stringWithFormat:@"%.4f",[infoModel.progress floatValue]/100] floatValue];
+    myTimer = [NSTimer scheduledTimerWithTimeInterval:0.005
                                                target:self
                                              selector:@selector(download)
                                              userInfo:nil
                                               repeats:YES];
     
     //剩余可投资金额
-    NSString *remain = [NSString stringWithFormat:@"剩余可投%@元",infoModel.left_amount];
-    NSMutableAttributedString *attr2 = [CommonUtils diffierentFontWithString:remain  rang:[remain rangeOfString:infoModel.left_amount] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
+    NSString *remain = [NSString stringWithFormat:@"剩余可投%@元",[CommonUtils getHanleNums:infoModel.left_amount]];
+    NSMutableAttributedString *attr2 = [CommonUtils diffierentFontWithString:remain  rang:[remain rangeOfString:[CommonUtils getHanleNums:infoModel.left_amount]] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.programRemainLabel setAttributedText:attr2];
     
 //    //投资人数
@@ -75,12 +77,11 @@ Strong UILabel *investLabel;//投资人
 -(void)initSubView
 {
     UIView * uv=[[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(270))];
-//    uv.backgroundColor= RGB(6, 159, 241);
     uv.backgroundColor= navigationBarColor;
     [self addSubview:uv];
 
-    self.rateLabel= [[UILabel alloc] initWithFrame:CGRectMake(kSizeFrom750(100), kSizeFrom750(65),kSizeFrom750(280),kSizeFrom750(50))];
-    self.rateLabel.font = NUMBER_FONT(48);
+    self.rateLabel= [[UILabel alloc] initWithFrame:CGRectMake(kSizeFrom750(100), kSizeFrom750(45),kSizeFrom750(280),kSizeFrom750(60))];
+    self.rateLabel.font = NUMBER_FONT(58);
     self.rateLabel.textColor = COLOR_White;
     [uv addSubview:self.rateLabel];
     
@@ -125,29 +126,32 @@ Strong UILabel *investLabel;//投资人
     self.progressLabel.textAlignment = NSTextAlignmentCenter;
     [uv addSubview:self.progressLabel];
     //
-    self.progressView = [[UIProgressView alloc]initWithProgressViewStyle:UIProgressViewStyleDefault];
-    
-    self.progressView.frame = CGRectMake(0, uv.height - kSizeFrom750(5),screen_width,kSizeFrom750(6));
-    CGAffineTransform transform = CGAffineTransformMakeScale(1.0f, kSizeFrom750(6)/2);//x.y方向的缩放比例
-    self.progressView.transform = transform;
-    [self.progressView setProgressTintColor:RGB(44,214,249)];
-    [self.progressView setTrackTintColor:navigationBarColor];
-    [self.progressView setProgress:0.0];
+    self.progressView = [[CustomProgressView alloc]initWithFrame:CGRectMake(0, uv.height - kSizeFrom750(6),screen_width,kSizeFrom750(6))];
+    [CommonUtils addGradientLayer:self.progressView startColor:RGB(41,213,253) endColor:RGB(190, 252, 248) withDirection:DirectionFromLeft];//设置渐变色
+    self.progressView.progress = 0.0f;
+    self.progressView.layer.cornerRadius = 0.01;
+     self.progressView.tineView.layer.cornerRadius = 0.01;
     //添加该控件到视图View中
     [uv addSubview:self.progressView];
+
+    
+    self.progressTopView = [[UIView alloc]initWithFrame:RECT(0, self.progressView.top, self.progressView.width, self.progressView.height)];
+    self.progressTopView.backgroundColor = navigationBarColor;
+    [uv addSubview:self.progressTopView];
     
 }
-
 -(void) initBottom
 {
     UIView * bottom=[[UIView alloc] initWithFrame:CGRectMake(0, kSizeFrom750(270), screen_width, kSizeFrom750(100))];
     bottom.backgroundColor= RGB(37,142,233);
+    [self addSubview:bottom];
+
     self.programRemainLabel = [[UILabel alloc] initWithFrame:CGRectMake(kSizeFrom750(30), kSizeFrom750(30),kSizeFrom750(320),kSizeFrom750(40))];
     self.programRemainLabel.font =  SYSTEMSIZE(28);
     self.programRemainLabel.textColor =  RGB(111,187,255);
     [bottom addSubview:self.programRemainLabel];
     
-
+    
     
     self.investLabel= [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2, self.programRemainLabel.top,screen_width/2-kSizeFrom750(30),self.programRemainLabel.height)];
     self.investLabel.font =  SYSTEMSIZE(28);
@@ -155,11 +159,7 @@ Strong UILabel *investLabel;//投资人
     self.investLabel.textAlignment=NSTextAlignmentRight;
     self.investLabel.hidden = YES;
     [bottom addSubview:self.investLabel];
-    
     bottom.tag=2;
-    
-    [bottom addSubview:self.investLabel];
-    [self addSubview:bottom];
     
     
 }
@@ -173,15 +173,15 @@ Strong UILabel *investLabel;//投资人
         [myTimer invalidate];
     }
     else{
-    self.progressView.progress += 0.005; // 设定步进长度
-    self.progressLabel.text=[[NSString stringWithFormat:@"已售%.2f",self.progressView.progress*100] stringByAppendingString:@"%"];
-    self.progressLabel.left = (screen_width - self.progressLabel.width)*self.progressView.progress;
-    CGFloat rr=44+self.progressView.progress*176;
-    CGFloat  gg=214+self.progressView.progress*39;
-    [self.progressView setProgressTintColor:RGB(rr,gg,252)];
-    if (self.progressView.progress >= self.progressNum) {// 如果进度条到头了
-        [myTimer invalidate];
-        self.progressLabel.text=[[NSString stringWithFormat:@"已售%.2f",self.progressNum*100] stringByAppendingString:@"%"];
+        
+        self.progressView.progress += 0.005; // 设定步进长度
+        CGFloat proLeft = screen_width*self.progressView.progress;
+        self.progressTopView.frame = RECT(proLeft, self.progressTopView.top, screen_width-proLeft, self.progressTopView.height);
+        self.progressLabel.text=[[NSString stringWithFormat:@"已售%.2f",self.progressView.progress*100] stringByAppendingString:@"%"];
+        self.progressLabel.left = (screen_width - self.progressLabel.width)*self.progressView.progress;
+        if (self.progressView.progress >= self.progressNum) {// 如果进度条到头了
+            [myTimer invalidate];
+            self.progressLabel.text=[[NSString stringWithFormat:@"已售%.2f",self.progressNum*100] stringByAppendingString:@"%"];
         }
     }
 }

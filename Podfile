@@ -37,4 +37,5 @@ pod 'YYModel', '~> 1.0.4'
 pod 'XHLaunchAd', '~> 3.4.4'
 pod 'LYEmptyView', '~> 1.0.2'
 pod 'ReactiveObjC'
+pod 'Bugly', '~> 2.5.0'
 end

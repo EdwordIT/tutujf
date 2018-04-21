@@ -19,13 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MyInfo/Controller/MineViewController.m"
-            timestampString = "545563096.563259"
+            filePath = "Public/PublicClass/CommonUtils.m"
+            timestampString = "545740494.287161"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "390"
-            endingLineNumber = "390"
-            landmarkName = "-didopMineAtIndex:"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
+            landmarkName = "+isUpdate"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -35,13 +35,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MyInfo/Controller/RushPurchaseController.m"
-            timestampString = "545563096.5634969"
+            filePath = "TTJF/SystemConfig/AppDelegate+XGPushConfig.m"
+            timestampString = "545911088.041729"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "529"
-            endingLineNumber = "529"
-            landmarkName = "-postFormData:url:"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "-handleNotification:isRemote:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -51,13 +51,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Found/Controller/FoundController.m"
-            timestampString = "545563096.563664"
+            filePath = "TTJF/AppDelegate.m"
+            timestampString = "545994526.401714"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
-            landmarkName = "-didTreasureMiddleIndex:"
+            startingLineNumber = "508"
+            endingLineNumber = "508"
+            landmarkName = "-shouldDegradeHTTPDNS:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Public/KDCustom/CountDownManager.m"
+            timestampString = "545994526.401937"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "-cancel"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

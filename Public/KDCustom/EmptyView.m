@@ -36,10 +36,9 @@
 //带刷新的nodataView
 +(instancetype)noDataRefreshBlock:(EmptyRefreshBlock)refreshBlock
 {
-    
-    return [EmptyView emptyActionViewWithImageStr:@"icons_nodata" titleStr:@"暂无数据" detailStr:@"" btnTitleStr:@"重新加载" btnClickBlock:^{
+  return [EmptyView emptyActionViewWithImageStr:@"icons_nodata" titleStr:@"暂无数据" detailStr:@"" btnTitleStr:@"重新加载" btnClickBlock:^{
         refreshBlock();
     }];
-}
+  }
 
 @end

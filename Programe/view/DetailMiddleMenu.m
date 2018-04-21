@@ -51,7 +51,7 @@
     [self addSubview:contentLab];
     
     line1=[[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height-kLineHeight, screen_width, kLineHeight)];
-    line1.backgroundColor=lineBg;
+    line1.backgroundColor=RGB_233;
     [self addSubview:line1];
 }
 

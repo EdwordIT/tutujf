@@ -39,13 +39,6 @@ typedef NS_ENUM(NSUInteger, AnalyzeType) {
 
 + (HttpCommunication *)sharedInstance;
 
-/**get请求*/
-- (void)getRequestWithURL:(NSString *)urlString
-                  refresh:(MJRefreshComponent *)refresh
-                  success:(TTJFCallBackSuccess)success
-                  failure:(TTJFCallBackFailed)failure;
-
-//                    newWorkError:(TTJFConnectServiceFailed)networkError;
 /**
  带sign验签的get请求
  */
@@ -55,12 +48,14 @@ typedef NS_ENUM(NSUInteger, AnalyzeType) {
                        refresh:(UIScrollView *)scrollView
                        success:(TTJFCallBackSuccess)success
                    failure:(TTJFCallBackFailed)failure;
+//带sign签名的POST请求
+- (void)postSignRequestWithPath:(NSString *)urlString
+                      keysArray:(NSArray *)keys
+                    valuesArray:(NSArray *)values
+                        refresh:(UIScrollView *)scrollView
+                        success:(TTJFCallBackSuccess)success
+                        failure:(TTJFCallBackFailed)failure;
 
-- (void)postRequestWithURL:(NSString *)urlString
-                parameters:(NSDictionary *)parameters
-                   success:(TTJFCallBackSuccess)success
-                   failure:(TTJFCallBackFailed)failure;
-//                     newWorkError:(TTJFConnectServiceFailed)networkError;
 
 /*!
  

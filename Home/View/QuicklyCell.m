@@ -28,6 +28,7 @@ Strong NSDate *nowDate;//现在的时间
     UIButton* buyBtn;
     UILabel * startLabel;
     NSInteger secondsCountDown;
+    
 }
 
 
@@ -36,6 +37,7 @@ Strong NSDate *nowDate;//现在的时间
     isfinish=FALSE;
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countDownNotification:) name:Noti_CountDown object:nil];
+        secondsCountDown = 0;
         [self initViews];
     }
     return self;
@@ -43,20 +45,32 @@ Strong NSDate *nowDate;//现在的时间
 
 -(void)initViews {
     
-    self.title= [[UILabel alloc] initWithFrame:CGRectMake(kSizeFrom750(30), kSizeFrom750(30),screen_width-kSizeFrom750(110), kSizeFrom750(30))];
+    self.title= [[UILabel alloc] init];
     self.title.font = SYSTEMSIZE(30);
     self.title.textColor=RGB_51;
     self.title.text=@"宝马0214-02（温州总部）";
     self.title.textAlignment=NSTextAlignmentLeft;
     [self.contentView addSubview: self.title];
     
-    self.typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake(screen_width/2-90, 18, kSizeFrom750(116), kSizeFrom750(38))];
+    self.typeimgsrc= [[UIImageView alloc] init];
     self.typeimgsrc.centerY = self.title.centerY;
     [ self.typeimgsrc setImage:[UIImage imageNamed:@"gqzq.png"]];
     [self.contentView addSubview:self.typeimgsrc];
     
+    [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(kOriginLeft);
+        make.top.mas_equalTo(kSizeFrom750(30));
+        make.height.mas_equalTo(kSizeFrom750(30));
+    }];
     
-    self.percentLabel= [[UILabel alloc] initWithFrame:CGRectMake(self.title.left, self.title.bottom+kSizeFrom750(40),kSizeFrom750(150),kSizeFrom750(32))];
+    [self.typeimgsrc mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.title.mas_right).offset(kSizeFrom750(30));
+        make.width.mas_equalTo(kSizeFrom750(116));
+        make.height.mas_equalTo(kSizeFrom750(38));
+        make.centerY.mas_equalTo(self.title);
+    }];
+    
+    self.percentLabel= [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, kSizeFrom750(100),kSizeFrom750(150),kSizeFrom750(32))];
     self.percentLabel.text=@"8.23%";
     [self.percentLabel setFont:NUMBER_FONT(30)];
     self.percentLabel.textColor = COLOR_Red;
@@ -97,17 +111,18 @@ Strong NSDate *nowDate;//现在的时间
     buyBtn.frame = CGRectMake(screen_width-kSizeFrom750(216),kSizeFrom750(100), kSizeFrom750(168), kSizeFrom750(60));
     [buyBtn addTarget:self action:@selector(button_event:) forControlEvents:UIControlEventTouchUpInside];
     buyBtn.tag=1;
+    buyBtn.adjustsImageWhenHighlighted = NO;
     [buyBtn setTitle:@"抢购" forState:UIControlStateNormal];//button title
     [buyBtn.titleLabel setFont:SYSTEMSIZE(30)];
     [buyBtn setTitleColor:RGB(255,255,255) forState:UIControlStateNormal];//title color
-    buyBtn.backgroundColor=RGB(255,46,18);
+    buyBtn.backgroundColor=COLOR_Btn_Unsel;
     buyBtn.layer.masksToBounds = YES;
     [buyBtn.layer setCornerRadius:kSizeFrom750(60)/2]; //设置矩形四个圆角半径
     [self.contentView addSubview:buyBtn];
     
     //还款中
     proStateImage= [[UIImageView alloc] initWithFrame:CGRectMake(screen_width - kSizeFrom750(180), kSizeFrom750(20),kSizeFrom750(148), kSizeFrom750(148))];
-    [ proStateImage setImage:[UIImage imageNamed:@"huankuanz"]];
+    [ proStateImage setImage:IMAGEBYENAME(@"program_payback")];
     [proStateImage setHidden:YES];
     [self.contentView addSubview:proStateImage];//huankuanz
     
@@ -216,22 +231,20 @@ Strong NSDate *nowDate;//现在的时间
 #pragma mark --notification
 //倒计时通知事件接收
 -(void)countDownNotification:(NSNotification *)noti{
-    NSDictionary *userInfo = noti.userInfo;//获取通知发送的计数信息
-    NSInteger count = [[userInfo objectForKey:@"timeInterval"] integerValue];//计数
-    NSInteger timeToNow = [self getDifferenceByDate:self.cellModel.open_up_date];//开始时间距离现在的时间差（秒数）
-    if (timeToNow<=0||([self.cellModel.open_up_status rangeOfString:@"-1"].location!=NSNotFound)) {
+    
+//    NSDictionary *userInfo = noti.userInfo;//获取通知发送的计数信息
+//    NSInteger count = [[userInfo objectForKey:@"timeInterval"] integerValue];//计数
+//    NSInteger timeToNow = [self getDifferenceByDate:self.cellModel.open_up_date];//开始时间距离现在的时间差（秒数）
+    secondsCountDown--;
+    if (secondsCountDown<=0||([self.cellModel.open_up_status rangeOfString:@"-1"].location!=NSNotFound)) {
         return;//如果开始就不存在倒计时，则不走下边儿判断
     }
-    NSInteger timeInterval = timeToNow - count;
-    if (timeInterval >0) {
-        [self.timeView setHidden:NO];
-        [self.progressView setHidden:YES];
-        [proTextLabel setHidden:YES];
+    if (secondsCountDown >0&&self.timeView.hidden == NO) {
         
-        NSInteger hour=(timeInterval-(timeInterval%HOUR))/HOUR;
+        NSInteger hour=(secondsCountDown-(secondsCountDown%HOUR))/HOUR;
         NSString *str_hour = [NSString stringWithFormat:@"%02ld",hour];
-        NSString *str_minute = [NSString stringWithFormat:@"%02ld",(timeInterval%HOUR)/MINUTE];
-        NSString *str_second = [NSString stringWithFormat:@"%02ld",timeInterval%MINUTE];
+        NSString *str_minute = [NSString stringWithFormat:@"%02ld",(secondsCountDown%HOUR)/MINUTE];
+        NSString *str_second = [NSString stringWithFormat:@"%02ld",secondsCountDown%MINUTE];
         self.hourLabel.text = str_hour;
         self.minuteLabel.text = str_minute;
         self.secondLabel.text = str_second;
@@ -239,7 +252,7 @@ Strong NSDate *nowDate;//现在的时间
     {
         self.cellModel.open_up_status = @"-1";
         self.cellModel.status = @"3";
-        buyBtn.backgroundColor=RGB(255,46,18);
+        buyBtn.backgroundColor=COLOR_Red;
         [self.progressView setHidden:NO];
         self.progressView.progress = 0;
         [proTextLabel setHidden:NO];
@@ -249,10 +262,7 @@ Strong NSDate *nowDate;//现在的时间
 }
 
 - (NSInteger)getDifferenceByDate:(NSString *)creat_time {
-    if (!_nowDate) {
-        self.nowDate = [NSDate date]; // 当前时间(同一个model只计算一次，防止count和time倒计时重复计算)
-    }
-    
+    self.nowDate = [NSDate date]; // 当前时间(同一个model只计算一次，防止count和time倒计时重复计算)
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyy-MM-dd HH-mm-ss";
     NSDate *creat = [formatter dateFromString:creat_time]; // 传入的时间
@@ -264,7 +274,7 @@ Strong NSDate *nowDate;//现在的时间
     NSInteger day= [compas day];
     if(day<0)
         return 0;
-    NSInteger sss= [compas second]+compas.hour*60*60+[compas minute]*60+day*24*60*60;
+    NSInteger sss= [compas second]+compas.hour*HOUR+[compas minute]*MINUTE+day*DAY;
     if(sss<0)
         return 0;
     return sss;
@@ -301,15 +311,13 @@ Strong NSDate *nowDate;//现在的时间
 
 -(void)setQuicklyModel:(QuicklyModel *)quickModel
 {
+    [buyBtn setTitle:quickModel.status_name forState:UIControlStateNormal];
     self.cellModel = quickModel;
-    if(![self.cellModel.status isEqual: @"3"])//==3的时候才能抢购，其余的状态均不能抢购
-        isfinish=YES;
-    else
-        isfinish=NO;
- 
+
     progressNum=[self.cellModel.progress intValue]/100;
     secondsCountDown = [self getDifferenceByDate:self.cellModel.open_up_date];//倒计时秒数(48小时换算成的秒数,项目中需要从服务器获取)
-    if(isfinish)//如果已经满标，三种状态
+    int status = [self.cellModel.status intValue];
+    if( status== 4||status ==6||status==7)//如果已经满标，三种状态
     {
         lab5.textColor=RGB_153;
         self.percentLabel.textColor=RGB_153;
@@ -327,15 +335,15 @@ Strong NSDate *nowDate;//现在的时间
         
         if([self.cellModel.status isEqual:@"4"])//满标待审
         {
-            [proStateImage setImage:[UIImage imageNamed:@"aslo02.png"]];
+            [proStateImage setImage:IMAGEBYENAME(@"program_full")];
         }
         else if([self.cellModel.status isEqual:@"7"])//已还完
         {
-            [proStateImage setImage:[UIImage imageNamed:@"aslo03.png"]];
+            [proStateImage setImage:IMAGEBYENAME(@"program_repayed")];
         }
         else if([self.cellModel.status isEqual:@"6"])//还款中
         {
-            [proStateImage setImage:[UIImage imageNamed:@"huankuanz"]];
+            [proStateImage setImage:IMAGEBYENAME(@"program_payback")];
         }
     }
     else//未满标，则可能可购买，或者可能在倒计时
@@ -351,7 +359,7 @@ Strong NSDate *nowDate;//现在的时间
         //进度条和倒计时的显示判断
         if([self.cellModel.open_up_status isEqual:@"-1"])//如果还可购买，则显示进度条
         {
-            buyBtn.backgroundColor=RGB(255,46,18);
+            buyBtn.backgroundColor=COLOR_Red;
             [self.timeView setHidden:YES];
             [self.progressView setHidden:NO];
             [proTextLabel setHidden:NO];
@@ -368,7 +376,7 @@ Strong NSDate *nowDate;//现在的时间
         }
         else
         {
-            [buyBtn setBackgroundColor:RGB_153];//抢购按钮置灰色,显示倒计时
+            [buyBtn setBackgroundColor:COLOR_Btn_Unsel];//抢购按钮置灰色,显示倒计时
             [self.timeView setHidden:NO];
             [self.progressView setHidden:YES];
             [proTextLabel setHidden:YES];
@@ -377,11 +385,21 @@ Strong NSDate *nowDate;//现在的时间
     }
     
     self.title.text=self.cellModel.name;
-    self.typeimgsrc.left = self.title.font.pointSize*self.cellModel.name.length+self.title.left+kSizeFrom750(20);
+  
+    if (!IsEmptyStr(self.cellModel.activity_url_img)) {
+        self.typeimgsrc.width = [self.cellModel.activity_img_width floatValue];
+        self.typeimgsrc.height = [self.cellModel.activity_url_img_height floatValue];
+        self.typeimgsrc.centerY = self.title.centerY;
+        [self.typeimgsrc mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo([self.cellModel.activity_img_width floatValue]);
+            make.height.mas_equalTo([self.cellModel.activity_url_img_height floatValue]);
+        }];
+        [self.typeimgsrc setImageWithString:self.cellModel.activity_url_img];
+    }
     self.timeLabel.text=[NSString stringWithFormat:@"%@",self.cellModel.period];
     proTextLabel.text= [[NSString stringWithFormat:@"进度%@",self.cellModel.progress] stringByAppendingString:@"%"];
     self.percentLabel.text = [NSString stringWithFormat:@"%.2f%@",[self.cellModel.apr floatValue]+[self.cellModel.additional_apr floatValue],@"%"];
-    [self.typeimgsrc setImageWithString:self.cellModel.activity_url_img];
+    
     lab5.text=[NSString stringWithFormat:@"%@",self.cellModel.repay_type_name];
    
     

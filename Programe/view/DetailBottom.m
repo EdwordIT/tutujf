@@ -57,7 +57,7 @@
     [self removeAllSubViews];
     self.backgroundColor =[UIColor whiteColor];
     UIView * linebg=[[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(20))];
-    linebg.backgroundColor=RGB(242,242,242);
+    linebg.backgroundColor=COLOR_Background;
     [self addSubview:linebg];
     
     NSArray * repalys=  model.repay_plan.items;//还款计划列表
@@ -96,7 +96,7 @@
     invest=[[DetailInvest alloc] initWithFrame:CGRectMake(0, product.top, screen_width, defaultHeight)];
     [invest setModel:model];
     TenderModel * dic= model.tender_list;
-    if(![dic.not_lktenlist_title isEqual:@""])
+    if([dic.is_show_tenlist isEqual:@"-1"])//不显示投资人
         investHeight = defaultHeight;
     else
         investHeight =dic.items.count*kSizeFrom750(150);
@@ -170,10 +170,10 @@
 }
 -(void)sendProductHeight:(CGFloat)height
 {
-    
+    webHeight = height;
     if (sectionSeg.selectIndex==0) {
         [self.delegate didSelectedBottomAtIndex:0 height:height];
     }
-    webHeight = height;
+    
 }
 @end

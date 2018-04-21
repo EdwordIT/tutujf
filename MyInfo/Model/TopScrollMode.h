@@ -11,7 +11,7 @@
 @interface TopScrollMode : NSObject
 
 @property (nonatomic, copy) NSString   *account_url;
-@property (nonatomic, copy) NSString   *image_url;
+@property (nonatomic, copy) NSString   *imageName;
 @property (nonatomic, copy) NSString   *accountnum;
 @property (nonatomic, copy) NSString   *accountname;
 @property (nonatomic) NSInteger  index;

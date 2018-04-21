@@ -14,48 +14,49 @@
 #import <ShareSDKUI/SSUIShareActionSheetStyle.h>
 #import <ShareSDKUI/SSUIShareActionSheetCustomItem.h>
 #import <ShareSDK/ShareSDK+Base.h>
-#import "UIImageView+WebCache.h"
 #import "MBProgressHUD+MP.h"
 #import <MOBFoundation/MOBFoundation.h>
-#import "AppDelegate.h"
-#import "Utils.h"
-#import "Base64.h"
-#import "DESFunc.h"
 #import "AccountInfoController.h"//个人资料详情
 #import "RegisterViewController.h"//注册
 #import "ForgetPasswordViewController.h"//忘记密码
 #import "ProgrameNewDetailController.h"//项目详情
 #import "RushPurchaseController.h"//快速投资
-#import "NetworkManager.h"
 #import <AlicloudHttpDNS/AlicloudHttpDNS.h>
-#import "HttpSignCreate.h"
 #import "ChangePasswordViewController.h"
 @interface HomeWebController ()<NSURLConnectionDelegate, NSURLConnectionDataDelegate,WKNavigationDelegate,WKScriptMessageHandler>
 Strong WKWebView *mainWebView;
 //Strong UIProgressView *progressView;
 Copy NSString *callBack;//分享之后回调方法，写入js的方法名
 Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
-
+Strong UIButton *closeBtn;//关闭当前页面
+Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie）
 @end
-//static HttpDnsService *httpdns;
 @implementation HomeWebController
+- (void)dealloc {
+    [[_mainWebView configuration].userContentController removeScriptMessageHandlerForName:@"openShare"];
+    
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [SVProgressHUD dismiss];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.titleString = @"土土金服";
-    [self.rightBtn setHidden:YES];
-    [self.rightBtn setImage:IMAGEBYENAME(@"close_white") forState:UIControlStateNormal];
-    [self.rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    self.view.backgroundColor = separaterColor;
     
+    [self loadNav];
+
     
     if(_urlStr==nil||[_urlStr isEqual:@""])
     {
-        [SVProgressHUD showErrorWithStatus:@"链接错误"];
+        [SVProgressHUD showInfoWithStatus:@"链接错误"];
         return;
     }
     [self.view addSubview:self.mainWebView];
     
+    [SVProgressHUD show];
+//    _urlStr = @"https://cs.www.tutujf.com/wap/test/loginpa";//测试连接
     //添加ios客户端标识
     if ([_urlStr rangeOfString:@"equipment=ios"].location==NSNotFound) {
         [self refreshUrl:_urlStr];
@@ -63,46 +64,28 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
         [self loadRequest:_urlStr];
     }
 }
--(void)refreshUrl:(NSString *)urlString{
-    NSString *resaultUrl = @"";
-    //如果为自带下发的webView，则重新加载添加客户端标识的webView,并隐藏关闭按钮
-    if ([urlString rangeOfString:oyUrlAddress].location!=NSNotFound) {
-        [self.rightBtn setHidden:YES];
-        //如果链接已经加过标识符，则不重新添加
-        if ([urlString rangeOfString:@"equipment"].location!=NSNotFound) {
-            resaultUrl = urlString;
-        }else{
-            
-            NSArray *array = [urlString componentsSeparatedByString:@"#"]; //从字符#中分隔成2个元素的数组,如果没有#，则数组里只有字符串本身一个元素
-            NSString *header = array[0];
-            if ([header rangeOfString:@"?"].location!=NSNotFound) {
-                header = [header stringByAppendingString:@"&equipment=ios"];
-            }else{
-                header = [header stringByAppendingString:@"?equipment=ios"];
-            }
-            
-            if (array.count>1) {
-                resaultUrl = [NSString stringWithFormat:@"%@#%@",header,array[1]];
-            }else{
-                resaultUrl = header;
-            }
-            
-            //http://cs.www.tutujf.com/wap/loan/loaninfoview?name=33#?id=774
-            /**规则：1、链接中如果含有#，则在#之前加标识符?equipment=ios
-                        a，如果有#，并且前置标识符中已经有了？，则标识符变为&equipment=ios
-             2、链接中如果没有#，则在链接结尾出直接添加标识符
-             */
-            
-        }
-        [self.mainWebView stopLoading];
-        
-        [self loadRequest:resaultUrl];//加载校验过的webView
-    }else{
-        //打开关闭按钮
-        [self.rightBtn setHidden:NO];
-    }
+-(void)loadNav
+{
+    self.titleString = @"土土金服";
 
+    self.closeBtn = InitObject(UIButton);
+    [self.titleView addSubview:self.closeBtn];
+    [self.closeBtn setImage:IMAGEBYENAME(@"icons_close") forState:UIControlStateNormal];
+    [self.closeBtn setHidden:YES];
+    self.closeBtn.adjustsImageWhenHighlighted = NO;
+    [self.closeBtn addTarget:self action:@selector(closeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.width.height.mas_equalTo(self.backBtn);
+        make.left.mas_equalTo(self.backBtn.mas_right).offset(kSizeFrom750(10));
+    }];
+    //刷新按钮，清除缓存，保留cookie，并且刷新页面
+    [self.rightBtn setHidden:NO];
+    self.refreshBtn = self.rightBtn;
+    [self.refreshBtn setImage:IMAGEBYENAME(@"icons_refresh") forState:UIControlStateNormal];
+    [self.refreshBtn addTarget:self action:@selector(refreshBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    
 }
+
 -(WKWebView *)mainWebView{
     if (!_mainWebView) {
         WKUserContentController *userContentController = [[WKUserContentController alloc] init];
@@ -111,19 +94,9 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
         configuration.userContentController = userContentController;
         //js调用OC的内容名称注册
         [userContentController addScriptMessageHandler:self name:@"openShare"];//分享
-        [userContentController addScriptMessageHandler:self name:@"return_link"];//返回链接跳转
         //对应前端js中调用时候要使用
        //  window.webkit.messageHandlers.openShare.postMessage({body: 'hello world!'});
 
-        if(kDevice_Is_iPhoneX)
-        {
-            if (@available(iOS 11.0, *)) {
-                _mainWebView.scrollView.contentInsetAdjustmentBehavior=UIScrollViewContentInsetAdjustmentNever;
-            } else {
-                // Fallback on earlier versions
-            }
-        }
-        
         _mainWebView = [[WKWebView alloc]initWithFrame:CGRectMake(0, kNavHight, screen_width,kViewHeight) configuration:configuration];
         _mainWebView.navigationDelegate = self;
         [_mainWebView setUserInteractionEnabled:YES];
@@ -138,21 +111,81 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
     return _mainWebView;
 }
 #pragma mark --buttonClick
+-(void)refreshBtnClick:(UIButton *)sender{
+    [SVProgressHUD show];
+    if ([UIDevice currentDevice].systemVersion.doubleValue<9.0) {//ios9以下清除缓存
+        NSURLCache * cache = [NSURLCache sharedURLCache];
+        
+        [cache removeAllCachedResponses];
+        
+        [cache setDiskCapacity:0];
+        
+        [cache setMemoryCapacity:0];
+    }else{
+        //清除的缓存类型
+        NSSet *websiteDataTypes = [NSSet setWithArray:@[
+                                
+                                WKWebsiteDataTypeDiskCache,
+                                
+                                //WKWebsiteDataTypeOfflineWebApplicationCache,
+                                
+                                WKWebsiteDataTypeMemoryCache,
+                                
+                                //WKWebsiteDataTypeLocalStorage,
+                                
+                                //WKWebsiteDataTypeCookies,
+                                
+                                //WKWebsiteDataTypeSessionStorage,
+                                
+                                //WKWebsiteDataTypeIndexedDBDatabases,
+                                
+                                //WKWebsiteDataTypeWebSQLDatabases
+                                
+                                ]];
+        [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:websiteDataTypes modifiedSince:[NSDate dateWithTimeIntervalSince1970:0] completionHandler:^{
+            
+        }];
+    
+    }
+    [self loadRequest:self.mainWebView.URL.absoluteString];
+}
 //回退按钮点击（需要判断回退内容）
 -(void)backPressed:(UIButton *)sender{
+    /*
+     点击返回按钮，可能三种状态：1、正常返回 2、越过上一页面，返回 3、跳转到某一链接(此链接不再走正常返回)
+     appbakurl=https%3a%2f%2fcs.www.tutujf.com%2f    跳转指定的H5页面
+     appbakurl=close_page    关闭H5返回原生
+     appbakurl=index    跳转到最初页面
+     */
     if ([self.mainWebView canGoBack]) {
-        //A→B→C
-        NSURL *back = [self.mainWebView.backForwardList backItem].URL;//后退的URL(上一个界面)
-        if ([back.absoluteString rangeOfString:@"appatc=jump"].location!=NSNotFound) {
-            NSArray *backList = [self.mainWebView.backForwardList backList];
-            //跳过B界面直接返回A界面
-            if (backList.count>1) {
-                [self.mainWebView goToBackForwardListItem:[backList objectAtIndex:backList.count-2]];
+        
+        NSString *currentUrl = self.mainWebView.URL.absoluteString;
+        if ([currentUrl rangeOfString:@"appbakurl="].location!=NSNotFound) {
+            NSString *resaultUrl = [[currentUrl componentsSeparatedByString:@"appbakurl="] lastObject];
+            NSLog(@"resaultUrl = %@",[resaultUrl stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]);
+            if ([resaultUrl isEqualToString:@"close_page"]) {
+                [self.mainWebView stopLoading];
+                [self.navigationController popViewControllerAnimated:YES];//跳转原生
+            }else if([resaultUrl isEqualToString:@"index"])
+            {
+                [self.mainWebView goToBackForwardListItem:[[self.mainWebView.backForwardList backList] firstObject]];//返回到最初的H5页面
             }else{
-                [self.navigationController popToRootViewControllerAnimated:YES];
+                [self loadRequest:[resaultUrl stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];//跳转到指定页面
             }
         }else{
-            [self.mainWebView goBack];
+            //A→B→C
+            NSURL *back = [self.mainWebView.backForwardList backItem].URL;//后退的URL(上一个界面)
+            if ([back.absoluteString rangeOfString:@"appatc=jump"].location!=NSNotFound) {
+                NSArray *backList = [self.mainWebView.backForwardList backList];
+                //跳过B界面直接返回A界面
+                if (backList.count>1) {
+                    [self.mainWebView goToBackForwardListItem:[backList objectAtIndex:backList.count-2]];
+                }else{
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                }
+            }else{
+                [self.mainWebView goBack];
+            }
         }
     }else{
         [self.mainWebView stopLoading];
@@ -160,80 +193,17 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
     }
     
 }
--(void)rightBtnClick:(UIButton *)sender
+-(void)closeBtnClick:(UIButton *)sender
 {
     [self.mainWebView stopLoading];
     [self.navigationController popViewControllerAnimated:YES];
 }
-//加载网页
-- (void)loadRequest: (NSString *) urlstr {
-    [SVProgressHUD show];
-
-    NSMutableString *cookies = [NSMutableString string];
-    NSArray *tmp = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    for (NSHTTPCookie * cookie in tmp) {
-        [cookies appendFormat:@"%@=%@;",cookie.name,cookie.value];
-    }
-     NSMutableURLRequest *request ;
-    NSURL *url = [[NSURL alloc] initWithString:urlstr];
-   
-    request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPShouldHandleCookies:YES];
-    // 注入Cookie
-    [request setValue:cookies forHTTPHeaderField:@"Cookie"];
-    [request setValue:@"Mozilla/5.0 (iPhone; CPU iPhone like Mac OS X; zh-CN;) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/14C92 TutuBrowser/1.1.1 Mobile AliApp(TUnionSDK/0.1.12) AliApp(TUnionSDK/0.1.12)" forHTTPHeaderField:@"User-Agent"];
-    [self.mainWebView loadRequest:request];
-    
-}
--(void)viewWillDisappear:(BOOL)animated
-{
-    [SVProgressHUD dismiss];
-}
-- (void)dealloc {
-    [[_mainWebView configuration].userContentController removeScriptMessageHandlerForName:@"openShare"];
-    [[_mainWebView configuration].userContentController removeScriptMessageHandlerForName:@"return_link"];
-
-}
-#pragma mark --MessageHandler(WKWebView与JS方法交互:JS调用OC 方法)
-- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message
-{
-    //调用app内部的方法
-    //分享
-    if ([message.name isEqualToString:@"openShare"]) {
-        // 调用方法
-        if ([self respondsToSelector:@selector(openShare:)]) {
-            //传入要分享的内容
-            if ([message.body isKindOfClass:[NSDictionary class]]) {
-                [self openShare:message.body];
-            }
-        } else {
-            NSLog(@"调用失败");
-        }
-    }
-    //点击返回按钮，如果返回按钮有要求跳转的链接，则不走返回，而是跳转到新的链接
-    if ([message.name isEqualToString:@"return_link"]) {
-        self.returnWebUrl = [message.body objectForKey:@"link_url"];
-    }
-}
-//弹出分享页面
--(void)openShare:(NSDictionary *)object
-{
-    NSLog(@"JS传入的分享内容%@",object);
-    self.callBack = [object objectForKey:@"success_fun"];//获取回调方法名
-    NSString *title = [object objectForKey:@"title"];
-    NSString *img_url = [object objectForKey:@"img_url"];
-    NSString *link_url = [object objectForKey:@"link_url"];
-    NSString *desc = [object objectForKey:@"desc"];
-     [self showShareActionSheet:title Img_url:img_url Link_url:link_url Desc:desc Callback:self.callBack];
-}
-
 #pragma mark --BackToOriginal
 /**
  校验链接是否跳转到原生态页面
  */
--(void)checkIsGoOriginal:(NSURL *)url
+-(void)checkIsGoOriginal:(NSString *)urlPath
 {
-    NSString *urlPath = url.absoluteString;
     //跳转到系统原生页面
     if ([urlPath rangeOfString:@"tutujf:home"].location!=NSNotFound) {
         [self.mainWebView stopLoading];
@@ -325,7 +295,6 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
             //跳转项目详情页
             ProgrameNewDetailController *detail = InitObject(ProgrameNewDetailController);
             detail.isBackToRootVC = YES;
-            detail.user_token = [CommonUtils getToken];
             NSRange range = [urlPath rangeOfString:@"tutujf:home.loaninfoview?loan_id="];
             NSString *loan_id = [urlPath substringFromIndex:range.location+range.length];
             detail.loan_id = loan_id;
@@ -348,19 +317,133 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
         return;
     }
     
+    if ([urlPath rangeOfString:urlCheckAddress].location==NSNotFound) {
+        
+        [self.closeBtn setHidden:NO];
+        [self.refreshBtn setHidden:YES];
+        
+    }else{
+        [self.closeBtn setHidden:YES];
+        [self.refreshBtn setHidden:NO];
+        
+    }
+}
+-(void)refreshUrl:(NSString *)urlString{
+    NSString *resaultUrl = @"";
+    //如果为自带下发的webView，则重新加载添加客户端标识的webView,并隐藏关闭按钮
     
+    if ([urlString rangeOfString:urlCheckAddress].location!=NSNotFound) {
+        [self.closeBtn setHidden:YES];
+        [self.refreshBtn setHidden:NO];
+        //如果链接已经加过标识符，则不重新添加
+        if ([urlString rangeOfString:@"equipment"].location!=NSNotFound) {
+            resaultUrl = urlString;
+        }else{
+            
+            NSArray *array = [urlString componentsSeparatedByString:@"#"]; //从字符#中分隔成2个元素的数组,如果没有#，则数组里只有字符串本身一个元素
+            NSString *header = array[0];
+            if ([header rangeOfString:@"?"].location!=NSNotFound) {
+                header = [header stringByAppendingString:@"&equipment=ios"];
+            }else{
+                header = [header stringByAppendingString:@"?equipment=ios"];
+            }
+            
+            if (array.count>1) {
+                resaultUrl = [NSString stringWithFormat:@"%@#%@",header,array[1]];
+            }else{
+                resaultUrl = header;
+            }
+            
+            //http://cs.www.tutujf.com/wap/loan/loaninfoview?name=33#?id=774
+            /**规则：1、链接中如果含有#，则在#之前加标识符?equipment=ios
+             a，如果有#，并且前置标识符中已经有了？，则标识符变为&equipment=ios
+             2、链接中如果没有#，则在链接结尾出直接添加标识符
+             */
+            
+        }
+        [self.mainWebView stopLoading];
+        
+        [self loadRequest:resaultUrl];//加载校验过的webView
+    }else{
+        //打开关闭按钮，加载外部链接
+        [self.closeBtn setHidden:NO];
+        [self.refreshBtn setHidden:YES];
+        [self loadRequest:urlString];
+    }
     
 }
+
+
+//加载网页
+- (void)loadRequest: (NSString *) urlstr {
+   
+    NSURL *url = [[NSURL alloc] initWithString:urlstr];
+    NSMutableURLRequest *request;
+    request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableString *cookies = [NSMutableString string];
+    NSArray *tmp = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    for (NSHTTPCookie * cookie in tmp) {
+        [cookies appendFormat:@"%@=%@;",cookie.name,cookie.value];
+    }
+        // 注入Cookie，识别webView登录状态
+    [request setValue:cookies forHTTPHeaderField:@"Cookie"];
+    [request setValue:@"Mozilla/5.0 (iPhone; CPU iPhone like Mac OS X; zh-CN;) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/14C92 TutuBrowser/1.1.1 Mobile AliApp(TUnionSDK/0.1.12) AliApp(TUnionSDK/0.1.12)" forHTTPHeaderField:@"User-Agent"];
+    [request setHTTPShouldHandleCookies:YES];
+   
+    [self.mainWebView loadRequest:request];
+    
+}
+
+#pragma mark --MessageHandler(WKWebView与JS方法交互:JS调用OC 方法)
+- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message
+{
+    //调用app内部的方法
+    //分享
+    if ([message.name isEqualToString:@"openShare"]) {
+        // 调用方法
+        if ([self respondsToSelector:@selector(openShare:)]) {
+            //传入要分享的内容
+            if ([message.body isKindOfClass:[NSDictionary class]]) {
+                [self openShare:message.body];
+            }
+        } else {
+            NSLog(@"调用失败");
+        }
+    }
+  
+}
+//弹出分享页面
+-(void)openShare:(NSDictionary *)object
+{
+    NSLog(@"JS传入的分享内容%@",object);
+    self.callBack = [object objectForKey:@"success_fun"];//获取回调方法名
+    NSString *title = [object objectForKey:@"title"];
+    NSString *img_url = [object objectForKey:@"img_url"];
+    NSString *link_url = [object objectForKey:@"link_url"];
+    NSString *desc = [object objectForKey:@"desc"];
+     [self showShareActionSheet:title Img_url:img_url Link_url:link_url Desc:desc Callback:self.callBack];
+}
+
+
 #pragma mark - WKNavigationDelegate
 // 页面开始加载时调用
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
     
-    //首先校验webView是否需要跳转到系统原生态页面
-    [self checkIsGoOriginal:webView.URL];
+    NSString *path= [webView.URL absoluteString];
+    NSString * newPath = [path lowercaseString];
+    
+    if ([newPath hasPrefix:@"tel:"]) {
+        
+        UIApplication * app = [UIApplication sharedApplication];
+        if ([app canOpenURL:[NSURL URLWithString:newPath]]) {
+            [app openURL:[NSURL URLWithString:newPath]];
+        }
+        return;
+    }
 }
 // 当内容开始返回时调用
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation{
-    [SVProgressHUD dismiss];
+    
 }
 // 页面加载完成之后调用
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation{
@@ -376,7 +459,7 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
 // 页面加载失败时调用
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation{
     
-    [SVProgressHUD dismiss];
+    [SVProgressHUD showInfoWithStatus:@"加载失败"];
 
 }
 // 接收到服务器跳转请求之后调用
@@ -395,8 +478,11 @@ Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler{
     
     NSLog(@"%@",navigationAction.request.URL.absoluteString);
+    //首先校验webView是否需要跳转到系统原生态页面
+    [self checkIsGoOriginal:navigationAction.request.URL.absoluteString];
     //允许跳转
     decisionHandler(WKNavigationActionPolicyAllow);
+    
     //不允许跳转
     //decisionHandler(WKNavigationActionPolicyCancel);
 }

@@ -10,6 +10,7 @@
 #import "HttpCommunication.h"
 #import "AppDelegate.h"
 #import "HttpSignCreate.h"
+#import <WebKit/WebKit.h>
 @interface AutoLoginView()<UIWebViewDelegate>
 Strong UIWebView *mainWebView;
 @end
@@ -36,14 +37,14 @@ Strong UIWebView *mainWebView;
     
     NSArray *keys =@[@"user_name",@"password",@"terminal_type",@"terminal_id",@"terminal_name",@"terminal_model",@"terminal_token"];
     NSArray *values = @[user_name,password,@"ios",[CommonUtils getUUID],[UIDevice currentDevice].name,[CommonUtils getDeviceVersion],[CommonUtils getDeviceToken]];
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:loginUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:loginUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
         //登陆成功
             NSString * temp=[[successDic objectForKey:kExpirationTime] substringToIndex:10];
             [TTJFUserDefault setStr:[successDic objectForKey:kToken] key:kToken];
             [TTJFUserDefault setStr:user_name key:kUsername];
             [TTJFUserDefault setStr:password key:kPassword];
             [TTJFUserDefault setStr:temp key:kExpirationTime];
-            [self loginWebView];
+            [self setCookie];
             //登录状态改变发送通知
             [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];
         
@@ -72,14 +73,65 @@ Strong UIWebView *mainWebView;
     }
     else
     {
-        [self loginWebView];//应用打开默认走一遍webView登录接口
-        //当前token有效，不用重新更新token，也不需要重新登录
+//        [self loginWebView];//应用打开默认走一遍webView登录接口
+//        //当前token有效，不用重新更新token，也不需要重新登录
+        [self setCookie];
     }
   
 }
+- (void)setCookie{
+    //根据键值取出name
+    NSString *user_name = [TTJFUserDefault strForKey:kUsername];
+    NSString *password = [TTJFUserDefault strForKey:kPassword];
+    
+    NSMutableDictionary *name = [NSMutableDictionary dictionary];
+    [name setObject:@"remember-name" forKey:NSHTTPCookieName];
+    [name setObject:user_name forKey:NSHTTPCookieValue];
+    [name setObject:@"cs.www.tutujf.com" forKey:NSHTTPCookieDomain];
+    [name setObject:[[NSDate date] dateByAddingTimeInterval:2592000] forKey:NSHTTPCookieExpires];
+    [name setObject:@"/" forKey:NSHTTPCookiePath];
+    [name setObject:@"0" forKey:NSHTTPCookieVersion];
+    
+    NSHTTPCookie *cookName = [NSHTTPCookie cookieWithProperties:name];
+    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookName];
+    
+    NSMutableDictionary *pwd = [NSMutableDictionary dictionary];
+    [pwd setObject:@"remember-pwd" forKey:NSHTTPCookieName];
+    [pwd setObject:[@"ttapp:" stringByAppendingString:password] forKey:NSHTTPCookieValue];
+    [pwd setObject:@"cs.www.tutujf.com" forKey:NSHTTPCookieDomain];
+    [pwd setObject:[[NSDate date] dateByAddingTimeInterval:2592000] forKey:NSHTTPCookieExpires];
+    [pwd setObject:@"/" forKey:NSHTTPCookiePath];
+    [pwd setObject:@"0" forKey:NSHTTPCookieVersion];
+    
+    NSHTTPCookie *cookiePwd = [NSHTTPCookie cookieWithProperties:pwd];
+    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookiePwd];
+    
+    self.mainWebView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 0,0)];
+    self.mainWebView.delegate=self;
+    //伸缩内容适应屏幕尺寸
+    self.mainWebView.scalesPageToFit=YES;
+    [self.mainWebView setUserInteractionEnabled:YES];
+    self.mainWebView.scrollView.bounces = NO;
+    [self addSubview:self.mainWebView];
+    
+    NSURL *url = [[NSURL alloc] initWithString:oyUrlAddress];
+    NSMutableURLRequest *request;
+    request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableString *cookies = [NSMutableString string];
+    NSArray *tmp = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    for (NSHTTPCookie * cookie in tmp) {
+        [cookies appendFormat:@"%@=%@;",cookie.name,cookie.value];
+    }
+    // 注入Cookie，识别webView登录状态
+    [request setValue:cookies forHTTPHeaderField:@"Cookie"];
+    [request setValue:@"Mozilla/5.0 (iPhone; CPU iPhone like Mac OS X; zh-CN;) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/14C92 TutuBrowser/1.1.1 Mobile AliApp(TUnionSDK/0.1.12) AliApp(TUnionSDK/0.1.12)" forHTTPHeaderField:@"User-Agent"];
+    [request setHTTPShouldHandleCookies:YES];
+    
+    [self.mainWebView loadRequest:request];
+}
 -(void)loginWebView//webView登录
 {
-    
+
     NSString *user_name=[CommonUtils getUsername];
     NSString *user_token= [TTJFUserDefault strForKey:kToken];
     NSString *urlStr = @"";
@@ -102,12 +154,13 @@ Strong UIWebView *mainWebView;
     [self.mainWebView loadRequest:request];
     self.mainWebView.scrollView.bounces = NO;
     [self addSubview:self.mainWebView];
-    
+
 }
 -(void)exitLogin//webView退出登录
 {
     [self cleanCaches];
     [self removeUserInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];//登录状态变更，刷新首页数据
 }
 
 -(void)removeUserInfo{
@@ -115,7 +168,6 @@ Strong UIWebView *mainWebView;
     [TTJFUserDefault removeStrForKey:kToken];
     [TTJFUserDefault removeStrForKey:kPassword];
     [TTJFUserDefault removeStrForKey:kExpirationTime];
-    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];//登录状态变更，刷新首页数据
 }
 
 #pragma mark webViewDelegate
@@ -137,20 +189,43 @@ Strong UIWebView *mainWebView;
     return date;
 }
 
+/*
+ 清除缓存
+ */
 - (void)cleanCaches{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths lastObject];
-    // 利用NSFileManager实现对文件的管理
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if ([fileManager fileExistsAtPath:path]) {
-        // 获取该路径下面的文件名
-        NSArray *childrenFiles = [fileManager subpathsAtPath:path];
-        for (NSString *fileName in childrenFiles) {
-            // 拼接路径
-            NSString *absolutePath = [path stringByAppendingPathComponent:fileName];
-            // 将文件删除
-            [fileManager removeItemAtPath:absolutePath error:nil];
-        }
+    //清除缓存和cookie
+    NSArray *cookiesArray = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    for (NSHTTPCookie *cookie in cookiesArray) {
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+    }
+    if ([UIDevice currentDevice].systemVersion.doubleValue<9.0) {//ios9以下
+        
+        
+    }else{
+        //            NSSet *websiteDataTypes = [NSSet setWithArray:@[
+        //
+        //                                    WKWebsiteDataTypeDiskCache,
+        //
+        //                                    WKWebsiteDataTypeOfflineWebApplicationCache,
+        //
+        //                                    WKWebsiteDataTypeMemoryCache,
+        //
+        //                                    WKWebsiteDataTypeLocalStorage,
+        //
+        //                                    WKWebsiteDataTypeCookies,
+        //
+        //                                    WKWebsiteDataTypeSessionStorage,
+        //
+        //                                    //WKWebsiteDataTypeIndexedDBDatabases,
+        //
+        //                                    //WKWebsiteDataTypeWebSQLDatabases
+        //
+        //                                    ]];
+        //清除的缓存类型
+        NSSet *websiteDataTypes = [WKWebsiteDataStore allWebsiteDataTypes];
+        [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:websiteDataTypes modifiedSince:[NSDate dateWithTimeIntervalSince1970:0] completionHandler:^{
+            
+        }];
     }
 }
 /*

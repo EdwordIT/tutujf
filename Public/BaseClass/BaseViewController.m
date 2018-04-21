@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
 #import "AppDelegate.h"
 #import "LoginViewController.h"
+#import <WebKit/WebKit.h>
 @interface BaseViewController ()<UINavigationControllerDelegate,UIGestureRecognizerDelegate>
 
 @end
@@ -30,9 +31,16 @@
 #pragma mark - lifeCycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //
+    //适配ios11下scrollview顶格会造成20像素偏移的问题
+    if (@available(iOS 11.0, *)) {
+        UIScrollView.appearance.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    } else {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+    UIView *origin = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+    [self.view addSubview:origin];//解决如果scrollView的为view的第一个子view，则scrollView会偏移20像素
     //设置默认背景颜色
-    self.view.backgroundColor = RGB_246;
+    self.view.backgroundColor = COLOR_Background;
     
     [self initNavBar];
     
@@ -64,15 +72,15 @@
         make.centerX.equalTo(self.view);
     }];
     [self.backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(kSizeFrom750(10));
-        make.width.mas_equalTo(kSizeFrom750(88));
+        make.left.mas_equalTo(kSizeFrom750(20));
+        make.width.mas_equalTo(kSizeFrom750(50));
         make.height.mas_equalTo(kSizeFrom750(88));
         make.centerY.equalTo(self.titleLabel);
     }];
     //两个点属性连续书写会出现bug，代码崩溃，原因待查
     [self.rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-kSizeFrom750(10));
-        make.width.mas_equalTo(kSizeFrom750(88));
+        make.right.mas_equalTo(-kSizeFrom750(20));
+        make.width.mas_equalTo(kSizeFrom750(50));
         make.height.mas_equalTo(kSizeFrom750(88));
         make.centerY.equalTo(self.backBtn);
     }];
@@ -98,7 +106,7 @@
     if (!_titleView) {
         _titleView = InitObject(UIView);
         //        _titleView.backgroundColor = navigationBarColor;
-        _titleView.backgroundColor= RGB(6, 159, 241);//深蓝色
+        _titleView.backgroundColor= navigationBarColor;
     }
     return _titleView;
 }
@@ -121,7 +129,7 @@
 {
     if (!_backBtn) {
         _backBtn = InitObject(UIButton);
-        [_backBtn setImage:IMAGEBYENAME(@"nav_back") forState:UIControlStateNormal];
+        [_backBtn setImage:IMAGEBYENAME(@"icons_back") forState:UIControlStateNormal];
         _backBtn.adjustsImageWhenHighlighted = NO;
 
         
@@ -186,16 +194,59 @@
 //退出登录状态
 -(void)exitLoginStatus
 {
+    if ([CommonUtils isLogin]) {
+         [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];
+    }
     //清除token记录
     [TTJFUserDefault removeStrForKey:kToken];
     [TTJFUserDefault removeStrForKey:kPassword];
     [TTJFUserDefault removeStrForKey:kExpirationTime];
-    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];
+    [self cleanCaches];
+}
+/*
+ 清除缓存
+ */
+- (void)cleanCaches{
+    //清除缓存和cookie
+    NSArray *cookiesArray = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    for (NSHTTPCookie *cookie in cookiesArray) {
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+    }
+    if ([UIDevice currentDevice].systemVersion.doubleValue<9.0) {//ios9以下
+        
+     
+        }else{
+//            NSSet *websiteDataTypes = [NSSet setWithArray:@[
+//
+//                                    WKWebsiteDataTypeDiskCache,
+//
+//                                    WKWebsiteDataTypeOfflineWebApplicationCache,
+//
+//                                    WKWebsiteDataTypeMemoryCache,
+//                                    
+//                                    WKWebsiteDataTypeLocalStorage,
+//
+//                                    WKWebsiteDataTypeCookies,
+//
+//                                    WKWebsiteDataTypeSessionStorage,
+//
+//                                    //WKWebsiteDataTypeIndexedDBDatabases,
+//
+//                                    //WKWebsiteDataTypeWebSQLDatabases
+//
+//                                    ]];
+            //清除的缓存类型
+            NSSet *websiteDataTypes = [WKWebsiteDataStore allWebsiteDataTypes];
+            [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:websiteDataTypes modifiedSince:[NSDate dateWithTimeIntervalSince1970:0] completionHandler:^{
+                
+            }];
+            
+           
+        }
+    
 }
 #pragma mark - UINavigationControllerDelegate
--(void)viewWillDisappear:(BOOL)animated{
-    [SVProgressHUD dismiss];
-}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;

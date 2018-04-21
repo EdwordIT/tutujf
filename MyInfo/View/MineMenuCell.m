@@ -18,7 +18,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         cellHeight = kSizeFrom750(125);
-        self.contentView.backgroundColor = RGB_246;
+        self.contentView.backgroundColor = COLOR_Background;
     }
     
     return self;
@@ -71,7 +71,7 @@
     if(index!=count)
     {
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(kSizeFrom750(20), cellHeight - kLineHeight,btn1.width - kSizeFrom750(20)*2 , kLineHeight)];
-    lineView.backgroundColor =lineBg;
+    lineView.backgroundColor =RGB_233;
     [btn1 addSubview:lineView];
     }
     btn1.tag=index;

@@ -27,6 +27,7 @@ Strong UILabel *textLabel;
         
         self.textLabel = [[UILabel alloc]initWithFrame:RECT(self.titleImage.right+kSizeFrom750(10), kSizeFrom750(10), kSizeFrom750(500), kSizeFrom750(30))];
         self.textLabel.font = SYSTEMSIZE(26);
+        self.textLabel.centerY = self.titleImage.centerY;
         self.textLabel.textColor = HEXCOLOR(@"#666666");
         [self addSubview:self.textLabel];
     }
@@ -63,7 +64,7 @@ Strong UILabel *textLabel;
     [self removeAllSubViews];
     CGFloat totalHeight = 0;
     CGFloat originLeft = kSizeFrom750(30);
-    CGFloat spaceTop = kSizeFrom750(20);
+    CGFloat spaceTop = kSizeFrom750(20);//间隔
     CGFloat labelHeight = kSizeFrom750(50);
     CGFloat labelWidth = self.width - originLeft*2;
     CGFloat lineHeight = kLineHeight;
@@ -127,7 +128,7 @@ Strong UILabel *textLabel;
        
     }
     UIView *bgView = [[UIView alloc]initWithFrame:RECT(originLeft, totalHeight+spaceTop, labelWidth, labelHeight*1.5)];
-    bgView.backgroundColor = lineBg;
+    bgView.backgroundColor = RGB_233;
     [self addSubview:bgView];
     
     //资料审核
@@ -166,11 +167,7 @@ Strong UILabel *textLabel;
        
     }
 
-    //项目材料图片
-    
-    TitleLabel *picTitle = [[TitleLabel alloc]initWithFrame:RECT(originLeft, totalHeight+spaceTop/2, labelWidth, labelHeight)];
-    picTitle.textLabel.text = model.material_pic.title;
-    [self addSubview:picTitle];
+
     
     NSMutableArray *minarr = InitObject(NSMutableArray);
     NSMutableArray *maxArr = InitObject(NSMutableArray);
@@ -182,16 +179,25 @@ Strong UILabel *textLabel;
         [minarr addObject:minurl];
         [maxArr addObject:imgurl];
     }
-    
-    JGGView *jggView = [[JGGView alloc]initWithFrame:RECT(kSizeFrom750(25), picTitle.bottom+spaceTop/2, kSizeFrom750(700), kSizeFrom750(100))];
-    [jggView loadJGGViewWithDataSource:minarr completeBlock:^(NSInteger index, NSArray *dataSource, NSIndexPath *indexpath) {
+    if (minarr.count>0) {
+        //项目材料图片
+        TitleLabel *picTitle = [[TitleLabel alloc]initWithFrame:RECT(originLeft, totalHeight+spaceTop/2, labelWidth, labelHeight)];
+        picTitle.textLabel.text = model.material_pic.title;
+        [self addSubview:picTitle];
         
-    }];
-    jggView.maxDataSource = maxArr;
-    jggView.height =  kJGG_GAP*2+((minarr.count-1)/4)*kSizeFrom750(170)+kSizeFrom750(150);
-    [self addSubview:jggView];
+        JGGView *jggView = [[JGGView alloc]initWithFrame:RECT(kSizeFrom750(25), picTitle.bottom+spaceTop/2, kSizeFrom750(700), kSizeFrom750(100))];
+        [jggView loadJGGViewWithDataSource:minarr completeBlock:^(NSInteger index, NSArray *dataSource, NSIndexPath *indexpath) {
+            
+        }];
+        jggView.maxDataSource = maxArr;
+        jggView.height =  kJGG_GAP*2+((minarr.count-1)/4)*kSizeFrom750(170)+kSizeFrom750(150);
+        [self addSubview:jggView];
+        
+        totalHeight = jggView.bottom+kSizeFrom750(20);
+    }else{
+        
+    }
     
-    totalHeight = jggView.bottom+kSizeFrom750(20);
     
     self.height = totalHeight;
     

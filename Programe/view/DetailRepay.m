@@ -31,7 +31,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor=lineBg;
+        self.backgroundColor=RGB_233;
     }
     return self;
 }
@@ -59,15 +59,15 @@
             left2.font=SYSTEMSIZE(26);
             [self addSubview:left2];
             
-            UILabel * content=[[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-kSizeFrom750(200), kSizeFrom750(55), screen_width/2+85, kSizeFrom750(40))];
+            UILabel * content=[[UILabel alloc] initWithFrame:CGRectMake(screen_width/2, kSizeFrom750(55), screen_width/2-kOriginLeft, kSizeFrom750(40))];
             content.textAlignment=NSTextAlignmentRight;
             content.textColor=RGB(255,32,32);
             content.font=NUMBER_FONT(36);
             content.text=[CommonUtils getHanleNums:repay.total];
             [self addSubview:content];
             
-            line1=[[UIView alloc] initWithFrame:CGRectMake(left1.left, kSizeFrom750(150)*(k+1), left1.width, kLineHeight)];
-            line1.backgroundColor=lineBg;
+            line1=[[UIView alloc] initWithFrame:CGRectMake(left1.left, kSizeFrom750(150)*(k+1)-kLineHeight, left1.width, kLineHeight)];
+            line1.backgroundColor=RGB_233;
             [self addSubview:line1];
             
             

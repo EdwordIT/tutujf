@@ -21,8 +21,6 @@ typedef void(^SelectedTopAccountAtIndex)(NSInteger index) ;
 
 @property(nonatomic, strong) UIButton *withdrawBtn;
 
--(void) setDataBind:(TopAccountModel *)data;
-
-- (instancetype)initWithFrame:(CGRect)frame  DataDir:(TopAccountModel *)data
-                  SelectBlock:(SelectedTopAccountAtIndex)block;
+- (instancetype)initWithFrame:(CGRect)frame withBlock:(SelectedTopAccountAtIndex)block;
+-(void)loadInfoWithAmount:(NSString *)amount;
 @end

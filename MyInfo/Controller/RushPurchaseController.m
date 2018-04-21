@@ -15,11 +15,8 @@
 #import "RepayModel.h"
 #import "AppDelegate.h"
 #import "HomeWebController.h"
-#import "AFNetworking.h"
-#import "AFNetworkActivityIndicatorManager.h"
 #import "SVProgressHUD.h"
 #import "HomeWebController.h"
-#import "Tender.h"
 
 #define blackfont  RGB(111,187,255)
 @interface RushPurchaseController ()<UIScrollViewDelegate,UITextFieldDelegate>
@@ -36,6 +33,7 @@
     UILabel *remainLabel;//剩余可投资金额
    //UIWebView *iWebView;
 }
+Strong UIScrollView *scrollView;
 @property (nonatomic ,strong)UITextField *phoneTextFiled;
 @property (nonatomic ,strong)UITextField *passwordTextFiled;
 Strong     LoanBase * baseModel;
@@ -47,15 +45,29 @@ Strong     LoanBase * baseModel;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-       [self getRequest];
+    [self initSubViews];
 }
--(void)initView
+-(void)initSubViews
 {
+    self.scrollView = [[UIScrollView alloc]initWithFrame:RECT(0, kNavHight, screen_width, screen_height)];
+    [self.view addSubview:self.scrollView];
+    WEAK_SELF;
+    self.scrollView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
+        [weakSelf getRequest];
+    }];
+    [self getRequest];
+    [SVProgressHUD showWithStatus:@"数据加载中..."];
+    
+}
+-(void)reloadInfo
+{
+    [self.scrollView removeAllSubViews];
+    
     LoanInfo * info=self.baseModel.loan_info;
     self.titleString = @"投标";
-    UIView * mainview=[[UIView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kSizeFrom750(280))];
+    UIView * mainview=[[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(280))];
     mainview.backgroundColor=navigationBarColor;
-    [self.view addSubview:mainview];
+    [self.scrollView addSubview:mainview];
     
     //标的名称
     title = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, kSizeFrom750(30), kSizeFrom750(500),kSizeFrom750(35))];
@@ -121,11 +133,11 @@ Strong     LoanBase * baseModel;
 
 #pragma mark --余额
     
-      UIView * bottomView =[[UIView alloc] initWithFrame:CGRectMake(0, mainview.bottom, screen_width, kViewHeight - mainview.bottom)];
+    UIView * bottomView =[[UIView alloc] initWithFrame:CGRectMake(0, mainview.bottom, screen_width, kViewHeight - mainview.bottom)];
 
-       bottomView.backgroundColor=RGB_246;
-       bottomView.userInteractionEnabled=YES;
-        [self.view addSubview:bottomView];
+    bottomView.backgroundColor=COLOR_Background;
+    bottomView.userInteractionEnabled=YES;
+    [self.scrollView addSubview:bottomView];
 
     
     accountRemainLabel = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, kSizeFrom750(20), screen_width,kSizeFrom750(30))];
@@ -141,14 +153,14 @@ Strong     LoanBase * baseModel;
     [btn1 setTitle:@"充值" forState:UIControlStateNormal];
     btn1.titleLabel.font = SYSTEMSIZE(26);
     [btn1 addTarget:self action:@selector(OnChongZhi:) forControlEvents:UIControlEventTouchUpInside];
-    [btn1 setBackgroundColor:RGB(206,14,23)];
+    [btn1 setBackgroundColor:COLOR_Red];
     btn1.layer.cornerRadius = kSizeFrom750(10);
     btn1.layer.masksToBounds = YES;
     btn1.tag=1;
     [bottomView addSubview:btn1];
 
     
-    UIView * investView =[[UIView alloc] initWithFrame:CGRectMake(0, accountRemainLabel.bottom+kSizeFrom750(20), screen_width, kSizeFrom750(70))];
+    UIView * investView =[[UIView alloc] initWithFrame:CGRectMake(0, accountRemainLabel.bottom+kSizeFrom750(20), screen_width, kSizeFrom750(80))];
     investView.backgroundColor=COLOR_White;
     [bottomView addSubview:investView];
     
@@ -160,8 +172,10 @@ Strong     LoanBase * baseModel;
     [investView addSubview:investTitle];
     
    //借款最小金额
-    _phoneTextFiled = [[UITextField alloc]initWithFrame:CGRectMake(investTitle.right, investTitle.top, kSizeFrom750(500), kSizeFrom750(30))];
+    _phoneTextFiled = [[UITextField alloc]initWithFrame:CGRectMake(investTitle.right, investTitle.top, screen_width - investTitle.right - kOriginLeft, kSizeFrom750(50))];
+    _phoneTextFiled.centerY = investTitle.centerY;
     _phoneTextFiled.delegate = self;
+    _phoneTextFiled.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;//内容垂直居中
     _phoneTextFiled.placeholder = [NSString stringWithFormat:@"投资金额需为%@的倍数",self.baseModel.loan_info.tender_amount_min];
     _phoneTextFiled.font =SYSTEMSIZE(26);
     _phoneTextFiled.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -170,7 +184,7 @@ Strong     LoanBase * baseModel;
     //已经设定投资密码
     if([info.password_status isEqual:@"1"])
     {
-        UIView * investPwdView = [[UIView alloc] initWithFrame:CGRectMake(0, investView.bottom, screen_width, investView.height)];
+        UIView * investPwdView = [[UIView alloc] initWithFrame:CGRectMake(0, investView.bottom+kSizeFrom750(20), screen_width, investView.height)];
         investPwdView.backgroundColor=COLOR_White;
         [bottomView addSubview:investPwdView];
 
@@ -182,16 +196,19 @@ Strong     LoanBase * baseModel;
         [investPwdView addSubview:investPwdLabel];
        
         _passwordTextFiled = [[UITextField alloc]initWithFrame:CGRectMake(_phoneTextFiled.left, investPwdLabel.top, _phoneTextFiled.width, _phoneTextFiled.height)];
+        _passwordTextFiled.centerY = investPwdLabel.centerY;
         _passwordTextFiled.delegate = self;
         _passwordTextFiled.placeholder = @"请输入投资密码";
         _passwordTextFiled.font =SYSTEMSIZE(26);
+        _passwordTextFiled.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;//内容垂直居中
+
         _passwordTextFiled.clearButtonMode = UITextFieldViewModeWhileEditing;
         _passwordTextFiled.secureTextEntry = YES;
         [investPwdView addSubview:_passwordTextFiled];
     }
    
  
-    expectLabel = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, [info.password_status isEqualToString:@"1"]?(investView.bottom+investView.height+kSizeFrom750(20)):(investView.bottom+kSizeFrom750(20)), screen_width,kSizeFrom750(30))];
+    expectLabel = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, [info.password_status isEqualToString:@"1"]?(investView.bottom+investView.height+kSizeFrom750(40)):(investView.bottom+kSizeFrom750(20)), screen_width,kSizeFrom750(30))];
     expectLabel.font = SYSTEMSIZE(26);
     expectLabel.textColor =  blackfont;
     NSString *expect = @"预期收益金额0.0元";
@@ -210,44 +227,44 @@ Strong     LoanBase * baseModel;
     investBtn.tag=2;
     [bottomView addSubview:investBtn];
 }
--(void)textFieldDidEndEditing:(UITextField *)textField reason:(UITextFieldDidEndEditingReason)reason
-{
-    //点击完成按钮提示内容
-    NSString *    str = [_phoneTextFiled.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-    if(str.length >0)
-    {
-        if(![self isNum:str])
-        {
-            [SVProgressHUD showErrorWithStatus: @"投资金额必须是数字"];
-            [investBtn setBackgroundColor:RGB(200,226,242)];
-            investBtn.userInteractionEnabled = NO;
-        }
-        else  if([self isNum:str])
-        {
-            NSInteger num=[str intValue];
-            NSString * str1=self.baseModel.loan_info.tender_amount_min;
-            NSInteger zuiixao= [str1 intValue];
-            if(num>=zuiixao&&(num%zuiixao==0))
-            {
-                [investBtn setBackgroundColor:navigationBarColor];
-                investBtn.userInteractionEnabled = YES;
-                [self getInterest];
-            }
-            else
-            {
-                [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"投资金额需大于等于%@的倍数",str1]];
-                [investBtn setBackgroundColor:RGB(200,226,242)];
-                investBtn.userInteractionEnabled = NO;
-
-            }
-        }
-        
-    }
-    else{
-        
-    }
-    
-}
+//-(void)textFieldDidEndEditing:(UITextField *)textField reason:(UITextFieldDidEndEditingReason)reason
+//{
+//    //点击完成按钮提示内容
+//    NSString *    str = [_phoneTextFiled.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+//    if(str.length >0)
+//    {
+//        if(![self isNum:str])
+//        {
+//            [SVProgressHUD showInfoWithStatus: @"投资金额必须是数字"];
+//            [investBtn setBackgroundColor:RGB(200,226,242)];
+//            investBtn.userInteractionEnabled = NO;
+//        }
+//        else  if([self isNum:str])
+//        {
+//            NSInteger num=[str intValue];
+//            NSString * str1=self.baseModel.loan_info.tender_amount_min;
+//            NSInteger zuiixao= [str1 intValue];
+//            if(num>=zuiixao&&(num%zuiixao==0))
+//            {
+//                [investBtn setBackgroundColor:navigationBarColor];
+//                investBtn.userInteractionEnabled = YES;
+//                [self getInterest];
+//            }
+//            else
+//            {
+//                [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"投资金额需大于等于%@的倍数",str1]];
+//                [investBtn setBackgroundColor:RGB(200,226,242)];
+//                investBtn.userInteractionEnabled = NO;
+//
+//            }
+//        }
+//
+//    }
+//    else{
+//
+//    }
+//
+//}
 
 -(void)textFieldDidChange :(UITextField *)theTextField{
     NSString *    str = [_phoneTextFiled.text stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -257,7 +274,7 @@ Strong     LoanBase * baseModel;
         {
             [investBtn setBackgroundColor:RGB(200,226,242)];
             investBtn.userInteractionEnabled = NO;
-
+            
         }
         else  if([self isNum:str])
         {
@@ -268,7 +285,7 @@ Strong     LoanBase * baseModel;
             {
                 [investBtn setBackgroundColor:navigationBarColor];
                 investBtn.userInteractionEnabled = YES;
-
+                 [self getInterest];
             }
             else
             {
@@ -286,12 +303,12 @@ Strong     LoanBase * baseModel;
   NSString *    str = [_phoneTextFiled.text stringByReplacingOccurrencesOfString:@" " withString:@""];
     if(str.length ==0)
     {
-        [SVProgressHUD showErrorWithStatus:@"投资金额不能为空"];
+        [SVProgressHUD showInfoWithStatus:@"投资金额不能为空"];
          return FALSE;
     }
     else  if(![self isNum:str])
     {
-         [SVProgressHUD showErrorWithStatus: @"投资金额必须是数字"];
+         [SVProgressHUD showInfoWithStatus: @"投资金额必须是数字"];
          return FALSE;
     }
     else  if([self isNum:str])
@@ -306,7 +323,7 @@ Strong     LoanBase * baseModel;
         }
         else
         {
-            [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"投资金额需大于等于%@的倍数",str1]];
+            [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"投资金额需大于等于%@的倍数",str1]];
             return FALSE;
         }
     }
@@ -325,11 +342,11 @@ Strong     LoanBase * baseModel;
     NSArray *keys = @[@"loan_id",kToken];
     NSArray *values = @[self.loan_id,[CommonUtils getToken]];
     
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:getLoanDetailUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getLoanDetailUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
         
         self.baseModel = [LoanBase yy_modelWithJSON:successDic];
         self.baseModel.repay_type_name=[[successDic objectForKey:@"repay_type"] objectForKey:@"name"];
-        [self initView];
+        [self reloadInfo];
     } failure:^(NSDictionary *errorDic) {
         
     }];
@@ -398,7 +415,7 @@ Strong     LoanBase * baseModel;
     
     NSArray *keys = @[@"amount",@"period",@"apr",@"repay_type"];
     NSArray *values = @[amount,period,apr,repay_type];
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:investUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:investUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
         NSString *interest = [successDic objectForKey:@"interest_total"];
         NSString *expectStr = [NSString stringWithFormat:@"预期收益金额%@元",interest];
         NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:expectStr rang:[expectStr rangeOfString:interest] font:NUMBER_FONT(30) color:COLOR_Red spacingBeforeValue:0 lineSpace:0];
@@ -408,12 +425,11 @@ Strong     LoanBase * baseModel;
         
     }];
 }
-//
+//立即投资
 -(void) getFormData{
     
     NSString *    str = [_phoneTextFiled.text stringByReplacingOccurrencesOfString:@" " withString:@""];
     LoanInfo * info=self.baseModel.loan_info;
-    NSString *urlStr = @"";
     NSString * amount=str;
     NSString * loan_id=self.loan_id; //
     NSString * loan_password=@""; //
@@ -424,8 +440,7 @@ Strong     LoanBase * baseModel;
              loan_password=  [loan_password stringByReplacingOccurrencesOfString:@" " withString:@""];
             if([loan_password isEqualToString:@""])
             {
-                expectLabel.textColor = RGB(206,14,23);
-                expectLabel.text=@"密码不能为空！";
+                [SVProgressHUD showInfoWithStatus:@"密码不能为空"];
                 return;
             }
             //loan_password=[@"a123123123"];
@@ -437,29 +452,20 @@ Strong     LoanBase * baseModel;
     [dict_data setObject:loan_password forKey:@"loan_password"];
     [dict_data setObject:user_token forKey:kToken];
    */
-    NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[loan_id,amount,loan_password,user_token] forKeys:@[@"loan_id",@"amount",@"loan_password",kToken] ];
-    NSMutableArray * array=[[NSMutableArray alloc] init];
-    [array addObject:@"loan_id"];
-    [array addObject:@"amount"];
-    [array addObject:@"loan_password"];
-    [array addObject:kToken];
-    NSString *sign=[HttpSignCreate GetSignStr:dict_data paixu:array];
-    urlStr = [NSString stringWithFormat:tenderNow,oyApiUrl,loan_id,amount,loan_password,user_token,sign];
-    NSData * data=  [ggHttpFounction  synHttpGet:urlStr];
-    if([ggHttpFounction getJsonIsOk:data])
-    {
-        NSDictionary * dic= [ggHttpFounction getJsonData1:data];
+    NSArray *keys = @[@"version",@"loan_id",@"amount",@"loan_password",kToken];
+    NSArray *values = @[LocalVersion,loan_id,amount,loan_password,user_token];
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:tenderUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+        NSDictionary * dic= successDic;
         NSString * form=[NSString stringWithFormat:@"%@",[dic objectForKey:@"form"]];
-       
-           NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[form] forKeys:@[@"form"] ];
-          NSString *signnew=[HttpSignCreate GetSignStr:dict_data];
-        NSString * sigh=[dic objectForKey:@"sign"];
+        NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[form] forKeys:@[@"form"] ];
+        NSString *signnew=[HttpSignCreate GetSignStr:dict_data];
+        NSString * sign=[dic objectForKey:@"sign"];
         NSString * url_parame=@"";
-        if([signnew isEqual:sigh])
+        if([signnew isEqual:sign])
         {
             NSDictionary * postd= [self dictionaryWithJsonString:form ];
-             NSString * url=[postd objectForKey:@"url"];
-           
+            NSString * url=[postd objectForKey:@"url"];
+            
             NSString * Version=[postd objectForKey:@"Version"];
             url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"Version", Version];
             NSString * CmdId=[postd objectForKey:@"CmdId"];
@@ -469,7 +475,7 @@ Strong     LoanBase * baseModel;
             NSString * OrdId=[postd objectForKey:@"OrdId"];
             url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"OrdId", OrdId];
             NSString * OrdDate=[postd objectForKey:@"OrdDate"];
-              OrdDate=[HttpSignCreate encodeString:OrdDate];
+            OrdDate=[HttpSignCreate encodeString:OrdDate];
             url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"OrdDate", OrdDate];
             NSString * TransAmt=[postd objectForKey:@"TransAmt"];
             url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"TransAmt", TransAmt];
@@ -478,17 +484,17 @@ Strong     LoanBase * baseModel;
             NSString * MaxTenderRate=[postd objectForKey:@"MaxTenderRate"];
             url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"MaxTenderRate", MaxTenderRate];
             NSString * BorrowerDetails=[postd objectForKey:@"BorrowerDetails"];
-               BorrowerDetails=[HttpSignCreate encodeString:BorrowerDetails];
+            BorrowerDetails=[HttpSignCreate encodeString:BorrowerDetails];
             url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"BorrowerDetails", BorrowerDetails];
             NSString * IsFreeze=[postd objectForKey:@"IsFreeze"];
             url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"IsFreeze", IsFreeze];
             NSString * FreezeOrdId=[postd objectForKey:@"FreezeOrdId"];
             url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"FreezeOrdId", FreezeOrdId];
             NSString * RetUrl=[postd objectForKey:@"RetUrl"];
-              RetUrl=[HttpSignCreate encodeString:RetUrl];
+            RetUrl=[HttpSignCreate encodeString:RetUrl];
             url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"RetUrl", RetUrl];
             NSString * BgRetUrl=[postd objectForKey:@"BgRetUrl"];
-              BgRetUrl=[HttpSignCreate encodeString:BgRetUrl];
+            BgRetUrl=[HttpSignCreate encodeString:BgRetUrl];
             url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"BgRetUrl", BgRetUrl];
             NSString * MerPriv=[postd objectForKey:@"MerPriv"];
             url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"MerPriv", MerPriv];
@@ -499,11 +505,10 @@ Strong     LoanBase * baseModel;
             [self postFormData:url_parame url:url];
         }
         
-    }
-    else
-    {
-        [SVProgressHUD showErrorWithStatus:[ggHttpFounction getJsonMsg:data]];//错误提示
-    }
+        
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
 }
 
 -(NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString

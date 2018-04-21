@@ -10,7 +10,7 @@
 #import <objc/runtime.h>
 #import "LYEmptyView.h"
 
-@implementation NSObject (MJRefresh)
+@implementation NSObject (Empty)
 
 + (void)exchangeInstanceMethod1:(SEL)method1 method2:(SEL)method2
 {
@@ -18,6 +18,8 @@
 }
 
 @end
+
+#pragma mark - ------------------ UIScrollView ------------------
 
 @implementation UIScrollView (Empty)
 
@@ -120,6 +122,8 @@ static char kEmptyViewKey;
 
 @end
 
+#pragma mark - ------------------ UITableView ------------------
+
 @implementation UITableView (Empty)
 + (void)load{
     
@@ -128,10 +132,12 @@ static char kEmptyViewKey;
     ///section
     [self exchangeInstanceMethod1:@selector(insertSections:withRowAnimation:) method2:@selector(ly_insertSections:withRowAnimation:)];
     [self exchangeInstanceMethod1:@selector(deleteSections:withRowAnimation:) method2:@selector(ly_deleteSections:withRowAnimation:)];
+    [self exchangeInstanceMethod1:@selector(reloadSections:withRowAnimation:) method2:@selector(ly_reloadSections:withRowAnimation:)];
     
     ///row
     [self exchangeInstanceMethod1:@selector(insertRowsAtIndexPaths:withRowAnimation:) method2:@selector(ly_insertRowsAtIndexPaths:withRowAnimation:)];
     [self exchangeInstanceMethod1:@selector(deleteRowsAtIndexPaths:withRowAnimation:) method2:@selector(ly_deleteRowsAtIndexPaths:withRowAnimation:)];
+    [self exchangeInstanceMethod1:@selector(reloadRowsAtIndexPaths:withRowAnimation:) method2:@selector(ly_reloadRowsAtIndexPaths:withRowAnimation:)];
 }
 - (void)ly_reloadData{
     [self ly_reloadData];
@@ -143,7 +149,11 @@ static char kEmptyViewKey;
     [self getDataAndSet];
 }
 - (void)ly_deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation{
-    [self ly_insertSections:sections withRowAnimation:animation];
+    [self ly_deleteSections:sections withRowAnimation:animation];
+    [self getDataAndSet];
+}
+- (void)ly_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation{
+    [self ly_reloadSections:sections withRowAnimation:animation];
     [self getDataAndSet];
 }
 
@@ -156,9 +166,15 @@ static char kEmptyViewKey;
     [self ly_deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
     [self getDataAndSet];
 }
+- (void)ly_reloadRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation{
+    [self ly_reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+    [self getDataAndSet];
+}
 
 
 @end
+
+#pragma mark - ------------------ UICollectionView ------------------
 
 @implementation UICollectionView (Empty)
 + (void)load{
@@ -168,10 +184,12 @@ static char kEmptyViewKey;
     ///section
     [self exchangeInstanceMethod1:@selector(insertSections:) method2:@selector(ly_insertSections:)];
     [self exchangeInstanceMethod1:@selector(deleteSections:) method2:@selector(ly_deleteSections:)];
+    [self exchangeInstanceMethod1:@selector(reloadSections:) method2:@selector(ly_reloadSections:)];
     
     ///item
     [self exchangeInstanceMethod1:@selector(insertItemsAtIndexPaths:) method2:@selector(ly_insertItemsAtIndexPaths:)];
     [self exchangeInstanceMethod1:@selector(deleteItemsAtIndexPaths:) method2:@selector(ly_deleteItemsAtIndexPaths:)];
+    [self exchangeInstanceMethod1:@selector(reloadItemsAtIndexPaths:) method2:@selector(ly_reloadItemsAtIndexPaths:)];
     
 }
 - (void)ly_reloadData{
@@ -187,6 +205,11 @@ static char kEmptyViewKey;
     [self ly_deleteSections:sections];
     [self getDataAndSet];
 }
+- (void)ly_reloadSections:(NSIndexSet *)sections{
+    [self ly_reloadSections:sections];
+    [self getDataAndSet];
+}
+
 ///item
 - (void)ly_insertItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths{
     [self ly_insertItemsAtIndexPaths:indexPaths];
@@ -194,6 +217,10 @@ static char kEmptyViewKey;
 }
 - (void)ly_deleteItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths{
     [self ly_deleteItemsAtIndexPaths:indexPaths];
+    [self getDataAndSet];
+}
+- (void)ly_reloadItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths{
+    [self ly_reloadItemsAtIndexPaths:indexPaths];
     [self getDataAndSet];
 }
 @end

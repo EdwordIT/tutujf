@@ -11,19 +11,15 @@
 
 @interface TopAccount ()
 @property (nonatomic, copy  ) SelectedTopAccountAtIndex selectedTopAccount;
-@property (nonatomic, strong) TopAccountModel *dataModel;
-
 @end
 
 @implementation TopAccount
 
 
 
-- (instancetype)initWithFrame:(CGRect)frame  DataDir:(TopAccountModel *)data
-                  SelectBlock:(SelectedTopAccountAtIndex)block
+- (instancetype)initWithFrame:(CGRect)frame withBlock:(SelectedTopAccountAtIndex)block
 {
     self = [super initWithFrame:frame];
-    self.dataModel=data;
     self.selectedTopAccount=block;
     self.backgroundColor=[UIColor whiteColor];
     if(self)
@@ -46,13 +42,11 @@
     self.account.textAlignment=NSTextAlignmentCenter;
     self.account.textColor =  RGB(252,18,18);
     self.account.text=@"0.00";
+ 
     self.account.tag=7;
     UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(OnTapImage:)];
     [self.account addGestureRecognizer:tap1];
-    if(self.dataModel!=nil)
-    {
-        self.account.text=self.dataModel.accountnum;
-    }
+   
     [self addSubview:self.account];
     
     _rechargeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -78,6 +72,9 @@
     [self addSubview:_withdrawBtn];
     
 }
+-(void)loadInfoWithAmount:(NSString *)amount{
+        self.account.text = amount;
+}
 -(void)OnTapImage:(UITapGestureRecognizer *)sender{
        BLOCK_EXEC(self.selectedTopAccount,sender.view.tag);
 }
@@ -85,21 +82,6 @@
 -(void)button_event:(UIButton*) sender
 {
    BLOCK_EXEC(self.selectedTopAccount,sender.tag);
-}
-
--(void) setDataBind:(TopAccountModel *)data
-{
-    for (UIView *subviews in [self subviews]) {
-        if ([subviews isKindOfClass:[UILabel class]]) {
-            [subviews removeFromSuperview];
-        }
-        if ([subviews isKindOfClass:[UIButton class]]) {
-            [subviews removeFromSuperview];
-        }
-    }
-        self.dataModel=data;
-        [self initView];
-
 }
 
 /*

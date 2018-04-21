@@ -168,7 +168,7 @@ Strong UIWebView *loginWebView;
     
     self.countDownNum = 60;
     if (_isRootVC) {
-        [self.backBtn setImage:IMAGEBYENAME(@"close_white") forState:UIControlStateNormal];
+        [self.backBtn setImage:IMAGEBYENAME(@"icons_close") forState:UIControlStateNormal];
     }
     [self.view addSubview:self.topImageView];
     
@@ -267,9 +267,14 @@ Strong UIWebView *loginWebView;
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
--(void)textFieldDidChange :(UITextField *)theTextField{
-    NSLog( @"text changed: %@", theTextField.text);
+-(void)textFieldDidChange :(UITextField *)textField{
+    if (textField.text.length > 20) {
+        //限制输入长度为20
+        textField.text = [textField.text substringToIndex:20];
+    }
+    
 }
+
 #pragma mark --registerMethod
 -(void)codeBtnClick:(UIButton *)sender{
     if ([CommonUtils checkTelNumber:self.mobileTextField.text]) {
@@ -282,7 +287,7 @@ Strong UIWebView *loginWebView;
         NSArray *keys = @[@"phone",@"type",@"time_stamp"];
         NSArray *values = @[phone,type,time_stamp];
     
-        [[HttpCommunication sharedInstance] getSignRequestWithPath:getMessageCodeUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){            [SVProgressHUD showSuccessWithStatus:@"验证码发送成功"];
+        [[HttpCommunication sharedInstance] postSignRequestWithPath:getMessageCodeUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){            [SVProgressHUD showSuccessWithStatus:@"验证码发送成功"];
             self.codeTime = [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
                 self.codeBtn.userInteractionEnabled = NO;
                 self.countDownNum --;
@@ -301,7 +306,7 @@ Strong UIWebView *loginWebView;
         }];
         
     }else{
-        [SVProgressHUD showErrorWithStatus:@"手机号格式不正确"];
+        [SVProgressHUD showInfoWithStatus:@"手机号格式不正确"];
     }
     
 }
@@ -323,22 +328,22 @@ Strong UIWebView *loginWebView;
     NSString *password = self.passwordTextField.text;
     NSString *referrer = @"";
     if (![CommonUtils checkTelNumber:phone]) {
-        [SVProgressHUD showErrorWithStatus:@"手机号格式不正确"];
+        [SVProgressHUD showInfoWithStatus:@"手机号格式不正确"];
         return;
     }
     
     if (![CommonUtils checkPassword:password]) {
-        [SVProgressHUD showErrorWithStatus:@"密码为6~15位数字和字母的组合"];
+        [SVProgressHUD showInfoWithStatus:@"密码为6~15位数字和字母的组合"];
         return;
     }
     if (sms_code.length!=6) {
-        [SVProgressHUD showErrorWithStatus:@"验证码错误"];
+        [SVProgressHUD showInfoWithStatus:@"验证码错误"];
         return;
     }
    
     NSArray *keys = @[@"phone",@"password",@"sms_code",@"referrer"];
     NSArray *values = @[phone,password,sms_code,referrer];
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:registerUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:registerUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){
         if (!IsEmptyStr([successDic objectForKey:kToken])) {
             [TTJFUserDefault setStr:phone key:kUsername];
             [TTJFUserDefault setStr:password key:kPassword];
@@ -349,10 +354,16 @@ Strong UIWebView *loginWebView;
         //默认登录webView
         AutoLoginView *loginView = [[AutoLoginView alloc]init];
         [self.view addSubview:loginView];
-        [loginView loginWebView];
+        [loginView setCookie];
         loginView.autoLoginBlock = ^{
-          //webView加载完成回调方法
-            [SVProgressHUD showSuccessWithStatus:@"注册成功"];
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeTabbarIndex" object:@{@"tabbarIndex":@(3)}];
+                    [SVProgressHUD showSuccessWithStatus:@"注册成功"];
+                    [self dismissViewControllerAnimated:YES completion:NULL];
+                });
+            });
+            
         };
     } failure:^(NSDictionary *errorDic) {
         

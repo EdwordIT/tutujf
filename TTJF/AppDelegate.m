@@ -19,9 +19,6 @@
 #import <TencentOpenAPI/QQApiInterface.h>
 //微信SDK头文件
 #import "WXApi.h"
-#import "MainViewController.h"
-#import "MineViewController.h"
-#import "HomeWebController.h"
 #import "RSA.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "NetworkManager.h"
@@ -29,15 +26,17 @@
 #import "CustomURLProtocol.h"
 #import "XHLaunchAd.h"
 #import "UIImage+GIF.h"
-#import "ProgrameListController.h"
 #import "PPNetworkHelper.h"
-#import "MineViewController.h"
-#import "FoundController.h"
 #import "YBLUserManageCenter.h"
 #import "YBLNetWorkHudBar.h"
 #import "ReactiveObjC.h"
 #import "AFNetworkReachabilityManager.h"
-
+#import "MineViewController.h"
+#import "FoundController.h"
+#import "ProgrameListController.h"
+#import "MainViewController.h"
+#import "HomeWebController.h"
+#import <Bugly/Bugly.h>
 @interface AppDelegate ()<HttpDNSDegradationDelegate,XHLaunchAdDelegate,UIWebViewDelegate>
 {
     
@@ -76,17 +75,24 @@
     [self initRootVC];
     //信鸽推送信息上送到推送端
     [[XGPush defaultManager] reportXGNotificationInfo:launchOptions];
+    //闪退日志报告
+     [Bugly startWithAppId:Bugly_AppId];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeTabbarIndex:) name:@"changeTabbarIndex" object:nil];
     return YES;
 }
 
 //初始化提示框
 - (void)setUpSvpProgress {
-    [SVProgressHUD setMinimumDismissTimeInterval:2];
-    [SVProgressHUD setBackgroundColor:RGBA(255, 255, 255, 0.6)];
+    [SVProgressHUD setMinimumDismissTimeInterval:1];
+    [SVProgressHUD setBackgroundColor:RGBA(255, 255, 255, 1)];
     [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
-    [SVProgressHUD setBorderColor:RGB_183];
+    [SVProgressHUD setBorderColor:COLOR_Btn_Unsel];
     [SVProgressHUD setBorderWidth:kLineHeight];
-    [SVProgressHUD setCornerRadius:kSizeFrom750(10)];
+    [SVProgressHUD setCornerRadius:kSizeFrom750(20)];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeCustom];
+    [SVProgressHUD setBackgroundLayerColor:[[UIColor blackColor] colorWithAlphaComponent:0.4]];
+    [SVProgressHUD setMinimumSize:CGSizeMake(kSizeFrom750(350), kSizeFrom750(240))];
 //    [[UIButton appearance] setExclusiveTouch:YES];
 //    [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
 //    [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
@@ -230,6 +236,7 @@
 -(void)xhLaunchAd:(XHLaunchAd *)launchAd launchAdImageView:(UIImageView *)launchAdImageView URL:(NSURL *)url{
     [launchAdImageView sd_setImageWithURL:url];
 }
+//
 -(void)xhLaunchShowFinish:(XHLaunchAd *)launchAd
 {
     if(VC1!=nil)
@@ -254,6 +261,10 @@
         return (UINavigationController *)nav;
     }
 
+}
+-(void)changeTabbarIndex:(NSNotification *)noti{
+    NSDictionary *userInfo = noti.object;
+    self.rootTabbarCtr.selectedIndex = [[userInfo objectForKey:@"tabbarIndex"] integerValue];
 }
 -(void)initRootVC{
     
@@ -395,7 +406,7 @@
         NSArray *keys = @[@"phone_type",@"terminal_id",@"terminal_name",@"terminal_model",@"terminal_device_token"];
         NSArray *values = @[phone_type,terminal_id,terminal_name,terminal_model,terminal_device_token];
         
-        [[HttpCommunication sharedInstance] getSignRequestWithPath:sendDeviceTokenUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){            //存储device_token
+        [[HttpCommunication sharedInstance] postSignRequestWithPath:sendDeviceTokenUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){            //存储device_token
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:isBindUser];
         } failure:^(NSDictionary *errorDic) {
             
@@ -515,18 +526,12 @@
     //设置数据获取等待时间
     [XHLaunchAd setWaitDataDuration:5];
     NSString *urlStr =  [NSString stringWithFormat:getSystemConfig,oyApiUrl];
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:urlStr keysArray:nil valuesArray:nil refresh:nil success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:urlStr keysArray:nil valuesArray:nil refresh:nil success:^(NSDictionary *successDic) {
         self.systemConfigModel = [SystemConfigModel yy_modelWithJSON:successDic];
         //系统配置数据加入缓存
         [CommonUtils cacheDataWithObject:successDic WithPathName:Cache_SystemConfig];
         [[NSNotificationCenter defaultCenter] postNotificationName:Noti_GetSystemConfig object:nil];
         [self setLanouceAdt];//添加广告页面
-        //如果版本号相同，则不需要更新版本
-        if ([self.systemConfigModel.ios_version isEqualToString:currentVersion]) {
-            [TTJFUserDefault setStr:currentVersion key:kVersion];//更新本地版本号
-        }else{
-            
-        }
         NSArray * allows=   [successDic objectForKey:@"allow_domain"];
         if([allows count]>0)
             self.urlJumpList=[allows copy];

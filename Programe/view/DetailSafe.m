@@ -32,7 +32,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor=lineBg;
+        self.backgroundColor=RGB_233;
 
     }
     return self;
@@ -55,6 +55,7 @@
             
             SecurityModel * security=[dataAry objectAtIndex:k];
             UILabel * title=[[UILabel alloc] initWithFrame:CGRectMake(typeimgsrc.right+originSpace, originBottom-kSizeFrom750(6), screen_width-kSizeFrom750(70), kSizeFrom750(30))];
+            title.centerY = typeimgsrc.centerY;
             title.textColor=RGB(83,83,83);
             title.text=security.title;
             title.font=SYSTEMSIZE(26);

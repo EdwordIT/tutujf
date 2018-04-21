@@ -14,6 +14,7 @@
 
 @implementation LYEmptyBaseView
 
+#pragma mark - ------------------ Life Cycle ------------------
 - (instancetype)init
 {
     self = [super init];
@@ -59,6 +60,8 @@
         self.ly_height = newSuperview.ly_height;
     }
 }
+
+#pragma mark - ------------------ 实例化 ------------------
 + (instancetype)emptyActionViewWithImageStr:(NSString *)imageStr titleStr:(NSString *)titleStr detailStr:(NSString *)detailStr btnTitleStr:(NSString *)btnTitleStr target:(id)target action:(SEL)action{
     
     LYEmptyBaseView *emptyView = [[self alloc] init];
@@ -142,21 +145,24 @@
     }
     _customView = customView;
 }
+
+#pragma mark - ------------------ Setter ------------------
+
 -(void)setImageStr:(NSString *)imageStr{
     _imageStr = imageStr;
-    [self setupSubviews];
+    [self layoutSubviews];
 }
 - (void)setTitleStr:(NSString *)titleStr{
     _titleStr = titleStr;
-    [self setupSubviews];
+    [self layoutSubviews];
 }
 - (void)setDetailStr:(NSString *)detailStr{
     _detailStr = detailStr;
-    [self setupSubviews];
+    [self layoutSubviews];
 }
 - (void)setBtnTitleStr:(NSString *)btnTitleStr{
     _btnTitleStr = btnTitleStr;
-    [self setupSubviews];
+    [self layoutSubviews];
 }
 - (void)tapContentView:(UITapGestureRecognizer *)tap{
     if (_tapContentViewBlock) {

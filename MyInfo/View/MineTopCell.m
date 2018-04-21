@@ -17,10 +17,10 @@
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        [self.contentView setBackgroundColor:COLOR_Background];
         //适配X下的nav的高度
-        CGFloat navTitleHeight = kSizeFrom750(160)+kStatusBarHeight;
-        self.contentView.backgroundColor = RGB_246;
-        UIView *topBg = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(330)+navTitleHeight)];
+        CGFloat navTitleHeight = kNavHight;
+        UIView *topBg = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(350)+navTitleHeight)];
         topBg.backgroundColor = navigationBarColor;
         [self.contentView addSubview:topBg];
         
@@ -29,28 +29,23 @@
         model.accountnum=@"0.00";
         model.accountname=@"总资产(元)";
         model.index=3;
-        model.image_url=[oyUrlAddress stringByAppendingString:@"/wapassets/trust/images/news/user06.png"];
+        model.imageName=@"mineTop_01";
         [data addObject:model];
         TopScrollMode * model1=[[TopScrollMode alloc] init];
         model1.accountnum=@"0.00";
         model1.accountname=@"累计收益(元)";
         model1.index=4;
-        model1.image_url=[oyUrlAddress stringByAppendingString:@"/wapassets/trust/images/news/user07.png"];
+        model1.imageName=@"mineTop_02";
         [data addObject:model1];
         //中间滚动视图
-        _basepage=[[TopScrollBasePage alloc] initWithFrame:CGRectMake(0, topBg.height - kSizeFrom750(413) - kSizeFrom750(40), screen_width,kSizeFrom750(413)) DataArray:data selectBlock:^(TopScrollMode * data) {
+        _basepage=[[TopScrollBasePage alloc] initWithFrame:CGRectMake(0, topBg.height - kSizeFrom750(413), screen_width,kSizeFrom750(413)) DataArray:data selectBlock:^(TopScrollMode * data) {
             [self.delegate didopMineAtIndex:data.index];
         }];
         [topBg addSubview:_basepage];
         
-      
-        TopAccountModel * model2=[[TopAccountModel alloc] init];
-        model2.account_url=@"";
-        model2.tj_url=@"";
-        model2.cz_url=@"";
-        model2.accountnum=@"0.00";
+    
         //可用余额类容
-        _account=[[TopAccount alloc] initWithFrame:CGRectMake(kSizeFrom750(30), topBg.height - kSizeFrom750(85), screen_width-kSizeFrom750(30)*2,kSizeFrom750(206)) DataDir:model2 SelectBlock:^(NSInteger index) {
+        _account=[[TopAccount alloc] initWithFrame:CGRectMake(kSizeFrom750(30), topBg.height - kSizeFrom750(85), screen_width-kSizeFrom750(30)*2,kSizeFrom750(205))  withBlock:^(NSInteger index) {
             [self.delegate didopMineAtIndex:index];
         }];
         _account.layer.shadowColor=RGB(214,214,214).CGColor;
@@ -81,6 +76,8 @@
 
 -(void)setModelData:(MyAccountModel *)userinfo
 {
+    
+    [_account loadInfoWithAmount:userinfo.balance_amount];
     //总资产
     _basepage.jiner1.text=[NSString stringWithFormat:@"%.2f",[userinfo.total_amount floatValue]];
     //累计收益

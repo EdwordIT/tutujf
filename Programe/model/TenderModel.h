@@ -8,6 +8,12 @@
 
 #import "BaseModel.h"
 
+@interface TenderDetailModel:BaseModel//投资人详情
+Copy NSString *member_name;//投资人名称
+Copy NSString *add_time;//投资时间
+Copy NSString *amount;//投资金额
+@end
+
 @interface TenderModel : BaseModel
 @property(nonatomic, strong) NSArray *   items; //投资人数据列表
 @property(nonatomic, strong) NSString  *   is_show_tenlist;  //是否可以查看投资记录 -1，不可查看， 1可查看

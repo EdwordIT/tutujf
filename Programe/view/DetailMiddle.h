@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LoanBase.h"
+#import "CountDownManager.h"
 
 @interface DetailMiddle : UIView
 

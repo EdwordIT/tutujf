@@ -51,6 +51,7 @@ Strong UIButton *completeBtn;//完成注册
         _mobileTextField.leftViewMode = UITextFieldViewModeAlways;
         UIButton *phoneImage = [[UIButton alloc] initWithFrame:CGRectMake(kSizeFrom750(0), 0,kSizeFrom750(100), kSizeFrom750(80))];
         phoneImage.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [_mobileTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         [phoneImage setImage:[UIImage imageNamed:@"mobile"] forState:UIControlStateNormal];
         _mobileTextField.leftView = phoneImage;
         
@@ -68,7 +69,8 @@ Strong UIButton *completeBtn;//完成注册
         layer.backgroundColor = [RGB(229, 230, 231) CGColor];
         [_codeTextField.layer addSublayer:layer];
         _codeTextField.leftViewMode = UITextFieldViewModeAlways;
-        
+        [_codeTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+
         
         UIButton *phoneImage = [[UIButton alloc] initWithFrame:CGRectMake(kSizeFrom750(0), 0,kSizeFrom750(100), kSizeFrom750(80))];
         phoneImage.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -96,6 +98,7 @@ Strong UIButton *completeBtn;//完成注册
         _passwordTextField.placeholder = @"请设置6-15位登录密码";
         _passwordTextField.delegate = self;
         _passwordTextField.secureTextEntry = YES;
+        [_passwordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         CALayer *layer = [CALayer layer];
         layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), kLineHeight);
         layer.backgroundColor = [RGB(229, 230, 231) CGColor];
@@ -212,7 +215,12 @@ Strong UIButton *completeBtn;//完成注册
    
 }
 #pragma mark --textfieldDelegate
-
+-(void)textFieldDidChange :(UITextField *)textField{
+    if (textField.text.length > 20) {
+        //限制输入长度为20
+        textField.text = [textField.text substringToIndex:20];
+    }
+}
 #pragma mark --registerMethod
 -(void)codeBtnClick:(UIButton *)sender{
     if ([CommonUtils checkTelNumber:self.mobileTextField.text]) {
@@ -225,7 +233,7 @@ Strong UIButton *completeBtn;//完成注册
         
         NSArray *keys = @[@"phone",@"type",@"time_stamp"];
         NSArray *values = @[phone,type,time_stamp];
-        [[HttpCommunication sharedInstance] getSignRequestWithPath:getMessageCodeUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+        [[HttpCommunication sharedInstance] postSignRequestWithPath:getMessageCodeUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
             [SVProgressHUD showSuccessWithStatus:@"验证码发送成功"];
             self.codeBtn.userInteractionEnabled = NO;
             self.codeTime = [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
@@ -245,7 +253,7 @@ Strong UIButton *completeBtn;//完成注册
         }];
         
     }else{
-        [SVProgressHUD showErrorWithStatus:@"手机号格式不正确"];
+        [SVProgressHUD showInfoWithStatus:@"手机号格式不正确"];
     }
     
 }
@@ -254,42 +262,43 @@ Strong UIButton *completeBtn;//完成注册
     NSString *phone = self.mobileTextField.text;
     NSString *sms_code = self.codeTextField.text;
     NSString *password = self.passwordTextField.text;
-    NSString *referrer = @"";
     if (![CommonUtils checkTelNumber:phone]) {
-        [SVProgressHUD showErrorWithStatus:@"手机号格式不正确"];
+        [SVProgressHUD showInfoWithStatus:@"手机号格式不正确"];
         return;
     }
     
     if (![CommonUtils checkPassword:password]) {
-        [SVProgressHUD showErrorWithStatus:@"密码为6~15位数字和字母的组合"];
+        [SVProgressHUD showInfoWithStatus:@"密码为6~15位数字和字母的组合"];
         return;
     }
     if (sms_code.length!=6) {
-        [SVProgressHUD showErrorWithStatus:@"验证码错误"];
+        [SVProgressHUD showInfoWithStatus:@"验证码错误"];
         return;
     }
     
-    NSArray *keys = @[@"phone",@"sms_code",@"password",@"referrer"];
-    NSArray *values = @[phone,sms_code,password,referrer];
+    NSArray *keys = @[@"phone",@"password",@"sms_code"];
+    NSArray *values = @[phone,password,sms_code];
 
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:forgetPasswordUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:forgetPasswordUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+        [SVProgressHUD showSuccessWithStatus:@"密码找回成功，请重新登录"];
+         [self performSelector:@selector(findBackSuccess) withObject:nil afterDelay:1];
         [self exitLoginStatus];
-        //如果从其他页面跳转进来，如web，则需要返回首页然后弹出登录框
-        if (self.isBackToRootVC) {
-            [self goLoginVC];
-            
-            [self.navigationController popToRootViewControllerAnimated:NO];
-
-        }else{
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        }
+       
     } failure:^(NSDictionary *errorDic) {
         
     }];
     
-    
-    
-    
+}
+-(void)findBackSuccess{
+    //如果从其他页面跳转进来，如web，则需要返回首页然后弹出登录框
+    if (self.isBackToRootVC) {
+        [self goLoginVC];
+        
+        [self.navigationController popToRootViewControllerAnimated:NO];
+        
+    }else{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 -(void)pwdBtnClick:(UIButton *)sender{
     sender.selected = !sender.selected;
