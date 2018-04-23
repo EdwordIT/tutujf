@@ -70,7 +70,7 @@ Strong NSMutableArray *subTextArray;
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor=RGB_246;
+        self.backgroundColor=COLOR_Background;
         
         [self initSubViews];
         

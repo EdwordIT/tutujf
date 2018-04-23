@@ -55,7 +55,7 @@ Strong UILabel *timeLabel;//客服时间
     self.closeBtn = InitObject(UIButton);
     self.closeBtn.frame = RECT(self.mainView.width - kSizeFrom750(60), 0, kSizeFrom750(60), kSizeFrom750(60));
     [self.closeBtn addTarget:self action:@selector(closeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.closeBtn setImage:IMAGEBYENAME(@"close_white") forState:UIControlStateNormal];
+    [self.closeBtn setImage:IMAGEBYENAME(@"icons_close") forState:UIControlStateNormal];
     [self.mainView addSubview:self.closeBtn];
     
     self.titleLabel = InitObject(UILabel);

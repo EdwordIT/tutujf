@@ -19,13 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Home/Controller/HomeWebController.m"
-            timestampString = "545390792.9025789"
+            filePath = "Public/PublicClass/CommonUtils.m"
+            timestampString = "545740494.287161"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "428"
-            endingLineNumber = "428"
-            landmarkName = "-webView:runJavaScriptAlertPanelWithMessage:initiatedByFrame:completionHandler:"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
+            landmarkName = "+isUpdate"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -35,13 +35,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Home/Controller/HomeWebController.m"
-            timestampString = "545390792.902676"
+            filePath = "TTJF/SystemConfig/AppDelegate+XGPushConfig.m"
+            timestampString = "545911088.041729"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "424"
-            endingLineNumber = "424"
-            landmarkName = "-webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "-handleNotification:isRemote:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -51,13 +51,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Home/Controller/HomeWebController.m"
-            timestampString = "545390792.902768"
+            filePath = "TTJF/AppDelegate.m"
+            timestampString = "546146085.383251"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
-            landmarkName = "-webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:"
+            startingLineNumber = "508"
+            endingLineNumber = "508"
+            landmarkName = "-shouldDegradeHTTPDNS:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -67,45 +67,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Home/Controller/HomeWebController.m"
-            timestampString = "545390792.9028341"
+            filePath = "Public/KDCustom/CountDownManager.m"
+            timestampString = "545996136.7435009"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "416"
-            endingLineNumber = "416"
-            landmarkName = "-webView:createWebViewWithConfiguration:forNavigationAction:windowFeatures:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Account/AutoLoginView.m"
-            timestampString = "545390792.903069"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "-getLogin:password:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MyInfo/Controller/MineViewController.m"
-            timestampString = "545390792.903441"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "390"
-            endingLineNumber = "390"
-            landmarkName = "-didopMineAtIndex:"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "-cancel"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

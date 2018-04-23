@@ -7,7 +7,7 @@
 //
 
 #import "LYEmptyView.h"
-#import <LYEmptyViewHeader.h>
+#import <LYEmptyView/LYEmptyViewHeader.h>
 typedef void (^EmptyRefreshBlock)(void);
 @interface EmptyView : LYEmptyView
 +(instancetype)noDataEmpty;

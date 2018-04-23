@@ -57,15 +57,12 @@
     [self removeAllSubViews];
     self.backgroundColor =[UIColor whiteColor];
     UIView * linebg=[[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(20))];
-    linebg.backgroundColor=RGB(242,242,242);
+    linebg.backgroundColor=COLOR_Background;
     [self addSubview:linebg];
     
-    NSArray * repalys=  model.repay_plan.items;
-    RepayModel * repayModel;
-    if([repalys count]>0)
-        repayModel=[repalys objectAtIndex:0];
-    NSString * dp=[NSString stringWithFormat:@"%@",repayModel.display];
-    if([repalys count]>0&&[dp isEqual:@"2"])
+    NSArray * repalys=  model.repay_plan.items;//还款计划列表
+    NSString * display=[NSString stringWithFormat:@"%@",model.repay_plan.display];
+    if([repalys count]>0&&[display isEqual:@"2"])//是否有还款计划
     {
         sectionSeg = [[ZFJSegmentedControl alloc]initwithTitleArr:@[@"产品详情", @"安全审核", @"投资记录",@"还款计划"] iconArr:nil SCType:SCType_Underline];
     }
@@ -89,34 +86,32 @@
     product.userInteractionEnabled=YES;
     [self addSubview:product];
     
-    
+    //安全审核
     safe=[[DetailSafe alloc] initWithFrame:CGRectMake(0, product.top, screen_width, defaultHeight)];
     [safe setHidden:YES];
     safeHeight =  [safe setModel:model];
     [self addSubview:safe];
     
-    
+    //投资记录
     invest=[[DetailInvest alloc] initWithFrame:CGRectMake(0, product.top, screen_width, defaultHeight)];
     [invest setModel:model];
     TenderModel * dic= model.tender_list;
-    if(![dic.not_lktenlist_title isEqual:@""])
+    if([dic.is_show_tenlist isEqual:@"-1"])//不显示投资人
         investHeight = defaultHeight;
     else
-        investHeight =dic.items.count*75;
+        investHeight =dic.items.count*kSizeFrom750(150);
     [invest setHidden:YES];
     [self addSubview:invest];
     
-    
-    
+    //还款计划
     repay=[[DetailRepay alloc] initWithFrame:CGRectMake(0, product.top, screen_width, defaultHeight)];
     [repay setModel:model];
-    if([model.repay_plan.items count]>4)
-        repayHeight=[model.repay_plan.items count]*100;
+    if([model.repay_plan.items count]>3)
+        repayHeight=[model.repay_plan.items count]*kSizeFrom750(150);
     else
         repayHeight = defaultHeight;
     [repay setHidden:YES];
     [self addSubview:repay];
-    //zvc.color
     __weak typeof(self) weakSelf = self;
     sectionSeg.selectType = ^(NSInteger selectIndex,NSString *selectIndexTitle){
         [weakSelf showView:selectIndex];
@@ -175,10 +170,10 @@
 }
 -(void)sendProductHeight:(CGFloat)height
 {
-    
+    webHeight = height;
     if (sectionSeg.selectIndex==0) {
         [self.delegate didSelectedBottomAtIndex:0 height:height];
     }
-    webHeight = height;
+    
 }
 @end

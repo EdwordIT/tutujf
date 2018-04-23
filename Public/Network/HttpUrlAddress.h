@@ -34,33 +34,18 @@
 //未登录，老标
 #define getLoanInfoview1 @"%@/api/Loan/GetLoanInfoview?loan_id=%@&user_token=%@&sign=%@"
 
-//未登录，可抢
-#define getLoanInfoview2 @"%@/api/Loan/GetLoanInfoview?loan_id=%@&user_token=%@&sign=%@"
-
-//未登录，新手标
-#define getLoanInfoview3 @"%@/api/Loan/GetLoanInfoview?loan_id=%@&user_token=%@&sign=%@"
-
-//已登录，新手标
-#define getLoanInfoview4 @"%@/api/Loan/GetLoanInfoview?loan_id=%@&user_token=%@&sign=%@"
-
-//已登录，普通标
-#define getLoanInfoview5 @"%@/api/Loan/GetLoanInfoview?loan_id=%@&user_token=%@&sign=%@"
-
-//已登录，普通标，不可购买本人借款标
-#define getLoanInfoview6 @"%@/api/Loan/GetLoanInfoview?loan_id=%@&user_token=%@&sign=%@"
-
-//已登录，密码标
-#define getLoanInfoview7 @"%@/api/Loan/GetLoanInfoview?loan_id=%@&user_token=%@&sign=%@"
-
-//已登录，未开始
-#define getLoanInfoview8 @"%@/api/Loan/GetLoanInfoview?loan_id=%@&user_token=%@&sign=%@"
-
 #define investInterest @"%@/api/Loan/InvestInterest?amount=%@&period=%@&apr=%@&repay_type=%@&sign=%@"
 
-#define tenderNow  @"%@/api/Loan/TenderNow?loan_id=%@&amount=%@&loan_password=%@&user_token=%@&sign=%@"
+
 
 //#define webLoginUrl  @"%@/User/Token/Login?user_token=%@&expiration_date=%@&sign=%@"
 /*****************************************~1.4.8************************************************************/
+/**
+ 立即投资接口
+ ?loan_id=%@&amount=%@&loan_password=%@&user_token=%@&sign=%@
+ */
+#define tenderUrl  oyApiUrl@"/api/Loan/TenderNow"
+//登录接口
 #define loginUrl oyApiUrl@"/api/Users/Login"
 //获取我的账户信息相关接口
 #define getMyAccountUrl oyApiUrl@"/api/Users/getMyAccountData"
@@ -73,6 +58,10 @@
  标的详情页面接口
  */
 #define getLoanDetailUrl oyApiUrl@"/api/Loan/GetLoanInfoview"
+/**
+ 投资接口 ?amount=%@&period=%@&apr=%@&repay_type=%@&sign=%@
+ */
+#define investUrl oyApiUrl@"/api/Loan/InvestInterest"
 /**
  新版获取首页全部数据（土土社区，消息，快速投资，新手标
  ?version=%@&device_id=%@&user_token=%@&sign=%@
@@ -97,7 +86,7 @@
  找回密码
  api/users/phoneGetPwd?phone=%@&password=%@&sms_code=%@&sign=%@
  */
-#define forgetPasswordUrl oyApiUrl@"api/users/phoneGetPwd"
+#define forgetPasswordUrl oyApiUrl@"/api/users/phoneGetPwd"
 
 /**
  修改密码

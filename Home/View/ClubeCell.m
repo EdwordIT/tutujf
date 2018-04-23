@@ -97,7 +97,7 @@ Strong UILabel *watchTimesLabel;//浏览次数
     
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.titleLabel);
-        make.bottom.mas_equalTo(self.iconImageView);
+        make.bottom.mas_equalTo(self.contentView).offset(-kSizeFrom750(30));
         make.width.mas_equalTo(kSizeFrom750(280));
         make.height.mas_equalTo(kSizeFrom750(25));
     }];
@@ -114,15 +114,17 @@ Strong UILabel *watchTimesLabel;//浏览次数
     self.watchTimesLabel.text = [NSString stringWithFormat:@"浏览次数：%@次",model.hits];
     if ([model isKindOfClass:[InformationModel class]]) {
         //行业资讯
-//        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.width.mas_equalTo(kSizeFrom750(460));
-//        }];
+        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(kSizeFrom750(460));
+        }];
+        self.iconImageView.alpha = 1;
         [self.iconImageView setImageWithString:((InformationModel *)model).pic];
     }else{
-//        //公告
-//        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.width.mas_equalTo(screen_width - kSizeFrom750(60));
-//        }];
+        //公告
+        [self.titleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(screen_width - kSizeFrom750(60));
+        }];
+        self.iconImageView.alpha = 0;      
     }
     
 }

@@ -13,6 +13,7 @@ typedef void (^AutoLoginBlock)(void);
 Copy AutoLoginBlock autoLoginBlock;
 -(void) getLogin:(NSString *)user_name  password:(NSString *)password;
 -(void)autoLogin;//自动登录
--(void)loginWebView;//webView登录
+//-(void)loginWebView;//webView登录
+-(void)setCookie;
 -(void)exitLogin;//退出登录
 @end

@@ -30,19 +30,6 @@
     NSTimer *timer;
 }
 
-@property (retain,nonatomic) CLLocationManager *locManager;
-@property (nonatomic, copy) NSString *orderNum;
-@property (nonatomic, copy) NSString *qCodeString;
-@property (nonatomic, copy) NSString *callbackScan;
-
-@property (nonatomic, copy) NSString *Returnurl;
-//旧代码方法，暂时未发现有地方使用，下个版本删除
-//-(void)sendPay2:(NSString *)mysubject body:(NSString *) mybody  orderId:(NSString *) myorderId price:(NSString *) myprice;
-@property (strong, nonatomic) HomeWebController *mainViewController;
-
-
-@property(nonatomic, strong) NSString *urlStr;
-@property(nonatomic, strong) NSString *currentURL;
-@property(nonatomic, strong) NSString *returnmain;
+Strong NSString *urlStr;
 
 @end

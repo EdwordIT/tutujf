@@ -18,7 +18,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         cellHeight = kSizeFrom750(125);
-        self.contentView.backgroundColor = RGB_246;
+        self.contentView.backgroundColor = COLOR_Background;
     }
     
     return self;
@@ -71,7 +71,7 @@
     if(index!=count)
     {
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(kSizeFrom750(20), cellHeight - kLineHeight,btn1.width - kSizeFrom750(20)*2 , kLineHeight)];
-    lineView.backgroundColor =lineBg;
+    lineView.backgroundColor =RGB_233;
     [btn1 addSubview:lineView];
     }
     btn1.tag=index;
@@ -110,8 +110,8 @@
     }
     //默认显示
     if (array==nil) {
-      NSArray * iconsArray= [NSArray arrayWithObjects: @"http://www.tutujf.com/wapassets/trust/images/news/mylogo01.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo02.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo04.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo03.png",nil];
-       NSArray *titleArray= [NSArray arrayWithObjects: @"我的邀请",@"我的借款",@"托管账户",@"银行卡管理",nil];
+      NSArray * iconsArray= [NSArray arrayWithObjects: @"http://www.tutujf.com/wapassets/trust/images/news/mylogo01.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo02.png",@"http://www.tutujf.com/wapassets/trust/images/news/mylogo04.png",nil];
+       NSArray *titleArray= [NSArray arrayWithObjects: @"我的邀请",@"我的借款",@"托管账户",nil];
         NSMutableArray *defArr = InitObject(NSMutableArray);
         for (int i=0; i<iconsArray.count; i++) {
             UserContentModel *defaultModel = InitObject(UserContentModel);

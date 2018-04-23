@@ -9,21 +9,15 @@
 #import "FoundController.h"
 #import "TreasureMiddleCell.h"
 #import "FoundListCell.h"
-#import "AppDelegate.h"
 #import "FoundListModel.h"
 #import "DiscoverMenuModel.h"
 #import "FoundListModel.h"
 #import "HomeWebController.h"
-#import "LoginViewController.h"
 
 
 @interface FoundController ()<UITableViewDataSource,UITableViewDelegate,TreasureMiddleDelegate,TreasureListDelegate>
 {
-  
-        NSInteger currentIndex;/**< 记录当前分类按钮的下标 */
-    NSInteger selectIndex;/**< 记录当前分类按钮的下标 */
-    Boolean isExeute ;
-    NSString * content_title;
+      NSString * content_title;
 }
 @property(nonatomic, strong) BaseUITableView *tableView;
 Strong NSMutableArray *dataSourceArray;
@@ -39,6 +33,8 @@ Strong NSMutableArray *topArray;
     [self.backBtn setHidden:YES];
     [self initData];
     [self initTableView];
+    [SVProgressHUD showWithStatus:@"数据加载中..."];
+    [self getRequest];
     // Do any additional setup after loading the view.
 }
 
@@ -46,48 +42,35 @@ Strong NSMutableArray *topArray;
 -(void)initData{
     self.dataSourceArray = [[NSMutableArray alloc] init];
     self.topArray= [[NSMutableArray alloc] init];
-    currentIndex = 0;
-    selectIndex=0;
-    isExeute=FALSE;
     content_title=@"活动中心";
-}
--(void) OnLogin{
-    [self goLoginVC];
 }
 /**表格数据操作**/
 //初始化主界面
 -(void)initTableView{
-    if(iOS11)
-        self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight) style:UITableViewStyleGrouped];
-    else
-        self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight-kTabbarHeight) style:UITableViewStyleGrouped];
-
+  
+    self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight-kTabbarHeight) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.backgroundColor=separaterColor;
-    [self.tableView setSeparatorColor:separaterColor];
     [self.view addSubview:self.tableView];
-    [self setUpTableView];
-}
-
-//界面表格刷新
--(void)setUpTableView{
-
-    __weak typeof(self) weakSelf = self;
+    WEAK_SELF;
     TTJFRefreshStateHeader *header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
-        [weakSelf loadNewData];
+        [weakSelf getRequest];
     }];
     self.tableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
-        [weakSelf loadNewData];
+        [weakSelf getRequest];
     }];
+    [self.tableView ly_startLoading];
     self.tableView.mj_header = header;
-    [self loadNewData];
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    
+    if (self.dataSourceArray.count==0) {
+        return nil;
+    }
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    headerView.backgroundColor =separaterColor;
+    headerView.backgroundColor =COLOR_Background;
 
     if (section==1) {
         headerView.height = kSizeFrom750(110);
@@ -103,19 +86,9 @@ Strong NSMutableArray *topArray;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    footerView.backgroundColor = separaterColor;
+    footerView.backgroundColor = COLOR_Background;
     return footerView;
 }
-
--(void)loadNewData{
-    
-    __weak __typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if(!self->isExeute)
-        [weakSelf doFindList];
-    });
-}
-
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
@@ -123,7 +96,7 @@ Strong NSMutableArray *topArray;
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
      if (section ==0 ){
-          return 1;
+         return self.topArray.count>0?1:0;
      }
     return [self.dataSourceArray count];
  
@@ -201,9 +174,8 @@ Strong NSMutableArray *topArray;
 
 
 #pragma mark 数据获取
--(void) doFindList{
-    isExeute=TRUE;
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:getDiscoverUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:self.tableView success:^(NSDictionary *successDic) {
+-(void)getRequest{
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getDiscoverUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:self.tableView success:^(NSDictionary *successDic) {
         [self.dataSourceArray removeAllObjects];
         [self.topArray removeAllObjects];
         NSArray * ary=[successDic objectForKey:@"top_button"];
@@ -222,11 +194,8 @@ Strong NSMutableArray *topArray;
             FoundListModel * model=[FoundListModel yy_modelWithJSON:dic];
             [self.dataSourceArray addObject: model];
         }
-        //在主线程中刷新UI
-        MainThreadFunction([self.tableView reloadData]);
+        [self.tableView reloadData];
         
-        [self.tableView.mj_header endRefreshing];
-        self->isExeute=FALSE;
     } failure:^(NSDictionary *errorDic) {
        
     }];
@@ -236,18 +205,13 @@ Strong NSMutableArray *topArray;
 -(void)didTreasureMiddleIndex:(NSInteger)index
 {
 
-        HomeWebController *discountVC = [[HomeWebController alloc] init];
-        DiscoverMenuModel * model=[self.topArray objectAtIndex:index];
-        discountVC.urlStr=model.link_url;
-        if([model.link_url rangeOfString:[urlCheckAddress stringByAppendingString:@"/wap/feedback/add"]].location != NSNotFound)
-        {
-            if(![CommonUtils isLogin])
-            {
-                [self OnLogin];
-                return ;
-            }
-        }
-        [self.navigationController pushViewController:discountVC animated:YES];
+     DiscoverMenuModel * model=[self.topArray objectAtIndex:index];
+    
+    HomeWebController *discountVC = [[HomeWebController alloc] init];
+    
+    discountVC.urlStr=model.link_url;
+    
+    [self.navigationController pushViewController:discountVC animated:YES];
    
 }
 

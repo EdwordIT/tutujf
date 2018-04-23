@@ -49,7 +49,6 @@ Strong UIButton *leftImage;
     if (!_rightImage) {
         _rightImage = InitObject(UIButton);
         [_rightImage setImage:IMAGEBYENAME(@"icons_msg_unsel") forState:UIControlStateNormal];
-        [_rightImage setImage:IMAGEBYENAME(@"icons_msg_unsel") forState:UIControlStateSelected];
         _rightImage.adjustsImageWhenHighlighted = NO;
         _rightImage.tag =2;
         [_rightImage addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -93,10 +92,8 @@ Strong UIButton *leftImage;
 }
 -(void)reloadNav:(CGFloat)originY
 {
-    CGFloat height = kSizeFrom750(160)+kStatusBarHeight;
  //设置100高度为渐变区域，其余高度保持不变
-    CGFloat percentage = originY/100;
-    self.height = height - percentage*(height - kNavHight);
+    CGFloat percentage = originY/120;
     [self.leftImage mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.height.mas_equalTo(kSizeFrom750(80)-percentage*kSizeFrom750(20));
     }];

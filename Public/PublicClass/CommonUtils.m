@@ -56,52 +56,32 @@
 //手机号识别
 + (BOOL)checkTelNumber:(NSString *)telNumber{
   
-//    if (telNumber.length != 11)
-//    {
-//        return NO;
-//    }
-//    /**
-//     * 手机号码:
-//     * 13[0-9], 14[5,7], 15[0, 1, 2, 3, 5, 6, 7, 8, 9], 17[6, 7, 8], 18[0-9], 170[0-9]
-//     * 移动号段: 134,135,136,137,138,139,150,151,152,157,158,159,182,183,184,187,188,147,178,1705
-//     * 联通号段: 130,131,132,155,156,185,186,145,176,1709
-//     * 电信号段: 133,153,180,181,189,177,1700
-//     */
-//    NSString *MOBILE = @"^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\\d{8}$";
-//    /**
-//     * 中国移动：China Mobile
-//     * 134,135,136,137,138,139,150,151,152,157,158,159,182,183,184,187,188,147,178,1705
-//     */
-//    NSString *CM = @"(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\\d{8}$)|(^1705\\d{7}$)";
-//    /**
-//     * 中国联通：China Unicom
-//     * 130,131,132,155,156,185,186,145,176,1709
-//     */
-//    NSString *CU = @"(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\\d{8}$)|(^1709\\d{7}$)";
-//    /**
-//     * 中国电信：China Telecom
-//     * 133,153,180,181,189,177,1700
-//     */
-//    NSString *CT = @"(^1(33|53|77|8[019])\\d{8}$)|(^1700\\d{7}$)";
-//
-//
-//    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
-//    NSPredicate *regextestcm = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CM];
-//    NSPredicate *regextestcu = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CU];
-//    NSPredicate *regextestct = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", CT];
-//
-//    if (([regextestmobile evaluateWithObject:telNumber] == YES)
-//        || ([regextestcm evaluateWithObject:telNumber] == YES)
-//        || ([regextestct evaluateWithObject:telNumber] == YES)
-//        || ([regextestcu evaluateWithObject:telNumber] == YES))
-//    {
-//        return YES;
-//    }
-//    else
-//    {
-//        return NO;
-//    }
-    return YES;//测试需要
+    if (telNumber.length != 11)
+    {
+        return NO;
+    }
+    /**
+     * 手机号码:
+     * 13[0-9], 14[5,7], 15[0, 1, 2, 3, 5, 6, 7, 8, 9], 17[6, 7, 8], 18[0-9], 170[0-9]
+     * 移动号段: 134,135,136,137,138,139,150,151,152,157,158,159,182,183,184,187,188,147,178,1705
+     * 联通号段: 130,131,132,155,156,185,186,145,176,1709
+     * 电信号段: 133,153,180,181,189,177,1700
+     */
+    NSString *MOBILE = @"^1(3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-9])\\d{8}$";
+   
+
+
+    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
+
+
+    if ([regextestmobile evaluateWithObject:telNumber] == YES)
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
 }
 /*******************缓存处理***********************************************/
 /**
@@ -313,6 +293,30 @@
         return 0;
     return sss;
 }
+//获取倒计时字符串
++(NSString *)getCountDownTime:(NSInteger)timeInval
+{
+    NSInteger hour=timeInval/HOUR;
+    NSInteger day=(hour-(hour%24))/24;
+    
+    NSString *str_day = [NSString stringWithFormat:@"%ld",day];
+    NSString *str_hour = [NSString stringWithFormat:@"%ld",hour%24];
+    NSString *str_minute = [NSString stringWithFormat:@"%ld",(timeInval%HOUR)/MINUTE];
+    NSString *str_second = [NSString stringWithFormat:@"%ld",timeInval%MINUTE];
+    //修改倒计时标签现实内容
+    NSString * countDown=[NSString stringWithFormat:@"%@天%@时%@分%@秒",str_day,str_hour,str_minute, str_second];
+    if ([[countDown substringToIndex:2] isEqualToString:@"0天"]) {
+        countDown = [countDown stringByReplacingOccurrencesOfString:@"0天" withString:@""];
+    }
+    if ([[countDown substringToIndex:2] isEqualToString:@"0时"]) {
+        countDown = [countDown stringByReplacingOccurrencesOfString:@"0时" withString:@""];
+    }
+    if ([[countDown substringToIndex:2] isEqualToString:@"0分"]) {
+        countDown = [countDown stringByReplacingOccurrencesOfString:@"0分" withString:@""];
+    }
+    
+    return countDown;
+}
 + (int)convertToInt:(NSString*)strtemp//判断中英混合的的字符串长度
 {
     int strlength = 0;
@@ -373,6 +377,27 @@
     [alertController addAction:alertAction];
     [target presentViewController:alertController animated:YES completion:nil];
 }
+
+/**
+ 获取千分位的数字字符串
+ */
++(NSString *)getHanleNums:(NSString *)numbers{
+    if ([numbers rangeOfString:@".00"].location!=NSNotFound) {
+        numbers = [numbers stringByReplacingOccurrencesOfString:@".00" withString:@""];
+    }
+    NSString *str = [numbers substringWithRange:NSMakeRange(numbers.length%3, numbers.length-numbers.length%3)];
+    NSString *strs = [numbers substringWithRange:NSMakeRange(0, numbers.length%3)];
+    for (int  i =0; i < str.length; i =i+3) {
+        NSString *sss = [str substringWithRange:NSMakeRange(i, 3)];
+        strs = [strs stringByAppendingString:[NSString stringWithFormat:@",%@",sss]];
+    }
+    if ([[strs substringWithRange:NSMakeRange(0, 1)] isEqualToString:@","]) {
+        strs = [strs substringWithRange:NSMakeRange(1, strs.length-1)];
+    }
+    
+    strs = [strs stringByAppendingString:@".00"];
+    return strs;
+}
 //动态获取label高度
 +(CGFloat)getSpaceLabelHeight:(NSString*)str withFont:(UIFont*)font withWidth:(CGFloat)width lineSpace:(CGFloat)lineSpace{
     NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
@@ -421,6 +446,25 @@
     
     view.layer.shadowRadius = kSizeFrom750(8);
     
+}
+//给view添加渐变色
++(void)addGradientLayer:(UIView *)view startColor:(UIColor *)startColor endColor:(UIColor *)endColor withDirection:(GradientDirectionType)direction
+{
+    
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.colors = @[(__bridge id)startColor.CGColor, (__bridge id)endColor.CGColor];
+    
+    if (direction==DirectionFromTop) {//从上到下
+        gradientLayer.startPoint = CGPointMake(0.5, 0);//绘图起始点（x/Y）//顶部中间位置
+        gradientLayer.locations = @[@(0.5),@(1.0)];
+        gradientLayer.endPoint = CGPointMake(0.5, 1.0);
+    }else{
+        gradientLayer.startPoint = CGPointMake(0, 0.5);//绘图起始点（x/Y）//左边距中间位置
+        gradientLayer.locations = @[@(0.5),@(1.0)];
+        gradientLayer.endPoint = CGPointMake(1.0, 0.5);
+    }
+    gradientLayer.frame = view.bounds;
+    [view.layer addSublayer:gradientLayer];
 }
 /**
  设置字符串的字体大小和颜色

@@ -27,7 +27,12 @@ Strong UIWebView *loginWebView;
 @end
 
 @implementation RegisterViewController
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.mobileTextField becomeFirstResponder];
+   
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.titleString = @"手机快速注册";
@@ -90,7 +95,7 @@ Strong UIWebView *loginWebView;
         _codeBtn.backgroundColor = [UIColor clearColor];
         _codeBtn.titleLabel.font = SYSTEMSIZE(32);
         [_codeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
-        [_codeBtn setTitleColor:RGB(3, 147, 247) forState:UIControlStateNormal];
+        [_codeBtn setTitleColor:navigationBarColor forState:UIControlStateNormal];
         [_codeBtn addTarget:self action:@selector(codeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 
     }
@@ -168,7 +173,7 @@ Strong UIWebView *loginWebView;
     
     self.countDownNum = 60;
     if (_isRootVC) {
-        [self.backBtn setImage:IMAGEBYENAME(@"close_white") forState:UIControlStateNormal];
+        [self.backBtn setImage:IMAGEBYENAME(@"icons_close") forState:UIControlStateNormal];
     }
     [self.view addSubview:self.topImageView];
     
@@ -220,7 +225,7 @@ Strong UIWebView *loginWebView;
     [self.codeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(kSizeFrom750(160));
         make.centerY.mas_equalTo(self.codeTextField);
-        make.height.mas_equalTo(kSizeFrom750(32));
+        make.height.mas_equalTo(kSizeFrom750(50));
         make.left.mas_equalTo(self.codeTextField.mas_right);
         
     }];
@@ -267,10 +272,44 @@ Strong UIWebView *loginWebView;
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
--(void)textFieldDidChange :(UITextField *)theTextField{
-    NSLog( @"text changed: %@", theTextField.text);
+-(void)textFieldDidChange :(UITextField *)textField{
+    if (textField.text.length > 20) {
+        //限制输入长度为20
+        textField.text = [textField.text substringToIndex:20];
+    }
+    
 }
+
 #pragma mark --registerMethod
+-(void)countDown{
+    self.codeBtn.userInteractionEnabled = NO;
+    self.countDownNum --;
+    NSString * num = [NSString stringWithFormat:@"%lds",self.countDownNum];
+    [self.codeBtn setTitle:num forState:UIControlStateNormal];
+  
+    CALayer *layer = self.codeBtn.layer;
+    layer.frame = self.codeBtn.bounds;
+    layer.cornerRadius = kSizeFrom750(25);
+    layer.borderColor = [navigationBarColor CGColor];
+    layer.borderWidth = kLineHeight;
+    
+    if (self.countDownNum == 0)
+    {
+        CALayer *layer = self.codeBtn.layer;
+        layer.frame = self.codeBtn.bounds;
+        layer.cornerRadius = kSizeFrom750(25);
+        layer.borderColor = [[UIColor clearColor] CGColor];
+        layer.borderWidth = 0;
+        [self.codeTime invalidate];
+        self.codeTime = nil;
+        self.countDownNum = 60;
+        [self.codeBtn setTitle:@"重新获取" forState:UIControlStateNormal];
+        self.codeBtn.userInteractionEnabled = YES;
+    }
+   
+   
+
+}
 -(void)codeBtnClick:(UIButton *)sender{
     if ([CommonUtils checkTelNumber:self.mobileTextField.text]) {
         //发送验证码
@@ -282,26 +321,21 @@ Strong UIWebView *loginWebView;
         NSArray *keys = @[@"phone",@"type",@"time_stamp"];
         NSArray *values = @[phone,type,time_stamp];
     
-        [[HttpCommunication sharedInstance] getSignRequestWithPath:getMessageCodeUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){            [SVProgressHUD showSuccessWithStatus:@"验证码发送成功"];
-            self.codeTime = [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
-                self.codeBtn.userInteractionEnabled = NO;
-                self.countDownNum --;
-                NSString * num = [NSString stringWithFormat:@"%lds",self.countDownNum];
-                [self.codeBtn setTitle:num forState:UIControlStateNormal];
-                if (self.countDownNum == 0)
-                {
-                    [self.codeTime invalidate];
-                    self.countDownNum = 60;
-                    [self.codeBtn setTitle:@"重新获取" forState:UIControlStateNormal];
-                    self.codeBtn.userInteractionEnabled = YES;
-                }
-            }];
+        [[HttpCommunication sharedInstance] postSignRequestWithPath:getMessageCodeUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){
+            [SVProgressHUD showSuccessWithStatus:@"验证码发送成功"];
+            if (self.codeTime==nil) {
+                self.codeTime = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(countDown) userInfo:nil repeats:YES];
+                [[NSRunLoop currentRunLoop] addTimer:self.codeTime forMode:NSDefaultRunLoopMode];
+            }
+        
+            //[NSTimer timerWithTimeInterval:<#(NSTimeInterval)#> repeats:<#(BOOL)#> block:<#^(NSTimer * _Nonnull timer)block#>]此方法仅在ios10及其之后才有此方法
+          
         } failure:^(NSDictionary *errorDic) {
             
         }];
         
     }else{
-        [SVProgressHUD showErrorWithStatus:@"手机号格式不正确"];
+        [SVProgressHUD showInfoWithStatus:@"手机号格式不正确"];
     }
     
 }
@@ -323,22 +357,22 @@ Strong UIWebView *loginWebView;
     NSString *password = self.passwordTextField.text;
     NSString *referrer = @"";
     if (![CommonUtils checkTelNumber:phone]) {
-        [SVProgressHUD showErrorWithStatus:@"手机号格式不正确"];
+        [SVProgressHUD showInfoWithStatus:@"手机号格式不正确"];
         return;
     }
     
     if (![CommonUtils checkPassword:password]) {
-        [SVProgressHUD showErrorWithStatus:@"密码为6~15位数字和字母的组合"];
+        [SVProgressHUD showInfoWithStatus:@"密码为6~15位数字和字母的组合"];
         return;
     }
     if (sms_code.length!=6) {
-        [SVProgressHUD showErrorWithStatus:@"验证码错误"];
+        [SVProgressHUD showInfoWithStatus:@"验证码错误"];
         return;
     }
    
     NSArray *keys = @[@"phone",@"password",@"sms_code",@"referrer"];
     NSArray *values = @[phone,password,sms_code,referrer];
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:registerUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:registerUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){
         if (!IsEmptyStr([successDic objectForKey:kToken])) {
             [TTJFUserDefault setStr:phone key:kUsername];
             [TTJFUserDefault setStr:password key:kPassword];
@@ -349,10 +383,16 @@ Strong UIWebView *loginWebView;
         //默认登录webView
         AutoLoginView *loginView = [[AutoLoginView alloc]init];
         [self.view addSubview:loginView];
-        [loginView loginWebView];
+        [loginView setCookie];
         loginView.autoLoginBlock = ^{
-          //webView加载完成回调方法
-            [SVProgressHUD showSuccessWithStatus:@"注册成功"];
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeTabbarIndex" object:@{@"tabbarIndex":@(3)}];
+                    [SVProgressHUD showSuccessWithStatus:@"注册成功"];
+                    [self dismissViewControllerAnimated:YES completion:NULL];
+                });
+            });
+            
         };
     } failure:^(NSDictionary *errorDic) {
         

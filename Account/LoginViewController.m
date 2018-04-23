@@ -45,17 +45,19 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     [self exitLoginStatus];
     self.view.backgroundColor = [UIColor whiteColor];
     self.titleString = @"登录";
-    [self.backBtn setImage:IMAGEBYENAME(@"close_white") forState:UIControlStateNormal];
+    [self.backBtn setImage:IMAGEBYENAME(@"icons_close") forState:UIControlStateNormal];
     self.titleView.backgroundColor = [UIColor clearColor];
     [self initSubViews];
     [self makeViewConstraints];
 }
+
 -(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     [self.mobileTextField becomeFirstResponder];
 }
 -(void)backPressed:(UIButton *)sender{
+
     [self dismissViewControllerAnimated:YES completion:^{
-        
     }];
 }
 #pragma mark --lazyLoading
@@ -70,6 +72,9 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     if (!_mobileTextField) {
         _mobileTextField = InitObject(UITextField);
         _mobileTextField.placeholder = @"请输入手机号码/邮箱";
+        if ([TTJFUserDefault strForKey:kUsername]!=nil) {
+            _mobileTextField.text = [TTJFUserDefault strForKey:kUsername];
+        }
         [_mobileTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         _mobileTextField.delegate = self;
         CALayer *layer = [CALayer layer];
@@ -213,8 +218,9 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     
 }
 #pragma mark --textfieldDelegate
--(void)textFieldDidChange :(UITextField *)theTextField{
-    NSLog( @"text changed: %@", theTextField.text);
+
+-(void)textFieldDidChange :(UITextField *)textField{
+   
     if(_mobileTextField.text.length>3&&_passwordTextField.text.length >5)
     {
         [_loginBtn setBackgroundImage:IMAGEBYENAME(@"loginBtn") forState:UIControlStateNormal];
@@ -229,6 +235,11 @@ Strong UIButton *pwdBtn;//切换是否明文显示
         [_loginBtn setBackgroundImage:IMAGEBYENAME(@"") forState:UIControlStateNormal];
 
     }
+    
+    if (textField.text.length > 20) {
+        //限制输入长度为20
+        textField.text = [textField.text substringToIndex:20];
+    }
 }
 #pragma mark --loginMethod
 -(void)pwdBtnClick:(UIButton *)sender{
@@ -238,7 +249,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 //登录点击事件
 -(void)loginButtonClick:(UIButton *)button
 {
-    
+
     if (![CommonUtils checkPassword:_passwordTextField.text]) {
         [SVProgressHUD showInfoWithStatus:@"密码格式不正确"];
         [_passwordTextField shake];

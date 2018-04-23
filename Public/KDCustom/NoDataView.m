@@ -13,7 +13,7 @@
     self = [super init];
     if (self) {
         
-        self.backgroundColor = RGB_246;
+        self.backgroundColor = COLOR_Background;
         
         _imageView = [[UIImageView alloc] init];
         [self addSubview:_imageView];

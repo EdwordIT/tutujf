@@ -44,7 +44,8 @@ Strong UIImageView *refreshImage;//刷新箭头
 - (void)viewDidLoad {
     [super viewDidLoad];
     //用于区分X下和普通屏幕下的高度适配问题
-    navTitleHeight = kSizeFrom750(160)+kStatusBarHeight;
+    self.titleView.backgroundColor = [UIColor clearColor];
+    navTitleHeight = kNavHight;
     isFirstExe=FALSE;;
     [self initTableView];
     [self initAdvertMaskView];//托管页面
@@ -61,13 +62,13 @@ Strong UIImageView *refreshImage;//刷新箭头
     }
 }
 
-
 //刷新
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
     if ([CommonUtils isLogin]) {
-        [self GetMyUserDatas];
+        [self getRequest];
+        self.view.userInteractionEnabled = NO;//view在数据刷新成功之前不可点击
     }else
     {
         self.accountTitleView.titleLabel.text=@"******";
@@ -76,7 +77,11 @@ Strong UIImageView *refreshImage;//刷新箭头
         self.accountModel.balance_amount=@"0.00";
         [self.tableView reloadData];
     }
-//    [self viewWillLayoutSubviews];
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [advertView setHidden:YES];
 }
 //添加刷新View
 -(void)loadRrereshView
@@ -102,15 +107,10 @@ Strong UIImageView *refreshImage;//刷新箭头
 //初始化主界面
 -(void)initTableView{
 
-    if(iOS11)
-    {
-        self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, -kStatusBarHeight, screen_width, screen_height+kStatusBarHeight) style:UITableViewStyleGrouped];
-    }else
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height-kTabbarHeight) style:UITableViewStyleGrouped];
+    self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height-kTabbarHeight) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.backgroundColor= RGB_246;
     // 设置表格尾部
      self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -123,7 +123,7 @@ Strong UIImageView *refreshImage;//刷新箭头
     [self loadRrereshView];
     
     [self.view addSubview:self.accountTitleView];
-
+    
         
 }
 //点击顶部按钮进入个人以及消息列表页面(需登录)
@@ -160,13 +160,13 @@ Strong UIImageView *refreshImage;//刷新箭头
    
    __weak typeof(self) weakSelf = self;
     MJRefreshHeader *header  = [MJRefreshHeader headerWithRefreshingBlock:^{
-        [weakSelf GetMyUserDatas];
+        [weakSelf getRequest];
     }];
     header.backgroundColor = navigationBarColor;
     self.tableView.mj_header = header;
     // 马上进入刷新状态
     if ([CommonUtils isLogin]) {
-        [self GetMyUserDatas];
+        [self getRequest];
     }
 
 }
@@ -191,7 +191,7 @@ Strong UIImageView *refreshImage;//刷新箭头
     if (indexPath.section == 0) {
         {
             if(indexPath.row==0)
-                return kSizeFrom750(450)+navTitleHeight;//顶部抬头+资金信息高度
+                return kSizeFrom750(470)+navTitleHeight;//顶部抬头+资金信息高度
             else
             {
                 return kSizeFrom750(266);//中间菜单栏高度
@@ -200,7 +200,7 @@ Strong UIImageView *refreshImage;//刷新箭头
         }
     }else if(indexPath.section == 1){
         if (self.accountModel==nil) {
-            return kSizeFrom750(125)*4;//个人相关操作标签默认高度
+            return kSizeFrom750(125)*3;//个人相关操作标签默认高度
         }
       return  self.accountModel.bt_user_content.count*kSizeFrom750(125);
         
@@ -208,35 +208,28 @@ Strong UIImageView *refreshImage;//刷新箭头
         return 0;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    if (section==1) {
+        return kSizeFrom750(30);
+    }
     return 0.01;
 }
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    if (section == 0) {
-        return 0.01;
-    }
-    else if (section == 1) {
-        return kSizeFrom750(30);
-    } else if (section == 2) {
-        return 0.01;
-    }
-    else{
-        return 0.01;
-    }
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    
+    return 0.01;
 }
-
-
-
-
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    headerView.backgroundColor =RGB_246;
+    if (section==0) {
+        headerView.backgroundColor = navigationBarColor;
+    }else
+        headerView.backgroundColor = COLOR_Background;
     return headerView;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    footerView.backgroundColor = RGB_246;
-    
+    footerView.backgroundColor = COLOR_Background;
     return footerView;
 }
 
@@ -432,11 +425,11 @@ Strong UIImageView *refreshImage;//刷新箭头
  */
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    //设置渐变区域高度为100
+    //设置渐变区域高度为120
     CGFloat contentOffset = self.tableView.contentOffset.y - self.tableView.top;
     
 //    NSLog(@"contentoffset = %.2f",contentOffset);
-    if (contentOffset>0&&contentOffset<100) {
+    if (contentOffset>0&&contentOffset<120) {
         
         [self.accountTitleView reloadNav:contentOffset];
     }
@@ -447,7 +440,7 @@ Strong UIImageView *refreshImage;//刷新箭头
    else  {
        [self.accountTitleView setBackgroundColor:[UIColor clearColor]];
         self.refreshView.top = -screen_height-contentOffset;
-       if (ABS(contentOffset)<=navTitleHeight/2) {
+       if (ABS(contentOffset)<=120/2) {
            self.refreshImage.transform = CGAffineTransformMakeRotation(M_PI);
            self.refreshLabel.text = @"下拉刷新";
        }else{
@@ -488,7 +481,7 @@ Strong UIImageView *refreshImage;//刷新箭头
 
 
 
--(void) GetMyUserDatas{
+-(void) getRequest{
     if (![CommonUtils isLogin]) {
         [self.tableView.mj_header endRefreshing];
         return;
@@ -497,11 +490,13 @@ Strong UIImageView *refreshImage;//刷新箭头
     NSArray *keys = @[kToken];
     NSArray *values = @[[CommonUtils getToken]];
     
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:getMyUserDataUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
-   
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getMyUserDataUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
+        self.view.userInteractionEnabled = YES;//view在数据刷新成功之前不可点击
+
         [weakSelf loadInfoWithDict:successDic];
     } failure:^(NSDictionary *errorDic) {
-       
+        self.view.userInteractionEnabled = YES;//view在数据刷新成功之前不可点击
+
     }];
 
 
@@ -513,12 +508,12 @@ Strong UIImageView *refreshImage;//刷新箭头
     middleMenuArray = @[self.accountModel.bt_my_investment,self.accountModel.bt_my_red,self.accountModel.bt_my_capital_log];
     //消息个数
     if([self.accountModel.message integerValue]==0)
-    {//隐藏消息
-        self.accountTitleView.rightImage.selected = NO;
+    {//隐藏红点消息
+        [self.accountTitleView.rightImage setImage:IMAGEBYENAME(@"icons_msg_unsel") forState:UIControlStateNormal];
     }
     else
     {//显示红点消息
-        self.accountTitleView.rightImage.selected = YES;
+        [self.accountTitleView.rightImage setImage:IMAGEBYENAME(@"icons_msg_sel") forState:UIControlStateNormal];
     }
     //设置昵称
     [TTJFUserDefault setStr:self.accountModel.user_name key:kNikename];

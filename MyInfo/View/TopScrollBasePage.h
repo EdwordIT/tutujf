@@ -13,9 +13,6 @@ typedef void(^SelectedPageBannerAtIndex)(TopScrollMode * data);
 
 @interface TopScrollBasePage : UIView
 
-
--(void) setDataBind:(NSMutableArray *)data;
-
 - (instancetype)initWithFrame:(CGRect)frame
                     DataArray:(NSMutableArray *)dataArray
                   selectBlock:(SelectedPageBannerAtIndex)block;

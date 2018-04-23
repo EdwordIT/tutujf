@@ -50,6 +50,8 @@ Strong UIButton *completeBtn;//完成注册
         layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), kLineHeight);
         layer.backgroundColor = [RGB(229, 230, 231) CGColor];
         [_oldPasswordTextField.layer addSublayer:layer];
+        [_oldPasswordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+
         _oldPasswordTextField.leftViewMode = UITextFieldViewModeAlways;
     
         
@@ -67,6 +69,7 @@ Strong UIButton *completeBtn;//完成注册
         layer.backgroundColor = [RGB(229, 230, 231) CGColor];
         [_passwordTextField.layer addSublayer:layer];
         _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
+        [_passwordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 
         
     }
@@ -77,6 +80,8 @@ Strong UIButton *completeBtn;//完成注册
         _insurePasswordTextField = InitObject(UITextField);
         _insurePasswordTextField.placeholder = @"请确认新密码";
         _insurePasswordTextField.delegate = self;
+        [_insurePasswordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+
         _insurePasswordTextField.secureTextEntry = YES;
         CALayer *layer = [CALayer layer];
         layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), kLineHeight);
@@ -220,7 +225,12 @@ Strong UIButton *completeBtn;//完成注册
     
 }
 #pragma mark --textfieldDelegate
-
+-(void)textFieldDidChange :(UITextField *)textField{
+    if (textField.text.length > 20) {
+        //限制输入长度为20
+        textField.text = [textField.text substringToIndex:20];
+    }
+}
 #pragma mark --registerMethod
 //找回密码按钮点击
 -(void)registerButtonClick:(UIButton *)sender{
@@ -228,33 +238,33 @@ Strong UIButton *completeBtn;//完成注册
     NSString *new_password = self.passwordTextField.text;
     NSString *insure_Pwd = self.insurePasswordTextField.text;
     if (![CommonUtils checkPassword:new_password]) {
-        [SVProgressHUD showErrorWithStatus:@"密码为6~15位数字和字母的组合"];
+        [SVProgressHUD showInfoWithStatus:@"密码为6~15位数字和字母的组合"];
         return;
     }
     if (![CommonUtils checkPassword:insure_Pwd]) {
-        [SVProgressHUD showErrorWithStatus:@"密码为6~15位数字和字母的组合"];
+        [SVProgressHUD showInfoWithStatus:@"密码为6~15位数字和字母的组合"];
         return;
     }
     if (![new_password isEqualToString:new_password]) {
-        [SVProgressHUD showErrorWithStatus:@"两次输入密码不一致！"];
+        [SVProgressHUD showInfoWithStatus:@"两次输入密码不一致！"];
         return;
     }
  
     NSArray *keys = @[kToken,@"password",@"new_password"];
     NSArray *values = @[[CommonUtils getToken],password,new_password];
     
-    [[HttpCommunication sharedInstance] getSignRequestWithPath:changePasswordUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:changePasswordUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
         [SVProgressHUD showSuccessWithStatus:@"密码修改成功，请重新登录"];
-        [self exitLoginStatus];
-        [self goLoginVC];
-        [self.navigationController popToRootViewControllerAnimated:NO];
-        
+        [self performSelector:@selector(changePwdSuccess) withObject:nil afterDelay:1];
     } failure:^(NSDictionary *errorDic) {
         
     }];
     
-    
-    
+}
+-(void)changePwdSuccess{
+    [self exitLoginStatus];
+    [self goLoginVC];
+    [self.navigationController popToRootViewControllerAnimated:NO];
     
 }
 -(void)pwdBtnClick:(UIButton *)sender{

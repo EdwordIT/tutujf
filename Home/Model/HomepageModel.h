@@ -27,6 +27,8 @@ Copy NSString *pic;//行业资讯比公告多了个pic
 Copy NSString *status;//状态  1显示  0隐藏
 Copy NSString *images_url;
 Copy NSString *link_url;
+Copy NSString *img_width;
+Copy NSString *img_height;
 @end
 
 @interface PlatformModel: BaseModel

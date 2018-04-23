@@ -10,7 +10,6 @@
 #import "SecurityModel.h"
 
 
-
 @interface DetailSafe ()
 {
     NSArray * dataAry;
@@ -33,7 +32,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor=lineBg;
+        self.backgroundColor=RGB_233;
 
     }
     return self;
@@ -55,19 +54,18 @@
             [self addSubview:typeimgsrc];
             
             SecurityModel * security=[dataAry objectAtIndex:k];
-            UILabel * title=[[UILabel alloc] initWithFrame:CGRectMake(typeimgsrc.right+originSpace, originBottom, screen_width-kSizeFrom750(70), kSizeFrom750(30))];
+            UILabel * title=[[UILabel alloc] initWithFrame:CGRectMake(typeimgsrc.right+originSpace, originBottom-kSizeFrom750(6), screen_width-kSizeFrom750(70), kSizeFrom750(30))];
             title.centerY = typeimgsrc.centerY;
             title.textColor=RGB(83,83,83);
-            title.textAlignment=NSTextAlignmentLeft;
             title.text=security.title;
             title.font=SYSTEMSIZE(26);
             [self addSubview:title];
             
             UILabel * content=[[UILabel alloc] init];
-            CGFloat contentHeight = [CommonUtils getSpaceLabelHeight:security.contents withFont:SYSTEMSIZE(26) withWidth:title.width lineSpace:kSizeFrom750(10)];
+            CGFloat contentHeight = [CommonUtils getSpaceLabelHeight:security.contents withFont:SYSTEMSIZE(28) withWidth:title.width lineSpace:kSizeFrom750(10)];
             content.frame = CGRectMake(title.left, title.bottom+kSizeFrom750(20), title.width, contentHeight);
             content.textColor=RGB(83,83,83);
-            content.font=SYSTEMSIZE(26);
+            content.font=SYSTEMSIZE(28);
             content.numberOfLines=0;
             [self setData:security.contents titleLabel:content];
             [self addSubview:content];

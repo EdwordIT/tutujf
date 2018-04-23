@@ -17,20 +17,24 @@
     }
     return self;
 }
+
 -(void)initSubViews
 {
     self.iconImage =  InitObject(UIButton);
-    self.iconImage.frame = RECT(0, 0, self.width, self.height);
+    [self addSubview:self.iconImage];
+    [self.iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(self);
+    }];
     [self.iconImage addTarget:self action:@selector(iconImageClick:) forControlEvents:UIControlEventTouchUpInside];
     self.iconImage.adjustsImageWhenHighlighted = NO;
-    [self addSubview:self.iconImage];
     
-    self.closeBtn = InitObject(UIButton);
-    self.closeBtn.frame = RECT(self.width - kSizeFrom750(60), 0, kSizeFrom750(60), kSizeFrom750(60));
-    self.closeBtn.adjustsImageWhenHighlighted = NO;
-    [self addSubview:self.closeBtn];
-    
-    [self.closeBtn addTarget:self action:@selector(closeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+//
+//    self.closeBtn = InitObject(UIButton);
+//    self.closeBtn.frame = RECT(self.width - kSizeFrom750(60), 0, kSizeFrom750(60), kSizeFrom750(60));
+//    self.closeBtn.adjustsImageWhenHighlighted = NO;
+//    [self addSubview:self.closeBtn];
+//
+//    [self.closeBtn addTarget:self action:@selector(closeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
 }
 
@@ -39,9 +43,9 @@
         self.adAlertBlock();
     }
 }
--(void)closeBtnClick:(UIButton *)sender{
-    [self setHidden:YES];
-}
+//-(void)closeBtnClick:(UIButton *)sender{
+//    [self setHidden:YES];
+//}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

@@ -22,6 +22,8 @@
 #define Sign_IOS @"?equipment=ios"//webView里的ios标记
 //登录状态发生变化全局通知
 #define Noti_LoginChanged @"LoginStatusChanged"//改变首页数据显示
+
+#define Noti_CountDownFinished @"CountDownFinished"//项目持续倒计时结束，发送通知使按钮无法点击
 //token失效重新登录通知
 #define Noti_AutoLogin @"autoLogin"
 //获取系统配置成功通知
@@ -38,6 +40,7 @@
 #define kUmeng_Event_Request_ActionOfServer @"Request_ActionOfServer"
 #define kUmeng_Event_Request_ActionOfLocal @"Request_ActionOfLocal"
 
+#define Bugly_AppId @"7674c51751"
 //Social Data
 #define kSocial_WX_ID @"wx0693ca25b9dda8b8"
 #define kSocial_WX_Secret @"dc83f73464cbe135b61e8fc16bfefa3d"
@@ -60,8 +63,6 @@
 //版本号
 #define kVersion_Coding [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]
 #define kVersionBuild_Coding [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]
-
-#define Update_Coding @"6"  //当前版本号
 
 #define kKeyWindow [UIApplication sharedApplication].keyWindow
 #define DebugLog(s, ...) NSLog(@"%s(%d): %@", __FUNCTION__, __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__])

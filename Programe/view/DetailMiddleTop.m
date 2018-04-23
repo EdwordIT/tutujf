@@ -74,7 +74,7 @@
     proName.font=SYSTEMSIZE(28);
     proName.textColor=RGB(80,80, 80);
     UIView * line1=[[UIView alloc] initWithFrame:CGRectMake(0, kSizeFrom750(160)-kLineHeight, screen_width, kLineHeight)];
-    line1.backgroundColor=lineBg;
+    line1.backgroundColor=RGB_233;
     [self addSubview:line1];
     [self addSubview:proName];
 }

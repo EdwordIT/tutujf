@@ -10,6 +10,10 @@
 #import "UIColor+HexString.h"
 @interface CommonUtils : NSObject
 
+typedef enum{
+    DirectionFromLeft,//渐变色方向
+    DirectionFromTop
+}GradientDirectionType;
 #define HEXCOLOR(c) [UIColor colorWithHexString:c]
 /**
  获取手机型号
@@ -66,6 +70,10 @@
 //移除所有缓存内容
 +(void)removeAllCache;
 /*******************常用方法***********************************************/
+/**
+ 获取千分位的数字
+ */
++(NSString *)getHanleNums:(NSString *)numbers;
 
 /**
  获取根视图控制器
@@ -91,11 +99,17 @@
  */
 + (NSInteger)getDifferenceByDate:(NSString *)creat_time;
 /**
+ 获取倒计时显示字符串
+ */
++(NSString *)getCountDownTime:(NSInteger)timeInval;
+/**
 带有行间距的label的高度
  */
 +(CGFloat)getSpaceLabelHeight:(NSString*)str withFont:(UIFont*)font withWidth:(CGFloat)width lineSpace:(CGFloat)lineSpace;
 /**设置带圆角带阴影*/
 +(void)setShadowCornerRadiusToView:(UIView *)view;
+//给view添加渐变色
++(void)addGradientLayer:(UIView *)view startColor:(UIColor *)startColor endColor:(UIColor *)endColor withDirection:(GradientDirectionType)direction;
 /**
  设置带有行间距的label
  */

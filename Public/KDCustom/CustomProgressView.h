@@ -14,5 +14,5 @@
 
 Strong UIColor * defaultColor;
 Strong UIColor * progressColor;
-
+Strong UIView *tineView;
 @end
