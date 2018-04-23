@@ -493,14 +493,11 @@ Strong UIView *functionTopView;//功能按钮
     else if(indexPath.section ==2){
         
         if (indexPath.row==clubDataArray.count) {
-            return [self registerPlatTableView:tableView indexPath:indexPath];
+            return [self registerPlatTableView:tableView indexPath:indexPath];//平台数据
         }else
-            return  [self registerClubTableView:tableView indexPath:indexPath];
-        
+            return  [self registerClubTableView:tableView indexPath:indexPath];//社区内容
     }else{
-        
     }
-    
     return nil;
 }
 

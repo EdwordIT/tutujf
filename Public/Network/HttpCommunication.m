@@ -108,9 +108,9 @@
             [self endRefresh:scrollView];
             //特殊接口：登录和注册，都需要静默登录webView，需等到webView加载完成之后才退出提示框
             if ([urlString isEqualToString:loginUrl]||[urlString isEqualToString:registerUrl]) {
-                //不
+                //不隐藏提示框
             }else
-                [SVProgressHUD dismiss];
+                [SVProgressHUD dismissWithDelay:0.5];
             //解析response内容
             if([responseObject isKindOfClass:[NSDictionary class]]){
                 NSDictionary *resalut = (NSDictionary *)responseObject;

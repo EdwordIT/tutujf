@@ -68,6 +68,7 @@ Strong UIImageView *refreshImage;//刷新箭头
     
     if ([CommonUtils isLogin]) {
         [self getRequest];
+        self.view.userInteractionEnabled = NO;//view在数据刷新成功之前不可点击
     }else
     {
         self.accountTitleView.titleLabel.text=@"******";
@@ -76,6 +77,11 @@ Strong UIImageView *refreshImage;//刷新箭头
         self.accountModel.balance_amount=@"0.00";
         [self.tableView reloadData];
     }
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [advertView setHidden:YES];
 }
 //添加刷新View
 -(void)loadRrereshView
@@ -485,10 +491,12 @@ Strong UIImageView *refreshImage;//刷新箭头
     NSArray *values = @[[CommonUtils getToken]];
     
     [[HttpCommunication sharedInstance] postSignRequestWithPath:getMyUserDataUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
-   
+        self.view.userInteractionEnabled = YES;//view在数据刷新成功之前不可点击
+
         [weakSelf loadInfoWithDict:successDic];
     } failure:^(NSDictionary *errorDic) {
-       
+        self.view.userInteractionEnabled = YES;//view在数据刷新成功之前不可点击
+
     }];
 
 

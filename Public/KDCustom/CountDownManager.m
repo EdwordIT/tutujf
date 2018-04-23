@@ -37,13 +37,14 @@ Strong NSTimer *timer;
         _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
         _timeInterval = 0;
         [[NSRunLoop mainRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+         [[NSNotificationCenter defaultCenter] postNotificationName:Noti_CountDown object:nil userInfo:nil];//全局广播倒计时
     }
     return _timer;
 }
 -(void)timerAction
 {
     self.timeInterval++;
-    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_CountDown object:nil userInfo:@{@"timeInterval":@(self.timeInterval)}];//全局广播倒计时
+   
 }
 -(void)cancel{
     [_timer invalidate];

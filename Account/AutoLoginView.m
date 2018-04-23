@@ -45,8 +45,6 @@ Strong UIWebView *mainWebView;
             [TTJFUserDefault setStr:password key:kPassword];
             [TTJFUserDefault setStr:temp key:kExpirationTime];
             [self setCookie];
-            //登录状态改变发送通知
-            [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];
         
     } failure:^(NSDictionary *errorDic) {
         [self removeUserInfo];
@@ -73,13 +71,12 @@ Strong UIWebView *mainWebView;
     }
     else
     {
-//        [self loginWebView];//应用打开默认走一遍webView登录接口
-//        //当前token有效，不用重新更新token，也不需要重新登录
+//        //当前token有效，不用重新更新token，也不需要重新登录,More
         [self setCookie];
     }
   
 }
-- (void)setCookie{
+- (void)setCookie{//向webView中写入cookie值
     //根据键值取出name
     NSString *user_name = [TTJFUserDefault strForKey:kUsername];
     NSString *password = [TTJFUserDefault strForKey:kPassword];
@@ -129,33 +126,6 @@ Strong UIWebView *mainWebView;
     
     [self.mainWebView loadRequest:request];
 }
--(void)loginWebView//webView登录
-{
-
-    NSString *user_name=[CommonUtils getUsername];
-    NSString *user_token= [TTJFUserDefault strForKey:kToken];
-    NSString *urlStr = @"";
-    user_name=[HttpSignCreate encodeString:user_name];
-    NSDictionary *dict_data=[[NSDictionary alloc] initWithObjects:@[user_name,user_token] forKeys:@[kUsername,kToken]];
-    NSMutableArray * paixu1=[[NSMutableArray alloc] init];
-    [paixu1 addObject:kUsername];
-    [paixu1 addObject:kToken];
-    NSString *sign=[HttpSignCreate GetSignStr:dict_data paixu:paixu1];
-    NSString *equipment = @"ios";
-    urlStr = [NSString stringWithFormat:webLoginUrl,oyUrlAddress,user_name,user_token,sign,equipment];
-    self.mainWebView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 0,0)];
-    self.mainWebView.delegate=self;
-    //伸缩内容适应屏幕尺寸
-    self.mainWebView.scalesPageToFit=YES;
-    [self.mainWebView setUserInteractionEnabled:YES];
-    NSURL *url = [[NSURL alloc] initWithString:urlStr];
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
-    NSLog(@"%@",urlStr);
-    [self.mainWebView loadRequest:request];
-    self.mainWebView.scrollView.bounces = NO;
-    [self addSubview:self.mainWebView];
-
-}
 -(void)exitLogin//webView退出登录
 {
     [self cleanCaches];
@@ -176,9 +146,17 @@ Strong UIWebView *mainWebView;
  */
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
+   
     if (self.autoLoginBlock) {
         self.autoLoginBlock();
     }
+    [self performSelector:@selector(loginChanged) withObject:nil afterDelay:1.5];
+    //登录状态改变发送通知,延时发送
+   
+}
+//登录状态发生改变
+-(void)loginChanged{
+    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];
 }
 #pragma mark -得到当前时间
 - (NSDate *)getCurrentTime{

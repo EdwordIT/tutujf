@@ -370,7 +370,7 @@
 {
     IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
 //    manager.enable = YES;
-//    manager.shouldResignOnTouchOutside = YES;
+    manager.shouldResignOnTouchOutside = YES;
 //    manager.shouldToolbarUsesTextFieldTintColor = YES;
     manager.keyboardDistanceFromTextField=kSizeFrom750(40);
 //    manager.enableAutoToolbar = NO;

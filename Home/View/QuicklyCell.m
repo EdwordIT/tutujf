@@ -232,9 +232,6 @@ Strong NSDate *nowDate;//现在的时间
 //倒计时通知事件接收
 -(void)countDownNotification:(NSNotification *)noti{
     
-//    NSDictionary *userInfo = noti.userInfo;//获取通知发送的计数信息
-//    NSInteger count = [[userInfo objectForKey:@"timeInterval"] integerValue];//计数
-//    NSInteger timeToNow = [self getDifferenceByDate:self.cellModel.open_up_date];//开始时间距离现在的时间差（秒数）
     secondsCountDown--;
     if (secondsCountDown<=0||([self.cellModel.open_up_status rangeOfString:@"-1"].location!=NSNotFound)) {
         return;//如果开始就不存在倒计时，则不走下边儿判断

@@ -50,7 +50,9 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     [self initSubViews];
     [self makeViewConstraints];
 }
+
 -(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     [self.mobileTextField becomeFirstResponder];
 }
 -(void)backPressed:(UIButton *)sender{
