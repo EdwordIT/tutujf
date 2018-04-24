@@ -2240,7 +2240,6 @@
 				E7D4C1091E7171FB00E828A5 /* Account */,
 				E70679411E60C81300E32B86 /* Public */,
 				E70679401E60C80B00E32B86 /* Library */,
-				E7BF5F531E60795F00BCE81E /* Web */,
 				E7BF5F501E60780100BCE81E /* Home */,
 				E7BF5F521E60780100BCE81E /* MyInfo */,
 				E7BF5F1C1E6066F200BCE81E /* TTJF */,
@@ -2326,13 +2325,6 @@
 				E7D4C0FD1E71174A00E828A5 /* Controller */,
 			);
 			path = MyInfo;
-			sourceTree = "<group>";
-		};
-		E7BF5F531E60795F00BCE81E /* Web */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Web;
 			sourceTree = "<group>";
 		};
 		E7D4C0F41E71173A00E828A5 /* View */ = {
@@ -3314,6 +3306,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = TTJF/TTJF.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 37GX884537;
@@ -3423,6 +3416,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = NO;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = TTJF/TTJF.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 37GX884537;
