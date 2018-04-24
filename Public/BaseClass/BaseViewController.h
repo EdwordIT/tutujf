@@ -13,7 +13,7 @@
 #import "HttpSignCreate.h"
 #import "HttpUrlAddress.h"
 #import "HttpCommunication.h"
-#import "BaseUITableView.h"
+#import "BaseView.h"
 /**
     基础控件
  */

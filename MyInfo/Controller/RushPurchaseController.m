@@ -7,17 +7,12 @@
 //
 
 #import "RushPurchaseController.h"
-#import "HttpSignCreate.h"
-#import "HttpUrlAddress.h"
-#import "ggHttpFounction.h"
 #import "MBProgressHUD+MP.h"
 #import "SecurityModel.h"
 #import "RepayModel.h"
-#import "AppDelegate.h"
 #import "HomeWebController.h"
-#import "SVProgressHUD.h"
 #import "HomeWebController.h"
-
+#import "RechargeController.h"//充值页面
 #define blackfont  RGB(111,187,255)
 @interface RushPurchaseController ()<UIScrollViewDelegate,UITextFieldDelegate>
 {
@@ -152,7 +147,7 @@ Strong     LoanBase * baseModel;
     btn1.centerY = accountRemainLabel.centerY;
     [btn1 setTitle:@"充值" forState:UIControlStateNormal];
     btn1.titleLabel.font = SYSTEMSIZE(26);
-    [btn1 addTarget:self action:@selector(OnChongZhi:) forControlEvents:UIControlEventTouchUpInside];
+    [btn1 addTarget:self action:@selector(rechargeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [btn1 setBackgroundColor:COLOR_Red];
     btn1.layer.cornerRadius = kSizeFrom750(10);
     btn1.layer.masksToBounds = YES;
@@ -351,15 +346,14 @@ Strong     LoanBase * baseModel;
         
     }];
 }
--(void)OnChongZhi:(UIButton *) sender
+-(void)rechargeBtnClick:(UIButton *) sender
 {
     if([CommonUtils isLogin])
     {
         if([self.baseModel.trust_account isEqual:@"1"])
         {
-         HomeWebController *discountVC = [[HomeWebController alloc] init];
-         discountVC.urlStr=self.baseModel.recharge_url;
-          [self.navigationController pushViewController:discountVC animated:YES];
+            RechargeController *recharge = InitObject(RechargeController);
+            [self.navigationController pushViewController:recharge animated:YES];
         }
         else
         {
