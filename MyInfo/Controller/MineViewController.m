@@ -7,7 +7,6 @@
 //
 
 #import "MineViewController.h"
-#import "HttpSignCreate.h"
 #import "MineTopCell.h"
 #import "MIneMiddleCell.h"
 #import "MineMenuCell.h"
@@ -19,6 +18,8 @@
 #import "AccountTitleView.h"//顶部导航栏
 #import "MyAccountModel.h"
 #import <MJRefreshNormalHeader.h>
+#import "RechargeController.h"//充值
+#import "GetCashController.h"//提现
 @interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
 {
@@ -355,35 +356,35 @@ Strong UIImageView *refreshImage;//刷新箭头
         }
         else if(index==5)//充值
         {
-            NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
-            if([temp isEqual:@"0"])  //显示托管
-            {
-                HomeWebController *discountVC = [[HomeWebController alloc] init];
-                discountVC.urlStr = self.accountModel.trust_reg_new_link;
-                [self.navigationController pushViewController:discountVC animated:YES];
-            }
-            else
-            {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr=self.accountModel.recharge_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
-            }
+//            NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
+//            if([temp isEqual:@"0"])  //显示托管
+//            {
+//                HomeWebController *discountVC = [[HomeWebController alloc] init];
+//                discountVC.urlStr = self.accountModel.trust_reg_new_link;
+//                [self.navigationController pushViewController:discountVC animated:YES];
+//            }
+//            else
+//            {
+            [self goRealNameVC];
+//                RechargeController *recharge = InitObject(RechargeController);
+//                [self.navigationController pushViewController:recharge animated:YES];
+//            }
         }
         else if(index==6)//提现
         {
-             NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
-            if([temp isEqual:@"0"])  //未托管，进入托管页面
-        {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr = self.accountModel.trust_reg_new_link;
-            [self.navigationController pushViewController:discountVC animated:YES];
-        }
-            else
-            {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr=self.accountModel.cash_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
-            }
+//             NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
+#warning test
+//            if([temp isEqual:@"0"])  //未托管，进入托管页面
+//        {
+//            HomeWebController *discountVC = [[HomeWebController alloc] init];
+//            discountVC.urlStr = self.accountModel.trust_reg_new_link;
+//            [self.navigationController pushViewController:discountVC animated:YES];
+//        }
+//            else
+//            {
+                GetCashController *cash = InitObject(GetCashController);
+                [self.navigationController pushViewController:cash animated:YES];
+//            }
         }
     }
     else

@@ -109,7 +109,7 @@ Strong UILabel *watchTimesLabel;//浏览次数
 }
 //如果有imgUrl，则是行业资讯，如果没有，则为公告
 -(void)loadInfoWithModel:(NoticeModel *)model{
-    [CommonUtils setAttString:model.title withLineSpace:kSizeFrom750(12) titleLabel:self.titleLabel];
+    [CommonUtils setAttString:model.title withLineSpace:kLabelSpace titleLabel:self.titleLabel];
     self.timeLabel.text = model.add_time;
     self.watchTimesLabel.text = [NSString stringWithFormat:@"浏览次数：%@次",model.hits];
     if ([model isKindOfClass:[InformationModel class]]) {

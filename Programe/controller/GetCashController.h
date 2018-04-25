@@ -10,6 +10,6 @@
 /**
  提现页面
  */
-@interface WithDrawController : BaseViewController
+@interface GetCashController : BaseViewController
 
 @end

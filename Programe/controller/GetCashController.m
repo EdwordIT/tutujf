@@ -1,32 +1,32 @@
 //
-//  RechargeController.m
+//  WithDrawController.m
 //  TTJF
 //
 //  Created by wbzhan on 2018/4/24.
 //  Copyright © 2018年 TTJF. All rights reserved.
 //
 
-#import "RechargeController.h"
-#import "RechargeRecordController.h"
+#import "GetCashController.h"
+#import "GetCashRecordController.h"
 #import "GradientButton.h"
-@interface RechargeController ()<UITextFieldDelegate,UITextViewDelegate>
+@interface GetCashController ()<UITextFieldDelegate,UITextViewDelegate>
 Strong UIView *topView;//白色背景
 Strong UILabel *amountTitle;
-Strong UILabel *amountLabel;//可用余额
+Strong UILabel *amountLabel;//可提现余额
 Strong UIView *amountBgView;//背景色
 Strong UITextField *amountTextField;//输入框
-Strong GradientButton *rechargeBtn;//
-Strong UIButton *limitDesBtn;//快捷充值限额说明
-Strong UIButton *historyBtn;//充值记录
+Strong GradientButton *getCashBtn;//
+Strong UILabel *desLabel;//进入第三方提现
+Strong UIButton *historyBtn;//提现明细
 Strong UIButton *remindTitle;
 Strong UITextView *remindTextView;//温馨提示
 @end
 
-@implementation RechargeController
+@implementation GetCashController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.titleString = @"充值";
+    self.titleString = @"提现";
     [self initSubViews];
     
     [self loadTextView];
@@ -45,9 +45,9 @@ Strong UITextView *remindTextView;//温馨提示
     
     [self.amountBgView addSubview:self.amountTextField];
     
-    [self.topView addSubview:self.rechargeBtn];
+    [self.topView addSubview:self.getCashBtn];
     
-    [self.topView addSubview:self.limitDesBtn];
+    [self.topView addSubview:self.desLabel];
     
     [self.topView addSubview:self.historyBtn];
     
@@ -56,6 +56,10 @@ Strong UITextView *remindTextView;//温馨提示
     [self.view addSubview:self.remindTextView];
     
     [self loadLayout];
+    
+    [self.topView layoutIfNeeded];
+    
+    [self.getCashBtn setGradientColors:@[COLOR_DarkBlue,COLOR_LightBlue]];
 
 }
 -(UIView *)topView{
@@ -71,15 +75,15 @@ Strong UITextView *remindTextView;//温馨提示
         _amountTitle.textAlignment = NSTextAlignmentCenter;
         _amountTitle.textColor = COLOR_Btn_Unsel;
         _amountTitle.font = SYSTEMSIZE(30);
-        _amountTitle.text = @"可用余额（元）";
+        _amountTitle.text = @"可提现金额（元）";
     }
     return _amountTitle;
 }
 -(UILabel *)amountLabel{
     if (!_amountLabel) {
         _amountLabel = InitObject(UILabel);
-        _amountLabel.text = @"569298.00";
-        _amountLabel.textColor = COLOR_Red;
+        _amountLabel.text = @"5698.00";
+        _amountLabel.textColor = COLOR_DarkBlue;
         _amountLabel.font = NUMBER_FONT_BOLD(46);
         _amountLabel.textAlignment = NSTextAlignmentCenter;
     }
@@ -106,37 +110,35 @@ Strong UITextView *remindTextView;//温馨提示
     }
     return _amountTextField;
 }
--(GradientButton *)rechargeBtn{
-    if (!_rechargeBtn) {
-        _rechargeBtn = InitObject(GradientButton);
-        [_rechargeBtn setBackgroundColor:COLOR_Red];
-        [_rechargeBtn setTitleColor:COLOR_White forState:UIControlStateNormal];
-        [_rechargeBtn addTarget:self action:@selector(rechargeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [_rechargeBtn.titleLabel setFont:SYSTEMSIZE(36)];
-        _rechargeBtn.layer.cornerRadius = kSizeFrom750(105)/2;
-        _rechargeBtn.layer.masksToBounds = YES;
-        [_rechargeBtn setTitle:@"确认充值" forState:UIControlStateNormal];
-    }
-    return _rechargeBtn;
-}
--(UIButton *)limitDesBtn
-{
-    if (!_limitDesBtn) {
-        _limitDesBtn = InitObject(UIButton);
-        [_limitDesBtn setTitleColor:COLOR_Red forState:UIControlStateNormal];
-        [_limitDesBtn addTarget:self action:@selector(limitDesBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [_limitDesBtn setTitle:@"快捷充值限额说明" forState:UIControlStateNormal];
+-(GradientButton *)getCashBtn{
+    if (!_getCashBtn) {
+        _getCashBtn = InitObject(GradientButton);
+        [_getCashBtn setTitleColor:COLOR_White forState:UIControlStateNormal];
+        [_getCashBtn addTarget:self action:@selector(withDrowBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_getCashBtn.titleLabel setFont:SYSTEMSIZE(36)];
+        [_getCashBtn setTitle:@"确认提现" forState:UIControlStateNormal];
+        _getCashBtn.layer.cornerRadius = kSizeFrom750(105)/2;
+        _getCashBtn.layer.masksToBounds = YES;
 
-        _limitDesBtn.titleLabel.font = SYSTEMSIZE(28);
     }
-    return _limitDesBtn;
+    return _getCashBtn;
+}
+-(UILabel *)desLabel
+{
+    if (!_desLabel) {
+        _desLabel = InitObject(UILabel);
+        [_desLabel setTextColor:RGB_166];
+        [_desLabel setText:@"即将进入第三方支付页面"];
+        _desLabel.font = SYSTEMSIZE(28);
+    }
+    return _desLabel;
 }
 -(UIButton *)historyBtn{
     if (!_historyBtn) {
         _historyBtn = InitObject(UIButton);
         _historyBtn.titleLabel.font = SYSTEMSIZE(28);
         [_historyBtn addTarget:self action:@selector(historyBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [_historyBtn setTitle:@"充值记录" forState:UIControlStateNormal];
+        [_historyBtn setTitle:@"提现明细" forState:UIControlStateNormal];
         [_historyBtn setTitleColor:COLOR_Red forState:UIControlStateNormal];
     }
     return _historyBtn;
@@ -201,29 +203,20 @@ Strong UITextView *remindTextView;//温馨提示
         make.left.mas_equalTo(kOriginLeft);
         make.width.mas_equalTo(kSizeFrom750(600));
     }];
-    [self.rechargeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.getCashBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.amountBgView.mas_bottom).offset(kSizeFrom750(42));
         make.left.width.height.mas_equalTo(self.amountBgView);
     }];
-    [self.limitDesBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(kSizeFrom750(130));
-        make.width.mas_equalTo(kSizeFrom750(300));
-        make.top.mas_equalTo(self.rechargeBtn.mas_bottom).offset(kSizeFrom750(30));
+    [self.desLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.getCashBtn);
+        make.width.mas_equalTo(kSizeFrom750(500));
+        make.top.mas_equalTo(self.getCashBtn.mas_bottom).offset(kSizeFrom750(30));
         make.height.mas_equalTo(kSizeFrom750(30));
     }];
-    UIView *lineView = InitObject(UIView);
-    lineView.backgroundColor = COLOR_Red;
-    [self.view addSubview:lineView];
-    [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.limitDesBtn.mas_right);
-        make.top.height.mas_equalTo(self.limitDesBtn);
-        make.width.mas_equalTo(kLineHeight);
-        
-    }];
     [self.historyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(lineView.mas_right);
-        make.width.mas_equalTo(kSizeFrom750(180));
-        make.top.height.mas_equalTo(lineView);
+        make.right.mas_equalTo(self.getCashBtn);
+        make.width.mas_equalTo(kSizeFrom750(120));
+        make.top.height.mas_equalTo(self.desLabel);
     }];
     
     [self.remindTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -245,8 +238,8 @@ Strong UITextView *remindTextView;//温馨提示
     
 }
 #pragma mark --buttonClick
-//充值
--(void)rechargeBtnClick:(UIButton *)sender{
+//提现
+-(void)withDrowBtnClick:(UIButton *)sender{
     
 }
 //充值限制
@@ -255,36 +248,20 @@ Strong UITextView *remindTextView;//温馨提示
 }
 //充值记录
 -(void)historyBtnClick:(UIButton *)sender{
-    RechargeRecordController *record = InitObject(RechargeRecordController);
-    [self.navigationController pushViewController:record animated:YES];
+    GetCashRecordController *withDrow = InitObject(GetCashRecordController);
+    [self.navigationController pushViewController:withDrow animated:YES];
 }
 -(void)loadTextView{
     
-    NSString *str = @"1、因国家政策，银行对外支付渠道的限制，有部分银行卡将会充值失败的用户，需开通银联无卡支付业务才能进行充值，目前尚未开通银联无卡支付业务的银行卡用户，点击查看银联开通步骤说明\n2、提取收费：手续费暂由土土金服平台垫付；\n3、资金账户由第三方支付平台汇付天下全程托管，充分保障资金安全；\n4、单日的充值金额限额以各银行为准；\n5、只能绑定一张银行卡用户快捷充值，网银充值不限。";
-    NSString *matchStr = @"点击查看银联开通步骤说明";
+    NSString *str = @"1、提取收费：手续费暂由土土金服平台垫付；\n2、资金账户由第三方支付平台汇付天下全程托管，充分保障资金安全；\n3、单日的充值金额限额以各银行为准；\n5、只能绑定一张银行卡用户快捷充值，网银充值不限。";
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc]initWithString:str];
-    if ([str rangeOfString:matchStr].location!=NSNotFound) {
-        [attr addAttribute:NSLinkAttributeName value:[NSURL URLWithString:@""] range:[str rangeOfString:matchStr]];
-    }
+
     [attr addAttribute:NSForegroundColorAttributeName value:RGB_166 range:NSMakeRange(0, str.length)];
-    [attr addAttribute:NSForegroundColorAttributeName value:COLOR_LightBlue range:[str rangeOfString:matchStr]];//设置颜色
-    [attr addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:[str rangeOfString:matchStr]];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setLineSpacing:kSizeFrom750(15)];
     [paragraphStyle setHeadIndent:kSizeFrom750(35)];
     [attr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [str length])];//设置行间距
-    
-    self.remindTextView.selectedRange = [str rangeOfString:matchStr];
-    self.remindTextView.linkTextAttributes = @{NSUnderlineColorAttributeName: COLOR_LightBlue,
-                                               NSUnderlineStyleAttributeName: @(NSUnderlinePatternSolid)
-                                               };
     [self.remindTextView setAttributedText:attr];
-    
-}
-//超链接被点击
--(BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange{
-    NSLog(@"click");
-    return NO;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

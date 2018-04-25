@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
 #import "AppDelegate.h"
 #import "LoginViewController.h"
+#import "RealNameController.h"
 #import <WebKit/WebKit.h>
 @interface BaseViewController ()<UINavigationControllerDelegate,UIGestureRecognizerDelegate>
 
@@ -190,6 +191,11 @@
     [self presentViewController:loginNav animated:YES completion:^{
         
     }];
+}
+//跳转实名认证窗口
+-(void)goRealNameVC{
+    RealNameController *realName = InitObject(RealNameController);
+    [self.navigationController pushViewController:realName animated:YES];
 }
 //退出登录状态
 -(void)exitLoginStatus

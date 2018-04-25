@@ -38,6 +38,8 @@ Strong UIImageView *newsMessage;
 -(void)goLoginVC;
 //清除登录记录
 -(void)exitLoginStatus;
+//跳转实名认证窗口
+-(void)goRealNameVC;
 
 //返回事件
 -(void)backPressed:(UIButton *)sender;

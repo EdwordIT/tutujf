@@ -117,6 +117,10 @@ static CGFloat const space                   = 10;
 
 #define kOriginLeft kSizeFrom750(30)
 
+#define kContentWidth kSizeFrom750(690)
+//默认label行间距
+#define kLabelSpace kSizeFrom750(12)
+
 #define kLineHeight 1.0f/[[UIScreen mainScreen] scale]
 //底部标签栏高度
 #define kTabbarHeight (kDevice_Is_iPhoneX ? 83 : 49)

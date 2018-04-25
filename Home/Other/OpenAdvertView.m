@@ -34,7 +34,7 @@ Strong UILabel *subTitleLabel;
 //        [self.titleLabel setFont:SYSTEMSIZE(26)];
 //        [self.titleLabel setTextColor:RGB_102];
 //
-//        [CommonUtils setAttString:@"您的土土账户已经注册成功，接下来请开通您的理财账户" withLineSpace:kSizeFrom750(10) titleLabel:self.titleLabel];
+//        [CommonUtils setAttString:@"您的土土账户已经注册成功，接下来请开通您的理财账户" withLineSpace:kLabelSpace titleLabel:self.titleLabel];
 //        self.titleLabel.numberOfLines = 0;
 //        [self addSubview:self.titleLabel];
 //

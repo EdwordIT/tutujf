@@ -79,7 +79,7 @@ Strong UILabel *textLabel;
     subTitleLabel.numberOfLines = 0;
     [subTitleLabel setFont:SYSTEMSIZE(26)];
     CGFloat subTitleHeight = [CommonUtils getSpaceLabelHeight:model.project_desc.content withFont:subTitleLabel.font withWidth:subTitleLabel.width lineSpace:kSizeFrom750(10)];
-    [CommonUtils setAttString:model.project_desc.content withLineSpace:kSizeFrom750(10) titleLabel:subTitleLabel];
+    [CommonUtils setAttString:model.project_desc.content withLineSpace:kLabelSpace titleLabel:subTitleLabel];
     subTitleLabel.height = subTitleHeight+spaceTop/2;
     [self addSubview:subTitleLabel];
     

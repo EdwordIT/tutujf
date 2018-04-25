@@ -7,15 +7,12 @@
 //
 
 #import "AccountInfoController.h"
-#import "MJRefresh.h"
-#import "AppDelegate.h"
 #import "AccountModel.h"
 #import "HomeWebController.h"
-#import "AccountRealname.h"
-#import "AccountPhone.h"
 #import "LoginViewController.h"
 #import "ChangePasswordViewController.h"
 #import "AccountSettingCell.h"
+
 @interface AccountInfoController ()<UITableViewDataSource, UITableViewDelegate,UIWebViewDelegate>
 {
     UIWebView * iWebView;

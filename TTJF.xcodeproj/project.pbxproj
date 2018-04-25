@@ -203,8 +203,14 @@
 		1BE673B92074A98F0003A30C /* refresh_mine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BE673B72074A98F0003A30C /* refresh_mine@2x.png */; };
 		78A3FA404767557456E2E897 /* libPods-TTJF.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6818A4E486372F136DB09D7C /* libPods-TTJF.a */; };
 		CB1BFB97208EBC790045C0F0 /* RechargeController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB96208EBC790045C0F0 /* RechargeController.m */; };
-		CB1BFB9A208EBD040045C0F0 /* WithDrawController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB99208EBD040045C0F0 /* WithDrawController.m */; };
+		CB1BFB9A208EBD040045C0F0 /* GetCashController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB99208EBD040045C0F0 /* GetCashController.m */; };
 		CB1BFB9D208EFE2D0045C0F0 /* UIButton+button.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB9C208EFE2D0045C0F0 /* UIButton+button.m */; };
+		CB1BFBA0209012110045C0F0 /* RechargeRecordController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB9F209012110045C0F0 /* RechargeRecordController.m */; };
+		CB1BFBA3209013830045C0F0 /* RechargeRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBA2209013830045C0F0 /* RechargeRecordCell.m */; };
+		CB1BFBA6209015760045C0F0 /* RechargeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBA5209015760045C0F0 /* RechargeModel.m */; };
+		CB1BFBA9209019770045C0F0 /* GetCashRecordController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBA8209019770045C0F0 /* GetCashRecordController.m */; };
+		CB1BFBAC20902D2E0045C0F0 /* GradientButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBAB20902D2E0045C0F0 /* GradientButton.m */; };
+		CB1BFBAF209059B80045C0F0 /* RealNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBAE209059B80045C0F0 /* RealNameController.m */; };
 		E701EDC61EA469C000DC234A /* OpenAdvertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E701EDC51EA469C000DC234A /* OpenAdvertView.m */; };
 		E70331E11EAA363F00C1FFD1 /* HomeWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70331DF1EAA363F00C1FFD1 /* HomeWebController.m */; };
 		E7037FFF1E9C96EF00C5E13D /* HorizontalMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E7037FF91E9C96EF00C5E13D /* HorizontalMenu.m */; };
@@ -736,10 +742,22 @@
 		6818A4E486372F136DB09D7C /* libPods-TTJF.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TTJF.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB1BFB95208EBC790045C0F0 /* RechargeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeController.h; sourceTree = "<group>"; };
 		CB1BFB96208EBC790045C0F0 /* RechargeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeController.m; sourceTree = "<group>"; };
-		CB1BFB98208EBD040045C0F0 /* WithDrawController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WithDrawController.h; sourceTree = "<group>"; };
-		CB1BFB99208EBD040045C0F0 /* WithDrawController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WithDrawController.m; sourceTree = "<group>"; };
+		CB1BFB98208EBD040045C0F0 /* GetCashController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetCashController.h; sourceTree = "<group>"; };
+		CB1BFB99208EBD040045C0F0 /* GetCashController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GetCashController.m; sourceTree = "<group>"; };
 		CB1BFB9B208EFE2D0045C0F0 /* UIButton+button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+button.h"; sourceTree = "<group>"; };
 		CB1BFB9C208EFE2D0045C0F0 /* UIButton+button.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+button.m"; sourceTree = "<group>"; };
+		CB1BFB9E209012110045C0F0 /* RechargeRecordController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeRecordController.h; sourceTree = "<group>"; };
+		CB1BFB9F209012110045C0F0 /* RechargeRecordController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeRecordController.m; sourceTree = "<group>"; };
+		CB1BFBA1209013830045C0F0 /* RechargeRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeRecordCell.h; sourceTree = "<group>"; };
+		CB1BFBA2209013830045C0F0 /* RechargeRecordCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeRecordCell.m; sourceTree = "<group>"; };
+		CB1BFBA4209015760045C0F0 /* RechargeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeModel.h; sourceTree = "<group>"; };
+		CB1BFBA5209015760045C0F0 /* RechargeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeModel.m; sourceTree = "<group>"; };
+		CB1BFBA7209019770045C0F0 /* GetCashRecordController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetCashRecordController.h; sourceTree = "<group>"; };
+		CB1BFBA8209019770045C0F0 /* GetCashRecordController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GetCashRecordController.m; sourceTree = "<group>"; };
+		CB1BFBAA20902D2E0045C0F0 /* GradientButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GradientButton.h; sourceTree = "<group>"; };
+		CB1BFBAB20902D2E0045C0F0 /* GradientButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GradientButton.m; sourceTree = "<group>"; };
+		CB1BFBAD209059B80045C0F0 /* RealNameController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RealNameController.h; sourceTree = "<group>"; };
+		CB1BFBAE209059B80045C0F0 /* RealNameController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RealNameController.m; sourceTree = "<group>"; };
 		E701EDC41EA469C000DC234A /* OpenAdvertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAdvertView.h; sourceTree = "<group>"; };
 		E701EDC51EA469C000DC234A /* OpenAdvertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenAdvertView.m; sourceTree = "<group>"; };
 		E70331DE1EAA363F00C1FFD1 /* HomeWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWebController.h; sourceTree = "<group>"; };
@@ -1348,8 +1366,12 @@
 				1BCF2232206E2BD300D75662 /* ProgrameNewDetailController.m */,
 				CB1BFB95208EBC790045C0F0 /* RechargeController.h */,
 				CB1BFB96208EBC790045C0F0 /* RechargeController.m */,
-				CB1BFB98208EBD040045C0F0 /* WithDrawController.h */,
-				CB1BFB99208EBD040045C0F0 /* WithDrawController.m */,
+				CB1BFB98208EBD040045C0F0 /* GetCashController.h */,
+				CB1BFB99208EBD040045C0F0 /* GetCashController.m */,
+				CB1BFB9E209012110045C0F0 /* RechargeRecordController.h */,
+				CB1BFB9F209012110045C0F0 /* RechargeRecordController.m */,
+				CB1BFBA7209019770045C0F0 /* GetCashRecordController.h */,
+				CB1BFBA8209019770045C0F0 /* GetCashRecordController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -1377,6 +1399,8 @@
 				1BCF2257206E2BF800D75662 /* DetailTop.m */,
 				1BCF2260206E2BFB00D75662 /* JGGView.h */,
 				1BCF2263206E2BFC00D75662 /* JGGView.m */,
+				CB1BFBA1209013830045C0F0 /* RechargeRecordCell.h */,
+				CB1BFBA2209013830045C0F0 /* RechargeRecordCell.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -1400,6 +1424,8 @@
 				1BCF2242206E2BE500D75662 /* SecurityModel.m */,
 				1BCF2245206E2BE700D75662 /* TenderModel.h */,
 				1BCF2239206E2BE100D75662 /* TenderModel.m */,
+				CB1BFBA4209015760045C0F0 /* RechargeModel.h */,
+				CB1BFBA5209015760045C0F0 /* RechargeModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -1415,6 +1441,8 @@
 				1BCF2284206F361200D75662 /* BaseView.m */,
 				1B788F0F207DABDA00F03863 /* BaseUITableView.h */,
 				1B788F10207DABDA00F03863 /* BaseUITableView.m */,
+				CB1BFBAA20902D2E0045C0F0 /* GradientButton.h */,
+				CB1BFBAB20902D2E0045C0F0 /* GradientButton.m */,
 			);
 			path = BaseClass;
 			sourceTree = "<group>";
@@ -1844,7 +1872,6 @@
 				E7067AD81E60C9AA00E32B86 /* Home */,
 				E7067AF91E60C9AA00E32B86 /* Map */,
 				E7067B061E60C9AA00E32B86 /* Merchant */,
-				E7067B191E60C9AA00E32B86 /* Mine */,
 				E7067B3D1E60C9AA00E32B86 /* Refresh */,
 				E7067B401E60C9AA00E32B86 /* tabbar */,
 			);
@@ -1903,13 +1930,6 @@
 				E7067B181E60C9AA00E32B86 /* icon_search_suggest@2x.png */,
 			);
 			path = Merchant;
-			sourceTree = "<group>";
-		};
-		E7067B191E60C9AA00E32B86 /* Mine */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Mine;
 			sourceTree = "<group>";
 		};
 		E7067B3D1E60C9AA00E32B86 /* Refresh */ = {
@@ -2485,6 +2505,8 @@
 				E7B02E541E72C41100F967CE /* MineViewController.m */,
 				E70A76EA1F9F15750083F6E6 /* RushPurchaseController.h */,
 				E70A76EB1F9F15750083F6E6 /* RushPurchaseController.m */,
+				CB1BFBAD209059B80045C0F0 /* RealNameController.h */,
+				CB1BFBAE209059B80045C0F0 /* RealNameController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2974,6 +2996,7 @@
 				E7071BA51F21C30C00293B38 /* PCCircleView.m in Sources */,
 				1B583B4C2063A3C600CC70E4 /* HomepageModel.m in Sources */,
 				E7F3C91C1FA8772F0062B69B /* AccountPhone.m in Sources */,
+				CB1BFBAC20902D2E0045C0F0 /* GradientButton.m in Sources */,
 				E7067AA71E60C93B00E32B86 /* UIImage+BetterFace.m in Sources */,
 				1B583AFF205F65E000CC70E4 /* ClubeMsgModel.m in Sources */,
 				E7067A281E60C88A00E32B86 /* introductoryPagesHelper.m in Sources */,
@@ -2997,7 +3020,8 @@
 				1B4EEC6D206BADFA00117EF0 /* AutoLoginView.m in Sources */,
 				E70716EA1F80335600801098 /* NewsDynamicsModel.m in Sources */,
 				1B583AFC205F64F800CC70E4 /* MessageShowCell.m in Sources */,
-				CB1BFB9A208EBD040045C0F0 /* WithDrawController.m in Sources */,
+				CB1BFBA9209019770045C0F0 /* GetCashRecordController.m in Sources */,
+				CB1BFB9A208EBD040045C0F0 /* GetCashController.m in Sources */,
 				E70380001E9C96EF00C5E13D /* UIViewExt.m in Sources */,
 				E7067B5B1E60C9AA00E32B86 /* HttpSignCreate.m in Sources */,
 				E7A45DDF1E7423C60032613E /* HomeBanner.m in Sources */,
@@ -3010,6 +3034,7 @@
 				E7067AB11E60C93B00E32B86 /* UIImage+RemoteSize.m in Sources */,
 				1B1923A920662500005B0C57 /* ForgetPasswordViewController.m in Sources */,
 				E70CFAAA1F1047A10035FC58 /* NetworkManager.m in Sources */,
+				CB1BFBA3209013830045C0F0 /* RechargeRecordCell.m in Sources */,
 				E7067AA61E60C93B00E32B86 /* UIImage+animatedGIF.m in Sources */,
 				1BCF2269206E2BFD00D75662 /* DetailTop.m in Sources */,
 				CB1BFB97208EBC790045C0F0 /* RechargeController.m in Sources */,
@@ -3052,6 +3077,7 @@
 				E7071B9E1F21C30C00293B38 /* GestureVerifyViewController.m in Sources */,
 				1B4EEC67206A46E500117EF0 /* NoDataView.m in Sources */,
 				E7067AAC1E60C93B00E32B86 /* UIImage+FX.m in Sources */,
+				CB1BFBA6209015760045C0F0 /* RechargeModel.m in Sources */,
 				E7067A3D1E60C88B00E32B86 /* RFSegmentView.m in Sources */,
 				1B788F0E207C654400F03863 /* CountDownManager.m in Sources */,
 				E7067B5A1E60C9AA00E32B86 /* NavView.m in Sources */,
@@ -3084,6 +3110,7 @@
 				E709175D1FC2FD1D003CF8E2 /* FoundListCell.m in Sources */,
 				1BCF226D206E2BFD00D75662 /* DetailProduct.m in Sources */,
 				E7A45DE81E74B04B0032613E /* HotQueueModel.m in Sources */,
+				CB1BFBA0209012110045C0F0 /* RechargeRecordController.m in Sources */,
 				1B4EEC8A206E1A5100117EF0 /* HomeTabBarController.m in Sources */,
 				E70917601FC2FD9A003CF8E2 /* FoundListModel.m in Sources */,
 				1BCF2270206E2BFD00D75662 /* DetailInvest.m in Sources */,
@@ -3106,6 +3133,7 @@
 				E70A6DCB1F9E042000A7B7E8 /* TopScrollMode.m in Sources */,
 				E73B1C3F1FA6109800273C89 /* MBProgressHUD+MP.m in Sources */,
 				E7067A621E60C88B00E32B86 /* ZDCalendarPicker.m in Sources */,
+				CB1BFBAF209059B80045C0F0 /* RealNameController.m in Sources */,
 				E7067AA91E60C93B00E32B86 /* UIImage+Capture.m in Sources */,
 				E70A7D221FA0990C00C0628A /* BtMyUser.m in Sources */,
 				1B583AF6205F456400CC70E4 /* UICountingLabel.m in Sources */,
