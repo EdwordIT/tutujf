@@ -20,6 +20,9 @@
 //#define oyHeadBaseUrl       @"https://api.tutujf.com"
 //webView相关前置地址
 #define oyUrlAddress        @"https://www.tutujf.com"
+//webView的cookie值添加domin
+#define dominUrl @"www.tutujf.com"
+
 //系统加密所需要的系统token
 #define systemToken @"!Y9v9OK41w(2"
 
@@ -32,8 +35,8 @@
 //#define oyHeadBaseUrl        @"https://cs.api.tutujf.com"
 //webView相关前置地址
 #define oyUrlAddress       @"https://cs.www.tutujf.com"
-//webView页面跳转域名校验
-
+//webView的cookie值添加domin
+#define dominUrl @"cs.www.tutujf.com"
 //系统加密所需要的系统token
 #define systemToken @"O1v!6Ikl(2w83"
 #else
