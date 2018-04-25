@@ -269,9 +269,9 @@ Strong UIView *functionTopView;//功能按钮
     title.font=SYSTEMSIZE(25);
     title.text=self.homePageModel.guarantee_txt;
     [footerView addSubview:title];
-    UIImageView *typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake((screen_width-ww)/2-kSizeFrom750(50), 5,kSizeFrom750(36), kSizeFrom750(40))];
+    UIImageView *typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake((screen_width-ww)/2-kSizeFrom750(50), 5,kSizeFrom750(35), kSizeFrom750(39))];
     typeimgsrc.centerY = title.centerY;
-    [typeimgsrc setImage:[UIImage imageNamed:@"y.png"]];
+    [typeimgsrc setImage:[UIImage imageNamed:@"icons_safe"]];
     [footerView addSubview:typeimgsrc];
     
     UILabel *remindLabel = InitObject(UILabel);

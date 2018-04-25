@@ -75,6 +75,8 @@ Strong UIImageView *refreshImage;//刷新箭头
         self.accountModel.total_amount=@"0.0";
         self.accountModel.to_interest_award=@"0.0";
         self.accountModel.balance_amount=@"0.00";
+        self.accountModel.bt_user_content = nil;
+
         [self.tableView reloadData];
     }
 }
@@ -199,8 +201,8 @@ Strong UIImageView *refreshImage;//刷新箭头
             
         }
     }else if(indexPath.section == 1){
-        if (self.accountModel==nil) {
-            return kSizeFrom750(125)*3;//个人相关操作标签默认高度
+        if (self.accountModel.bt_user_content==nil) {
+            return kSizeFrom750(125)*2;//个人相关操作标签默认高度
         }
       return  self.accountModel.bt_user_content.count*kSizeFrom750(125);
         
@@ -275,10 +277,7 @@ Strong UIImageView *refreshImage;//刷新箭头
         cell.delegate=self;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            if (!self.accountModel) {
-                [cell setMenuData:nil];
-            }else
-                [cell setMenuData:self.accountModel.bt_user_content];
+        [cell setMenuData:self.accountModel.bt_user_content];
         return cell;
         }
     }
@@ -291,18 +290,6 @@ Strong UIImageView *refreshImage;//刷新箭头
     {
         
     }
-    else
-    {
-        [self goLoginVC];
-    }
-}
-//点击顶部菜单栏
--(void)didMyTopAtIndex:(NSInteger)index
-{
-   if([CommonUtils isLogin])
-   {
-     
-   }
     else
     {
         [self goLoginVC];
@@ -522,9 +509,10 @@ Strong UIImageView *refreshImage;//刷新箭头
     [self.tableView reloadData];
     [self showRegMaskView];
 }
-- (CGSize)intrinsicContentSize {
-    return UILayoutFittingExpandedSize;
-}
+//滑动到底部
+//- (CGSize)intrinsicContentSize {
+//    return UILayoutFittingExpandedSize;
+//}
 
 /**表格数据操作**/
 
