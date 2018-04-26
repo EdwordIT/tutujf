@@ -18,7 +18,7 @@
 #import "LoginViewController.h"
 #import "AccountTitleView.h"//顶部导航栏
 #import "MyAccountModel.h"
-#import <MJRefreshNormalHeader.h>
+#import "TTJFRefreshNormalHeader.h"
 @interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
 {
@@ -32,9 +32,7 @@ OpenShowAdvertDelegate>
 }
 Strong AccountTitleView *accountTitleView;//导航栏视图
 Strong MyAccountModel *accountModel;//数据源
-Strong UIView *refreshView;//视觉上刷新
-Strong UILabel *refreshLabel;//刷新内容显示
-Strong UIImageView *refreshImage;//刷新箭头
+
 @end
 
 
@@ -43,8 +41,8 @@ Strong UIImageView *refreshImage;//刷新箭头
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //用于区分X下和普通屏幕下的高度适配问题
     self.titleView.backgroundColor = [UIColor clearColor];
+    //用于区分X下和普通屏幕下的高度适配问题
     navTitleHeight = kNavHight;
     isFirstExe=FALSE;;
     [self initTableView];
@@ -85,27 +83,6 @@ Strong UIImageView *refreshImage;//刷新箭头
     [super viewWillDisappear:animated];
     [advertView setHidden:YES];
 }
-//添加刷新View
--(void)loadRrereshView
-{
-    self.refreshView = [[UIView alloc]initWithFrame:RECT(0, -screen_height, screen_width, screen_height)];
-    self.refreshView.backgroundColor = navigationBarColor;
-    [self.view addSubview:self.refreshView];
-    
-    self.refreshImage = [[UIImageView alloc]initWithFrame:RECT(0, screen_height - kSizeFrom750(90), kSizeFrom750(46), kSizeFrom750(46))];
-    [self.refreshImage setImage:IMAGEBYENAME(@"refresh_mine")];
-    self.refreshImage.centerX = self.refreshView.width/2;
-    [self.refreshView addSubview:self.refreshImage];
-    
-    self.refreshLabel = [[UILabel alloc]initWithFrame:RECT(0, self.refreshImage.bottom+kSizeFrom750(10), self.refreshView.width, kSizeFrom750(30))];
-    self.refreshLabel.textAlignment = NSTextAlignmentCenter;
-    self.refreshLabel.textColor = [UIColor whiteColor];
-    self.refreshLabel.font = SYSTEMSIZE(24);
-    self.refreshLabel.text = @"下拉即可刷新";
-    [self.refreshView addSubview:self.refreshLabel];
-    
-}
-/**表格数据操作**/
 //初始化主界面
 -(void)initTableView{
 
@@ -121,8 +98,6 @@ Strong UIImageView *refreshImage;//刷新箭头
     [self.view addSubview:self.tableView];
     
     [self setUpTableView];
-    
-    [self loadRrereshView];
     
     [self.view addSubview:self.accountTitleView];
     
@@ -161,10 +136,9 @@ Strong UIImageView *refreshImage;//刷新箭头
 -(void)setUpTableView{
    
    __weak typeof(self) weakSelf = self;
-    MJRefreshHeader *header  = [MJRefreshHeader headerWithRefreshingBlock:^{
+    MJRefreshHeader *header  = [TTJFRefreshNormalHeader headerWithRefreshingBlock:^{
         [weakSelf getRequest];
     }];
-    header.backgroundColor = navigationBarColor;
     self.tableView.mj_header = header;
     // 马上进入刷新状态
     if ([CommonUtils isLogin]) {
@@ -421,21 +395,10 @@ Strong UIImageView *refreshImage;//刷新箭头
         [self.accountTitleView reloadNav:contentOffset];
     }
     if(contentOffset>=0){
-        self.refreshView.top = -screen_height;
         [self.accountTitleView setBackgroundColor:navigationBarColor];//遮挡住tabView，作为导航栏显示，设置背景色
     }
    else  {
        [self.accountTitleView setBackgroundColor:[UIColor clearColor]];
-        self.refreshView.top = -screen_height-contentOffset;
-       if (ABS(contentOffset)<=120/2) {
-           self.refreshImage.transform = CGAffineTransformMakeRotation(M_PI);
-           self.refreshLabel.text = @"下拉刷新";
-       }else{
-           [UIView animateWithDuration:0.3 animations:^{
-               self.refreshImage.transform = CGAffineTransformMakeRotation(M_PI*2);
-           }];
-           self.refreshLabel.text = @"松开即刻刷新";
-       }
     }
 }
 

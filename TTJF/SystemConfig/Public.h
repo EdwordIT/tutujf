@@ -78,7 +78,7 @@
 #define InitObject(vc) [[vc alloc]init]
 #define InitROOTVC(vc) [[UINavigationController alloc] initWithRootViewController:[[vc alloc]init]];
 #define WEAK_SELF __weak typeof(self) weakSelf = self
-#define Title_Font 17
+#define Title_Font 18
 //中文字体
 #define CHINESE_FONT_NAME  @"STHeitiK-Light"
 

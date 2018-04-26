@@ -202,6 +202,8 @@
 		1BE673B82074A98F0003A30C /* refresh_mine@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BE673B62074A98E0003A30C /* refresh_mine@3x.png */; };
 		1BE673B92074A98F0003A30C /* refresh_mine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BE673B72074A98F0003A30C /* refresh_mine@2x.png */; };
 		78A3FA404767557456E2E897 /* libPods-TTJF.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6818A4E486372F136DB09D7C /* libPods-TTJF.a */; };
+		CB1BFBB220915DC90045C0F0 /* RefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBB120915DC90045C0F0 /* RefreshView.m */; };
+		CB1BFBB520915F4D0045C0F0 /* TTJFRefreshNormalHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBB420915F4D0045C0F0 /* TTJFRefreshNormalHeader.m */; };
 		E701EDC61EA469C000DC234A /* OpenAdvertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E701EDC51EA469C000DC234A /* OpenAdvertView.m */; };
 		E70331E11EAA363F00C1FFD1 /* HomeWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70331DF1EAA363F00C1FFD1 /* HomeWebController.m */; };
 		E7037FFF1E9C96EF00C5E13D /* HorizontalMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E7037FF91E9C96EF00C5E13D /* HorizontalMenu.m */; };
@@ -731,6 +733,10 @@
 		1BE673B72074A98F0003A30C /* refresh_mine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh_mine@2x.png"; sourceTree = "<group>"; };
 		530F50B485B54F29F2A51634 /* Pods-TTJF.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TTJF.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TTJF/Pods-TTJF.debug.xcconfig"; sourceTree = "<group>"; };
 		6818A4E486372F136DB09D7C /* libPods-TTJF.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TTJF.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB1BFBB020915DC90045C0F0 /* RefreshView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RefreshView.h; sourceTree = "<group>"; };
+		CB1BFBB120915DC90045C0F0 /* RefreshView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RefreshView.m; sourceTree = "<group>"; };
+		CB1BFBB320915F4D0045C0F0 /* TTJFRefreshNormalHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTJFRefreshNormalHeader.h; sourceTree = "<group>"; };
+		CB1BFBB420915F4D0045C0F0 /* TTJFRefreshNormalHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTJFRefreshNormalHeader.m; sourceTree = "<group>"; };
 		E701EDC41EA469C000DC234A /* OpenAdvertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAdvertView.h; sourceTree = "<group>"; };
 		E701EDC51EA469C000DC234A /* OpenAdvertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenAdvertView.m; sourceTree = "<group>"; };
 		E70331DE1EAA363F00C1FFD1 /* HomeWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWebController.h; sourceTree = "<group>"; };
@@ -1767,6 +1773,10 @@
 				1B788F0D207C654400F03863 /* CountDownManager.m */,
 				1B788F16207E03A600F03863 /* EmptyView.h */,
 				1B788F17207E03A600F03863 /* EmptyView.m */,
+				CB1BFBB020915DC90045C0F0 /* RefreshView.h */,
+				CB1BFBB120915DC90045C0F0 /* RefreshView.m */,
+				CB1BFBB320915F4D0045C0F0 /* TTJFRefreshNormalHeader.h */,
+				CB1BFBB420915F4D0045C0F0 /* TTJFRefreshNormalHeader.m */,
 			);
 			path = KDCustom;
 			sourceTree = "<group>";
@@ -2954,6 +2964,7 @@
 				E7067AA71E60C93B00E32B86 /* UIImage+BetterFace.m in Sources */,
 				1B583AFF205F65E000CC70E4 /* ClubeMsgModel.m in Sources */,
 				E7067A281E60C88A00E32B86 /* introductoryPagesHelper.m in Sources */,
+				CB1BFBB220915DC90045C0F0 /* RefreshView.m in Sources */,
 				1B4EEC91206E1BF300117EF0 /* UINavigationController+MBNavigation.m in Sources */,
 				1BCF2234206E2BD300D75662 /* ProgrameNewDetailController.m in Sources */,
 				E70B09021F91F9F8008C9F09 /* MineTopCell.m in Sources */,
@@ -3019,6 +3030,7 @@
 				E7D94A781E95A167000E3919 /* UITextField+Shake.m in Sources */,
 				E712F6C61FFDD54F005C8C24 /* YBLNetWorkHudBar.m in Sources */,
 				E7039A921E751FCF00436715 /* QuicklyCell.m in Sources */,
+				CB1BFBB520915F4D0045C0F0 /* TTJFRefreshNormalHeader.m in Sources */,
 				1B4EEC87206CF05A00117EF0 /* RFImageView.m in Sources */,
 				E70E1AC31FC0101100C6EFA6 /* DiscoverMenuModel.m in Sources */,
 				1B583B1A205F895000CC70E4 /* GuideRegisterCell.m in Sources */,
