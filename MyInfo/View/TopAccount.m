@@ -33,7 +33,7 @@
     lab1.font = SYSTEMSIZE(30);
     lab1.textAlignment=NSTextAlignmentCenter;
     lab1.textColor =  RGB(83,83,83);
-    lab1.text=@"可用金额（元）";
+    lab1.text=@"可用余额（元）";
     [self addSubview:lab1];
     
     

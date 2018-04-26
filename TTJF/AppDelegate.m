@@ -236,11 +236,11 @@
 -(void)xhLaunchAd:(XHLaunchAd *)launchAd launchAdImageView:(UIImageView *)launchAdImageView URL:(NSURL *)url{
     [launchAdImageView sd_setImageWithURL:url];
 }
-//
+//广告加载结束
 -(void)xhLaunchShowFinish:(XHLaunchAd *)launchAd
 {
-    if(VC1!=nil)
-    [VC1 setBanndrNum];
+//    if(VC1!=nil)
+//    [VC1 setBanndrNum];
     
 }
 - (NSDate *)getCurrentTime{

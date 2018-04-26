@@ -49,7 +49,7 @@ Strong NSMutableArray *dataSourceArray;
 //初始化主界面
 -(BaseUITableView *)tableView{
     if (!_tableView) {
-        _tableView = [[BaseUITableView alloc]initWithFrame:RECT(0, kNavHight, screen_width, kViewHeight - kStatusBarHeight) style:UITableViewStyleGrouped];
+        _tableView = [[BaseUITableView alloc]initWithFrame:RECT(0, kNavHight, screen_width, kViewHeight - kTabbarHeight) style:UITableViewStyleGrouped];
             _tableView.delegate = self;
             _tableView.dataSource = self;
             _tableView.rowHeight = kSizeFrom750(278);

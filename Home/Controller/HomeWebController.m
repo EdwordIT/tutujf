@@ -51,6 +51,7 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
     if(_urlStr==nil||[_urlStr isEqual:@""])
     {
         [SVProgressHUD showInfoWithStatus:@"链接错误"];
+        [self.navigationController popViewControllerAnimated:YES];
         return;
     }
     [self.view addSubview:self.mainWebView];
@@ -147,6 +148,7 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
         }];
     
     }
+    
     [self loadRequest:self.mainWebView.URL.absoluteString];
 }
 //回退按钮点击（需要判断回退内容）
@@ -377,9 +379,13 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
 //加载网页
 - (void)loadRequest: (NSString *) urlstr {
    
+    if (IsEmptyStr(urlstr)) {
+        [SVProgressHUD showInfoWithStatus:@"链接错误"];
+        return;
+    }
     NSURL *url = [[NSURL alloc] initWithString:urlstr];
     NSMutableURLRequest *request;
-    request = [NSMutableURLRequest requestWithURL:url];
+    request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:20];//超时时间12秒
     NSMutableString *cookies = [NSMutableString string];
     NSArray *tmp = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     for (NSHTTPCookie * cookie in tmp) {
@@ -389,7 +395,6 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
     [request setValue:cookies forHTTPHeaderField:@"Cookie"];
     [request setValue:@"Mozilla/5.0 (iPhone; CPU iPhone like Mac OS X; zh-CN;) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/14C92 TutuBrowser/1.1.1 Mobile AliApp(TUnionSDK/0.1.12) AliApp(TUnionSDK/0.1.12)" forHTTPHeaderField:@"User-Agent"];
     [request setHTTPShouldHandleCookies:YES];
-   
     [self.mainWebView loadRequest:request];
     
 }
@@ -461,6 +466,11 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
     
     [SVProgressHUD showInfoWithStatus:@"加载失败"];
 
+}
+//请求超时调用此方法
+-(void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
+     [SVProgressHUD showInfoWithStatus:@"加载失败"];
 }
 // 接收到服务器跳转请求之后调用
 - (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation{

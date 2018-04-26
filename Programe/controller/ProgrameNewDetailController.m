@@ -15,7 +15,7 @@
 #import "TenderModel.h"
 #import "RushPurchaseController.h"
 #import "HomeWebController.h"
-
+#import "TTJFRefreshNormalHeader.h"
 @interface ProgrameNewDetailController ()<UIScrollViewDelegate,BottomDelegate>
 {
     NSInteger secondsCountDown;//倒计时总时长
@@ -84,7 +84,7 @@ Strong LoanBase *baseModel;
         _scrollView.delegate = self;
         _scrollView.hidden = YES;
         WEAK_SELF;
-        _scrollView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
+        _scrollView.mj_header = [TTJFRefreshNormalHeader headerWithRefreshingBlock:^{
             [weakSelf getRequest];
         }];
     }
@@ -151,6 +151,7 @@ Strong LoanBase *baseModel;
         make.height.mas_equalTo(kSizeFrom750(400));
     }];
 }
+
 #pragma  主体
 -(void) reloadInfo
 {
