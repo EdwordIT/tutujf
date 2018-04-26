@@ -2,8 +2,6 @@
 <Bucket
    type = "0"
    version = "2.0">
-<<<<<<< HEAD
-=======
    <Breakpoints>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
@@ -16,5 +14,4 @@
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
->>>>>>> version1.4.8
 </Bucket>

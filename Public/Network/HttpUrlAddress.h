@@ -59,6 +59,10 @@
  */
 #define getLoanDetailUrl oyApiUrl@"/api/Loan/GetLoanInfoview"
 /**
+ 债权转让详情页面接口
+ */
+#define getCreditAssignDetailUrl oyApiUrl@"/api/Loan/GetLoanInfoview"
+/**
  投资接口 ?amount=%@&period=%@&apr=%@&repay_type=%@&sign=%@
  */
 #define investUrl oyApiUrl@"/api/Loan/InvestInterest"

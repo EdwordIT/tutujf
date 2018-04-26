@@ -212,6 +212,11 @@
 		CB1BFBAC20902D2E0045C0F0 /* GradientButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBAB20902D2E0045C0F0 /* GradientButton.m */; };
 		CB1BFBAF209059B80045C0F0 /* RealNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBAE209059B80045C0F0 /* RealNameController.m */; };
 		CB1BFBB520915F4D0045C0F0 /* TTJFRefreshNormalHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBB420915F4D0045C0F0 /* TTJFRefreshNormalHeader.m */; };
+		CB1BFBB82091737F0045C0F0 /* CreditAssignCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBB72091737F0045C0F0 /* CreditAssignCell.m */; };
+		CB1BFBBB20917B4C0045C0F0 /* NavSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBBA20917B4C0045C0F0 /* NavSwitchView.m */; };
+		CB1BFBBE2091AFE00045C0F0 /* CreditModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBBD2091AFE00045C0F0 /* CreditModel.m */; };
+		CB1BFBC12091C3420045C0F0 /* CreditAssignDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBC02091C3420045C0F0 /* CreditAssignDetailController.m */; };
+		CB1BFBC42091C55F0045C0F0 /* BuyCreditAssignController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBC32091C55F0045C0F0 /* BuyCreditAssignController.m */; };
 		E701EDC61EA469C000DC234A /* OpenAdvertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E701EDC51EA469C000DC234A /* OpenAdvertView.m */; };
 		E70331E11EAA363F00C1FFD1 /* HomeWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70331DF1EAA363F00C1FFD1 /* HomeWebController.m */; };
 		E7037FFF1E9C96EF00C5E13D /* HorizontalMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E7037FF91E9C96EF00C5E13D /* HorizontalMenu.m */; };
@@ -761,6 +766,16 @@
 		CB1BFBAE209059B80045C0F0 /* RealNameController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RealNameController.m; sourceTree = "<group>"; };
 		CB1BFBB320915F4D0045C0F0 /* TTJFRefreshNormalHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTJFRefreshNormalHeader.h; sourceTree = "<group>"; };
 		CB1BFBB420915F4D0045C0F0 /* TTJFRefreshNormalHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTJFRefreshNormalHeader.m; sourceTree = "<group>"; };
+		CB1BFBB62091737F0045C0F0 /* CreditAssignCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditAssignCell.h; sourceTree = "<group>"; };
+		CB1BFBB72091737F0045C0F0 /* CreditAssignCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignCell.m; sourceTree = "<group>"; };
+		CB1BFBB920917B4C0045C0F0 /* NavSwitchView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NavSwitchView.h; sourceTree = "<group>"; };
+		CB1BFBBA20917B4C0045C0F0 /* NavSwitchView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavSwitchView.m; sourceTree = "<group>"; };
+		CB1BFBBC2091AFE00045C0F0 /* CreditModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditModel.h; sourceTree = "<group>"; };
+		CB1BFBBD2091AFE00045C0F0 /* CreditModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditModel.m; sourceTree = "<group>"; };
+		CB1BFBBF2091C3420045C0F0 /* CreditAssignDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditAssignDetailController.h; sourceTree = "<group>"; };
+		CB1BFBC02091C3420045C0F0 /* CreditAssignDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignDetailController.m; sourceTree = "<group>"; };
+		CB1BFBC22091C55F0045C0F0 /* BuyCreditAssignController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuyCreditAssignController.h; sourceTree = "<group>"; };
+		CB1BFBC32091C55F0045C0F0 /* BuyCreditAssignController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BuyCreditAssignController.m; sourceTree = "<group>"; };
 		E701EDC41EA469C000DC234A /* OpenAdvertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAdvertView.h; sourceTree = "<group>"; };
 		E701EDC51EA469C000DC234A /* OpenAdvertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenAdvertView.m; sourceTree = "<group>"; };
 		E70331DE1EAA363F00C1FFD1 /* HomeWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWebController.h; sourceTree = "<group>"; };
@@ -1375,6 +1390,10 @@
 				CB1BFB9F209012110045C0F0 /* RechargeRecordController.m */,
 				CB1BFBA7209019770045C0F0 /* GetCashRecordController.h */,
 				CB1BFBA8209019770045C0F0 /* GetCashRecordController.m */,
+				CB1BFBBF2091C3420045C0F0 /* CreditAssignDetailController.h */,
+				CB1BFBC02091C3420045C0F0 /* CreditAssignDetailController.m */,
+				CB1BFBC22091C55F0045C0F0 /* BuyCreditAssignController.h */,
+				CB1BFBC32091C55F0045C0F0 /* BuyCreditAssignController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -1404,6 +1423,10 @@
 				1BCF2263206E2BFC00D75662 /* JGGView.m */,
 				CB1BFBA1209013830045C0F0 /* RechargeRecordCell.h */,
 				CB1BFBA2209013830045C0F0 /* RechargeRecordCell.m */,
+				CB1BFBB62091737F0045C0F0 /* CreditAssignCell.h */,
+				CB1BFBB72091737F0045C0F0 /* CreditAssignCell.m */,
+				CB1BFBB920917B4C0045C0F0 /* NavSwitchView.h */,
+				CB1BFBBA20917B4C0045C0F0 /* NavSwitchView.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -1429,6 +1452,8 @@
 				1BCF2239206E2BE100D75662 /* TenderModel.m */,
 				CB1BFBA4209015760045C0F0 /* RechargeModel.h */,
 				CB1BFBA5209015760045C0F0 /* RechargeModel.m */,
+				CB1BFBBC2091AFE00045C0F0 /* CreditModel.h */,
+				CB1BFBBD2091AFE00045C0F0 /* CreditModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -3042,6 +3067,7 @@
 				CB1BFBA3209013830045C0F0 /* RechargeRecordCell.m in Sources */,
 				E7067AA61E60C93B00E32B86 /* UIImage+animatedGIF.m in Sources */,
 				1BCF2269206E2BFD00D75662 /* DetailTop.m in Sources */,
+				CB1BFBBB20917B4C0045C0F0 /* NavSwitchView.m in Sources */,
 				CB1BFB97208EBC790045C0F0 /* RechargeController.m in Sources */,
 				E712F6CC1FFDD5AA005C8C24 /* YBLNavigationViewController.m in Sources */,
 				E7067AB31E60C93B00E32B86 /* UIImage+RoundedCorner.m in Sources */,
@@ -3049,6 +3075,7 @@
 				E7067AA41E60C93B00E32B86 /* MyPageControl.m in Sources */,
 				E70E1ABD1FBFF30E00C6EFA6 /* TreasureMiddleCell.m in Sources */,
 				1BCF224F206E2BE700D75662 /* ProductDetailModel.m in Sources */,
+				CB1BFBBE2091AFE00045C0F0 /* CreditModel.m in Sources */,
 				E70A6DC21F9DC47D00A7B7E8 /* TopAccount.m in Sources */,
 				E77410081FC80797008861C2 /* UpdateVersion.m in Sources */,
 				1BCF2266206E2BFD00D75662 /* DetailMiddle.m in Sources */,
@@ -3061,8 +3088,10 @@
 				E73B1C581FA6144600273C89 /* JRSwizzle.m in Sources */,
 				E701EDC61EA469C000DC234A /* OpenAdvertView.m in Sources */,
 				1B788F11207DABDA00F03863 /* BaseUITableView.m in Sources */,
+				CB1BFBC12091C3420045C0F0 /* CreditAssignDetailController.m in Sources */,
 				1B788F432081E4F400F03863 /* JRSegmentViewController.m in Sources */,
 				1B583B472063474400CC70E4 /* SystemConfigModel.m in Sources */,
+				CB1BFBB82091737F0045C0F0 /* CreditAssignCell.m in Sources */,
 				E7067A291E60C88A00E32B86 /* introductoryPagesView.m in Sources */,
 				E73B1C5A1FA6144600273C89 /* UITextField+Extension.m in Sources */,
 				E7071BA81F21C30C00293B38 /* PCLockLabel.m in Sources */,
@@ -3084,6 +3113,7 @@
 				1B4EEC67206A46E500117EF0 /* NoDataView.m in Sources */,
 				E7067AAC1E60C93B00E32B86 /* UIImage+FX.m in Sources */,
 				CB1BFBA6209015760045C0F0 /* RechargeModel.m in Sources */,
+				CB1BFBC42091C55F0045C0F0 /* BuyCreditAssignController.m in Sources */,
 				E7067A3D1E60C88B00E32B86 /* RFSegmentView.m in Sources */,
 				1B788F0E207C654400F03863 /* CountDownManager.m in Sources */,
 				E7067B5A1E60C9AA00E32B86 /* NavView.m in Sources */,

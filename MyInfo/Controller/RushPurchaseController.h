@@ -6,7 +6,6 @@
 //  Copyright © 2017年 占碧光. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "BaseViewController.h"
 #import "LoanBase.h"
 //立即投资页面
