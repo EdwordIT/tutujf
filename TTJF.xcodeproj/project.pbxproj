@@ -734,6 +734,7 @@
 		6818A4E486372F136DB09D7C /* libPods-TTJF.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TTJF.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB1BFBB320915F4D0045C0F0 /* TTJFRefreshNormalHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTJFRefreshNormalHeader.h; sourceTree = "<group>"; };
 		CB1BFBB420915F4D0045C0F0 /* TTJFRefreshNormalHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTJFRefreshNormalHeader.m; sourceTree = "<group>"; };
+		CB1BFBC5209312780045C0F0 /* tutujf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = tutujf.cer; sourceTree = "<group>"; };
 		E701EDC41EA469C000DC234A /* OpenAdvertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAdvertView.h; sourceTree = "<group>"; };
 		E701EDC51EA469C000DC234A /* OpenAdvertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenAdvertView.m; sourceTree = "<group>"; };
 		E70331DE1EAA363F00C1FFD1 /* HomeWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWebController.h; sourceTree = "<group>"; };
@@ -2261,6 +2262,7 @@
 		E7BF5F1C1E6066F200BCE81E /* TTJF */ = {
 			isa = PBXGroup;
 			children = (
+				CB1BFBC5209312780045C0F0 /* tutujf.cer */,
 				1B583B492063535D00CC70E4 /* SystemConfig */,
 				E7113D9C1F819DC000726501 /* image */,
 				E7ED741C1E9A1FEB00EF3BF6 /* TTJF.entitlements */,

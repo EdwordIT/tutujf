@@ -318,8 +318,8 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
         
         return;
     }
-    
-    if ([urlPath rangeOfString:urlCheckAddress].location==NSNotFound) {
+   //既不是自己内部的url，又不是调用内部功能如打电话等
+    if ([urlPath rangeOfString:urlCheckAddress].location==NSNotFound&&[urlPath rangeOfString:@"tel:"].location==NSNotFound) {
         
         [self.closeBtn setHidden:NO];
         [self.refreshBtn setHidden:YES];
@@ -443,7 +443,7 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
         if ([app canOpenURL:[NSURL URLWithString:newPath]]) {
             [app openURL:[NSURL URLWithString:newPath]];
         }
-        return;
+        [webView stopLoading];
     }
 }
 // 当内容开始返回时调用
@@ -470,6 +470,13 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
 //请求超时调用此方法
 -(void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
+    if (error) {
+        NSString *errorKey = [error.userInfo objectForKey:NSURLErrorFailingURLStringErrorKey];
+        if ([errorKey hasPrefix:@"tel:"]) {//调用打电话造成加载失败，不重新加载
+            return;
+        }
+    }
+    //所有的失败都会走此方法
      [SVProgressHUD showInfoWithStatus:@"加载失败"];
 }
 // 接收到服务器跳转请求之后调用

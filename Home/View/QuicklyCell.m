@@ -377,7 +377,14 @@ Strong NSDate *nowDate;//现在的时间
             [self.timeView setHidden:NO];
             [self.progressView setHidden:YES];
             [proTextLabel setHidden:YES];
-          
+            //设置倒计时显示的时间
+            NSInteger hour=(secondsCountDown-(secondsCountDown%HOUR))/HOUR;
+            NSString *str_hour = [NSString stringWithFormat:@"%02ld",hour];//时
+            NSString *str_minute = [NSString stringWithFormat:@"%02ld",(secondsCountDown%HOUR)/MINUTE];//分
+            NSString *str_second = [NSString stringWithFormat:@"%02ld",secondsCountDown%MINUTE];//秒
+            self.hourLabel.text = str_hour;
+            self.minuteLabel.text = str_minute;
+            self.secondLabel.text = str_second;
         }
     }
     

@@ -66,7 +66,6 @@ Strong MyAccountModel *accountModel;//数据源
     
     if ([CommonUtils isLogin]) {
         [self getRequest];
-        self.view.userInteractionEnabled = NO;//view在数据刷新成功之前不可点击
     }else
     {
         self.accountTitleView.titleLabel.text=@"******";
@@ -441,11 +440,9 @@ Strong MyAccountModel *accountModel;//数据源
     NSArray *values = @[[CommonUtils getToken]];
     
     [[HttpCommunication sharedInstance] postSignRequestWithPath:getMyUserDataUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
-        self.view.userInteractionEnabled = YES;//view在数据刷新成功之前不可点击
 
         [weakSelf loadInfoWithDict:successDic];
     } failure:^(NSDictionary *errorDic) {
-        self.view.userInteractionEnabled = YES;//view在数据刷新成功之前不可点击
 
     }];
 
