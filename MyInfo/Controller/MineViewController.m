@@ -139,10 +139,6 @@ Strong MyAccountModel *accountModel;//数据源
         [weakSelf getRequest];
     }];
     self.tableView.mj_header = header;
-    // 马上进入刷新状态
-    if ([CommonUtils isLogin]) {
-        [self getRequest];
-    }
 
 }
 #pragma mark - UITableViewDataSource
