@@ -56,7 +56,7 @@ Strong UILabel *contentLabel;
         self.contentLabel.textColor = RGB_153;
     }else{
         self.statusLabel.textColor = RGB_51;
-        self.statusLabel.text = @"充值失败";
+        self.statusLabel.text = @"充值成功";
         self.contentLabel.textColor = navigationBarColor;
     }
     

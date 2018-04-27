@@ -28,7 +28,7 @@
     UILabel *repayTimeLabel;//债权转让最终时间
 }
 Strong UIScrollView *scrollView;
-Strong UILabel *waittingLabel;//代收本金
+Strong UILabel *waittingLabel;//待收本金
 Strong     LoanBase * baseModel;
 @end
 
