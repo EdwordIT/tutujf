@@ -72,10 +72,10 @@ Strong UILabel *interestRateLabel;//近期利率指数
     if (!_titleLabel) {
         _titleLabel = InitObject(UICountingLabel);
         _titleLabel.font = NUMBER_FONT_BOLD(46);
-        _titleLabel.textColor = HEXCOLOR(@"#ed4b47");
+        _titleLabel.textColor = COLOR_Red;
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.format = @"%.2f";
-        _titleLabel.positiveFormat = @"###,##0.00";
+        _titleLabel.positiveFormat = @"###,###.00";
         
     }
     return _titleLabel;
@@ -149,7 +149,7 @@ Strong UILabel *interestRateLabel;//近期利率指数
 -(void)loadInfoWithModel:(HomepageModel *)model{
     
  
-    CGFloat total = [model.trans_num intValue]*1.00;
+    CGFloat total = [model.trans_num floatValue]*1.00;
     totalTrade = total;
     self.totalLabel.text = model.trans_num_txt;
     [self.titleLabel countFrom:0.00 to:total withDuration:1];

@@ -25,10 +25,10 @@
         _manager = [AFHTTPSessionManager manager];
         //请求超时时间为15秒
         _manager.requestSerializer.timeoutInterval = 15;
-        _manager.requestSerializer = [AFJSONRequestSerializer serializer];
-        _manager.responseSerializer = [AFJSONResponseSerializer serializer];
+//        _manager.requestSerializer = [AFJSONRequestSerializer serializer];
+//        _manager.responseSerializer = [AFJSONResponseSerializer serializer];
         //内容类型
-        _manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json",@"text/javascript",@"text/html", nil];
+//        _manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json",@"text/javascript",@"text/html", nil];
 
     }
     return self;
@@ -47,8 +47,7 @@
 //判断当前是否接入有网络
 + (BOOL)isReachable
 {
-//    return  [[AFNetworkReachabilityManager sharedManager] isReachable];
-    return YES;
+    return [[AFNetworkReachabilityManager sharedManager] isReachable];
 }
 //获取get请求链接
 -(NSString *)getRequestPath:(NSString *)urlPath keysArray:(NSArray *)keys valuesArray:(NSArray *)values signStr:(NSString *)sign{
@@ -107,48 +106,46 @@
     NSData *bodyData = [bodyStr dataUsingEncoding:NSUTF8StringEncoding];
     urlRequest.HTTPBody = bodyData;
     NSURLSession *session = [NSURLSession sharedSession];
-    
+
     NSURLSessionDataTask *sessionDataTask  = [session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
+
          if ([data length] >0  &&
              error == nil){
-             if ([ggHttpFounction getJsonIsOk:data]) {
+             [self endRefresh:scrollView];
+             //特殊接口：登录和注册，都需要静默登录webView，需等到webView加载完成之后才退出提示框
+             if ([urlString isEqualToString:loginUrl]||[urlString isEqualToString:registerUrl]) {
+                 //不隐藏提示框
+             }else
+                 [SVProgressHUD dismissWithDelay:0.5];
+             id resalut = [data objectFromJSONData];
+             NSLog(@"获取数据 resalut = %@",resalut);
+             if ([resalut isKindOfClass:[NSDictionary class]]) {
+                 NSString *resCode = [NSString stringWithFormat:@"%@",[resalut objectForKey:RESPONSE_CODE]];//状态码
+                 //返回数据正确 ，则解析到数据接收内容
+                 if([resCode integerValue]==kReqSuccess)
                  {
-                     
-                    [self endRefresh:scrollView];
-                    //特殊接口：登录和注册，都需要静默登录webView，需等到webView加载完成之后才退出提示框
-                    if ([urlString isEqualToString:loginUrl]||[urlString isEqualToString:registerUrl]) {
-                            //不隐藏提示框
-                        }else
-                    [SVProgressHUD dismissWithDelay:0.5];
-                     NSDictionary *resalut = [data objectFromJSONData];
-                     NSLog(@"获取数据 resalut = %@",resalut);
-                     NSString *resCode = [NSString stringWithFormat:@"%@",[resalut objectForKey:RESPONSE_CODE]];
-                     //返回数据正确 ，则解析到数据接收内容
-                     if([resCode integerValue]==kReqSuccess)
-                     {
-                         /**
-                          获取后台给定的正确码0，做逻辑处理
-                          */
-                         dispatch_async(dispatch_get_main_queue(), ^{
-                             success([resalut objectForKey:RESPONSE_DATA]);
-                         });
-                     }else{
-                         /*
-                          获取后台给定的其他错误码，做逻辑处理
-                          */
-                         //如果是token失效，则直接跳转到重新登录页面
-                         if ([resCode integerValue]==kLoginError) {
-                             [[NSNotificationCenter defaultCenter] postNotificationName:Noti_AutoLogin object:nil];
-                         }
-                         dispatch_async(dispatch_get_main_queue(), ^{
-                             //错误信息展示（其他相关错误处理在具体的类里进行）
-                             [SVProgressHUD showInfoWithStatus:[resalut objectForKey:RESPONSE_MESSAGE]];
-                             failure(resalut);
-                         });
+                     /**
+                      获取后台给定的正确码0，做逻辑处理
+                      */
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         success([resalut objectForKey:RESPONSE_DATA]);
+                     });
+                 }else{
+                     /*
+                      获取后台给定的其他错误码，做逻辑处理
+                      */
+                     //如果是token失效，则直接跳转到重新登录页面
+                     if ([resCode integerValue]==kLoginError) {
+                         [[NSNotificationCenter defaultCenter] postNotificationName:Noti_AutoLogin object:nil];
                      }
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         //错误信息展示（其他相关错误处理在具体的类里进行）
+                         [SVProgressHUD showInfoWithStatus:[resalut objectForKey:RESPONSE_MESSAGE]];
+                         failure(resalut);
+                     });
                  }
              }else{
+                 
                  NSLog(@"json格式错误");
              }
          }
@@ -160,7 +157,7 @@
              }
              [self endRefresh:scrollView];
              dispatch_async(dispatch_get_main_queue(), ^{
-                 
+
                  if ([scrollView isKindOfClass:[UITableView class]]) {
                      [((UITableView *)scrollView) reloadData];
                  }
@@ -173,17 +170,16 @@
              }
              [self endRefresh:scrollView];
              dispatch_async(dispatch_get_main_queue(), ^{
-                 
+
                  if ([scrollView isKindOfClass:[UITableView class]]) {
                      [((UITableView *)scrollView) reloadData];
                  }
              });
          }
-         
+
      }];
     [sessionDataTask resume];
-    
-//    return;
+
 //    NSDictionary *parameters = [self getParametersWithKeys:keys values:values];
 //
 //    if ([HttpCommunication isReachable]) {

@@ -259,12 +259,14 @@
         }
         else
         {
-            if (self.positiveFormat.length>0) {//带千分位的分隔符样式
-                NSString *str = [NSString stringWithFormat:self.format,value];
-                NSNumberFormatter *formatter = [[NSNumberFormatter alloc]init];
-                formatter.numberStyle = NSNumberFormatterDecimalStyle;
-                [formatter setPositiveFormat:self.positiveFormat];
-                self.text = [NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:[str floatValue]]]];
+            if (self.positiveFormat.length>0) {
+//                //直接转化为人民币
+//                NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+//                formatter.numberStyle = kCFNumberFormatterCurrencyStyle;
+//                NSString *string = [formatter stringFromNumber:[NSNumber numberWithFloat:value]];
+//
+//                self.text = [string substringFromIndex:1];
+                self.text = [CommonUtils getHanleNums:[NSString stringWithFormat:@"%.2f",value]];
             }else{
                 self.text = [NSString stringWithFormat:self.format,value];
             }

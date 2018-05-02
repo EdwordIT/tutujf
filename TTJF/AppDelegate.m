@@ -26,10 +26,6 @@
 #import "CustomURLProtocol.h"
 #import "XHLaunchAd.h"
 #import "UIImage+GIF.h"
-#import "PPNetworkHelper.h"
-#import "YBLUserManageCenter.h"
-#import "YBLNetWorkHudBar.h"
-#import "ReactiveObjC.h"
 #import "AFNetworkReachabilityManager.h"
 #import "MineViewController.h"
 #import "FoundController.h"
@@ -131,32 +127,8 @@
             default:
                 break;
         }
-        if(status ==AFNetworkReachabilityStatusReachableViaWWAN || status == AFNetworkReachabilityStatusReachableViaWiFi)
-        {
-            NSLog(@"有网");
-            [YBLUserManageCenter shareInstance].isNoActiveNetStatus = NO;
-        }else
-        {
-            NSLog(@"没有网");
-            [YBLUserManageCenter shareInstance].isNoActiveNetStatus = YES;
-        }
+       
     }];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        ///监听网络
-        @weakify(self)
-        [RACObserve([YBLUserManageCenter shareInstance], isNoActiveNetStatus) subscribeNext:^(NSNumber*  _Nullable x) {
-            @strongify(self)
-            if (x.boolValue) {
-                UIWindow *window = [UIApplication sharedApplication].keyWindow;
-                UINavigationController *navVc = [self getNavigationCWithWindow:window];
-                [YBLNetWorkHudBar startMonitorWithVc:navVc.visibleViewController];
-            } else {
-                [YBLNetWorkHudBar dismissHudView];
-            }
-            [SVProgressHUD dismiss];
-        }];
-    });
 }
 -(void)registerShareSDK
 {

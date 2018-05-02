@@ -392,9 +392,6 @@
 		E70F3CBD1F9357B400B4568C /* aslo03.png in Resources */ = {isa = PBXBuildFile; fileRef = E70F3CBB1F9357B400B4568C /* aslo03.png */; };
 		E7113D9F1F819DFD00726501 /* img02.png in Resources */ = {isa = PBXBuildFile; fileRef = E7113D9D1F819DFC00726501 /* img02.png */; };
 		E7113DA01F819DFD00726501 /* rightArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7113D9E1F819DFD00726501 /* rightArrow@2x.png */; };
-		E712F6C61FFDD54F005C8C24 /* YBLNetWorkHudBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E712F6C51FFDD54F005C8C24 /* YBLNetWorkHudBar.m */; };
-		E712F6CB1FFDD5AA005C8C24 /* YBLUtilsVcNetInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E712F6C71FFDD5AA005C8C24 /* YBLUtilsVcNetInfoViewController.m */; };
-		E712F6CC1FFDD5AA005C8C24 /* YBLNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E712F6C91FFDD5AA005C8C24 /* YBLNavigationViewController.m */; };
 		E712F6CF1FFDD5E6005C8C24 /* NSString+XN.m in Sources */ = {isa = PBXBuildFile; fileRef = E712F6CE1FFDD5E6005C8C24 /* NSString+XN.m */; };
 		E712F6D21FFDD73F005C8C24 /* YBLUserManageCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = E712F6D11FFDD73F005C8C24 /* YBLUserManageCenter.m */; };
 		E73B1C3F1FA6109800273C89 /* MBProgressHUD+MP.m in Sources */ = {isa = PBXBuildFile; fileRef = E73B1C3D1FA6109700273C89 /* MBProgressHUD+MP.m */; };
@@ -406,7 +403,6 @@
 		E73B1C5C1FA6144600273C89 /* UIViewController+Swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = E73B1C541FA6144600273C89 /* UIViewController+Swizzle.m */; };
 		E73B1C621FA6207F00273C89 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E73B1C601FA6207F00273C89 /* MBProgressHUD.m */; };
 		E7625CAD1FEE9E0500403F77 /* UIViewController+Example.m in Sources */ = {isa = PBXBuildFile; fileRef = E7625CAC1FEE9E0500403F77 /* UIViewController+Example.m */; };
-		E77304B51F91085A00C57FBE /* NoNetController.m in Sources */ = {isa = PBXBuildFile; fileRef = E77304B41F91085A00C57FBE /* NoNetController.m */; };
 		E77304B71F910C1800C57FBE /* webback.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E77304B61F910C1800C57FBE /* webback.jpg */; };
 		E77410081FC80797008861C2 /* UpdateVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = E77410071FC80797008861C2 /* UpdateVersion.m */; };
 		E774100B1FC81940008861C2 /* VersionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E774100A1FC81940008861C2 /* VersionInfo.m */; };
@@ -1084,12 +1080,6 @@
 		E70F3CBB1F9357B400B4568C /* aslo03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aslo03.png; sourceTree = "<group>"; };
 		E7113D9D1F819DFC00726501 /* img02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img02.png; sourceTree = "<group>"; };
 		E7113D9E1F819DFD00726501 /* rightArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rightArrow@2x.png"; sourceTree = "<group>"; };
-		E712F6C41FFDD54F005C8C24 /* YBLNetWorkHudBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBLNetWorkHudBar.h; sourceTree = "<group>"; };
-		E712F6C51FFDD54F005C8C24 /* YBLNetWorkHudBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBLNetWorkHudBar.m; sourceTree = "<group>"; };
-		E712F6C71FFDD5AA005C8C24 /* YBLUtilsVcNetInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBLUtilsVcNetInfoViewController.m; sourceTree = "<group>"; };
-		E712F6C81FFDD5AA005C8C24 /* YBLUtilsVcNetInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBLUtilsVcNetInfoViewController.h; sourceTree = "<group>"; };
-		E712F6C91FFDD5AA005C8C24 /* YBLNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YBLNavigationViewController.m; sourceTree = "<group>"; };
-		E712F6CA1FFDD5AA005C8C24 /* YBLNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBLNavigationViewController.h; sourceTree = "<group>"; };
 		E712F6CD1FFDD5E6005C8C24 /* NSString+XN.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XN.h"; sourceTree = "<group>"; };
 		E712F6CE1FFDD5E6005C8C24 /* NSString+XN.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XN.m"; sourceTree = "<group>"; };
 		E712F6D01FFDD73F005C8C24 /* YBLUserManageCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YBLUserManageCenter.h; sourceTree = "<group>"; };
@@ -1112,8 +1102,6 @@
 		E73B1C611FA6207F00273C89 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		E7625CAB1FEE9E0500403F77 /* UIViewController+Example.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Example.h"; sourceTree = "<group>"; };
 		E7625CAC1FEE9E0500403F77 /* UIViewController+Example.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Example.m"; sourceTree = "<group>"; };
-		E77304B31F91085A00C57FBE /* NoNetController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoNetController.h; sourceTree = "<group>"; };
-		E77304B41F91085A00C57FBE /* NoNetController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoNetController.m; sourceTree = "<group>"; };
 		E77304B61F910C1800C57FBE /* webback.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = webback.jpg; sourceTree = "<group>"; };
 		E77410061FC80797008861C2 /* UpdateVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UpdateVersion.h; sourceTree = "<group>"; };
 		E77410071FC80797008861C2 /* UpdateVersion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UpdateVersion.m; sourceTree = "<group>"; };
@@ -2400,18 +2388,10 @@
 			children = (
 				1B4EEC88206E1A4F00117EF0 /* HomeTabBarController.h */,
 				1B4EEC89206E1A5000117EF0 /* HomeTabBarController.m */,
-				E712F6CA1FFDD5AA005C8C24 /* YBLNavigationViewController.h */,
-				E712F6C91FFDD5AA005C8C24 /* YBLNavigationViewController.m */,
-				E712F6C81FFDD5AA005C8C24 /* YBLUtilsVcNetInfoViewController.h */,
-				E712F6C71FFDD5AA005C8C24 /* YBLUtilsVcNetInfoViewController.m */,
-				E712F6C41FFDD54F005C8C24 /* YBLNetWorkHudBar.h */,
-				E712F6C51FFDD54F005C8C24 /* YBLNetWorkHudBar.m */,
 				E7B063CF1E62F419005D6972 /* MainViewController.h */,
 				E7B063D01E62F419005D6972 /* MainViewController.m */,
 				E70331DE1EAA363F00C1FFD1 /* HomeWebController.h */,
 				E70331DF1EAA363F00C1FFD1 /* HomeWebController.m */,
-				E77304B31F91085A00C57FBE /* NoNetController.h */,
-				E77304B41F91085A00C57FBE /* NoNetController.m */,
 				E77410061FC80797008861C2 /* UpdateVersion.h */,
 				E77410071FC80797008861C2 /* UpdateVersion.m */,
 			);
@@ -2533,7 +2513,6 @@
 				E7BF5F161E6066F200BCE81E /* Sources */,
 				E7BF5F171E6066F200BCE81E /* Frameworks */,
 				E7BF5F181E6066F200BCE81E /* Resources */,
-				DB94F76A35789681991D14F1 /* [CP] Embed Pods Frameworks */,
 				F08E3C15F9095F91AF7DD55C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -2905,21 +2884,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DB94F76A35789681991D14F1 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TTJF/Pods-TTJF-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		F08E3C15F9095F91AF7DD55C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2995,7 +2959,6 @@
 				E70CFAAA1F1047A10035FC58 /* NetworkManager.m in Sources */,
 				E7067AA61E60C93B00E32B86 /* UIImage+animatedGIF.m in Sources */,
 				1BCF2269206E2BFD00D75662 /* DetailTop.m in Sources */,
-				E712F6CC1FFDD5AA005C8C24 /* YBLNavigationViewController.m in Sources */,
 				E7067AB31E60C93B00E32B86 /* UIImage+RoundedCorner.m in Sources */,
 				E7067AB41E60C93B00E32B86 /* UIImage+Vector.m in Sources */,
 				E7067AA41E60C93B00E32B86 /* MyPageControl.m in Sources */,
@@ -3024,7 +2987,6 @@
 				E70B09081F91FA33008C9F09 /* MineMenuCell.m in Sources */,
 				E7067B571E60C9AA00E32B86 /* FlowView.m in Sources */,
 				E7D94A781E95A167000E3919 /* UITextField+Shake.m in Sources */,
-				E712F6C61FFDD54F005C8C24 /* YBLNetWorkHudBar.m in Sources */,
 				E7039A921E751FCF00436715 /* QuicklyCell.m in Sources */,
 				CB1BFBB520915F4D0045C0F0 /* TTJFRefreshNormalHeader.m in Sources */,
 				1B4EEC87206CF05A00117EF0 /* RFImageView.m in Sources */,
@@ -3092,7 +3054,6 @@
 				E70A7D221FA0990C00C0628A /* BtMyUser.m in Sources */,
 				1B583AF6205F456400CC70E4 /* UICountingLabel.m in Sources */,
 				1BCF224C206E2BE700D75662 /* LoanInfo.m in Sources */,
-				E712F6CB1FFDD5AA005C8C24 /* YBLUtilsVcNetInfoViewController.m in Sources */,
 				E7067B521E60C9AA00E32B86 /* KDGoalBar.m in Sources */,
 				E73B1C591FA6144600273C89 /* SYSafeCategory.m in Sources */,
 				E70B649D1ECB3D52004D5CCB /* GTMBase64.m in Sources */,
@@ -3100,7 +3061,6 @@
 				E7A45DEE1E74E03D0032613E /* ImmediateCell.m in Sources */,
 				E70D1BF11F8B8E200093EE4F /* JSONKit.m in Sources */,
 				E7067A611E60C88B00E32B86 /* UIColor+ZXLazy.m in Sources */,
-				E77304B51F91085A00C57FBE /* NoNetController.m in Sources */,
 				E7067AA51E60C93B00E32B86 /* UIImage+Alpha.m in Sources */,
 				1B062DE0205D0237005125C0 /* TotalTradesView.m in Sources */,
 				1B583B3F2061F17900CC70E4 /* HttpCommunication.m in Sources */,

@@ -472,11 +472,14 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
 {
     if (error) {
         NSString *errorKey = [error.userInfo objectForKey:NSURLErrorFailingURLStringErrorKey];
-        if ([errorKey hasPrefix:@"tel:"]) {//调用打电话造成加载失败，不重新加载
+        if ([errorKey hasPrefix:@"tel:"]) {//调用打电话造成加载失败，不算失败
+            return;
+        }
+        if ([errorKey rangeOfString:@"tutujf:home"].location!=NSNotFound) {//跳转原生页面停止刷新，不算失败
             return;
         }
     }
-    //所有的失败都会走此方法
+    //所有的失败都会走此方法,包括页面刷新停止
      [SVProgressHUD showInfoWithStatus:@"加载失败"];
 }
 // 接收到服务器跳转请求之后调用

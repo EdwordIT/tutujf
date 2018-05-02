@@ -8,8 +8,10 @@
 
 #import "ProductDetailModel.h"
 
+//九宫格图片显示
+@implementation ImgModel:BaseModel
 
-
+@end
 //信息详情
 @implementation InfoDetailModel: BaseModel
 
@@ -48,11 +50,11 @@
 
 
 @implementation PicturesModel:BaseModel
-//+ (NSDictionary *)modelContainerPropertyGenericClass {
-//    
-//    return @{@"pic_list":[ImgModel class]
-//             };
-//}
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    
+    return @{@"pic_list":[ImgModel class]
+             };
+}
 @end
 
 
