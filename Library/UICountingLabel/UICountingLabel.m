@@ -260,12 +260,7 @@
         else
         {
             if (self.positiveFormat.length>0) {
-//                //直接转化为人民币
-//                NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-//                formatter.numberStyle = kCFNumberFormatterCurrencyStyle;
-//                NSString *string = [formatter stringFromNumber:[NSNumber numberWithFloat:value]];
-//
-//                self.text = [string substringFromIndex:1];
+                //转化为千分位数字
                 self.text = [CommonUtils getHanleNums:[NSString stringWithFormat:@"%.2f",value]];
             }else{
                 self.text = [NSString stringWithFormat:self.format,value];

@@ -399,6 +399,8 @@ Strong NSDate *nowDate;//现在的时间
             make.height.mas_equalTo([self.cellModel.activity_url_img_height floatValue]);
         }];
         [self.typeimgsrc setImageWithString:self.cellModel.activity_url_img];
+    }else{
+        [self.typeimgsrc setImageWithString:@""];
     }
     self.timeLabel.text=[NSString stringWithFormat:@"%@",self.cellModel.period];
     proTextLabel.text= [[NSString stringWithFormat:@"进度%@",self.cellModel.progress] stringByAppendingString:@"%"];

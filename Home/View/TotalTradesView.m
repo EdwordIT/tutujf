@@ -148,8 +148,7 @@ Strong UILabel *interestRateLabel;//近期利率指数
 //数据加载
 -(void)loadInfoWithModel:(HomepageModel *)model{
     
- 
-    CGFloat total = [model.trans_num floatValue]*1.00;
+    CGFloat total = [model.trans_num doubleValue]*1.00;
     totalTrade = total;
     self.totalLabel.text = model.trans_num_txt;
     [self.titleLabel countFrom:0.00 to:total withDuration:1];
