@@ -25,7 +25,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>wx0693ca25b9dda8b8</string>
+				<string>wx581b4dfd960c0630</string>
 			</array>
 		</dict>
 		<dict>
@@ -59,12 +59,6 @@
 			<array>
 				<string>ttjf</string>
 			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array/>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
@@ -111,9 +105,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MOBAppKey</key>
-	<string>1f858b512c6ba</string>
+	<string>258b55376d5b8</string>
 	<key>MOBAppSecret</key>
-	<string></string>
+	<string>970513e228cec7ad68c504bce07c51b5</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
