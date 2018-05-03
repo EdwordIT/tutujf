@@ -52,37 +52,37 @@ Copy AnimationFinishedBlock finishedBlock;
 -(UIImageView *)iconImage
 {
     if (!_iconImage) {
-        _iconImage = [[UIImageView alloc]initWithFrame:RECT(0, kSizeFrom750(30)+kViewHeight, screen_width, kSizeFrom750(350))];
+        _iconImage = [[UIImageView alloc]initWithFrame:RECT(0, kSizeFrom750(100)+kViewHeight, screen_width, kSizeFrom750(350))];
         _iconImage.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _iconImage;
 }
 -(UILabel *)titleLabel{
     if (!_titleLabel) {
-        _titleLabel = [[UILabel alloc]initWithFrame:RECT(0, kSizeFrom750(420)+kViewHeight, screen_width, kSizeFrom750(40))];
+        _titleLabel = [[UILabel alloc]initWithFrame:RECT(0, kSizeFrom750(490)+kViewHeight, screen_width, kSizeFrom750(40))];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
-        _titleLabel.font = SYSTEMBOLDSIZE(34);
+        _titleLabel.font = SYSTEMBOLDSIZE(36);
         _titleLabel.textColor = navigationBarColor;
     }
     return _titleLabel;
 }
 -(UILabel *)textLabel{
     if (!_textLabel) {
-        _textLabel = [[UILabel alloc]initWithFrame:RECT(kOriginLeft, kSizeFrom750(500)+kViewHeight, kSizeFrom750(690), kSizeFrom750(300))];
+        _textLabel = [[UILabel alloc]initWithFrame:RECT(kOriginLeft*2, kSizeFrom750(570)+kViewHeight, kSizeFrom750(630), kSizeFrom750(300))];
         _textLabel.textColor = RGB_102;
         _textLabel.numberOfLines = 0;
-        _textLabel.font = SYSTEMSIZE(26);
+        _textLabel.font = SYSTEMSIZE(28);
     }
     return _textLabel;
 }
 -(void)changeTitle{
     [UIView animateWithDuration:0.3 animations:^{
-        self.titleLabel.top = kSizeFrom750(420);
+        self.titleLabel.top = kSizeFrom750(490);
     }];
 }
 -(void)changeText{
     [UIView animateWithDuration:0.3 animations:^{
-        self.textLabel.top = kSizeFrom750(500);
+        self.textLabel.top = kSizeFrom750(570);
     }];
 }
 -(void)reloadBlock
@@ -96,18 +96,18 @@ Copy AnimationFinishedBlock finishedBlock;
     if (!isBack) {
         [self reloadBlock];
         [UIView animateWithDuration:0.3 animations:^{
-            self.iconImage.top = kSizeFrom750(30);
+            self.iconImage.top = kSizeFrom750(100);
         }];
         [self performSelector:@selector(changeTitle) withObject:nil afterDelay:0.3];
         [self performSelector:@selector(changeText) withObject:nil afterDelay:0.6];
        
 
     }else{
-        self.iconImage.top = kSizeFrom750(30)+kViewHeight;
+        self.iconImage.top = kSizeFrom750(100)+kViewHeight;
     
-        self.titleLabel.top = kSizeFrom750(420)+kViewHeight;
+        self.titleLabel.top = kSizeFrom750(490)+kViewHeight;
         
-        self.textLabel.top = kSizeFrom750(500)+kViewHeight;
+        self.textLabel.top = kSizeFrom750(570)+kViewHeight;
 
     }
    
