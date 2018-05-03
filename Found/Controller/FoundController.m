@@ -13,7 +13,7 @@
 #import "DiscoverMenuModel.h"
 #import "FoundListModel.h"
 #import "HomeWebController.h"
-
+#import "CooperationController.h"
 
 @interface FoundController ()<UITableViewDataSource,UITableViewDelegate,TreasureMiddleDelegate,TreasureListDelegate>
 {
@@ -132,8 +132,6 @@ Strong NSMutableArray *topArray;
 #pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    //当手指离开某行时，就让某行的选中状态消失
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 1) {
         [self didTreasureListDelegateIndex:indexPath.row];
     }
@@ -150,6 +148,7 @@ Strong NSMutableArray *topArray;
         cell.delegate=self;
         if([self.topArray count]>0)
             [cell setDataBind:self.topArray];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
     if (indexPath.section ==1) {
@@ -205,13 +204,18 @@ Strong NSMutableArray *topArray;
 -(void)didTreasureMiddleIndex:(NSInteger)index
 {
 
-     DiscoverMenuModel * model=[self.topArray objectAtIndex:index];
+    if (index==2) {
+        CooperationController *vc = InitObject(CooperationController);
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
+        DiscoverMenuModel * model=[self.topArray objectAtIndex:index];
     
-    HomeWebController *discountVC = [[HomeWebController alloc] init];
+        HomeWebController *discountVC = [[HomeWebController alloc] init];
     
-    discountVC.urlStr=model.link_url;
+        discountVC.urlStr=model.link_url;
     
-    [self.navigationController pushViewController:discountVC animated:YES];
+        [self.navigationController pushViewController:discountVC animated:YES];
+    }
    
 }
 

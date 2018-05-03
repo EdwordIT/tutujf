@@ -203,6 +203,11 @@
 		1BE673B92074A98F0003A30C /* refresh_mine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1BE673B72074A98F0003A30C /* refresh_mine@2x.png */; };
 		78A3FA404767557456E2E897 /* libPods-TTJF.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6818A4E486372F136DB09D7C /* libPods-TTJF.a */; };
 		CB1BFBB520915F4D0045C0F0 /* TTJFRefreshNormalHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBB420915F4D0045C0F0 /* TTJFRefreshNormalHeader.m */; };
+		CB731555209A9CE200B3B8FA /* CooperationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB731554209A9CE200B3B8FA /* CooperationController.m */; };
+		CB73155A209AE9C200B3B8FA /* cooperation_pull@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */; };
+		CB73155B209AE9C200B3B8FA /* cooperation_pull@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731557209AE9C100B3B8FA /* cooperation_pull@3x.png */; };
+		CB73155C209AE9C200B3B8FA /* cooperationBottom@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731558209AE9C100B3B8FA /* cooperationBottom@3x.png */; };
+		CB73155D209AE9C200B3B8FA /* cooperationBottom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731559209AE9C200B3B8FA /* cooperationBottom@2x.png */; };
 		E701EDC61EA469C000DC234A /* OpenAdvertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E701EDC51EA469C000DC234A /* OpenAdvertView.m */; };
 		E70331E11EAA363F00C1FFD1 /* HomeWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70331DF1EAA363F00C1FFD1 /* HomeWebController.m */; };
 		E7037FFF1E9C96EF00C5E13D /* HorizontalMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E7037FF91E9C96EF00C5E13D /* HorizontalMenu.m */; };
@@ -730,6 +735,12 @@
 		6818A4E486372F136DB09D7C /* libPods-TTJF.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TTJF.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB1BFBB320915F4D0045C0F0 /* TTJFRefreshNormalHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTJFRefreshNormalHeader.h; sourceTree = "<group>"; };
 		CB1BFBB420915F4D0045C0F0 /* TTJFRefreshNormalHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTJFRefreshNormalHeader.m; sourceTree = "<group>"; };
+		CB731553209A9CE200B3B8FA /* CooperationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperationController.h; sourceTree = "<group>"; };
+		CB731554209A9CE200B3B8FA /* CooperationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperationController.m; sourceTree = "<group>"; };
+		CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cooperation_pull@2x.png"; sourceTree = "<group>"; };
+		CB731557209AE9C100B3B8FA /* cooperation_pull@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cooperation_pull@3x.png"; sourceTree = "<group>"; };
+		CB731558209AE9C100B3B8FA /* cooperationBottom@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cooperationBottom@3x.png"; sourceTree = "<group>"; };
+		CB731559209AE9C200B3B8FA /* cooperationBottom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cooperationBottom@2x.png"; sourceTree = "<group>"; };
 		E701EDC41EA469C000DC234A /* OpenAdvertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAdvertView.h; sourceTree = "<group>"; };
 		E701EDC51EA469C000DC234A /* OpenAdvertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenAdvertView.m; sourceTree = "<group>"; };
 		E70331DE1EAA363F00C1FFD1 /* HomeWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWebController.h; sourceTree = "<group>"; };
@@ -2011,6 +2022,10 @@
 			children = (
 				E7DBE58F1F2559B4000517D7 /* background.png */,
 				E7DBE5901F2559B4000517D7 /* bankAmt.png */,
+				CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */,
+				CB731557209AE9C100B3B8FA /* cooperation_pull@3x.png */,
+				CB731559209AE9C200B3B8FA /* cooperationBottom@2x.png */,
+				CB731558209AE9C100B3B8FA /* cooperationBottom@3x.png */,
 				E7DBE5911F2559B4000517D7 /* fanhui@3x.png */,
 				1B583B02205F890D00CC70E4 /* home_01@2x.png */,
 				1B583B08205F890E00CC70E4 /* home_01@3x.png */,
@@ -2144,6 +2159,8 @@
 			children = (
 				E70E1ABE1FBFF37300C6EFA6 /* FoundController.h */,
 				E70E1ABF1FBFF37300C6EFA6 /* FoundController.m */,
+				CB731553209A9CE200B3B8FA /* CooperationController.h */,
+				CB731554209A9CE200B3B8FA /* CooperationController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2679,6 +2696,7 @@
 				1B583B0D205F890F00CC70E4 /* home_02@3x.png in Resources */,
 				E7067A5D1E60C88B00E32B86 /* bt_previous@2x.png in Resources */,
 				1BE67399207471270003A30C /* refresh_025.jpg in Resources */,
+				CB73155C209AE9C200B3B8FA /* cooperationBottom@3x.png in Resources */,
 				1BE673A8207471270003A30C /* refresh_018.jpg in Resources */,
 				1BE6739E207471270003A30C /* refresh_011.jpg in Resources */,
 				E70F3C9D1F92338200B4568C /* user04.png in Resources */,
@@ -2704,6 +2722,7 @@
 				1B4FC6C82058BC6F00C7C88E /* eye_open@3x.png in Resources */,
 				1BE673A0207471270003A30C /* refresh_05.jpg in Resources */,
 				E7067B8C1E60C9AA00E32B86 /* icon_arrow_dropdown_normal.png in Resources */,
+				CB73155D209AE9C200B3B8FA /* cooperationBottom@2x.png in Resources */,
 				E77304B71F910C1800C57FBE /* webback.jpg in Resources */,
 				1B19238E2064CF18005B0C57 /* mobile@3x.png in Resources */,
 				E7DBE5991F2559B4000517D7 /* fanhui@3x.png in Resources */,
@@ -2742,6 +2761,7 @@
 				E7067B5F1E60C9AA00E32B86 /* back@2x.png in Resources */,
 				1BE673A7207471270003A30C /* refresh_015.jpg in Resources */,
 				1B1E308B2088811700B3974F /* program_repayed@3x.png in Resources */,
+				CB73155B209AE9C200B3B8FA /* cooperation_pull@3x.png in Resources */,
 				1BE673B82074A98F0003A30C /* refresh_mine@3x.png in Resources */,
 				E7113DA01F819DFD00726501 /* rightArrow@2x.png in Resources */,
 				1B788F14207DB8DB00F03863 /* icons_nodata@2x.png in Resources */,
@@ -2797,6 +2817,7 @@
 				E7067B951E60C9AA00E32B86 /* icon_merchant_location.png in Resources */,
 				1BE6736520734F720003A30C /* menu_program_unsel@3x.png in Resources */,
 				1BE67397207471270003A30C /* refresh_04.jpg in Resources */,
+				CB73155A209AE9C200B3B8FA /* cooperation_pull@2x.png in Resources */,
 				1B583B10205F890F00CC70E4 /* home_03@2x.png in Resources */,
 				E7067B9C1E60C9AA00E32B86 /* icon_search_suggest@2x.png in Resources */,
 				1B1923902064CF18005B0C57 /* password_lock@2x.png in Resources */,
@@ -2938,6 +2959,7 @@
 				E7082C0F1F9CEA230058D963 /* TopScrollBasePage.m in Sources */,
 				E7067AB01E60C93B00E32B86 /* UIImage+PDF.m in Sources */,
 				E7067B531E60C9AA00E32B86 /* KDGoalBarPercentLayer.m in Sources */,
+				CB731555209A9CE200B3B8FA /* CooperationController.m in Sources */,
 				1B788F402081E4F400F03863 /* JRSegmentControl.m in Sources */,
 				E707BFBE1FA77762009BDDC7 /* AccountInfoController.m in Sources */,
 				1B4EEC6D206BADFA00117EF0 /* AutoLoginView.m in Sources */,

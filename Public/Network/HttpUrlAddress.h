@@ -97,5 +97,9 @@
  获取我的页面信息
 */
 #define getMyUserDataUrl oyApiUrl@"/api/Users/getMyUserData"
+/**
+ 获取风控合作接口
+ */
+#define getCooperationUrl oyApiUrl@"/api/articles/GetRiskManaCooperation"
 
 
