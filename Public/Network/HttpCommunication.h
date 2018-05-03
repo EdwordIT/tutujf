@@ -38,16 +38,6 @@ typedef NS_ENUM(NSUInteger, AnalyzeType) {
 @interface HttpCommunication : NSObject
 
 + (HttpCommunication *)sharedInstance;
-
-/**
- 带sign验签的get请求
- */
-- (void)getSignRequestWithPath:(NSString *)urlString
-                keysArray:(NSArray *)keys
-                valuesArray:(NSArray *)values
-                       refresh:(UIScrollView *)scrollView
-                       success:(TTJFCallBackSuccess)success
-                   failure:(TTJFCallBackFailed)failure;
 //带sign签名的POST请求
 - (void)postSignRequestWithPath:(NSString *)urlString
                       keysArray:(NSArray *)keys
