@@ -11,9 +11,9 @@
 @implementation AppDelegate (XGPushConfig)
 - (void)registerXGPush
 {
-    if (DEBUG) {
-        [[XGPush defaultManager] setEnableDebug:YES];//打开信鸽推送日志
-    }
+//    if (DEBUG) {
+//        [[XGPush defaultManager] setEnableDebug:YES];//打开信鸽推送日志
+//    }
     [[XGPush defaultManager] startXGWithAppID:kXGPush_AppId appKey:kXGPush_AppKey delegate:self];
     [[XGPush defaultManager] setXgApplicationBadgeNumber:0];//设置角标数字为0
     [self registerRemoteNotification];

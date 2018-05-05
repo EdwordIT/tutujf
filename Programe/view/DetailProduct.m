@@ -172,9 +172,9 @@ Strong UILabel *textLabel;
     NSMutableArray *minarr = InitObject(NSMutableArray);
     NSMutableArray *maxArr = InitObject(NSMutableArray);
 
-    for (NSDictionary *dic in [model.material_pic.pic_list lastObject]) {
-        NSString *minurl = [dic objectForKey:@"minimg"];
-        NSString *imgurl = [dic objectForKey:@"imgurl"];
+    for (ImgModel *img in model.material_pic.pic_list) {
+        NSString *minurl = img.minimg;//缩略图
+        NSString *imgurl = img.imgurl;//大图
 
         [minarr addObject:minurl];
         [maxArr addObject:imgurl];

@@ -259,12 +259,9 @@
         }
         else
         {
-            if (self.positiveFormat.length>0) {//带千分位的分隔符样式
-                NSString *str = [NSString stringWithFormat:self.format,value];
-                NSNumberFormatter *formatter = [[NSNumberFormatter alloc]init];
-                formatter.numberStyle = NSNumberFormatterDecimalStyle;
-                [formatter setPositiveFormat:self.positiveFormat];
-                self.text = [NSString stringWithFormat:@"%@",[formatter stringFromNumber:[NSNumber numberWithFloat:[str floatValue]]]];
+            if (self.positiveFormat.length>0) {
+                //转化为千分位数字
+                self.text = [CommonUtils getHanleNums:[NSString stringWithFormat:@"%.2f",value]];
             }else{
                 self.text = [NSString stringWithFormat:self.format,value];
             }

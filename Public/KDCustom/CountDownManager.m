@@ -44,6 +44,7 @@ Strong NSTimer *timer;
 -(void)timerAction
 {
     self.timeInterval++;
+    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_CountDown object:nil userInfo:nil];//全局广播倒计时
    
 }
 -(void)cancel{

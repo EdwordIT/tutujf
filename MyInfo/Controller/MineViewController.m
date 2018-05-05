@@ -27,7 +27,6 @@ OpenShowAdvertDelegate>
     //如果未绑定银行卡，则弹出此框
     OpenAdvertView *advertView;
     TopScrollMode * scrollmodel;
-    Boolean isFirstExe;
     MineTopCell *topcell;
     NSArray *middleMenuArray;//我的投资，我的红包，我的资金流向
     CGFloat navTitleHeight;
@@ -46,10 +45,8 @@ Strong MyAccountModel *accountModel;//数据源
     self.titleView.backgroundColor = [UIColor clearColor];
     //用于区分X下和普通屏幕下的高度适配问题
     navTitleHeight = kNavHight;
-    isFirstExe=FALSE;;
     [self initTableView];
     [self initAdvertMaskView];//托管页面
- // Do any additional setup after loading the view.
 }
 //
 -(void) showRegMaskView
@@ -65,10 +62,9 @@ Strong MyAccountModel *accountModel;//数据源
 //刷新
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
+
     if ([CommonUtils isLogin]) {
-        [self getRequest];
-        self.view.userInteractionEnabled = NO;//view在数据刷新成功之前不可点击
+        [self.tableView.mj_header beginRefreshing];
     }else
     {
         self.accountTitleView.titleLabel.text=@"******";
@@ -142,10 +138,6 @@ Strong MyAccountModel *accountModel;//数据源
         [weakSelf getRequest];
     }];
     self.tableView.mj_header = header;
-    // 马上进入刷新状态
-    if ([CommonUtils isLogin]) {
-        [self getRequest];
-    }
 
 }
 #pragma mark - UITableViewDataSource
@@ -251,7 +243,6 @@ Strong MyAccountModel *accountModel;//数据源
         MineMenuCell *cell =  [[MineMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
         cell.backgroundColor=[UIColor clearColor];
         cell.delegate=self;
-        cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell setMenuData:self.accountModel.bt_user_content];
         return cell;
@@ -443,11 +434,9 @@ Strong MyAccountModel *accountModel;//数据源
     NSArray *values = @[[CommonUtils getToken]];
     
     [[HttpCommunication sharedInstance] postSignRequestWithPath:getMyUserDataUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
-        self.view.userInteractionEnabled = YES;//view在数据刷新成功之前不可点击
 
         [weakSelf loadInfoWithDict:successDic];
     } failure:^(NSDictionary *errorDic) {
-        self.view.userInteractionEnabled = YES;//view在数据刷新成功之前不可点击
 
     }];
 
@@ -470,7 +459,6 @@ Strong MyAccountModel *accountModel;//数据源
     //设置昵称
     [TTJFUserDefault setStr:self.accountModel.user_name key:kNikename];
     self.accountTitleView.titleLabel.text = self.accountModel.user_name;
-    isFirstExe=FALSE;
     [self.tableView reloadData];
     [self showRegMaskView];
 }

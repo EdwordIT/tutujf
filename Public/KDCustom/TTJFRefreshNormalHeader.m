@@ -42,9 +42,9 @@
     logo.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:logo];
     self.logo = logo;
-    
+
     // loading
-    UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [self addSubview:loading];
     self.loading = loading;
     
@@ -62,7 +62,7 @@
     
     self.label.frame = RECT(0, self.logo.bottom+kSizeFrom750(10), screen_width, kSizeFrom750(30));
     
-    self.loading.center = CGPointMake(self.mj_w*0.5+kSizeFrom750(150), self.mj_h * 0.5);
+    self.loading.center = self.logo.center;
 }
 
 #pragma mark 监听控件的刷新状态
@@ -74,16 +74,19 @@
         case MJRefreshStateIdle:
             [self.loading stopAnimating];
             self.label.text = @"下拉刷新";
+            [self.logo setHidden:NO];
             self.logo.transform = CGAffineTransformMakeRotation(M_PI);
             break;
         case MJRefreshStatePulling:
             [self.loading stopAnimating];
             self.logo.transform = CGAffineTransformMakeRotation(M_PI*2);
+            [self.logo setHidden:NO];
             self.label.text = @"松开即可加载";
             break;
         case MJRefreshStateRefreshing:
             self.label.text = @"数据加载中";
             self.logo.transform = CGAffineTransformMakeRotation(M_PI*2);
+            [self.logo setHidden:YES];
             [self.loading startAnimating];
             break;
         default:

@@ -63,7 +63,7 @@
 -(void)placeSubviews
 {
     [super placeSubviews];
-    CGFloat plusHeight = 400*(screen_width/1242);
+    CGFloat plusHeight = 280*(screen_width/1242);
     CGRect gifViewFrame = self.gifView.frame;
     gifViewFrame.size.width = screen_width;
     gifViewFrame.size.height = plusHeight;
@@ -73,15 +73,7 @@
     self.mj_w = screen_width;
     self.mj_h = plusHeight;
     self.gifView.mj_w = screen_width;
-//    if (IS_IPhone6plus) {
-//        CGFloat plusHeight = 400*(screen_width/1242);
-//        CGRect gifViewFrame = self.gifView.frame;
-//        gifViewFrame.size.width = screen_width;
-//        gifViewFrame.origin.y = - plusHeight;
-//        gifViewFrame.size.height = plusHeight;
-//        self.gifView.frame = gifViewFrame;
-//        self.gifView.contentMode = UIViewContentModeScaleAspectFill;//适配iphone6P、7P、8P尺寸下的刷新图片显示不全的问题
-//    }
+
 }
 
 @end

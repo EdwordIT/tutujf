@@ -113,7 +113,7 @@ static CGFloat const space                   = 10;
 // 系统控件默认高度
 #define kStatusBarHeight    (kDevice_Is_iPhoneX ? 44 : 20)
 //导航栏高度
-#define kNavHight (kSizeFrom750(94)+kStatusBarHeight)
+#define kNavHight (kSizeFrom750(88)+kStatusBarHeight)
 
 #define kOriginLeft kSizeFrom750(30)
 

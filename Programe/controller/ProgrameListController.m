@@ -11,7 +11,6 @@
 #import "QuicklyCell.h"
 #import "QuicklyModel.h"
 #import "HomeWebController.h"
-#import "PPNetworkHelper.h"
 #import "RushPurchaseController.h"
 #import "ProgrameNewDetailController.h"
 #import "CountDownManager.h"

@@ -14,7 +14,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
       
-        //新手指引   签到有礼     活动专区   理财小贴士  分期商场  砍价专区
+      
     }
     return self;
 }

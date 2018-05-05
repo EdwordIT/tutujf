@@ -42,8 +42,8 @@
 
 #define Bugly_AppId @"7674c51751"
 //Social Data
-#define kSocial_WX_ID @"wx0693ca25b9dda8b8"
-#define kSocial_WX_Secret @"dc83f73464cbe135b61e8fc16bfefa3d"
+#define kSocial_WX_ID @"wx581b4dfd960c0630"
+#define kSocial_WX_Secret @"47021c19b0073598db49d21351903710"
 #define kSocial_QQ_ID  @"1106229820"
 #define kSocial_QQ_Secret @"rUrqDzQCUHdXyAoj"
 #define kSocial_EN_Key @""
