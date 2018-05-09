@@ -191,6 +191,8 @@
 		CB3D301F20A2D5F30040FE30 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D301E20A2D5F30040FE30 /* MessageCell.m */; };
 		CB3D302220A2DB710040FE30 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D302120A2DB710040FE30 /* MessageModel.m */; };
 		CB3D302520A2F7FC0040FE30 /* RechargeListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D302420A2F7FC0040FE30 /* RechargeListModel.m */; };
+		CB3D302820A2FD7A0040FE30 /* icons_question@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D302620A2FD7A0040FE30 /* icons_question@3x.png */; };
+		CB3D302920A2FD7A0040FE30 /* icons_question@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D302720A2FD7A0040FE30 /* icons_question@2x.png */; };
 		CB731555209A9CE200B3B8FA /* CooperationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB731554209A9CE200B3B8FA /* CooperationController.m */; };
 		CB73155A209AE9C200B3B8FA /* cooperation_pull@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */; };
 		CB73155B209AE9C200B3B8FA /* cooperation_pull@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731557209AE9C100B3B8FA /* cooperation_pull@3x.png */; };
@@ -767,6 +769,8 @@
 		CB3D302120A2DB710040FE30 /* MessageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageModel.m; sourceTree = "<group>"; };
 		CB3D302320A2F7FC0040FE30 /* RechargeListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeListModel.h; sourceTree = "<group>"; };
 		CB3D302420A2F7FC0040FE30 /* RechargeListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeListModel.m; sourceTree = "<group>"; };
+		CB3D302620A2FD7A0040FE30 /* icons_question@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_question@3x.png"; sourceTree = "<group>"; };
+		CB3D302720A2FD7A0040FE30 /* icons_question@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_question@2x.png"; sourceTree = "<group>"; };
 		CB731553209A9CE200B3B8FA /* CooperationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperationController.h; sourceTree = "<group>"; };
 		CB731554209A9CE200B3B8FA /* CooperationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperationController.m; sourceTree = "<group>"; };
 		CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cooperation_pull@2x.png"; sourceTree = "<group>"; };
@@ -2121,6 +2125,8 @@
 			children = (
 				E7DBE58F1F2559B4000517D7 /* background.png */,
 				E7DBE5901F2559B4000517D7 /* bankAmt.png */,
+				CB3D302720A2FD7A0040FE30 /* icons_question@2x.png */,
+				CB3D302620A2FD7A0040FE30 /* icons_question@3x.png */,
 				CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */,
 				CB731557209AE9C100B3B8FA /* cooperation_pull@3x.png */,
 				CB731559209AE9C200B3B8FA /* cooperationBottom@2x.png */,
@@ -2827,6 +2833,7 @@
 				CB731595209B0A2B00B3B8FA /* refresh_020.jpg in Resources */,
 				1B583B11205F890F00CC70E4 /* home_04@3x.png in Resources */,
 				E7DBE5981F2559B4000517D7 /* bankAmt.png in Resources */,
+				CB3D302920A2FD7A0040FE30 /* icons_question@2x.png in Resources */,
 				E7067B971E60C9AA00E32B86 /* icon_rating_star_not_picked.png in Resources */,
 				E7113D9F1F819DFD00726501 /* img02.png in Resources */,
 				E70D16FD1F2303C3007F12D0 /* sns_icon_24_s@2x.png in Resources */,
@@ -2847,6 +2854,7 @@
 				CB731585209B0A2B00B3B8FA /* refresh_017.jpg in Resources */,
 				1B583B16205F890F00CC70E4 /* info_disclosure@3x.png in Resources */,
 				1B1E307D20887E8300B3974F /* message_noPoint@3x.png in Resources */,
+				CB3D302820A2FD7A0040FE30 /* icons_question@3x.png in Resources */,
 				E7067B831E60C9AA00E32B86 /* icon_map_cateid_3.png in Resources */,
 				1B1E307520887E4E00B3974F /* icons_close@2x.png in Resources */,
 				1B1923A02064D264005B0C57 /* service_sel@3x.png in Resources */,

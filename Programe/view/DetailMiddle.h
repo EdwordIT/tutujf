@@ -13,4 +13,6 @@
 @interface DetailMiddle : UIView
 
 -(void)loadInfoWithModel:(LoanBase *)programModel;
+
+-(void)loadCreditInfoWithModel:(LoanBase *)programModel;
 @end

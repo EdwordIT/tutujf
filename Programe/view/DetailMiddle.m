@@ -21,6 +21,7 @@
     DetailMiddleMenu  * m2;
     DetailMiddleMenu  * m3;
     DetailMiddleMenu  * m4;
+    DetailMiddleMenu  * m5;
     NSString * countDownTime;
 //    LoanBase * model;
     
@@ -71,6 +72,28 @@
     }
     [self layoutIfNeeded];//刷新UI控件frame
 }
+//债权转让
+-(void)loadCreditInfoWithModel:(LoanBase *)programModel{
+    
+    
+    LoanInfo * info=programModel.loan_info;
+    
+    [mtop setproName:info.name];//项目名称
+    
+    [m1 setMenu:@"待收本金" content:[NSString stringWithFormat:@"%@元",[CommonUtils getHanleNums:programModel.transfer_ret.wait_principal]]];
+    
+    [m2 setMenu:@"待收利息" content:[NSString stringWithFormat:@"%@元", [CommonUtils getHanleNums:programModel.transfer_ret.wait_interest]]];
+
+    [m3 setMenu:@"还款方式" content:programModel.repay_type_name];
+    
+    [m4 setMenu:@"还款状态" content:info.status_name];
+    
+    [m5 setHidden:NO];
+    
+    [m5 setMenu:@"还款期限" content:programModel.transfer_ret.next_repay_time];
+    
+    [self layoutIfNeeded];//刷新UI控件frame
+}
 
 - (void)initSubViews{
     
@@ -85,6 +108,9 @@
     [self addSubview:m3];
      m4=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0, m3.bottom, screen_width, kSizeFrom750(90))];
     [self addSubview:m4];
+    m5=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0, m4.bottom, screen_width, kSizeFrom750(90))];
+    [m5 setHidden:YES];
+    [self addSubview:m5];
   
 }
 //一秒获取一次心跳

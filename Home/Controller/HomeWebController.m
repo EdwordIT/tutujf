@@ -105,7 +105,6 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
 //        [_mainWebView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(id _Nullable response, NSError * _Nullable error) {
 //            //response为获取js相关内容
 //        }];
-        _mainWebView.scrollView.bounces = NO;
 
         
     }

@@ -139,7 +139,7 @@ Strong LoanBase *baseModel;
     [self.middleView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.topView.mas_bottom);
         make.left.width.mas_equalTo(self.topView);
-        make.height.mas_equalTo(kSizeFrom750(520));
+        make.height.mas_equalTo(kSizeFrom750(610));
     }];
     [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.width.mas_equalTo(self.middleView);
@@ -151,9 +151,9 @@ Strong LoanBase *baseModel;
 #pragma  主体
 -(void) reloadInfo
 {
-    [self.topView loadInfoWithModel:self.baseModel.loan_info];
+    [self.topView loadCreditInfoWithModel:self.baseModel];
     
-    [self.middleView loadInfoWithModel:self.baseModel];
+    [self.middleView loadCreditInfoWithModel:self.baseModel];
     
     [self.bottomView loadBottomWithModel:self.baseModel];
     

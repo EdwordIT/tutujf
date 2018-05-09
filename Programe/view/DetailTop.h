@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "LoanBase.h"
-#import "LoanInfo.h"
 @interface DetailTop : UIView
 -(instancetype)init;
+//加载投资详情
 -(void)loadInfoWithModel:(LoanInfo *)infoModel;
+//加载债权详情
+-(void)loadCreditInfoWithModel:(LoanBase *)infoModel;
+
 @end

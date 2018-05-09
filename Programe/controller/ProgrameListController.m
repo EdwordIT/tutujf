@@ -69,7 +69,7 @@ Strong BaseUITableView *creditTabView;//债权转让
 }
 -(NavSwitchView *)switchView{
     if (!_switchView) {
-        _switchView = [[NavSwitchView alloc]initWithFrame:RECT(0, 0, screen_width, kNavHight) Array:@[@"投资专区",@"债券转让"]];
+        _switchView = [[NavSwitchView alloc]initWithFrame:RECT(0, 0, screen_width, kNavHight) Array:@[@"投资专区",@"债权转让"]];
         WEAK_SELF;
         _switchView.switchBlock = ^(NSInteger tag) {
             if (tag==1) {
