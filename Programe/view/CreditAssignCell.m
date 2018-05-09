@@ -15,7 +15,6 @@ Strong UILabel *amountLabel;//转让金额
 Strong UIButton *buyBtn;//购买债权
 Strong UILabel *partLabel;//分期
 Strong UILabel *partTitle;
-Strong UILabel *typeLabel;//还款方式
 Strong UIView *sepView;//分割线
 
 
@@ -47,8 +46,6 @@ Strong UIView *sepView;//分割线
     
     [self.contentView addSubview:self.buyBtn];
     
-    [self.contentView addSubview:self.typeLabel];
-    
     [self.contentView addSubview:self.sepView];
     
     [self loadLayout];
@@ -74,7 +71,7 @@ Strong UIView *sepView;//分割线
     if (!_rateTitle) {
         _rateTitle = InitObject(UILabel);
         _rateTitle.font = SYSTEMSIZE(24);
-        _rateTitle.textColor=RGB_153;
+        _rateTitle.textColor=RGB_183;
         _rateTitle.text=@"预期利率";
     }
     return _rateTitle;
@@ -84,7 +81,7 @@ Strong UIView *sepView;//分割线
     if (!_amountLabel) {
         _amountLabel = InitObject(UILabel);
         _amountLabel.font = SYSTEMSIZE(26);
-        _amountLabel.textColor = RGB_51;
+        _amountLabel.textColor = RGB_102;
     }
     return _amountLabel;
 }
@@ -104,23 +101,14 @@ Strong UIView *sepView;//分割线
     if (!_partTitle) {
         _partTitle = InitObject(UILabel);
         _partTitle.font = SYSTEMSIZE(24);
-        _partTitle.textColor=RGB_153;
+        _partTitle.textColor=RGB_183;
         _partTitle.text=@"转让期数";
         _partTitle.textAlignment = NSTextAlignmentCenter;
 
     }
     return _partTitle;
 }
--(UILabel *)typeLabel{
-    if (!_typeLabel) {
-        _typeLabel = InitObject(UILabel);
-        _typeLabel.textColor = RGB_51;
-        _typeLabel.font = SYSTEMSIZE(24);
-        _typeLabel.textAlignment = NSTextAlignmentRight;
-        _typeLabel.text = @"到期还本还息";
-    }
-    return _typeLabel;
-}
+
 -(UIButton *)buyBtn{
     if (!_buyBtn) {
         _buyBtn = InitObject(UIButton);
@@ -188,11 +176,6 @@ Strong UIView *sepView;//分割线
         make.height.mas_equalTo(kSizeFrom750(60));
         make.right.mas_equalTo(self.contentView).offset(-kOriginLeft);
     }];
-    
-    [self.typeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.height.mas_equalTo(self.amountLabel);
-        make.right.mas_equalTo(self.buyBtn);
-    }];
     [self.sepView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.bottom.mas_equalTo(self.contentView);
         make.height.mas_equalTo(kSizeFrom750(20));
@@ -209,12 +192,27 @@ Strong UIView *sepView;//分割线
     }
 }
 -(void)loadInfoWithModel:(CreditModel *)model{
-    
+    self.titleLabel.text = model.loan_name;
+    self.rateTitle.text = model.apr_txt;
+    self.rateLabel.text = model.apr;
+    self.amountLabel.text = [NSString stringWithFormat:@"转让金额：%@",[CommonUtils getHanleNums:model.actual_amount]];
+    self.partTitle.text = model.period_str_txt;
+    self.partLabel.text = model.period_str;
+    [self.buyBtn setTitle:model.status_name forState:UIControlStateNormal];
+    if ([model.status isEqualToString:@"1"]) {
+        self.buyBtn.userInteractionEnabled = YES;
+        self.buyBtn.backgroundColor = COLOR_Red;
+
+    }else{
+        self.buyBtn.userInteractionEnabled = NO;
+        self.buyBtn.backgroundColor = COLOR_Btn_Unsel;
+
+    }
     //数据加载
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 

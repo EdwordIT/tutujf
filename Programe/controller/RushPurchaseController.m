@@ -10,6 +10,7 @@
 #import "MBProgressHUD+MP.h"
 #import "SecurityModel.h"
 #import "RepayModel.h"
+#import "LoanBase.h"
 #import "HomeWebController.h"
 #import "HomeWebController.h"
 #import "RechargeController.h"//充值页面
@@ -45,6 +46,7 @@ Strong     LoanBase * baseModel;
 -(void)initSubViews
 {
     self.scrollView = [[UIScrollView alloc]initWithFrame:RECT(0, kNavHight, screen_width, screen_height)];
+    self.scrollView.scrollEnabled = NO;
     [self.view addSubview:self.scrollView];
     WEAK_SELF;
     self.scrollView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
@@ -216,7 +218,7 @@ Strong     LoanBase * baseModel;
     investBtn.frame = CGRectMake(kOriginLeft,expectLabel.bottom+kSizeFrom750(80), screen_width-kOriginLeft*2, kSizeFrom750(90));
     [investBtn setTitle:@"马上投标" forState:UIControlStateNormal];
     investBtn.titleLabel.font = SYSTEMSIZE(32);
-    [investBtn addTarget:self action:@selector(OnTouZhi:) forControlEvents:UIControlEventTouchUpInside];
+    [investBtn addTarget:self action:@selector(investBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [investBtn setBackgroundColor:RGB(200,226,242)];
     investBtn.layer.cornerRadius = investBtn.height/2;
     investBtn.tag=2;
@@ -265,13 +267,13 @@ Strong     LoanBase * baseModel;
     NSString *    str = [_phoneTextFiled.text stringByReplacingOccurrencesOfString:@" " withString:@""];
     if(str.length >0)
     {
-        if(![self isNum:str])
+        if(![CommonUtils isNumber:str])
         {
             [investBtn setBackgroundColor:RGB(200,226,242)];
             investBtn.userInteractionEnabled = NO;
             
         }
-        else  if([self isNum:str])
+        else  if([CommonUtils isNumber:str])
         {
             NSInteger num=[str intValue];
             NSString * str1=self.baseModel.loan_info.tender_amount_min;
@@ -301,12 +303,12 @@ Strong     LoanBase * baseModel;
         [SVProgressHUD showInfoWithStatus:@"投资金额不能为空"];
          return FALSE;
     }
-    else  if(![self isNum:str])
+    else  if(![CommonUtils isNumber:str])
     {
          [SVProgressHUD showInfoWithStatus: @"投资金额必须是数字"];
          return FALSE;
     }
-    else  if([self isNum:str])
+    else  if([CommonUtils isNumber:str])
     {
         NSInteger num=[str intValue];
         NSString * str1=self.baseModel.loan_info.tender_amount_min;
@@ -324,14 +326,6 @@ Strong     LoanBase * baseModel;
     }
        return FALSE;
 }
-- (BOOL)isNum:(NSString *)checkedNumString {
-    checkedNumString = [checkedNumString stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
-    if(checkedNumString.length > 0) {
-        return NO;
-    }
-    return YES;
-}
-
 
 -(void) getRequest{
     NSArray *keys = @[@"loan_id",kToken];
@@ -357,33 +351,40 @@ Strong     LoanBase * baseModel;
         }
         else
         {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr= self.baseModel.trust_reg_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
+            //如果未创建托管账户
+            //是否已经实名认证
+            if([CommonUtils isVerifyRealName])
+            {
+                HomeWebController *discountVC = [[HomeWebController alloc] init];
+                discountVC.urlStr= self.baseModel.trust_reg_url;
+                [self.navigationController pushViewController:discountVC animated:YES];
+            }
+            else
+            {
+                [self goRealNameVC];
+            }
         }
     }
     else
     {
-        [self OnLogin];
+        [self goLoginVC];
     }
    
 }
 
--(void) OnTouZhi:(UIButton *)sender
+-(void) investBtnClick:(UIButton *)sender
 {
     BOOL chk=[self checkNum];
     if(chk)
     {
-        //如果已经开通托管账号，去投资
-        if([self.baseModel.trust_account isEqual:@"1"])
+        //是否已经实名认证
+        if([CommonUtils isVerifyRealName])
         {
             [self getFormData];
         }
         else
         {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr= self.baseModel.trust_reg_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
+            [self goRealNameVC];
             
         }
     }
@@ -409,7 +410,7 @@ Strong     LoanBase * baseModel;
     
     NSArray *keys = @[@"amount",@"period",@"apr",@"repay_type"];
     NSArray *values = @[amount,period,apr,repay_type];
-    [[HttpCommunication sharedInstance] postSignRequestWithPath:investUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getInvestUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
         NSString *interest = [successDic objectForKey:@"interest_total"];
         NSString *expectStr = [NSString stringWithFormat:@"预期收益金额%@元",interest];
         NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:expectStr rang:[expectStr rangeOfString:interest] font:NUMBER_FONT(30) color:COLOR_Red spacingBeforeValue:0 lineSpace:0];
@@ -422,7 +423,7 @@ Strong     LoanBase * baseModel;
 //立即投资
 -(void) getFormData{
     
-    NSString *    str = [_phoneTextFiled.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *  str = [_phoneTextFiled.text stringByReplacingOccurrencesOfString:@" " withString:@""];
     LoanInfo * info=self.baseModel.loan_info;
     NSString * amount=str;
     NSString * loan_id=self.loan_id; //
@@ -449,91 +450,27 @@ Strong     LoanBase * baseModel;
     NSArray *keys = @[@"version",@"loan_id",@"amount",@"loan_password",kToken];
     NSArray *values = @[LocalVersion,loan_id,amount,loan_password,user_token];
     [[HttpCommunication sharedInstance] postSignRequestWithPath:tenderUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
-        NSDictionary * dic= successDic;
-        NSString * form=[NSString stringWithFormat:@"%@",[dic objectForKey:@"form"]];
+
+
+        NSString * form=[NSString stringWithFormat:@"%@",[successDic objectForKey:@"form"]];//json字符串
+        NSDictionary *formDic = [[HttpCommunication sharedInstance] dictionaryWithJsonString:form];//转化为json
         NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[form] forKeys:@[@"form"] ];
         NSString *signnew=[HttpSignCreate GetSignStr:dict_data];
-        NSString * sign=[dic objectForKey:@"sign"];
-        NSString * url_parame=@"";
-        if([signnew isEqual:sign])
-        {
-            NSDictionary * postd= [self dictionaryWithJsonString:form ];
-            NSString * url=[postd objectForKey:@"url"];
+        NSString * sign=[successDic objectForKey:@"sign"];
+        if ([signnew isEqualToString:sign]) {//sign为服务器返回
             
-            NSString * Version=[postd objectForKey:@"Version"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"Version", Version];
-            NSString * CmdId=[postd objectForKey:@"CmdId"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"CmdId", CmdId];
-            NSString * MerCustId=[postd objectForKey:@"MerCustId"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"MerCustId", MerCustId];
-            NSString * OrdId=[postd objectForKey:@"OrdId"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"OrdId", OrdId];
-            NSString * OrdDate=[postd objectForKey:@"OrdDate"];
-            OrdDate=[HttpSignCreate encodeString:OrdDate];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"OrdDate", OrdDate];
-            NSString * TransAmt=[postd objectForKey:@"TransAmt"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"TransAmt", TransAmt];
-            NSString * UsrCustId=[postd objectForKey:@"UsrCustId"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"UsrCustId", UsrCustId];
-            NSString * MaxTenderRate=[postd objectForKey:@"MaxTenderRate"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"MaxTenderRate", MaxTenderRate];
-            NSString * BorrowerDetails=[postd objectForKey:@"BorrowerDetails"];
-            BorrowerDetails=[HttpSignCreate encodeString:BorrowerDetails];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"BorrowerDetails", BorrowerDetails];
-            NSString * IsFreeze=[postd objectForKey:@"IsFreeze"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"IsFreeze", IsFreeze];
-            NSString * FreezeOrdId=[postd objectForKey:@"FreezeOrdId"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"FreezeOrdId", FreezeOrdId];
-            NSString * RetUrl=[postd objectForKey:@"RetUrl"];
-            RetUrl=[HttpSignCreate encodeString:RetUrl];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"RetUrl", RetUrl];
-            NSString * BgRetUrl=[postd objectForKey:@"BgRetUrl"];
-            BgRetUrl=[HttpSignCreate encodeString:BgRetUrl];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"BgRetUrl", BgRetUrl];
-            NSString * MerPriv=[postd objectForKey:@"MerPriv"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"MerPriv", MerPriv];
-            NSString * PageType=[postd objectForKey:@"PageType"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"PageType", PageType];
-            NSString * ChkValue=[postd objectForKey:@"ChkValue"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@",@"ChkValue", ChkValue];
-            [self postFormData:url_parame url:url];
+            NSString *formUrl = [[HttpCommunication sharedInstance] getFormUrl:formDic];
+            HomeWebController *discountVC = [[HomeWebController alloc] init];
+            discountVC.urlStr=formUrl;
+            [self.navigationController pushViewController:discountVC animated:YES];
+            
+        }else{
+            [SVProgressHUD showInfoWithStatus:@"投资失败"];
         }
-        
         
     } failure:^(NSDictionary *errorDic) {
         
     }];
 }
 
--(NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString
-{
-    if (jsonString == nil) {
-        return nil;
-    }
-    
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSError *err;
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                        options:NSJSONReadingMutableContainers
-                                                          error:&err];
-    if(err)
-    {
-        NSLog(@"json解析失败：%@",err);
-        return nil;
-    }
-    return dic;
-}
--(void) postFormData:(NSString *) postdata url:(NSString *) url
-{
- 
-    url=[NSString stringWithFormat:@"%@?%@",url,postdata];
-    HomeWebController *discountVC = [[HomeWebController alloc] init];
-    discountVC.urlStr=url;
-    [self.navigationController pushViewController:discountVC animated:YES];
-  
-}
-
--(void) OnLogin{
-    [self goLoginVC];
-}
 @end

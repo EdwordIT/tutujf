@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RechargeModel.h"
+#import "RechargeListModel.h"
 /**
  投资记录
  */
 @interface RechargeRecordCell : UITableViewCell
--(void)loadInfoWithModel:(RechargeModel *)model;
+-(void)loadInfoWithModel:(RechargeListModel *)model;
 @end

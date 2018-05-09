@@ -497,8 +497,7 @@
 {
     //设置数据获取等待时间
     [XHLaunchAd setWaitDataDuration:5];
-    NSString *urlStr =  [NSString stringWithFormat:getSystemConfig,oyApiUrl];
-    [[HttpCommunication sharedInstance] postSignRequestWithPath:urlStr keysArray:nil valuesArray:nil refresh:nil success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getSystemConfig keysArray:nil valuesArray:nil refresh:nil success:^(NSDictionary *successDic) {
         self.systemConfigModel = [SystemConfigModel yy_modelWithJSON:successDic];
         //系统配置数据加入缓存
         [CommonUtils cacheDataWithObject:successDic WithPathName:Cache_SystemConfig];

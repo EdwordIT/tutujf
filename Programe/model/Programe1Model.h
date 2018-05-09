@@ -15,8 +15,6 @@
 @property(nonatomic, strong) NSString *name; //名称
 @property(nonatomic, strong) NSString *activity_url_img;//名称旁边的标识图片
 @property(nonatomic, strong) NSString *apr; //年利率
-@property(nonatomic, strong) NSString *additional_apr; //附加年利率，要判断，当additional_apr>0时显示，13.2% + 1.2% (这是文本)
-
 @property(nonatomic, strong) NSString * period;//理财期限
 
 @property(nonatomic, strong) NSString *progress;//进度条  %

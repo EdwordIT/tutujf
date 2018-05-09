@@ -143,6 +143,13 @@
         return NO;
     }
 }
++(BOOL)isNumber:(NSString *)str {
+    str = [str stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+    if(str.length > 0) {
+        return NO;
+    }
+    return YES;
+}
 /*******************缓存处理***********************************************/
 /**
  加入缓存
@@ -314,12 +321,25 @@
     }
 }
 /**
+ 是否已经托管到汇付
+ */
++(BOOL)isTrustReg{
+    NSString *str = [TTJFUserDefault strForKey:isReged];
+    if (IsEmptyStr(str)||[str isEqualToString:@"-1"]) {
+        return NO;
+    }else
+    return YES;
+}
+/**
  是否实名认证过
  */
 +(BOOL)isVerifyRealName{
-    BOOL isCer = [TTJFUserDefault boolForKey:isCertificationed];
-    
-    return isCer;
+   
+    NSString *str = [TTJFUserDefault strForKey:isCertificationed];
+    if (IsEmptyStr(str)||[str isEqualToString:@"-1"]) {
+        return NO;
+    }else
+        return YES;
 }
 /*! 获取时间差(秒) */
 + (int)getSecondForFromDate:(NSDate *)fromdate toDate:(NSDate *)todate {

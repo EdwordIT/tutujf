@@ -19,6 +19,7 @@
 #define kDeviceToken @"device_token"
 #define isBindUser @"isBindUser"//是否绑定用户deviceToken
 #define isCertificationed @"isCertificationed"//是否实名认证过
+#define isReged @"isReged"//是否已经开通托管
 #define Sign_IOS @"?equipment=ios"//webView里的ios标记
 //登录状态发生变化全局通知
 #define Noti_LoginChanged @"LoginStatusChanged"//改变首页数据显示

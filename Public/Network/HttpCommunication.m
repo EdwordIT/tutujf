@@ -29,6 +29,19 @@
         _manager.responseSerializer = [AFJSONResponseSerializer serializer];
        // 内容类型
         _manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json",@"text/javascript",@"text/html", nil];
+//        NSString *certFilePath = [[NSBundle mainBundle]
+//                                  pathForResource:@"public" ofType:@"der"];
+//        NSData *certData = [NSData dataWithContentsOfFile:certFilePath];
+//        NSSet *certSet = [NSSet setWithObject:certData];
+//        //pinnedCertificates,校验服务器返回证书的证书,AF自动寻找
+//        AFSecurityPolicy *policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey withPinnedCertificates:certSet];
+//        //因为使用自建证书，所以要开启允许非法证书
+//        policy.allowInvalidCertificates = YES;
+//        //检验证书omain字段和服务器的是否匹配
+//        policy.validatesDomainName = YES;
+//        //af2.6之后拿掉了validatesCertificateChain：检验证书链条
+//        _manager.securityPolicy = policy;
+
 
     }
     return self;
@@ -85,7 +98,7 @@
                        failure:(TTJFCallBackFailed)failure
 {
     
-   
+    urlString = [oyApiUrl stringByAppendingString:urlString];
     NSString *newPath = @"";
     if (keys==nil) {
         newPath = urlString;//不需要sign
@@ -308,6 +321,28 @@
           failure:(TTJFCallBackFailed)failure{
     
     
+}
+-(NSString *)getFormUrl:(NSDictionary *)formDic
+{
+    NSArray *keys = [formDic allKeys];
+    NSString * url_parame=@"";
+    NSString * url=[formDic objectForKey:@"url"];
+    for (int i=0; i<keys.count; i++) {
+        NSString *key = [keys objectAtIndex:i];
+        
+        NSString *keyValue = [formDic objectForKey:key];
+        NSString *  newValue = [HttpSignCreate encodeString:keyValue];
+        
+        if ([key isEqualToString:@"url"]) {
+            continue;
+        }
+        if (i==keys.count-1) {
+            url_parame = [url_parame stringByAppendingString:[NSString stringWithFormat:@"%@=%@",key,newValue]];
+        }else
+            url_parame = [url_parame stringByAppendingString:[NSString stringWithFormat:@"%@=%@&",key,newValue]];
+    }
+    [HttpSignCreate encodeString:url_parame];
+    return [NSString stringWithFormat:@"%@?%@",url,url_parame];
 }
 /**
  字典转json字符串

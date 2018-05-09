@@ -18,6 +18,7 @@
 #import "CreditAssignCell.h"
 #import "CreditAssignDetailController.h"//债权详情
 #import "BuyCreditAssignController.h"//债权购买
+#import "CreditModel.h"
 @interface ProgrameListController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate>
 Assign  BOOL isGetCredit;
 Assign NSInteger currentPage;/**< 页数 */
@@ -127,12 +128,13 @@ Strong BaseUITableView *creditTabView;//债权转让
         [weakSelf getRequest];
     }];
     self.creditTabView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
-        self.currentPage = 1;
+        self.creditPage = 1;
         [weakSelf getCreditRequest];
     }];
     [self.tableView ly_startLoading];
     [self.creditTabView ly_startLoading];
     
+    //投资列表
      self.tableView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
         self.currentPage = 1;
         [weakSelf getRequest];
@@ -141,19 +143,19 @@ Strong BaseUITableView *creditTabView;//债权转让
         self.currentPage++;
         [weakSelf loadMoreData];
     }];
-    
+  //债权转让
     self.creditTabView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
         self.creditPage = 1;
         [weakSelf getCreditRequest];
     }];
     
     self.creditTabView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        self.currentPage++;
+        self.creditPage++;
         [weakSelf loadMoreCreditData];
     }];
 }
 #pragma mark --UIScrollViewDelegate
-//认为拖动结束调用此方法
+//拖动结束调用此方法
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     if (scrollView==self.backScroll) {
@@ -208,7 +210,7 @@ Strong BaseUITableView *creditTabView;//债权转让
         //债权转让
         CreditModel *model = [self.creditDataArray objectAtIndex:indexPath.row];
         CreditAssignDetailController *detail = InitObject(CreditAssignDetailController);
-        detail.loan_id = model.loan_id;
+        detail.transfer_id = model.transfer_id;
         [self.navigationController pushViewController:detail animated:YES];
     }
    
@@ -251,7 +253,7 @@ Strong BaseUITableView *creditTabView;//债权转让
    
 }
 
-#pragma mark --request
+#pragma mark --数据获取request
 //获取投资列表数据
 -(void)getRequest{
 
@@ -278,13 +280,21 @@ Strong BaseUITableView *creditTabView;//债权转让
 }
 //获取债权转让数据
 -(void)getCreditRequest{
-    NSArray *keys = @[@"page"];
-    NSArray *values = @[[NSString stringWithFormat:@"%ld",self.creditPage]];
-    [[HttpCommunication sharedInstance] postSignRequestWithPath:getLoanListUrl keysArray:keys valuesArray:values refresh:self.creditTabView success:^(NSDictionary *successDic) {
+    NSArray *keys = @[@"page",kToken];
+    NSArray *values = @[[NSString stringWithFormat:@"%ld",self.creditPage],[CommonUtils getToken]];
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getCreditAssignListUrl keysArray:keys valuesArray:values refresh:self.creditTabView success:^(NSDictionary *successDic) {
         if(self.creditPage==1)
             [ self.creditDataArray removeAllObjects];
         
-        [self.tableView.mj_footer endRefreshing];
+        self.creDitTotlaPages =[[NSString stringWithFormat:@"%@",[successDic objectForKey:@"total_pages"]] intValue];//债权转让总页数
+        NSArray * ary= [successDic objectForKey:@"items"];
+        for(NSInteger k=0;k<[ary count];k++)
+        {
+            NSDictionary * dic=[ary objectAtIndex:k];
+            CreditModel * model=[CreditModel yy_modelWithJSON:dic];
+            [self.creditDataArray addObject: model];
+        }
+        [self.creditTabView.mj_footer endRefreshing];
         [self.creditTabView reloadData];
         
     } failure:^(NSDictionary *errorDic) {
@@ -334,7 +344,7 @@ Strong BaseUITableView *creditTabView;//债权转让
     }else{
         
         BuyCreditAssignController * vc=[[BuyCreditAssignController alloc] init];
-        vc.loan_id=model.loan_id;
+        vc.transfer_id=model.transfer_id;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

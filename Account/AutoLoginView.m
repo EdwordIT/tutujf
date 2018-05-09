@@ -44,6 +44,7 @@ Strong UIWebView *mainWebView;
             [TTJFUserDefault setStr:user_name key:kUsername];
             [TTJFUserDefault setStr:password key:kPassword];
             [TTJFUserDefault setStr:temp key:kExpirationTime];
+            [TTJFUserDefault setStr:[successDic objectForKey:@"realname_status"] key:isCertificationed];//保存是否已经实名认证过的信息
             [self setCookie];
         
     } failure:^(NSDictionary *errorDic) {
@@ -121,7 +122,7 @@ Strong UIWebView *mainWebView;
     }
     // 注入Cookie，识别webView登录状态
     [request setValue:cookies forHTTPHeaderField:@"Cookie"];
-    [request setValue:@"Mozilla/5.0 (iPhone; CPU iPhone like Mac OS X; zh-CN;) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/14C92 TutuBrowser/1.1.1 Mobile AliApp(TUnionSDK/0.1.12) AliApp(TUnionSDK/0.1.12)" forHTTPHeaderField:@"User-Agent"];
+//    [request setValue:@"Mozilla/5.0 (iPhone; CPU iPhone like Mac OS X; zh-CN;) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/14C92 TutuBrowser/1.1.1 Mobile AliApp(TUnionSDK/0.1.12) AliApp(TUnionSDK/0.1.12)" forHTTPHeaderField:@"User-Agent"];
     [request setHTTPShouldHandleCookies:YES];
     
     [self.mainWebView loadRequest:request];
@@ -138,6 +139,8 @@ Strong UIWebView *mainWebView;
     [TTJFUserDefault removeStrForKey:kToken];
     [TTJFUserDefault removeStrForKey:kPassword];
     [TTJFUserDefault removeStrForKey:kExpirationTime];
+    [TTJFUserDefault removeStrForKey:isCertificationed];
+    [TTJFUserDefault removeStrForKey:isReged];
 }
 
 #pragma mark webViewDelegate

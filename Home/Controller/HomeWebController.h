@@ -31,5 +31,5 @@
 }
 
 Strong NSString *urlStr;
-
+Assign BOOL isJumped;//是否跳过中间页面
 @end

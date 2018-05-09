@@ -183,6 +183,14 @@
 		CB1BFBBE2091AFE00045C0F0 /* CreditModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBBD2091AFE00045C0F0 /* CreditModel.m */; };
 		CB1BFBC12091C3420045C0F0 /* CreditAssignDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBC02091C3420045C0F0 /* CreditAssignDetailController.m */; };
 		CB1BFBC42091C55F0045C0F0 /* BuyCreditAssignController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBC32091C55F0045C0F0 /* BuyCreditAssignController.m */; };
+		CB3D301020A14BBF0040FE30 /* CreditInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D300F20A14BBF0040FE30 /* CreditInfoModel.m */; };
+		CB3D301320A1763E0040FE30 /* RealnameModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D301220A1763E0040FE30 /* RealnameModel.m */; };
+		CB3D301620A2945C0040FE30 /* RushPurchaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D301420A2945C0040FE30 /* RushPurchaseController.m */; };
+		CB3D301920A2D4930040FE30 /* MessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D301820A2D4930040FE30 /* MessageController.m */; };
+		CB3D301C20A2D5A40040FE30 /* BaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D301B20A2D5A40040FE30 /* BaseCell.m */; };
+		CB3D301F20A2D5F30040FE30 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D301E20A2D5F30040FE30 /* MessageCell.m */; };
+		CB3D302220A2DB710040FE30 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D302120A2DB710040FE30 /* MessageModel.m */; };
+		CB3D302520A2F7FC0040FE30 /* RechargeListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D302420A2F7FC0040FE30 /* RechargeListModel.m */; };
 		CB731555209A9CE200B3B8FA /* CooperationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB731554209A9CE200B3B8FA /* CooperationController.m */; };
 		CB73155A209AE9C200B3B8FA /* cooperation_pull@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */; };
 		CB73155B209AE9C200B3B8FA /* cooperation_pull@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731557209AE9C100B3B8FA /* cooperation_pull@3x.png */; };
@@ -222,8 +230,7 @@
 		CB73159F209B0A2B00B3B8FA /* refresh_010.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB73157D209B0A2B00B3B8FA /* refresh_010.jpg */; };
 		CB7315A0209B0A2B00B3B8FA /* refresh_012.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB73157E209B0A2B00B3B8FA /* refresh_012.jpg */; };
 		CB7315A1209B0A2B00B3B8FA /* refresh_031.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB73157F209B0A2B00B3B8FA /* refresh_031.jpg */; };
-
-        E701EDC61EA469C000DC234A /* OpenAdvertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E701EDC51EA469C000DC234A /* OpenAdvertView.m */; };
+		E701EDC61EA469C000DC234A /* OpenAdvertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E701EDC51EA469C000DC234A /* OpenAdvertView.m */; };
 		E70331E11EAA363F00C1FFD1 /* HomeWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70331DF1EAA363F00C1FFD1 /* HomeWebController.m */; };
 		E7037FFF1E9C96EF00C5E13D /* HorizontalMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E7037FF91E9C96EF00C5E13D /* HorizontalMenu.m */; };
 		E70380001E9C96EF00C5E13D /* UIViewExt.m in Sources */ = {isa = PBXBuildFile; fileRef = E7037FFC1E9C96EF00C5E13D /* UIViewExt.m */; };
@@ -359,7 +366,6 @@
 		E70A6DC21F9DC47D00A7B7E8 /* TopAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E70A6DC11F9DC47D00A7B7E8 /* TopAccount.m */; };
 		E70A6DC51F9DD72500A7B7E8 /* TopAccountModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E70A6DC41F9DD72500A7B7E8 /* TopAccountModel.m */; };
 		E70A6DCB1F9E042000A7B7E8 /* TopScrollMode.m in Sources */ = {isa = PBXBuildFile; fileRef = E70A6DCA1F9E042000A7B7E8 /* TopScrollMode.m */; };
-		E70A76EC1F9F15750083F6E6 /* RushPurchaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70A76EB1F9F15750083F6E6 /* RushPurchaseController.m */; };
 		E70A7D1F1FA0976700C0628A /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E70A7D1E1FA0976700C0628A /* UserInfo.m */; };
 		E70A7D221FA0990C00C0628A /* BtMyUser.m in Sources */ = {isa = PBXBuildFile; fileRef = E70A7D211FA0990C00C0628A /* BtMyUser.m */; };
 		E70A7D251FA0C0DB00C0628A /* logo_ico05.png in Resources */ = {isa = PBXBuildFile; fileRef = E70A7D231FA0C0DB00C0628A /* logo_ico05.png */; };
@@ -714,6 +720,7 @@
 		1BE673B72074A98F0003A30C /* refresh_mine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh_mine@2x.png"; sourceTree = "<group>"; };
 		530F50B485B54F29F2A51634 /* Pods-TTJF.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TTJF.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TTJF/Pods-TTJF.debug.xcconfig"; sourceTree = "<group>"; };
 		6818A4E486372F136DB09D7C /* libPods-TTJF.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TTJF.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB0D379E209DB05F0067CBE5 /* public.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = public.der; sourceTree = "<group>"; };
 		CB1BFB95208EBC790045C0F0 /* RechargeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeController.h; sourceTree = "<group>"; };
 		CB1BFB96208EBC790045C0F0 /* RechargeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeController.m; sourceTree = "<group>"; };
 		CB1BFB98208EBD040045C0F0 /* GetCashController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetCashController.h; sourceTree = "<group>"; };
@@ -744,6 +751,22 @@
 		CB1BFBC02091C3420045C0F0 /* CreditAssignDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignDetailController.m; sourceTree = "<group>"; };
 		CB1BFBC22091C55F0045C0F0 /* BuyCreditAssignController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuyCreditAssignController.h; sourceTree = "<group>"; };
 		CB1BFBC32091C55F0045C0F0 /* BuyCreditAssignController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BuyCreditAssignController.m; sourceTree = "<group>"; };
+		CB3D300E20A14BBF0040FE30 /* CreditInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditInfoModel.h; sourceTree = "<group>"; };
+		CB3D300F20A14BBF0040FE30 /* CreditInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditInfoModel.m; sourceTree = "<group>"; };
+		CB3D301120A1763E0040FE30 /* RealnameModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RealnameModel.h; sourceTree = "<group>"; };
+		CB3D301220A1763E0040FE30 /* RealnameModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RealnameModel.m; sourceTree = "<group>"; };
+		CB3D301420A2945C0040FE30 /* RushPurchaseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RushPurchaseController.m; sourceTree = "<group>"; };
+		CB3D301520A2945C0040FE30 /* RushPurchaseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RushPurchaseController.h; sourceTree = "<group>"; };
+		CB3D301720A2D4930040FE30 /* MessageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageController.h; sourceTree = "<group>"; };
+		CB3D301820A2D4930040FE30 /* MessageController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageController.m; sourceTree = "<group>"; };
+		CB3D301A20A2D5A40040FE30 /* BaseCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseCell.h; sourceTree = "<group>"; };
+		CB3D301B20A2D5A40040FE30 /* BaseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseCell.m; sourceTree = "<group>"; };
+		CB3D301D20A2D5F30040FE30 /* MessageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
+		CB3D301E20A2D5F30040FE30 /* MessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
+		CB3D302020A2DB710040FE30 /* MessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
+		CB3D302120A2DB710040FE30 /* MessageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageModel.m; sourceTree = "<group>"; };
+		CB3D302320A2F7FC0040FE30 /* RechargeListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeListModel.h; sourceTree = "<group>"; };
+		CB3D302420A2F7FC0040FE30 /* RechargeListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeListModel.m; sourceTree = "<group>"; };
 		CB731553209A9CE200B3B8FA /* CooperationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperationController.h; sourceTree = "<group>"; };
 		CB731554209A9CE200B3B8FA /* CooperationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperationController.m; sourceTree = "<group>"; };
 		CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cooperation_pull@2x.png"; sourceTree = "<group>"; };
@@ -1061,8 +1084,6 @@
 		E70A6DC41F9DD72500A7B7E8 /* TopAccountModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopAccountModel.m; sourceTree = "<group>"; };
 		E70A6DC91F9E042000A7B7E8 /* TopScrollMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopScrollMode.h; sourceTree = "<group>"; };
 		E70A6DCA1F9E042000A7B7E8 /* TopScrollMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopScrollMode.m; sourceTree = "<group>"; };
-		E70A76EA1F9F15750083F6E6 /* RushPurchaseController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RushPurchaseController.h; sourceTree = "<group>"; };
-		E70A76EB1F9F15750083F6E6 /* RushPurchaseController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RushPurchaseController.m; sourceTree = "<group>"; };
 		E70A7D1D1FA0976700C0628A /* UserInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
 		E70A7D1E1FA0976700C0628A /* UserInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
 		E70A7D201FA0990C00C0628A /* BtMyUser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BtMyUser.h; sourceTree = "<group>"; };
@@ -1347,6 +1368,7 @@
 		1B583B492063535D00CC70E4 /* SystemConfig */ = {
 			isa = PBXGroup;
 			children = (
+				CB0D379E209DB05F0067CBE5 /* public.der */,
 				E7067ACD1E60C9AA00E32B86 /* Constant.h */,
 				E7067AD41E60C9AA00E32B86 /* Public.h */,
 				1B583B3C2060B6A600CC70E4 /* Environment.h */,
@@ -1378,6 +1400,8 @@
 		1BCF222C206E2BA400D75662 /* controller */ = {
 			isa = PBXGroup;
 			children = (
+				CB3D301520A2945C0040FE30 /* RushPurchaseController.h */,
+				CB3D301420A2945C0040FE30 /* RushPurchaseController.m */,
 				1BCF222F206E2BD200D75662 /* ProgrameListController.h */,
 				1BCF2230206E2BD200D75662 /* ProgrameListController.m */,
 				1BCF2231206E2BD200D75662 /* ProgrameNewDetailController.h */,
@@ -1454,6 +1478,10 @@
 				CB1BFBA5209015760045C0F0 /* RechargeModel.m */,
 				CB1BFBBC2091AFE00045C0F0 /* CreditModel.h */,
 				CB1BFBBD2091AFE00045C0F0 /* CreditModel.m */,
+				CB3D300E20A14BBF0040FE30 /* CreditInfoModel.h */,
+				CB3D300F20A14BBF0040FE30 /* CreditInfoModel.m */,
+				CB3D302320A2F7FC0040FE30 /* RechargeListModel.h */,
+				CB3D302420A2F7FC0040FE30 /* RechargeListModel.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -1471,6 +1499,8 @@
 				1B788F10207DABDA00F03863 /* BaseUITableView.m */,
 				CB1BFBAA20902D2E0045C0F0 /* GradientButton.h */,
 				CB1BFBAB20902D2E0045C0F0 /* GradientButton.m */,
+				CB3D301A20A2D5A40040FE30 /* BaseCell.h */,
+				CB3D301B20A2D5A40040FE30 /* BaseCell.m */,
 			);
 			path = BaseClass;
 			sourceTree = "<group>";
@@ -2497,6 +2527,8 @@
 				E7082C0E1F9CEA230058D963 /* TopScrollBasePage.m */,
 				E70A6DC01F9DC47D00A7B7E8 /* TopAccount.h */,
 				E70A6DC11F9DC47D00A7B7E8 /* TopAccount.m */,
+				CB3D301D20A2D5F30040FE30 /* MessageCell.h */,
+				CB3D301E20A2D5F30040FE30 /* MessageCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2520,6 +2552,10 @@
 				E7F3C91E1FA877500062B69B /* AccountRealname.m */,
 				1BE6734A207211120003A30C /* MyAccountModel.h */,
 				1BE6734B207211120003A30C /* MyAccountModel.m */,
+				CB3D301120A1763E0040FE30 /* RealnameModel.h */,
+				CB3D301220A1763E0040FE30 /* RealnameModel.m */,
+				CB3D302020A2DB710040FE30 /* MessageModel.h */,
+				CB3D302120A2DB710040FE30 /* MessageModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2531,10 +2567,10 @@
 				E70845B31FEBC2190010ADCE /* XXWebKitSupport.m */,
 				E7B02E531E72C41100F967CE /* MineViewController.h */,
 				E7B02E541E72C41100F967CE /* MineViewController.m */,
-				E70A76EA1F9F15750083F6E6 /* RushPurchaseController.h */,
-				E70A76EB1F9F15750083F6E6 /* RushPurchaseController.m */,
 				CB1BFBAD209059B80045C0F0 /* RealNameController.h */,
 				CB1BFBAE209059B80045C0F0 /* RealNameController.m */,
+				CB3D301720A2D4930040FE30 /* MessageController.h */,
+				CB3D301820A2D4930040FE30 /* MessageController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3014,6 +3050,7 @@
 				E7F3C91C1FA8772F0062B69B /* AccountPhone.m in Sources */,
 				CB1BFBAC20902D2E0045C0F0 /* GradientButton.m in Sources */,
 				E7067AA71E60C93B00E32B86 /* UIImage+BetterFace.m in Sources */,
+				CB3D301920A2D4930040FE30 /* MessageController.m in Sources */,
 				1B583AFF205F65E000CC70E4 /* ClubeMsgModel.m in Sources */,
 				E7067A281E60C88A00E32B86 /* introductoryPagesHelper.m in Sources */,
 				1B4EEC91206E1BF300117EF0 /* UINavigationController+MBNavigation.m in Sources */,
@@ -3025,6 +3062,7 @@
 				E7067A3E1E60C88B00E32B86 /* RFViewController.m in Sources */,
 				E7B02E551E72C41100F967CE /* MineViewController.m in Sources */,
 				1B583AF9205F649E00CC70E4 /* ClubeCell.m in Sources */,
+				CB3D301C20A2D5A40040FE30 /* BaseCell.m in Sources */,
 				1BCF2233206E2BD300D75662 /* ProgrameListController.m in Sources */,
 				E73B1C621FA6207F00273C89 /* MBProgressHUD.m in Sources */,
 				E7067BC81E60C9AB00E32B86 /* CoreMediaFuncManagerVC.m in Sources */,
@@ -3043,7 +3081,6 @@
 				E7067B5B1E60C9AA00E32B86 /* HttpSignCreate.m in Sources */,
 				E7A45DDF1E7423C60032613E /* HomeBanner.m in Sources */,
 				E7B063D21E62F419005D6972 /* MainViewController.m in Sources */,
-				E70A76EC1F9F15750083F6E6 /* RushPurchaseController.m in Sources */,
 				1B788F0B207B54EE00F03863 /* CustomProgressView.m in Sources */,
 				1BCF226E206E2BFD00D75662 /* DetailSafe.m in Sources */,
 				E7039A951E751FE100436715 /* QuicklyModel.m in Sources */,
@@ -3056,7 +3093,6 @@
 				1BCF2269206E2BFD00D75662 /* DetailTop.m in Sources */,
 				CB1BFBBB20917B4C0045C0F0 /* NavSwitchView.m in Sources */,
 				CB1BFB97208EBC790045C0F0 /* RechargeController.m in Sources */,
-				E712F6CC1FFDD5AA005C8C24 /* YBLNavigationViewController.m in Sources */,
 				E7067AB31E60C93B00E32B86 /* UIImage+RoundedCorner.m in Sources */,
 				E7067AB41E60C93B00E32B86 /* UIImage+Vector.m in Sources */,
 				E7067AA41E60C93B00E32B86 /* MyPageControl.m in Sources */,
@@ -3073,11 +3109,14 @@
 				E7067AAE1E60C93B00E32B86 /* UIImage+Merge.m in Sources */,
 				E70E1AC01FBFF37300C6EFA6 /* FoundController.m in Sources */,
 				E73B1C581FA6144600273C89 /* JRSwizzle.m in Sources */,
+				CB3D302520A2F7FC0040FE30 /* RechargeListModel.m in Sources */,
+				CB3D301620A2945C0040FE30 /* RushPurchaseController.m in Sources */,
 				E701EDC61EA469C000DC234A /* OpenAdvertView.m in Sources */,
 				1B788F11207DABDA00F03863 /* BaseUITableView.m in Sources */,
 				CB1BFBC12091C3420045C0F0 /* CreditAssignDetailController.m in Sources */,
 				1B788F432081E4F400F03863 /* JRSegmentViewController.m in Sources */,
 				1B583B472063474400CC70E4 /* SystemConfigModel.m in Sources */,
+				CB3D301020A14BBF0040FE30 /* CreditInfoModel.m in Sources */,
 				CB1BFBB82091737F0045C0F0 /* CreditAssignCell.m in Sources */,
 				E7067A291E60C88A00E32B86 /* introductoryPagesView.m in Sources */,
 				E73B1C5A1FA6144600273C89 /* UITextField+Extension.m in Sources */,
@@ -3113,6 +3152,7 @@
 				E7A45DF11E74E0520032613E /* ImmediateModel.m in Sources */,
 				E73B1C5B1FA6144600273C89 /* UIView+Extension.m in Sources */,
 				1BE6734C207211120003A30C /* MyAccountModel.m in Sources */,
+				CB3D301320A1763E0040FE30 /* RealnameModel.m in Sources */,
 				E70B09051F91FA12008C9F09 /* MIneMiddleCell.m in Sources */,
 				E70DC7131ED2FAAD00D946E2 /* DESFunc.m in Sources */,
 				E7F3C9191FA876740062B69B /* AccountModel.m in Sources */,
@@ -3123,6 +3163,7 @@
 				1B4EEC83206CEFF800117EF0 /* SDWaitingView.m in Sources */,
 				1BCF226A206E2BFD00D75662 /* DetailBottom.m in Sources */,
 				1B583B44206346F400CC70E4 /* BaseModel.m in Sources */,
+				CB3D301F20A2D5F30040FE30 /* MessageCell.m in Sources */,
 				1B4EEC82206CEFF800117EF0 /* SDPhotoBrowser.m in Sources */,
 				E7071BA71F21C30C00293B38 /* PCCircleInfoView.m in Sources */,
 				1BCF2273206F287100D75662 /* UIImage+GIF.m in Sources */,
@@ -3201,6 +3242,7 @@
 				1BCF2285206F361200D75662 /* BaseView.m in Sources */,
 				E7067BCB1E60C9AB00E32B86 /* ZHPickView.m in Sources */,
 				1BCF226F206E2BFD00D75662 /* JGGView.m in Sources */,
+				CB3D302220A2DB710040FE30 /* MessageModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3466,7 +3508,7 @@
 					"\"WechatConnector\"",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = tutujf;
+				PRODUCT_BUNDLE_IDENTIFIER = tutujf.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3576,7 +3618,7 @@
 					"\"WechatConnector\"",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = tutujf;
+				PRODUCT_BUNDLE_IDENTIFIER = tutujf.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

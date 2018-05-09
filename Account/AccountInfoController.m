@@ -12,7 +12,6 @@
 #import "LoginViewController.h"
 #import "ChangePasswordViewController.h"
 #import "AccountSettingCell.h"
-
 @interface AccountInfoController ()<UITableViewDataSource, UITableViewDelegate,UIWebViewDelegate>
 {
     UIWebView * iWebView;
@@ -192,9 +191,7 @@ Strong NSArray *titleArr;
         {
             //实名认证
             if (IsEmptyStr(self.accountModel.is_realname.card_id)) {
-                HomeWebController *web = InitObject(HomeWebController);
-                web.urlStr = self.accountModel.is_realname.url;
-                [self.navigationController pushViewController:web animated:YES];
+                [self goRealNameVC];
             }
         }
             break;

@@ -8,9 +8,13 @@
 
 #import "RechargeRecordController.h"
 #import "RechargeRecordCell.h"
+#import "MJRefresh.h"
+#import "RechargeListModel.h"
 @interface RechargeRecordController ()<UITableViewDelegate,UITableViewDataSource>
 Strong BaseUITableView *mainTab;
 Strong NSMutableArray *dataSource;
+Assign NSInteger currentPage;
+Assign NSInteger totalPages;
 @end
 
 @implementation RechargeRecordController
@@ -18,6 +22,8 @@ Strong NSMutableArray *dataSource;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.titleString = @"充值记录";
+    self.currentPage = 1;
+    self.totalPages = 1;
     [self.view addSubview:self.mainTab];
     [self getRequest];
     // Do any additional setup after loading the view.
@@ -34,11 +40,21 @@ Strong NSMutableArray *dataSource;
         _mainTab = [[BaseUITableView alloc]initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight) style:UITableViewStylePlain];
         _mainTab.delegate = self;
         _mainTab.dataSource = self;
+        _mainTab.rowHeight = kSizeFrom750(140);
         WEAK_SELF;
         _mainTab.ly_emptyView = [EmptyView noDataRefreshBlock:^{
+            weakSelf.currentPage = 1;
             [weakSelf getRequest];
         }];
         [_mainTab ly_startLoading];
+        _mainTab.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
+            weakSelf.currentPage = 1;
+            [weakSelf getRequest];
+        }];
+        _mainTab.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+            weakSelf.currentPage++;
+            [weakSelf loadMoreData];
+        }];
     }
     return _mainTab;
 }
@@ -57,15 +73,38 @@ Strong NSMutableArray *dataSource;
     if (cell==nil) {
         cell = [[RechargeRecordCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
     }
+    RechargeListModel *model = [self.dataSource objectAtIndex:indexPath.row];
+    [cell loadInfoWithModel:model];
     return cell;
 }
 #pragma request
+//获取充值列表
 -(void)getRequest{
-    [[HttpCommunication sharedInstance] postSignRequestWithPath:oyUrlAddress keysArray:nil valuesArray:nil refresh:self.mainTab success:^(NSDictionary *successDic) {
+    NSArray *keys = @[@"page",kToken];
+    NSArray *values = @[[NSString stringWithFormat:@"%ld",self.currentPage],[CommonUtils getToken]];
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getRechargeRecordUrl keysArray:keys valuesArray:values refresh:self.mainTab success:^(NSDictionary *successDic) {
+        if (self.currentPage==1) {
+            [self.dataSource removeAllObjects];
+        }
+        self.totalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+        for (NSDictionary *dic in [successDic objectForKey:@"items"]) {
+            RechargeListModel *model = [RechargeListModel yy_modelWithJSON:dic];
+            [self.dataSource addObject:model];
+        }
         [self.mainTab reloadData];
     } failure:^(NSDictionary *errorDic) {
         
     }];
+}
+-(void)loadMoreData{
+    if(self.currentPage<=self.totalPages)
+    {
+        __weak __typeof(self) weakSelf = self;
+        [weakSelf getRequest];
+    }
+    else{
+        [self.mainTab.mj_footer endRefreshingWithNoMoreData];
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

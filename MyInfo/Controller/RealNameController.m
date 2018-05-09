@@ -8,12 +8,17 @@
 
 #import "RealNameController.h"
 #import "GradientButton.h"
+#import "RealnameModel.h"
+#import "HomeWebController.h"
 @interface RealNameController ()<UITextFieldDelegate>
 Strong UIImageView *remindImage;
 Strong UILabel *remindLabel;
 Strong UIView *contentView;//中间内容
 Strong GradientButton *certificationBtn;//实名认证按钮
 Strong UILabel *messageLabel;
+Strong RealnameModel *model;
+Weak UITextField *nameTextField;
+Weak UITextField *certificationTextField;
 @end
 
 @implementation RealNameController
@@ -39,11 +44,12 @@ Strong UILabel *messageLabel;
     
     [self loadLayout];
     
+    [self getRequest];
+    
     [self.view layoutIfNeeded];
     
     [self.certificationBtn setGradientColors:@[COLOR_DarkBlue,COLOR_LightBlue]];
     
-    [self loadInfo];
 }
 #pragma mark --lazyLoading
 -(UIImageView *)remindImage{
@@ -121,10 +127,18 @@ Strong UILabel *messageLabel;
     }];
     
 }
--(void)loadInfo
+-(void)getRequest{
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getRealnameInfoUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:nil success:^(NSDictionary *successDic) {
+        self.model = [RealnameModel yy_modelWithJSON:successDic];
+        [self loadInfo:self.model];
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
+}
+-(void)loadInfo:(RealnameModel *)model
 {
-    NSString *remindText = @"根据国家监管要求，土土金服已经接入汇付资金存管系统。用户实名认证、绑定银行卡、投资、充值、提现，转让前需先开通汇付存管账户。";
-    NSString *nextText = @"点击下一步后，您将跳转到<汇付资金存管系统>进行存管账户的开通";
+    NSString *remindText = self.model.top_title;
+    NSString *nextText = self.model.bottom_title;
     [CommonUtils setAttString:remindText withLineSpace:kLabelSpace titleLabel:self.remindLabel];
     [CommonUtils setAttString:nextText withLineSpace:kLabelSpace titleLabel:self.messageLabel];
     NSString *regText = @"您的资产由汇付支付托管系统全程监管";
@@ -156,10 +170,15 @@ Strong UILabel *messageLabel;
         textField.tag = i;
         [self.contentView addSubview:textField];
         textField.delegate = self;
-        if (i==1) {
+        if (i==0) {
+            self.nameTextField = textField;
+        }else if (i==1) {
             textField.text = @"身份证";
             textField.userInteractionEnabled = NO;
-        }
+       }else{
+           self.certificationTextField = textField;
+       }
+        
         if (i!=2) {
             UIView *line = [[UIView alloc]initWithFrame:RECT(title.left, kSizeFrom750(90)*(i+1), kContentWidth, kLineHeight)];
             line.backgroundColor = separaterColor;
@@ -168,11 +187,12 @@ Strong UILabel *messageLabel;
     }
     
 }
+//结束输入
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     //真实姓名
     if (textField.tag==0) {
-        
+      
     }else{
         //身份证号
         if(![CommonUtils checkUserIdCard:textField.text]){
@@ -181,7 +201,33 @@ Strong UILabel *messageLabel;
     }
 }
 -(void)certificationBtnClick:(UIButton *)sender{
+    //身份证号
+    if(![CommonUtils checkUserIdCard:self.certificationTextField.text]){
+        [SVProgressHUD showInfoWithStatus:@"身份证号码错误"];
+        return;
+    }
     //点击进行实名认证
+    if (self.model) {
+        [SVProgressHUD show];
+        [[HttpCommunication sharedInstance] postSignRequestWithPath:postCertificationUrl keysArray:@[kToken,@"card_id",@"realname"] valuesArray:@[[CommonUtils getToken],self.certificationTextField.text,self.nameTextField.text] refresh:nil success:^(NSDictionary *successDic) {
+            [TTJFUserDefault setStr:@"1" key:isCertificationed];
+            
+            [SVProgressHUD showSuccessWithStatus:@"实名认证成功！"];
+            [self performSelector:@selector(goReg) withObject:nil afterDelay:1];
+            
+        } failure:^(NSDictionary *errorDic) {
+            
+        }];
+        
+    }
+}
+//去开通托管账户
+-(void)goReg{
+    
+    HomeWebController *web = InitObject(HomeWebController);
+    web.isJumped = YES;
+    web.urlStr = self.model.trust_reg_url;
+    [self.navigationController pushViewController:web animated:YES];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

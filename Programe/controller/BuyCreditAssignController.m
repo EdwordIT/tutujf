@@ -41,6 +41,7 @@ Strong     LoanBase * baseModel;
 -(void)initSubViews
 {
     self.scrollView = [[UIScrollView alloc]initWithFrame:RECT(0, kNavHight, screen_width, screen_height)];
+    self.scrollView.scrollEnabled = NO;
     [self.view addSubview:self.scrollView];
     WEAK_SELF;
     self.scrollView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
@@ -86,45 +87,46 @@ Strong     LoanBase * baseModel;
     creditTitle.text=@"转让期数";
     [mainview addSubview:creditTitle];
     
-    creditTotalLabel = [[UILabel alloc] initWithFrame:CGRectMake(creditTitle.left, creditTotalLabel.top, creditTotalLabel.width,creditTotalLabel.height)];
+    //转让期数
+    creditTotalLabel = [[UILabel alloc] initWithFrame:CGRectMake(creditTitle.left, repayMethodLabel.top, repayMethodLabel.width,repayMethodLabel.height)];
     creditTotalLabel.font = SYSTEMSIZE(28);
     creditTotalLabel.textColor =  COLOR_White;
-    creditTotalLabel.text=info.period_name;
-    [mainview addSubview:limitLabel];
+    creditTotalLabel.text=[NSString stringWithFormat:@"%@期/共%@期",self.baseModel.transfer_ret.period,self.baseModel.transfer_ret.total_period];
+    [mainview addSubview:creditTotalLabel];
     
     
-    UILabel *limitTitle = [[UILabel alloc] initWithFrame:CGRectMake(repayTitle.left, repayTitle.bottom+kSizeFrom750(20), repayTitle.width,repayTitle.height)];
+    UILabel *limitTitle = [[UILabel alloc] initWithFrame:CGRectMake(repayTitle.left, repayMethodLabel.bottom+kSizeFrom750(20), repayTitle.width,repayTitle.height)];
     limitTitle.font = SYSTEMSIZE(28);
     limitTitle.textColor =  blackfont;
     limitTitle.text=@"借款期限";
     [mainview addSubview:limitTitle];
     
+    //借款期限
     limitLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayMethodLabel.left, limitTitle.bottom+kSizeFrom750(10), repayMethodLabel.width,repayMethodLabel.height)];
     limitLabel.font = SYSTEMSIZE(28);
     limitLabel.textColor =  COLOR_White;
-    limitLabel.text=[[NSString stringWithFormat:@"%@",info.apr] stringByAppendingString:@"%"];;
+    limitLabel.text=[NSString stringWithFormat:@"%@",info.period_name];
     [mainview addSubview:limitLabel];
     
     
     
-    UILabel *repayTimeTitle = [[UILabel alloc] initWithFrame:CGRectMake(limitTitle.left, repayTitle.top, repayTitle.width,repayTitle.height)];
+    UILabel *repayTimeTitle = [[UILabel alloc] initWithFrame:CGRectMake(creditTitle.left, limitTitle.top, limitTitle.width,limitTitle.height)];
     repayTimeTitle.font = SYSTEMSIZE(28);
     repayTimeTitle.textColor =  blackfont;
     repayTimeTitle.text=@"还款期限";
     [mainview addSubview:repayTimeTitle];
     
-    
+    //还款期限(下次回款时间)
     repayTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayTimeTitle.left, repayTimeTitle.bottom+kSizeFrom750(10), repayTimeTitle.width,repayTimeTitle.height)];
     repayTimeLabel.font = SYSTEMSIZE(28);
     repayTimeLabel.textColor =  COLOR_White;
-    NSString * str3=[NSString stringWithFormat:@"%@",info.left_amount];
-    NSString * temp =  [NSString stringWithFormat:@"%@元",[CommonUtils getHanleNums:str3]];
-    repayTimeLabel.text =temp;
+    repayTimeLabel.text = self.baseModel.transfer_ret.next_repay_time;
     [mainview addSubview: repayTimeLabel];
     
     self.waittingLabel = [[UILabel alloc]initWithFrame:RECT(0, mainview.bottom, screen_width, kSizeFrom750(88))];
     self.waittingLabel.backgroundColor = RGB(39, 141 ,233);
-    self.waittingLabel.text = @"代收本金：20,000,00.00元";
+    self.waittingLabel.text = [NSString stringWithFormat:@"待收本金：%@",[@"¥" stringByAppendingString:[CommonUtils getHanleNums:self.baseModel.transfer_ret.wait_principal]]];
+    self.waittingLabel.textAlignment = NSTextAlignmentCenter;
     self.waittingLabel.textColor = COLOR_White;
     [self.scrollView addSubview:self.waittingLabel];
     
@@ -161,25 +163,25 @@ Strong     LoanBase * baseModel;
     investView.backgroundColor=COLOR_White;
     [bottomView addSubview:investView];
     
-    UILabel *investTitle = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, 0, kSizeFrom750(170),kSizeFrom750(30))];
+    UILabel *investTitle = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, 0, kSizeFrom750(130),kSizeFrom750(30))];
     investTitle.centerY = investView.height/2;
     investTitle.font = SYSTEMSIZE(26);
     investTitle.textColor =  RGB_51;
     investTitle.text=@"转让价格";
     [investView addSubview:investTitle];
    
-    UILabel *invest = [[UILabel alloc] initWithFrame:CGRectMake(investTitle.right+kSizeFrom750(30), 0, kSizeFrom750(170),kSizeFrom750(30))];
+    UILabel *invest = [[UILabel alloc] initWithFrame:CGRectMake(investTitle.right, 0, kSizeFrom750(300),kSizeFrom750(30))];
     invest.centerY = investView.height/2;
     invest.font = NUMBER_FONT(26);
     invest.textColor =  COLOR_Red;
-    invest.text=@"20000元";
+    invest.text=[NSString stringWithFormat:@"%@元",self.baseModel.transfer_ret.actual_amount];
     [investView addSubview:invest];
     
     expectLabel = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, investView.bottom+kSizeFrom750(20), screen_width,kSizeFrom750(30))];
     expectLabel.font = SYSTEMSIZE(26);
     expectLabel.textColor =  blackfont;
-    NSString *expect = @"预期收益金额0.0元";
-    NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:expect rang:[expect rangeOfString:@"0.0"] font:NUMBER_FONT(30) color:COLOR_Red spacingBeforeValue:0 lineSpace:0];
+    NSString *expect =[NSString stringWithFormat:@"预期收益金额%@元",self.baseModel.transfer_ret.wait_interest];
+    NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:expect rang:[expect rangeOfString:self.baseModel.transfer_ret.wait_interest] font:NUMBER_FONT(30) color:COLOR_Red spacingBeforeValue:0 lineSpace:0];
     [expectLabel setAttributedText:attr1];
     [bottomView addSubview:expectLabel];
     
@@ -188,7 +190,7 @@ Strong     LoanBase * baseModel;
     investBtn.frame = CGRectMake(kOriginLeft,expectLabel.bottom+kSizeFrom750(80), screen_width-kOriginLeft*2, kSizeFrom750(90));
     [investBtn setTitle:@"立即购买" forState:UIControlStateNormal];
     investBtn.titleLabel.font = SYSTEMSIZE(32);
-    [investBtn addTarget:self action:@selector(OnTouZhi:) forControlEvents:UIControlEventTouchUpInside];
+    [investBtn addTarget:self action:@selector(investBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [investBtn setBackgroundColor:RGB(200,226,242)];
     investBtn.layer.cornerRadius = investBtn.height/2;
     investBtn.tag=2;
@@ -198,10 +200,10 @@ Strong     LoanBase * baseModel;
 
 
 -(void) getRequest{
-    NSArray *keys = @[@"loan_id",kToken];
-    NSArray *values = @[self.loan_id,[CommonUtils getToken]];
+    NSArray *keys = @[@"transfer_id",kToken];
+    NSArray *values = @[self.transfer_id,[CommonUtils getToken]];
     
-    [[HttpCommunication sharedInstance] postSignRequestWithPath:getLoanDetailUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getCreditAssignDetailUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
         
         self.baseModel = [LoanBase yy_modelWithJSON:successDic];
         self.baseModel.repay_type_name=[[successDic objectForKey:@"repay_type"] objectForKey:@"name"];
@@ -221,9 +223,18 @@ Strong     LoanBase * baseModel;
         }
         else
         {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr= self.baseModel.trust_reg_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
+            //如果未创建托管账户
+            //是否已经实名认证
+            if([CommonUtils isVerifyRealName])
+            {
+                HomeWebController *discountVC = [[HomeWebController alloc] init];
+                discountVC.urlStr= self.baseModel.trust_reg_url;
+                [self.navigationController pushViewController:discountVC animated:YES];
+            }
+            else
+            {
+                [self goRealNameVC];
+            }
         }
     }
     else
@@ -233,7 +244,7 @@ Strong     LoanBase * baseModel;
     
 }
 
--(void) OnTouZhi:(UIButton *)sender
+-(void) investBtnClick:(UIButton *)sender
 {
  
         //如果已经开通托管账号，去投资
@@ -243,10 +254,13 @@ Strong     LoanBase * baseModel;
         }
         else
         {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr= self.baseModel.trust_reg_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
-            
+            if ([CommonUtils isVerifyRealName]) {
+                HomeWebController *discountVC = [[HomeWebController alloc] init];
+                discountVC.urlStr= self.baseModel.trust_reg_url;
+                [self.navigationController pushViewController:discountVC animated:YES];
+            }else{
+                [self goRealNameVC];
+            }
         }
   
 }
@@ -259,87 +273,47 @@ Strong     LoanBase * baseModel;
 //立即投资
 -(void) getFormData{
     
-    NSString * loan_id=self.loan_id; //
-    NSString * loan_password=@""; //
-    NSString * user_token=[CommonUtils getToken]; //
-
-    NSArray *keys = @[@"version",@"loan_id",@"loan_password",kToken];
-    NSArray *values = @[LocalVersion,loan_id,loan_password,user_token];
-    [[HttpCommunication sharedInstance] postSignRequestWithPath:tenderUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
-        NSDictionary * dic= successDic;
-        NSString * form=[NSString stringWithFormat:@"%@",[dic objectForKey:@"form"]];
+    NSArray *keys = @[@"transfer_id",kToken];
+    NSArray *values = @[self.transfer_id,[CommonUtils getToken]];
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:postTransferUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+        NSString * form=[NSString stringWithFormat:@"%@",[successDic objectForKey:@"form"]];//json字符串
+        NSDictionary *formDic = [[HttpCommunication sharedInstance] dictionaryWithJsonString:form];//转化为json
         NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[form] forKeys:@[@"form"] ];
         NSString *signnew=[HttpSignCreate GetSignStr:dict_data];
-        NSString * sign=[dic objectForKey:@"sign"];
-        NSString * url_parame=@"";
-        if([signnew isEqual:sign])
-        {
-            NSDictionary * postd= [self dictionaryWithJsonString:form ];
-            NSString * url=[postd objectForKey:@"url"];
+        NSString * sign=[successDic objectForKey:@"sign"];
+        if ([signnew isEqualToString:sign]) {
+            NSArray *keys = [formDic allKeys];
             
-            NSString * Version=[postd objectForKey:@"Version"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"Version", Version];
-            NSString * CmdId=[postd objectForKey:@"CmdId"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"CmdId", CmdId];
-            NSString * MerCustId=[postd objectForKey:@"MerCustId"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"MerCustId", MerCustId];
-            NSString * OrdId=[postd objectForKey:@"OrdId"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"OrdId", OrdId];
-            NSString * OrdDate=[postd objectForKey:@"OrdDate"];
-            OrdDate=[HttpSignCreate encodeString:OrdDate];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"OrdDate", OrdDate];
-            NSString * TransAmt=[postd objectForKey:@"TransAmt"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"TransAmt", TransAmt];
-            NSString * UsrCustId=[postd objectForKey:@"UsrCustId"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"UsrCustId", UsrCustId];
-            NSString * MaxTenderRate=[postd objectForKey:@"MaxTenderRate"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"MaxTenderRate", MaxTenderRate];
-            NSString * BorrowerDetails=[postd objectForKey:@"BorrowerDetails"];
-            BorrowerDetails=[HttpSignCreate encodeString:BorrowerDetails];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"BorrowerDetails", BorrowerDetails];
-            NSString * IsFreeze=[postd objectForKey:@"IsFreeze"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"IsFreeze", IsFreeze];
-            NSString * FreezeOrdId=[postd objectForKey:@"FreezeOrdId"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"FreezeOrdId", FreezeOrdId];
-            NSString * RetUrl=[postd objectForKey:@"RetUrl"];
-            RetUrl=[HttpSignCreate encodeString:RetUrl];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"RetUrl", RetUrl];
-            NSString * BgRetUrl=[postd objectForKey:@"BgRetUrl"];
-            BgRetUrl=[HttpSignCreate encodeString:BgRetUrl];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"BgRetUrl", BgRetUrl];
-            NSString * MerPriv=[postd objectForKey:@"MerPriv"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"MerPriv", MerPriv];
-            NSString * PageType=[postd objectForKey:@"PageType"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@&",@"PageType", PageType];
-            NSString * ChkValue=[postd objectForKey:@"ChkValue"];
-            url_parame = [url_parame stringByAppendingFormat:@"%@=%@",@"ChkValue", ChkValue];
+            NSString * url_parame=@"";
+            NSString * url=[formDic objectForKey:@"url"];
+            for (int i=0; i<keys.count; i++) {
+                NSString *key = [keys objectAtIndex:i];
+                
+                NSString *keyValue = [formDic objectForKey:key];
+                //                NSString *  newValue = [keyValue stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+                NSString *  newValue = [HttpSignCreate encodeString:keyValue];
+                
+                if ([key isEqualToString:@"url"]) {
+                    continue;
+                }
+                if (i==keys.count-1) {
+                    url_parame = [url_parame stringByAppendingString:[NSString stringWithFormat:@"%@=%@",key,newValue]];
+                }else
+                    url_parame = [url_parame stringByAppendingString:[NSString stringWithFormat:@"%@=%@&",key,newValue]];
+            }
+            [HttpSignCreate encodeString:url_parame];
             [self postFormData:url_parame url:url];
+            
+        }else{
+            [SVProgressHUD showInfoWithStatus:@"投资失败"];
         }
-        
         
     } failure:^(NSDictionary *errorDic) {
         
     }];
 }
 
--(NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString
-{
-    if (jsonString == nil) {
-        return nil;
-    }
-    
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSError *err;
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                        options:NSJSONReadingMutableContainers
-                                                          error:&err];
-    if(err)
-    {
-        NSLog(@"json解析失败：%@",err);
-        return nil;
-    }
-    return dic;
-}
+//进入汇付支付页面
 -(void) postFormData:(NSString *) postdata url:(NSString *) url
 {
     

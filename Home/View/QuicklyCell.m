@@ -80,7 +80,7 @@ Strong NSDate *nowDate;//现在的时间
     
     UILabel * lab2= [[UILabel alloc] initWithFrame:CGRectMake(self.percentLabel.left, self.percentLabel.bottom+kSizeFrom750(15),kSizeFrom750(140), kSizeFrom750(25))];
     lab2.font = SYSTEMSIZE(24);
-    lab2.textColor=RGB_153;
+    lab2.textColor=RGB_183;
     lab2.text=@"预期利率";
     [self.contentView addSubview:lab2];
     
@@ -95,7 +95,7 @@ Strong NSDate *nowDate;//现在的时间
     UILabel * lab3= [[UILabel alloc] initWithFrame:CGRectMake(0, lab2.top,lab2.width, lab2.height)];
     lab3.centerX = self.timeLabel.centerX;
     lab3.font = SYSTEMSIZE(24);
-    lab3.textColor=RGB_153;
+    lab3.textColor=RGB_183;
     lab3.text=@"理财期限";
     lab3.textAlignment=NSTextAlignmentCenter;
     [self.contentView addSubview:lab3];
@@ -134,7 +134,7 @@ Strong NSDate *nowDate;//现在的时间
         
     }
     else{
-        lab5.textColor=RGB(183,183,183);
+        lab5.textColor=RGB_183;
         [proStateImage setHidden:FALSE];
         [buyBtn setHidden:TRUE];
         
@@ -316,10 +316,10 @@ Strong NSDate *nowDate;//现在的时间
     int status = [self.cellModel.status intValue];
     if( status== 4||status ==6||status==7)//如果已经满标，三种状态
     {
-        lab5.textColor=RGB_153;
-        self.percentLabel.textColor=RGB_153;
-        self.timeLabel.textColor=RGB_153;
-        self.title.textColor=RGB_153;
+        lab5.textColor=RGB_183;
+        self.percentLabel.textColor=RGB_183;
+        self.timeLabel.textColor=RGB_183;
+        self.title.textColor=RGB_183;
         proTextLabel.textColor=RGB_158;
         [proStateImage setHidden:NO];
         [buyBtn setHidden:YES];
@@ -404,7 +404,7 @@ Strong NSDate *nowDate;//现在的时间
     }
     self.timeLabel.text=[NSString stringWithFormat:@"%@",self.cellModel.period];
     proTextLabel.text= [[NSString stringWithFormat:@"进度%@",self.cellModel.progress] stringByAppendingString:@"%"];
-    self.percentLabel.text = [NSString stringWithFormat:@"%.2f%@",[self.cellModel.apr floatValue]+[self.cellModel.additional_apr floatValue],@"%"];
+    self.percentLabel.text = [NSString stringWithFormat:@"%.2f",[self.cellModel.apr floatValue]];
     
     lab5.text=[NSString stringWithFormat:@"%@",self.cellModel.repay_type_name];
    

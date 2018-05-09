@@ -51,6 +51,9 @@
 #define RGB_153 RGB(153, 153, 153)
 
 #define RGB_158 RGB(158, 158, 158)
+
+#define RGB_183 RGB(183, 183, 183)
+
 //按钮不可点击时候背景色
 #define COLOR_Btn_Unsel RGB(184, 184, 184)
 //系统默认整体页面背景色

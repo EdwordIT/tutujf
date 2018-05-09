@@ -8,6 +8,16 @@
 
 #import "RechargeModel.h"
 
-@implementation RechargeModel
 
+@implementation PromptContentModel
+
+@end
+
+@implementation RechargeModel
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    
+    return @{@"prompt_content_repurl":[PromptContentModel class],
+             };
+    
+}
 @end

@@ -11,5 +11,5 @@
  购买债权转让
  */
 @interface BuyCreditAssignController : BaseViewController
-@property(nonatomic, strong) NSString *loan_id;
+@property(nonatomic, strong) NSString *transfer_id;
 @end

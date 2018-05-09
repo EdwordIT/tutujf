@@ -191,13 +191,18 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
         }
     }else{
         [self.mainWebView stopLoading];
-        [self.navigationController popViewControllerAnimated:YES];
+        if (self.isJumped) {//从实名认证跳转进来
+            NSArray *vcs = self.navigationController.viewControllers;
+            //跳过中间页面返回上上层
+            [self.navigationController popToViewController:[vcs objectAtIndex:vcs.count-2] animated:YES];
+        }else
+            [self.navigationController popViewControllerAnimated:YES];
     }
     
 }
 -(void)closeBtnClick:(UIButton *)sender
 {
-    [self.mainWebView stopLoading];
+     [self.mainWebView stopLoading];
     [self.navigationController popViewControllerAnimated:YES];
 }
 #pragma mark --BackToOriginal

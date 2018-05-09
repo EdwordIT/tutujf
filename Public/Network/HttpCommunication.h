@@ -73,4 +73,8 @@ typedef NS_ENUM(NSUInteger, AnalyzeType) {
           refresh:(MJRefreshComponent *)refresh
           success:(TTJFCallBackSuccess)success
           failure:(TTJFCallBackFailed)failure;
+/**
+ 获取充值到汇付相关的form表单
+ */
+-(NSString *)getFormUrl:(NSDictionary *)formDic;
 @end

@@ -41,14 +41,18 @@ typedef enum{
 +(NSString *)getVersion;
 //判断是否登录
 +(BOOL)isLogin;
-//是否需要版本升级
-+(BOOL)isUpdate;
+//是否已经托管到汇付
++(BOOL)isTrustReg;
 //是否实名认证过
 +(BOOL)isVerifyRealName;
+//是否需要版本升级
++(BOOL)isUpdate;
 //判断中英混合的的字符串长度
 + (int)convertToInt:(NSString*)strtemp;
 //校验字符串是否含空格
 + (BOOL)checkEmptyString:(NSString *)string ;
+//校验是否是数字
++(BOOL)isNumber:(NSString *)str;
 //******************************输入内容正确性校验*****************************************//
 #pragma 正则匹配手机号
 + (BOOL)checkTelNumber:(NSString *) telNumber;

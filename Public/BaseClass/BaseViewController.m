@@ -207,6 +207,8 @@
     [TTJFUserDefault removeStrForKey:kToken];
     [TTJFUserDefault removeStrForKey:kPassword];
     [TTJFUserDefault removeStrForKey:kExpirationTime];
+    [TTJFUserDefault removeStrForKey:isCertificationed];
+    [TTJFUserDefault removeStrForKey:isReged];
     [self cleanCaches];
 }
 /*

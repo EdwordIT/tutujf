@@ -7,8 +7,9 @@
 //
 
 #import "BaseViewController.h"
-#import "LoanBase.h"
-//立即投资页面
+/**
+ 快速购买界面
+ */
 @interface RushPurchaseController : BaseViewController
 @property(nonatomic, strong) NSString *loan_id;
 

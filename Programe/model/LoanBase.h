@@ -13,10 +13,12 @@
 #import "ProductDetailModel.h"
 #import "SecurityModel.h"
 #import "RepayModel.h"
+#import "CreditInfoModel.h"
 @interface LoanBase : BaseModel
 @property(nonatomic, strong)    NSString * loan_id;
 @property(nonatomic, strong) LoanInfo  *  loan_info; //产品相关信息
 Strong ProductDetailModel *loan_details;//产品详情介绍
+Strong CreditInfoModel *transfer_ret;//债权转让相关内容
 @property(nonatomic, strong) NSString  *  repay_type_name; //还款方式
 @property(nonatomic, strong) NSArray  *  security_audit; //"风险备付金计划"、"严格的风控流程"、"投资人监督委员会监督"
 @property(nonatomic, strong) TenderModel  *  tender_list; //投资人列表

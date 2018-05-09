@@ -9,6 +9,8 @@
 #import "RechargeController.h"
 #import "RechargeRecordController.h"
 #import "GradientButton.h"
+#import "RechargeModel.h"
+#import "HomeWebController.h"
 @interface RechargeController ()<UITextFieldDelegate,UITextViewDelegate>
 Strong UIView *topView;//白色背景
 Strong UILabel *amountTitle;
@@ -20,6 +22,7 @@ Strong UIButton *limitDesBtn;//快捷充值限额说明
 Strong UIButton *historyBtn;//充值记录
 Strong UIButton *remindTitle;
 Strong UITextView *remindTextView;//温馨提示
+Strong RechargeModel *rechargeModel;
 @end
 
 @implementation RechargeController
@@ -29,7 +32,8 @@ Strong UITextView *remindTextView;//温馨提示
     self.titleString = @"充值";
     [self initSubViews];
     
-    [self loadTextView];
+    [self getRequest];
+    
     // Do any additional setup after loading the view.
 }
 #pragma mark lazyLoading--
@@ -239,19 +243,79 @@ Strong UITextView *remindTextView;//温馨提示
         make.width.mas_equalTo(kSizeFrom750(690));
     }];
 }
+#pragma mark--request
+-(void)getRequest
+{
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getRechargeInfoUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:nil success:^(NSDictionary *successDic) {
+        self.rechargeModel = [RechargeModel yy_modelWithJSON:successDic];
+        [self loadTextView];
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
+}
 #pragma textField delegate
 -(void)textFieldDidChanged:(UITextField *)textField
 {
-    
+    NSString *    str = [textField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if(str.length >0)
+    {
+        if(![CommonUtils isNumber:str])
+        {
+            [self.rechargeBtn setBackgroundColor:COLOR_Btn_Unsel];
+            self.rechargeBtn.userInteractionEnabled = NO;
+        }
+        else  if([CommonUtils isNumber:str])
+        {
+            if([str intValue]>0&&str.integerValue>=[self.rechargeModel.mine_amount integerValue])
+            {
+                [self.rechargeBtn setBackgroundColor:COLOR_Red];
+                self.rechargeBtn.userInteractionEnabled = YES;
+            }
+            else
+            {
+                [self.rechargeBtn setBackgroundColor:COLOR_Btn_Unsel];
+                self.rechargeBtn.userInteractionEnabled = NO;
+            }
+        }
+        
+    }
+    else{
+        [self.rechargeBtn setBackgroundColor:COLOR_Btn_Unsel];
+        self.rechargeBtn.userInteractionEnabled = NO;
+    }
 }
 #pragma mark --buttonClick
 //充值
 -(void)rechargeBtnClick:(UIButton *)sender{
-    
+    NSArray *keys = @[kToken,@"amount"];
+    NSArray *values = @[[CommonUtils getToken],self.amountTextField.text];
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:postRechargeUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+       
+        NSString * form=[NSString stringWithFormat:@"%@",[successDic objectForKey:@"form"]];//json字符串
+        NSDictionary *formDic = [[HttpCommunication sharedInstance] dictionaryWithJsonString:form];//转化为json
+        NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[form] forKeys:@[@"form"] ];
+        NSString *signnew=[HttpSignCreate GetSignStr:dict_data];
+        NSString * sign=[successDic objectForKey:@"sign"];
+        if ([signnew isEqualToString:sign]) {//sign为服务器返回
+            
+            NSString *formUrl = [[HttpCommunication sharedInstance] getFormUrl:formDic];
+            HomeWebController *discountVC = [[HomeWebController alloc] init];
+            discountVC.urlStr = formUrl;
+            [self.navigationController pushViewController:discountVC animated:YES];
+            
+        }else{
+            [SVProgressHUD showInfoWithStatus:@"充值失败"];
+        }
+        
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
 }
 //充值限制
 -(void)limitDesBtnClick:(UIButton *)sender{
-    
+    HomeWebController *web = InitObject(HomeWebController);
+    web.urlStr = self.rechargeModel.recharge_quota_url;
+    [self.navigationController pushViewController:web animated:YES];
 }
 //充值记录
 -(void)historyBtnClick:(UIButton *)sender{
@@ -259,22 +323,42 @@ Strong UITextView *remindTextView;//温馨提示
     [self.navigationController pushViewController:record animated:YES];
 }
 -(void)loadTextView{
+   
+    if ([self.rechargeModel.bt_state isEqualToString:@"-1"]) {
+        [self.rechargeBtn setBackgroundColor:COLOR_Btn_Unsel];
+    }else
+        [self.rechargeBtn setBackgroundColor:COLOR_Red];
     
-    NSString *str = @"1、因国家政策，银行对外支付渠道的限制，有部分银行卡将会充值失败的用户，需开通银联无卡支付业务才能进行充值，目前尚未开通银联无卡支付业务的银行卡用户，点击查看银联开通步骤说明\n2、提取收费：手续费暂由土土金服平台垫付；\n3、资金账户由第三方支付平台汇付天下全程托管，充分保障资金安全；\n4、单日的充值金额限额以各银行为准；\n5、只能绑定一张银行卡用户快捷充值，网银充值不限。";
-    NSString *matchStr = @"点击查看银联开通步骤说明";
-    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc]initWithString:str];
-    if ([str rangeOfString:matchStr].location!=NSNotFound) {
-        [attr addAttribute:NSLinkAttributeName value:[NSURL URLWithString:@""] range:[str rangeOfString:matchStr]];
+    self.amountTextField.placeholder = self.rechargeModel.txtamount_placeholder;//提示文字
+    [self.remindTitle setTitle:self.rechargeModel.prompt forState:UIControlStateNormal];
+    [self.limitDesBtn setTitle:self.rechargeModel.recharge_quota_title forState:UIControlStateNormal];
+    [self.historyBtn setTitle:self.rechargeModel.recharge_list_title forState:UIControlStateNormal];
+    [self.rechargeBtn setTitle:self.rechargeModel.bt_name forState:UIControlStateNormal];
+    [self.amountTitle setText:self.rechargeModel.amount_title];
+    [self.amountLabel setText:[CommonUtils getHanleNums:self.rechargeModel.amount]];
+    
+    NSString *str = self.rechargeModel.prompt_content;
+    if ([str rangeOfString:@"\\n"].location!=NSNotFound) {
+        str = [str stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
     }
-    [attr addAttribute:NSForegroundColorAttributeName value:RGB_166 range:NSMakeRange(0, str.length)];
-    [attr addAttribute:NSForegroundColorAttributeName value:COLOR_LightBlue range:[str rangeOfString:matchStr]];//设置颜色
-    [attr addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:[str rangeOfString:matchStr]];
+    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc]initWithString:str];
+    for (PromptContentModel *model in self.rechargeModel.prompt_content_repurl) {
+        NSString *matchStr = model.text;
+        if ([str rangeOfString:matchStr].location!=NSNotFound) {
+            [attr addAttribute:NSLinkAttributeName value:[NSURL URLWithString:@""] range:[str rangeOfString:matchStr]];
+        }
+        [attr addAttribute:NSForegroundColorAttributeName value:RGB_166 range:NSMakeRange(0, str.length)];
+        [attr addAttribute:NSForegroundColorAttributeName value:COLOR_LightBlue range:[str rangeOfString:matchStr]];//设置颜色
+        [attr addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:[str rangeOfString:matchStr]];
+
+    }
+
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:kSizeFrom750(15)];
+    [paragraphStyle setLineSpacing:kLabelSpace];
     [paragraphStyle setHeadIndent:kSizeFrom750(35)];
     [attr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [str length])];//设置行间距
     
-    self.remindTextView.selectedRange = [str rangeOfString:matchStr];
+//    self.remindTextView.selectedRange = [str rangeOfString:matchStr];
     self.remindTextView.linkTextAttributes = @{NSUnderlineColorAttributeName: COLOR_LightBlue,
                                                NSUnderlineStyleAttributeName: @(NSUnderlinePatternSolid)
                                                };
@@ -283,7 +367,17 @@ Strong UITextView *remindTextView;//温馨提示
 }
 //超链接被点击
 -(BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange{
-    NSLog(@"click");
+    
+    NSArray *arr = self.rechargeModel.prompt_content_repurl;
+    for (int i=0; i<arr.count; i++) {
+        PromptContentModel *model = arr[i];
+        if ([self.rechargeModel.prompt_content rangeOfString:model.text].location!=NSNotFound) {
+            HomeWebController *web = InitObject(HomeWebController);
+            web.urlStr = model.url;
+            [self.navigationController pushViewController:web animated:YES];
+        }
+    }
+   
     return NO;
 }
 - (void)didReceiveMemoryWarning {

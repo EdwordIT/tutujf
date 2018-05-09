@@ -13,13 +13,11 @@
 #import "LoanBase.h"
 #import "RepayModel.h"
 #import "TenderModel.h"
-#import "RushPurchaseController.h"
+#import "BuyCreditAssignController.h"
 #import "HomeWebController.h"
 #import "TTJFRefreshNormalHeader.h"
 @interface CreditAssignDetailController ()<UIScrollViewDelegate,BottomDelegate>
-{
-    NSInteger secondsCountDown;//倒计时总时长
-}
+
 Strong     DetailTop * topView;
 Strong DetailMiddle * middleView;
 Strong DetailBottom * bottomView;
@@ -30,13 +28,12 @@ Strong LoanBase *baseModel;
 
 @implementation CreditAssignDetailController
 -(void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_CountDown object:nil];
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.titleString = @"债权详情";
-    secondsCountDown = 0;
     [self.view addSubview:self.scrollView];
     [self initScrollView];
     [self.view addSubview:self.footerBtn];
@@ -54,8 +51,8 @@ Strong LoanBase *baseModel;
     {
         if([self.baseModel.trust_account isEqual:@"1"])
         {
-            RushPurchaseController * vc=[[RushPurchaseController alloc] init];
-            vc.loan_id=  self.loan_id;
+            BuyCreditAssignController * vc=[[BuyCreditAssignController alloc] init];
+            vc.transfer_id=  self.transfer_id;
             [self.navigationController pushViewController:vc animated:YES];
         }
         else
@@ -160,12 +157,8 @@ Strong LoanBase *baseModel;
     
     [self.bottomView loadBottomWithModel:self.baseModel];
     
-    //如果是可购买状态，则判断倒计时是否显示，如果显示倒计时，在倒计时结束之前，依然是不可购买状态
-    //倒计时
-    secondsCountDown = [CommonUtils getDifferenceByDate:self.baseModel.loan_info.open_up_date];//倒计时秒数(48小时换算成的秒数,项目中需要从服务器获取)
     if([self.baseModel.loan_info.open_up_status isEqualToString:@"1"])//如果含有倒计时，则为标的定时抢购
     {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countDownNotification:) name:Noti_CountDown object:nil];//添加倒计时
         self.footerBtn.backgroundColor=COLOR_Btn_Unsel;
         self.footerBtn.userInteractionEnabled = NO;
     }else{
@@ -208,11 +201,10 @@ Strong LoanBase *baseModel;
 //获取详情页面数据
 -(void) getRequest{
     
-    NSArray *keys = @[@"loan_id",kToken];
-    NSArray *values = @[self.loan_id,[CommonUtils getToken]];
+    NSArray *keys = @[@"transfer_id",kToken];
+    NSArray *values = @[self.transfer_id,[CommonUtils getToken]];
     
-    [[HttpCommunication sharedInstance] postSignRequestWithPath:getLoanDetailUrl keysArray:keys valuesArray:values refresh:self.scrollView success:^(NSDictionary *successDic) {
-        [[CountDownManager manager] start];
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getCreditAssignDetailUrl keysArray:keys valuesArray:values refresh:self.scrollView success:^(NSDictionary *successDic) {
         self.baseModel = [LoanBase yy_modelWithJSON:successDic];
         self.baseModel.repay_type_name=[[successDic objectForKey:@"repay_type"] objectForKey:@"name"];
         [self reloadInfo];
@@ -220,21 +212,6 @@ Strong LoanBase *baseModel;
     } failure:^(NSDictionary *errorDic) {
         
     }];
-}
--(void)countDownNotification:(NSNotification *)noti{
-    secondsCountDown--;
-    if(secondsCountDown<=0){
-        secondsCountDown=0;
-        [self.footerBtn setTitle:@"立即投资" forState:UIControlStateNormal];
-        self.footerBtn.backgroundColor=navigationBarColor;
-        self.footerBtn.userInteractionEnabled = YES;
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_CountDown object:nil];
-    }
-    else
-    {
-        [self.footerBtn setTitle:[NSString stringWithFormat:@"开抢还剩%@",[CommonUtils getCountDownTime:secondsCountDown]] forState:UIControlStateNormal];
-        self.footerBtn.userInteractionEnabled = NO;
-    }
 }
 
 

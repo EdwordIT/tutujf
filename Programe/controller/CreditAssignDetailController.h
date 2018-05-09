@@ -11,5 +11,5 @@
  债权转让详情
  */
 @interface CreditAssignDetailController : BaseViewController
-Copy NSString *loan_id;//转让标的id
+Copy NSString *transfer_id;//转让标的id
 @end

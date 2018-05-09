@@ -118,8 +118,7 @@
     if ([model.apr floatValue]<=0) {
         return;
     }
-    CGFloat add_apr=[model.additional_apr floatValue];//附加年利率
-    CGFloat newhandApr = add_apr+[model.apr floatValue];
+    CGFloat newhandApr = [model.apr floatValue];
     NSString *incomeText = [[NSString stringWithFormat:@"%.2f",newhandApr] stringByAppendingString:@"%"];
     [self.incomeLabel setAttributedText:[CommonUtils diffierentFontWithString:incomeText rang:NSMakeRange(incomeText.length - 4, 4) font:SYSTEMBOLDSIZE(30) color:COLOR_Red spacingBeforeValue:0 lineSpace:0]];
 

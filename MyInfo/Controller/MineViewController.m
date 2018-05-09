@@ -51,7 +51,7 @@ Strong MyAccountModel *accountModel;//数据源
 //
 -(void) showRegMaskView
 {
-    NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
+    NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg];
     if([temp isEqual:@"0"])  //显示托管
     {
         [advertView setHidden:NO];
@@ -253,12 +253,7 @@ Strong MyAccountModel *accountModel;//数据源
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if([CommonUtils isLogin])
-    {
-        
-    }
-    else
-    {
+    if(![CommonUtils isLogin]) {
         [self goLoginVC];
     }
 }
@@ -309,35 +304,33 @@ Strong MyAccountModel *accountModel;//数据源
         }
         else if(index==5)//充值
         {
-//            NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
-//            if([temp isEqual:@"0"])  //显示托管
-//            {
-//                HomeWebController *discountVC = [[HomeWebController alloc] init];
-//                discountVC.urlStr = self.accountModel.trust_reg_new_link;
-//                [self.navigationController pushViewController:discountVC animated:YES];
-//            }
-//            else
-//            {
-            [self goRealNameVC];
-//                RechargeController *recharge = InitObject(RechargeController);
-//                [self.navigationController pushViewController:recharge animated:YES];
-//            }
+            if (![CommonUtils isVerifyRealName]) {
+                [self goRealNameVC];
+            }else{
+                if ([self.accountModel.is_trust_reg isEqualToString:@"1"]) {
+                    RechargeController *recharge = InitObject(RechargeController);
+                    [self.navigationController pushViewController:recharge animated:YES];
+                }else{
+                    HomeWebController *discountVC = [[HomeWebController alloc] init];
+                    discountVC.urlStr = self.accountModel.trust_reg_new_link;
+                    [self.navigationController pushViewController:discountVC animated:YES];
+                }
+            }
         }
         else if(index==6)//提现
         {
-//             NSString  * temp =[NSString stringWithFormat:@"%@",self.accountModel.is_trust_reg] ;
-#warning test
-//            if([temp isEqual:@"0"])  //未托管，进入托管页面
-//        {
-//            HomeWebController *discountVC = [[HomeWebController alloc] init];
-//            discountVC.urlStr = self.accountModel.trust_reg_new_link;
-//            [self.navigationController pushViewController:discountVC animated:YES];
-//        }
-//            else
-//            {
-                GetCashController *cash = InitObject(GetCashController);
-                [self.navigationController pushViewController:cash animated:YES];
-//            }
+            if (![CommonUtils isVerifyRealName]) {
+                [self goRealNameVC];
+            }else{
+                if ([self.accountModel.is_trust_reg isEqualToString:@"1"]) {
+                    GetCashController *cash = InitObject(GetCashController);
+                    [self.navigationController pushViewController:cash animated:YES];
+                }else{
+                    HomeWebController *discountVC = [[HomeWebController alloc] init];
+                    discountVC.urlStr = self.accountModel.trust_reg_new_link;
+                    [self.navigationController pushViewController:discountVC animated:YES];
+                }
+            }
         }
     }
     else
@@ -405,7 +398,7 @@ Strong MyAccountModel *accountModel;//数据源
     [advertView setHidden:YES];
 }
 
-
+//点击进入托管账户开通
 -(void)didOpenAdvertView:(NSInteger)type
 {
      advertView.hidden = YES;
@@ -415,9 +408,13 @@ Strong MyAccountModel *accountModel;//数据源
     }
     else if(type==1)
     {
-        HomeWebController *discountVC = [[HomeWebController alloc] init];
-        discountVC.urlStr=self.accountModel.trust_reg_new_link;
-        [self.navigationController pushViewController:discountVC animated:YES];
+        if (![CommonUtils isVerifyRealName]) {
+            [self goRealNameVC];
+        }else{
+            HomeWebController *discountVC = [[HomeWebController alloc] init];
+            discountVC.urlStr=self.accountModel.trust_reg_new_link;
+            [self.navigationController pushViewController:discountVC animated:YES];
+        }
     }
 }
 
@@ -434,7 +431,7 @@ Strong MyAccountModel *accountModel;//数据源
     NSArray *values = @[[CommonUtils getToken]];
     
     [[HttpCommunication sharedInstance] postSignRequestWithPath:getMyUserDataUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
-
+    
         [weakSelf loadInfoWithDict:successDic];
     } failure:^(NSDictionary *errorDic) {
 
@@ -445,6 +442,7 @@ Strong MyAccountModel *accountModel;//数据源
 //刷新数据
 -(void)loadInfoWithDict:(NSDictionary *)dict{
     self.accountModel = [MyAccountModel yy_modelWithJSON:dict];
+    [TTJFUserDefault setStr:self.accountModel.is_trust_reg key:isReged];
     //中间三个菜单按钮
     middleMenuArray = @[self.accountModel.bt_my_investment,self.accountModel.bt_my_red,self.accountModel.bt_my_capital_log];
     //消息个数

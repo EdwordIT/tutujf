@@ -7,9 +7,7 @@
 //
 
 #import "CreditModel.h"
-/**
- 债权转让
- */
+
 @implementation CreditModel
 
 @end
