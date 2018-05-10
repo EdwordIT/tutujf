@@ -469,19 +469,7 @@
     [formatter setPositiveFormat:@"###,##0.00"];//千分位格式
     resault = [formatter stringFromNumber:[NSNumber numberWithDouble:[numbers doubleValue]]];//此处使用doublevale，防止失真
     return resault;
-//    numbers = [NSString stringWithFormat:@"%ld",[numbers integerValue]];//取整
-//    NSString *str = [numbers substringWithRange:NSMakeRange(numbers.length%3, numbers.length-numbers.length%3)];
-//    NSString *strs = [numbers substringWithRange:NSMakeRange(0, numbers.length%3)];
-//    for (int  i =0; i < str.length; i =i+3) {
-//        NSString *sss = [str substringWithRange:NSMakeRange(i, 3)];
-//        strs = [strs stringByAppendingString:[NSString stringWithFormat:@",%@",sss]];
-//    }
-//    if ([[strs substringWithRange:NSMakeRange(0, 1)] isEqualToString:@","]) {
-//        strs = [strs substringWithRange:NSMakeRange(1, strs.length-1)];
-//    }
-//
-//    strs = [strs stringByAppendingString:@".00"];
-//    return strs;
+
 }
 //动态获取label高度
 +(CGFloat)getSpaceLabelHeight:(NSString*)str withFont:(UIFont*)font withWidth:(CGFloat)width lineSpace:(CGFloat)lineSpace{

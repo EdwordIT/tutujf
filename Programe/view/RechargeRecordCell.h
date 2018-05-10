@@ -6,11 +6,11 @@
 //  Copyright © 2018年 TTJF. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseCell.h"
 #import "RechargeListModel.h"
 /**
- 投资记录
+ 充值记录、提现记录
  */
-@interface RechargeRecordCell : UITableViewCell
+@interface RechargeRecordCell : BaseCell
 -(void)loadInfoWithModel:(RechargeListModel *)model;
 @end

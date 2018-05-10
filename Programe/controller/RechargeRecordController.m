@@ -40,6 +40,7 @@ Assign NSInteger totalPages;
         _mainTab = [[BaseUITableView alloc]initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight) style:UITableViewStylePlain];
         _mainTab.delegate = self;
         _mainTab.dataSource = self;
+        _mainTab.separatorStyle = UITableViewCellSeparatorStyleNone;
         _mainTab.rowHeight = kSizeFrom750(140);
         WEAK_SELF;
         _mainTab.ly_emptyView = [EmptyView noDataRefreshBlock:^{

@@ -26,6 +26,8 @@ Strong UILabel *contentLabel;
 }
 -(void)initSubViews
 {
+
+    
     self.statusLabel=[[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, kSizeFrom750(30), screen_width-kOriginLeft*2, kSizeFrom750(30))];
     self.statusLabel.textColor=RGB(31,31,31);
     self.statusLabel.font=SYSTEMSIZE(26);
@@ -42,14 +44,22 @@ Strong UILabel *contentLabel;
     self.contentLabel.textColor=navigationBarColor;
     self.contentLabel.font=NUMBER_FONT(36);
     [self.contentView addSubview:self.contentLabel];
+    
+    UIView *lineView = InitObject(UIView);
+    lineView.frame = RECT(0, kSizeFrom750(140)-kLineHeight, screen_width, kLineHeight);
+    lineView.backgroundColor = separaterColor;
+    [self.contentView addSubview:lineView];
 }
 -(void)loadInfoWithModel:(RechargeListModel *)model
 {
-    self.contentLabel.text = [CommonUtils getHanleNums:model.amount];
+    if ([model.amount rangeOfString:@"-"].location!=NSNotFound) {
+        self.contentLabel.text = [CommonUtils getHanleNums:model.amount];
+    }else
+        self.contentLabel.text =[@"+" stringByAppendingString:[CommonUtils getHanleNums:model.amount]];
     self.timeLabel.text = model.add_time;
     self.statusLabel.text = model.status_name;
     
-    //充值成功
+    //充值成功、提现成功
     if ([model.status isEqualToString:@"1"]) {
         self.statusLabel.textColor = RGB_51;
         self.contentLabel.textColor = navigationBarColor;
