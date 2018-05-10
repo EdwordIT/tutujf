@@ -404,7 +404,7 @@ Strong NSDate *nowDate;//现在的时间
     }
     self.timeLabel.text=[NSString stringWithFormat:@"%@",self.cellModel.period];
     proTextLabel.text= [[NSString stringWithFormat:@"进度%@",self.cellModel.progress] stringByAppendingString:@"%"];
-    self.percentLabel.text = [NSString stringWithFormat:@"%.2f",[self.cellModel.apr floatValue]];
+    self.percentLabel.text = self.cellModel.apr_val;
     
     lab5.text=[NSString stringWithFormat:@"%@",self.cellModel.repay_type_name];
    

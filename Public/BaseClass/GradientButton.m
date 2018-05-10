@@ -7,9 +7,11 @@
 //
 
 #import "GradientButton.h"
+#import "UIImage+Color.h"
 @interface GradientButton()
 {
     NSArray *gradientColors;//渐变色数组
+    UIColor *untouchedColor;//不可点击状态下的颜色
 }
 @end
 @implementation GradientButton
@@ -17,6 +19,9 @@
     [super drawRect:rect];
     if (gradientColors) {
         [self setBackgroundGradientColors:gradientColors];
+    }
+    if (untouchedColor) {
+        [self setBackgroundImage:[UIImage imageWithColor:untouchedColor] forState:UIControlStateDisabled];
     }
 }
 - (void)setBackgroundGradientColors:(NSArray<UIColor *> *)colors {
@@ -48,6 +53,9 @@
     UIImage *outputImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return outputImage;
+}
+-(void)setUntouchedColor:(UIColor *)color{
+    untouchedColor = color;
 }
 //添加渐变数组
 - (void)setGradientColors:(NSArray<UIColor *> *)colors{

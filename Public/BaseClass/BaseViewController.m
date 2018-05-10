@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 #import "RealNameController.h"
-#import <WebKit/WebKit.h>
+#import "HomeWebController.h"
 @interface BaseViewController ()<UINavigationControllerDelegate,UIGestureRecognizerDelegate>
 
 @end
@@ -196,6 +196,12 @@
 -(void)goRealNameVC{
     RealNameController *realName = InitObject(RealNameController);
     [self.navigationController pushViewController:realName animated:YES];
+}
+//跳转到webView
+-(void)goWebViewWithPath:(NSString *)urlPath{
+    HomeWebController *web = InitObject(HomeWebController);
+    web.urlStr = urlPath;
+    [self.navigationController pushViewController:web animated:YES];
 }
 //退出登录状态
 -(void)exitLoginStatus

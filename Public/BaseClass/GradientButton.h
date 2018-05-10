@@ -13,4 +13,6 @@
 @interface GradientButton : UIButton
 //设置背景渐变色
 - (void)setGradientColors:(NSArray<UIColor *> *)colors;
+//设置不可点击状态下的背景色
+-(void)setUntouchedColor:(UIColor *)color;
 @end

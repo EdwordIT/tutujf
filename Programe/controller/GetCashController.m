@@ -9,7 +9,10 @@
 #import "GetCashController.h"
 #import "GetCashRecordController.h"
 #import "GradientButton.h"
-@interface GetCashController ()<UITextFieldDelegate,UITextViewDelegate>
+#import "GetCashRecordController.h"
+#import "HomeWebController.h"
+#import "GetCashModel.h"
+@interface GetCashController ()<UITextFieldDelegate,UITextViewDelegate,UIAlertViewDelegate>
 Strong UIView *topView;//白色背景
 Strong UILabel *amountTitle;
 Strong UILabel *amountLabel;//可提现余额
@@ -20,6 +23,7 @@ Strong UILabel *desLabel;//进入第三方提现
 Strong UIButton *historyBtn;//提现明细
 Strong UIButton *remindTitle;
 Strong UITextView *remindTextView;//温馨提示
+Strong GetCashModel *cashModel;
 @end
 
 @implementation GetCashController
@@ -28,9 +32,14 @@ Strong UITextView *remindTextView;//温馨提示
     [super viewDidLoad];
     self.titleString = @"提现";
     [self initSubViews];
-    
-    [self loadTextView];
+    [SVProgressHUD show];
     // Do any additional setup after loading the view.
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self getRequest];
+
 }
 #pragma mark lazyLoading--
 -(void)initSubViews{
@@ -104,7 +113,8 @@ Strong UITextView *remindTextView;//温馨提示
     if (!_amountTextField) {
         _amountTextField = InitObject(UITextField);
         _amountTextField.placeholder = @"请输入充值金额";
-        [_amountTextField addTarget:self action:@selector(textFieldDidChanged:) forControlEvents:UIControlEventValueChanged];
+        
+        [_amountTextField addTarget:self action:@selector(textFieldDidChanged:) forControlEvents:UIControlEventEditingChanged];
         _amountTextField.delegate = self;
         _amountTextField.font = NUMBER_FONT(30);
     }
@@ -119,6 +129,9 @@ Strong UITextView *remindTextView;//温馨提示
         [_getCashBtn setTitle:@"确认提现" forState:UIControlStateNormal];
         _getCashBtn.layer.cornerRadius = kSizeFrom750(105)/2;
         _getCashBtn.layer.masksToBounds = YES;
+        [_getCashBtn setGradientColors:@[COLOR_DarkBlue,COLOR_LightBlue]];
+        [_getCashBtn setUntouchedColor:COLOR_Btn_Unsel];
+        _getCashBtn.enabled = NO;
 
     }
     return _getCashBtn;
@@ -235,32 +248,108 @@ Strong UITextView *remindTextView;//温馨提示
 #pragma textField delegate
 -(void)textFieldDidChanged:(UITextField *)textField
 {
-    
+    if ([self.cashModel.bt_state isEqualToString:@"-1"]) {//不可提现
+        self.getCashBtn.enabled = NO;
+        return;
+    }
+    NSString * str = [textField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if(str.length >0)
+    {
+        if(![CommonUtils isNumber:str])
+        {
+            self.getCashBtn.enabled =NO;
+        }
+        else  if([CommonUtils isNumber:str])
+        {
+            if([str floatValue]>=self.cashModel.min_amount.floatValue&&str.floatValue<=[self.cashModel.amount floatValue])
+            {
+               self.getCashBtn.enabled =YES;
+            }
+            else
+            {
+               self.getCashBtn.enabled =NO;
+            }
+        }
+    }
+    else{
+            self.getCashBtn.enabled =NO;
+    }
+}
+#pragma mark--request
+-(void)getRequest
+{
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getCashInfoUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:nil success:^(NSDictionary *successDic) {
+        self.cashModel = [GetCashModel yy_modelWithJSON:successDic];
+        [self loadTextView];
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
 }
 #pragma mark --buttonClick
-//提现
+//提现按钮点击
 -(void)withDrowBtnClick:(UIButton *)sender{
-    
+    NSArray *keys = @[kToken,@"amount"];
+    NSArray *values = @[[CommonUtils getToken],self.amountTextField.text];
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:postCashUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+        
+        NSString * form=[NSString stringWithFormat:@"%@",[successDic objectForKey:@"form"]];//json字符串
+        NSDictionary *formDic = [[HttpCommunication sharedInstance] dictionaryWithJsonString:form];//转化为json
+        NSMutableDictionary *dict_data=[[NSMutableDictionary alloc] initWithObjects:@[form] forKeys:@[@"form"] ];
+        NSString *signnew=[HttpSignCreate GetSignStr:dict_data];
+        NSString * sign=[successDic objectForKey:@"sign"];
+        if ([signnew isEqualToString:sign]) {//sign为服务器返回
+            
+            NSString *formUrl = [[HttpCommunication sharedInstance] getFormUrl:formDic];
+            [self goWebViewWithPath:formUrl];
+            
+        }else{
+            [SVProgressHUD showInfoWithStatus:@"提现失败"];
+        }
+        
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
 }
-//充值限制
--(void)limitDesBtnClick:(UIButton *)sender{
-    
-}
-//充值记录
+//提现记录
 -(void)historyBtnClick:(UIButton *)sender{
-    GetCashRecordController *withDrow = InitObject(GetCashRecordController);
-    [self.navigationController pushViewController:withDrow animated:YES];
+    GetCashRecordController *record = InitObject(GetCashRecordController);
+    [self.navigationController pushViewController:record animated:YES];
+}
+-(void)checkBankBind{
+    
+    if ([self.cashModel.is_bind_bank isEqualToString:@"-1"]) {//未绑定银行卡，弹出提示框，跳转到绑定银行卡页面
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:self.cashModel.bind_bank_txt preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self goWebViewWithPath:self.cashModel.bind_bank_url];
+        }];
+        [alertController addAction:alertAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+    }
 }
 -(void)loadTextView{
+   
+    self.amountTextField.placeholder = self.cashModel.txtamount_placeholder;//提示文字
+    [self.remindTitle setTitle:self.cashModel.prompt forState:UIControlStateNormal];
+    self.desLabel.text = self.cashModel.left_msg;
+    [self.historyBtn setTitle:self.cashModel.cash_list_title forState:UIControlStateNormal];
+    [self.getCashBtn setTitle:self.cashModel.bt_name forState:UIControlStateNormal];
+    [self.amountTitle setText:self.cashModel.amount_title];
+    [self.amountLabel setText:[CommonUtils getHanleNums:self.cashModel.amount]];
     
-    NSString *str = @"1、提取收费：手续费暂由土土金服平台垫付；\n2、资金账户由第三方支付平台汇付天下全程托管，充分保障资金安全；\n3、单日的充值金额限额以各银行为准；\n5、只能绑定一张银行卡用户快捷充值，网银充值不限。";
+    
+    NSString *str = self.cashModel.prompt_content;
+    if ([str rangeOfString:@"\\n"].location!=NSNotFound) {
+        str = [str stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
+    }
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc]initWithString:str];
-
     [attr addAttribute:NSForegroundColorAttributeName value:RGB_166 range:NSMakeRange(0, str.length)];
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:kSizeFrom750(15)];
+    [paragraphStyle setLineSpacing:kLabelSpace];
     [paragraphStyle setHeadIndent:kSizeFrom750(35)];
     [attr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [str length])];//设置行间距
+
     [self.remindTextView setAttributedText:attr];
 }
 - (void)didReceiveMemoryWarning {

@@ -138,11 +138,17 @@
                  //返回数据正确 ，则解析到数据接收内容
                  if([resCode integerValue]==kReqSuccess)
                  {
+                     //如果仅返回成功码而无其他返回内容,则resultData默认返回值为空数组
+                     NSDictionary *dataDic = [resalut objectForKey:RESPONSE_DATA];
                      /**
                       获取后台给定的正确码0，做逻辑处理
                       */
                      dispatch_async(dispatch_get_main_queue(), ^{
-                         success([resalut objectForKey:RESPONSE_DATA]);
+                         //直接显示成功信息
+                         if ([dataDic isKindOfClass:[NSArray class]]&&((NSArray *)dataDic).count==0) {
+                             [SVProgressHUD showSuccessWithStatus:[resalut objectForKey:RESPONSE_MESSAGE]];
+                         }
+                         success(dataDic);
                      });
                  }else{
                      /*

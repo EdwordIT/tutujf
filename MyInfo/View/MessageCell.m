@@ -9,6 +9,8 @@
 #import "MessageCell.h"
 @interface MessageCell()
 
+Strong UILabel *timeLabel;
+
 Strong UIView *bgView;
 
 Strong UILabel *titleLabel;
@@ -36,6 +38,9 @@ Strong UIImageView *arrowImage;
 }
 -(void)initSubViews
 {
+    
+    [self.contentView addSubview:self.timeLabel];
+    
     [self.contentView addSubview:self.bgView];
     
     [self.bgView addSubview:self.titleLabel];
@@ -54,6 +59,19 @@ Strong UIImageView *arrowImage;
     
 }
 #pragma mark --lazyLoading
+-(UILabel *)timeLabel{
+    if (!_timeLabel) {
+        _timeLabel = InitObject(UILabel);
+        _timeLabel.backgroundColor = RGB(221, 221, 221);
+        _timeLabel.textColor = RGB(250, 250, 250);
+        _timeLabel.layer.cornerRadius = kSizeFrom750(40)/2;
+        _timeLabel.layer.masksToBounds = YES;
+        _timeLabel.font = NUMBER_FONT(26);
+        _timeLabel.textAlignment = NSTextAlignmentCenter;
+        
+    }
+    return _timeLabel;
+}
 -(UIView *)bgView{
     if (!_bgView) {
         _bgView = InitObject(UIView);
@@ -67,7 +85,7 @@ Strong UIImageView *arrowImage;
     if (!_titleLabel) {
         _titleLabel = InitObject(UILabel);
         _titleLabel.textColor = RGB_51;
-        _titleLabel.font = SYSTEMSIZE(30);
+        _titleLabel.font = SYSTEMSIZE(28);
     }
     return _titleLabel;
 }
@@ -85,6 +103,7 @@ Strong UIImageView *arrowImage;
         _subTitleLabel = InitObject(UILabel);
         _subTitleLabel.textColor = RGB_51;
         _subTitleLabel.font = SYSTEMSIZE(28);
+        _subTitleLabel.text = @"查看详情";
     }
     return _subTitleLabel;
 }
@@ -113,11 +132,17 @@ Strong UIImageView *arrowImage;
 }
 -(void)loadLayout
 {
+    [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(kSizeFrom750(30));
+        make.height.mas_equalTo(kSizeFrom750(40));
+        make.width.mas_equalTo(kSizeFrom750(300));
+        make.centerX.mas_equalTo(self.contentView);
+    }];
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(kOriginLeft);
-        make.right.mas_equalTo(-kOriginLeft);
-        make.top.mas_equalTo(kSizeFrom750(20));
-        make.height.mas_equalTo(kSizeFrom750(200));
+        make.right.mas_equalTo(self.contentView).offset(-kOriginLeft);
+        make.top.mas_equalTo(self.timeLabel.mas_bottom).offset(kSizeFrom750(20));
+        make.height.mas_equalTo(kSizeFrom750(230));
     }];
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -139,7 +164,7 @@ Strong UIImageView *arrowImage;
     
     [self.subTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.lineView);
-        make.top.mas_equalTo(self.lineView.mas_bottom).offset(kSizeFrom750(10));
+        make.top.mas_equalTo(self.lineView.mas_bottom).offset(kSizeFrom750(20));
         make.width.mas_equalTo(kSizeFrom750(150));
         make.height.mas_equalTo(kSizeFrom750(30));
     }];
@@ -160,7 +185,21 @@ Strong UIImageView *arrowImage;
 }
 -(void)loadInfoWithModel:(MessageModel *)model
 {
-    
+    self.timeLabel.text = model.add_time;
+    self.titleLabel.text = model.title;
+    [CommonUtils setAttString:model.contents withLineSpace:kLabelSpace titleLabel:self.contentLabel];
+    if ([model.status integerValue]==2) {
+        //已读
+        self.titleLabel.textColor = RGB(220, 220, 220);
+        self.contentLabel.textColor = RGB(220, 220, 220);
+        self.subTitleLabel.textColor = RGB(220, 220, 220);
+        [self.pointView setHidden:YES];
+    }else{
+        self.titleLabel.textColor = RGB_51;
+        self.contentLabel.textColor = RGB_102;
+        self.subTitleLabel.textColor = RGB_51;
+        [self.pointView setHidden:NO];
+    }
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

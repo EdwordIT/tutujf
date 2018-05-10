@@ -68,15 +68,27 @@
 /**
  充值界面信息
  */
-#define getRechargeInfoUrl @"/api/Recharge/getRecharge"
+#define getRechargeInfoUrl @"/api/recharge/getRecharge"
 /**
  发起充值接口
  */
-#define postRechargeUrl @"/api/Recharge/rechargeSubmit"
+#define postRechargeUrl @"/api/recharge/rechargeSubmit"
 /**
  充值记录
  */
 #define getRechargeRecordUrl @"/api/recharge/getRechargeLog"
+/**
+ 提现界面信息
+ */
+#define getCashInfoUrl @"/api/cash/getCash"
+/**
+ 发起提现接口
+ */
+#define postCashUrl @"/api/cash/cashSubmit"
+/**
+ 提现记录
+ */
+#define getCashRecordUrl @"/api/cash/getCashLog"
 /*****************************************我的************************************************************/
 //登录接口
 #define loginUrl  @"/api/Users/Login"
@@ -112,5 +124,13 @@
  进行实名认证接口
  */
 #define postCertificationUrl  @"/api/users/editUserRealname"
+/**
+ 获取站内信列表
+ */
+#define getUserMessageUrl @"/api/users/getUserMessage"
+/**
+ 一键标记为已读
+ */
+#define postMarkedAsReadedUrl  @"/api/users/batchDelUserMessage"
 
 

@@ -21,6 +21,7 @@
 #import "RechargeController.h"//充值
 #import "GetCashController.h"//提现
 #import "TTJFRefreshNormalHeader.h"
+#import "MessageController.h"
 @interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
 {
@@ -64,7 +65,7 @@ Strong MyAccountModel *accountModel;//数据源
     [super viewDidAppear:animated];
 
     if ([CommonUtils isLogin]) {
-        [self.tableView.mj_header beginRefreshing];
+        [self getRequest];//后台刷新数据
     }else
     {
         self.accountTitleView.titleLabel.text=@"******";
@@ -117,10 +118,8 @@ Strong MyAccountModel *accountModel;//数据源
                 }
                 else if(tag==2)
                 {
-                    //消息列表
-                    HomeWebController *discountVC = [[HomeWebController alloc] init];
-                    discountVC.urlStr = weakSelf.accountModel.message_url;
-                    [weakSelf.navigationController pushViewController:discountVC animated:YES];
+                    MessageController *message = InitObject(MessageController);
+                    [weakSelf.navigationController pushViewController:message animated:YES];
                 }
             }else{
                     [weakSelf goLoginVC];
@@ -208,7 +207,6 @@ Strong MyAccountModel *accountModel;//数据源
         if(indexPath.row == 0)
         {
             static NSString *cellIndentifier = @"MineTopCell";
-           
             topcell =  [[MineTopCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
             topcell.accessoryType = UITableViewCellAccessoryNone;
             topcell.selectionStyle=UITableViewCellSelectionStyleNone;
@@ -216,18 +214,15 @@ Strong MyAccountModel *accountModel;//数据源
              if(self.accountModel!=nil)
             [topcell setModelData:self.accountModel];
             return topcell;
-            
         }
         else  if(indexPath.row == 1)
         {
             //三个菜单栏→我的投资、我的红包、资金记录
             static NSString *cellIndentifier = @"MIneMiddleCell";
-            
             MIneMiddleCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
             if (cell==nil) {
                 cell = [[MIneMiddleCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
             }
-            
             cell.delegate=self;
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
@@ -239,7 +234,6 @@ Strong MyAccountModel *accountModel;//数据源
         if(indexPath.row == 0)
         {
         static NSString *cellIndentifier = @"MineMenuCell";
-          
         MineMenuCell *cell =  [[MineMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
         cell.backgroundColor=[UIColor clearColor];
         cell.delegate=self;
@@ -248,7 +242,6 @@ Strong MyAccountModel *accountModel;//数据源
         return cell;
         }
     }
-   
         return nil;
 }
 
@@ -278,18 +271,7 @@ Strong MyAccountModel *accountModel;//数据源
 {
     if([CommonUtils isLogin])
     {
-        if(index==1)
-        {
-            AccountInfoController * account=[[AccountInfoController alloc] init];
-           [self.navigationController pushViewController:account animated:YES];
-        }
-        else if(index==2)//信息列表
-        {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-              discountVC.urlStr=self.accountModel.message_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
-        }
-        else if(index==3)//总资产
+        if(index==3)//总资产
         {
             HomeWebController *discountVC = [[HomeWebController alloc] init];
             discountVC.urlStr= self.accountModel.total_amount_url;

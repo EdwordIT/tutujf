@@ -6,7 +6,7 @@
 //  Copyright © 2017年 占碧光. All rights reserved.
 //
 
-#import "ProgrameNewDetailController.h"
+#import "ProgrameDetailController.h"
 #import "DetailTop.h"
 #import "DetailMiddle.h"
 #import "DetailBottom.h"
@@ -16,7 +16,7 @@
 #import "RushPurchaseController.h"
 #import "HomeWebController.h"
 #import "TTJFRefreshNormalHeader.h"
-@interface ProgrameNewDetailController ()<UIScrollViewDelegate,BottomDelegate>
+@interface ProgrameDetailController ()<UIScrollViewDelegate,BottomDelegate>
 {
     NSInteger secondsCountDown;//倒计时总时长
 }
@@ -28,7 +28,7 @@ Strong UIButton *footerBtn;//立即投资、满标待审
 Strong LoanBase *baseModel;
 @end
 
-@implementation ProgrameNewDetailController
+@implementation ProgrameDetailController
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_CountDown object:nil];
 }

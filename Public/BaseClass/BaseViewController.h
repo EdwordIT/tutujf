@@ -40,6 +40,8 @@ Strong UIImageView *newsMessage;
 -(void)exitLoginStatus;
 //跳转实名认证窗口
 -(void)goRealNameVC;
+//跳转到webView
+-(void)goWebViewWithPath:(NSString *)urlPath;
 
 //返回事件
 -(void)backPressed:(UIButton *)sender;

@@ -14,6 +14,7 @@
 #import "HomeWebController.h"
 #import "HomeWebController.h"
 #import "RechargeController.h"//充值页面
+#import "GradientButton.h"
 #define blackfont  RGB(111,187,255)
 @interface RushPurchaseController ()<UIScrollViewDelegate,UITextFieldDelegate>
 {
@@ -24,7 +25,7 @@
     UILabel *investLabel;//投资金额
     UILabel *accountRemainLabel;//账户余额
     UILabel * expectLabel;//预期收益金额
-    UIButton * investBtn;//投资按钮
+    GradientButton * investBtn;//投资按钮
     UILabel *repayMethodLabel;//还款方式
     UILabel *remainLabel;//剩余可投资金额
    //UIWebView *iWebView;
@@ -60,26 +61,28 @@ Strong     LoanBase * baseModel;
 {
     [self.scrollView removeAllSubViews];
     
+    CGFloat sectionSpace = kSizeFrom750(40);
+    CGFloat rowSpace = kSizeFrom750(20);
     LoanInfo * info=self.baseModel.loan_info;
     self.titleString = @"投标";
-    UIView * mainview=[[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(280))];
+    UIView * mainview=[[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(380))];
     mainview.backgroundColor=navigationBarColor;
     [self.scrollView addSubview:mainview];
     
     //标的名称
-    title = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, kSizeFrom750(30), kSizeFrom750(500),kSizeFrom750(35))];
+    title = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, rowSpace, kSizeFrom750(500),kSizeFrom750(35))];
     title.font = SYSTEMSIZE(32);
     title.textColor =  COLOR_White;
     title.text=info.name;
     [mainview addSubview:title];
     
-    UILabel *ratTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(title.left, title.bottom+kSizeFrom750(20), kSizeFrom750(200),kSizeFrom750(30))];
+    UILabel *ratTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(title.left, title.bottom+sectionSpace, kSizeFrom750(200),kSizeFrom750(30))];
     ratTitleLabel.font = SYSTEMSIZE(28);
     ratTitleLabel.textColor =  blackfont;
     ratTitleLabel.text=@"预期利率";
     [mainview addSubview:ratTitleLabel];
     
-    rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(ratTitleLabel.left, ratTitleLabel.bottom+kSizeFrom750(10), ratTitleLabel.width,ratTitleLabel.height)];
+    rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(ratTitleLabel.left, ratTitleLabel.bottom+rowSpace, ratTitleLabel.width,ratTitleLabel.height)];
     rateLabel.font = SYSTEMSIZE(28);
     rateLabel.textColor =  COLOR_White;
     rateLabel.text=[[NSString stringWithFormat:@"%@",info.apr] stringByAppendingString:@"%"];;
@@ -98,13 +101,13 @@ Strong     LoanBase * baseModel;
     [mainview addSubview:limitLabel];
     
     
-    UILabel *repayTitle = [[UILabel alloc] initWithFrame:CGRectMake(rateLabel.left, rateLabel.bottom+kSizeFrom750(20), ratTitleLabel.width,ratTitleLabel.height)];
+    UILabel *repayTitle = [[UILabel alloc] initWithFrame:CGRectMake(rateLabel.left, rateLabel.bottom+sectionSpace, ratTitleLabel.width,ratTitleLabel.height)];
     repayTitle.font = SYSTEMSIZE(28);
     repayTitle.textColor =  blackfont;
     repayTitle.text=@"还款方式";
     [mainview addSubview:repayTitle];
     
-    repayMethodLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayTitle.left, repayTitle.bottom+kSizeFrom750(10), repayTitle.width,repayTitle.height)];
+    repayMethodLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayTitle.left, repayTitle.bottom+rowSpace, repayTitle.width,repayTitle.height)];
     repayMethodLabel.font = SYSTEMSIZE(28);
     repayMethodLabel.textColor =  COLOR_White;
     repayMethodLabel.text =self.baseModel.repay_type_name;
@@ -119,7 +122,7 @@ Strong     LoanBase * baseModel;
     [mainview addSubview:remainTitle];
     
     
-    remainLabel = [[UILabel alloc] initWithFrame:CGRectMake(remainTitle.left, remainTitle.bottom+kSizeFrom750(10), remainTitle.width,remainTitle.height)];
+    remainLabel = [[UILabel alloc] initWithFrame:CGRectMake(remainTitle.left, repayMethodLabel.top, repayMethodLabel.width,repayMethodLabel.height)];
     remainLabel.font = SYSTEMSIZE(28);
     remainLabel.textColor =  COLOR_White;
     NSString * str3=[NSString stringWithFormat:@"%@",info.left_amount];
@@ -137,7 +140,7 @@ Strong     LoanBase * baseModel;
     [self.scrollView addSubview:bottomView];
 
     
-    accountRemainLabel = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, kSizeFrom750(20), screen_width,kSizeFrom750(30))];
+    accountRemainLabel = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, sectionSpace, screen_width,kSizeFrom750(40))];
     accountRemainLabel.font = SYSTEMSIZE(26);
     accountRemainLabel.textColor =  blackfont;
     NSString *account = [NSString stringWithFormat:@"账户余额%@元",[NSString stringWithFormat:@"%.2f",[self.baseModel.balance_amount floatValue]]];
@@ -151,13 +154,13 @@ Strong     LoanBase * baseModel;
     btn1.titleLabel.font = SYSTEMSIZE(26);
     [btn1 addTarget:self action:@selector(rechargeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [btn1 setBackgroundColor:COLOR_Red];
-    btn1.layer.cornerRadius = kSizeFrom750(10);
+    btn1.layer.cornerRadius = kSizeFrom750(50)/2;
     btn1.layer.masksToBounds = YES;
     btn1.tag=1;
     [bottomView addSubview:btn1];
 
     
-    UIView * investView =[[UIView alloc] initWithFrame:CGRectMake(0, accountRemainLabel.bottom+kSizeFrom750(20), screen_width, kSizeFrom750(80))];
+    UIView * investView =[[UIView alloc] initWithFrame:CGRectMake(0, accountRemainLabel.bottom+sectionSpace, screen_width, kSizeFrom750(80))];
     investView.backgroundColor=COLOR_White;
     [bottomView addSubview:investView];
     
@@ -213,55 +216,18 @@ Strong     LoanBase * baseModel;
     [expectLabel setAttributedText:attr1];
    [bottomView addSubview:expectLabel];
     
-    investBtn = [UIButton buttonWithType:UIButtonTypeCustom];
- 
+    investBtn = InitObject(GradientButton);
     investBtn.frame = CGRectMake(kOriginLeft,expectLabel.bottom+kSizeFrom750(80), screen_width-kOriginLeft*2, kSizeFrom750(90));
     [investBtn setTitle:@"马上投标" forState:UIControlStateNormal];
     investBtn.titleLabel.font = SYSTEMSIZE(32);
     [investBtn addTarget:self action:@selector(investBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [investBtn setBackgroundColor:RGB(200,226,242)];
     investBtn.layer.cornerRadius = investBtn.height/2;
-    investBtn.tag=2;
+    investBtn.layer.masksToBounds =YES;
+    [investBtn setGradientColors:@[COLOR_DarkBlue,COLOR_LightBlue]];
+    [investBtn setUntouchedColor:COLOR_Btn_Unsel];
+    investBtn.enabled = NO;
     [bottomView addSubview:investBtn];
 }
-//-(void)textFieldDidEndEditing:(UITextField *)textField reason:(UITextFieldDidEndEditingReason)reason
-//{
-//    //点击完成按钮提示内容
-//    NSString *    str = [_phoneTextFiled.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-//    if(str.length >0)
-//    {
-//        if(![self isNum:str])
-//        {
-//            [SVProgressHUD showInfoWithStatus: @"投资金额必须是数字"];
-//            [investBtn setBackgroundColor:RGB(200,226,242)];
-//            investBtn.userInteractionEnabled = NO;
-//        }
-//        else  if([self isNum:str])
-//        {
-//            NSInteger num=[str intValue];
-//            NSString * str1=self.baseModel.loan_info.tender_amount_min;
-//            NSInteger zuiixao= [str1 intValue];
-//            if(num>=zuiixao&&(num%zuiixao==0))
-//            {
-//                [investBtn setBackgroundColor:navigationBarColor];
-//                investBtn.userInteractionEnabled = YES;
-//                [self getInterest];
-//            }
-//            else
-//            {
-//                [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"投资金额需大于等于%@的倍数",str1]];
-//                [investBtn setBackgroundColor:RGB(200,226,242)];
-//                investBtn.userInteractionEnabled = NO;
-//
-//            }
-//        }
-//
-//    }
-//    else{
-//
-//    }
-//
-//}
 
 -(void)textFieldDidChange :(UITextField *)theTextField{
     NSString *    str = [_phoneTextFiled.text stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -269,25 +235,22 @@ Strong     LoanBase * baseModel;
     {
         if(![CommonUtils isNumber:str])
         {
-            [investBtn setBackgroundColor:RGB(200,226,242)];
-            investBtn.userInteractionEnabled = NO;
+          investBtn.enabled = NO;
             
         }
         else  if([CommonUtils isNumber:str])
         {
             NSInteger num=[str intValue];
             NSString * str1=self.baseModel.loan_info.tender_amount_min;
-            NSInteger zuiixao= [str1 intValue];
-            if(num>=zuiixao&&(num%zuiixao==0))
+            NSInteger minInvest= [str1 intValue];
+            if(num>=minInvest&&(num%minInvest==0))
             {
-                [investBtn setBackgroundColor:navigationBarColor];
-                investBtn.userInteractionEnabled = YES;
+               investBtn.enabled = YES;
                  [self getInterest];
             }
             else
             {
-                [investBtn setBackgroundColor:RGB(200,226,242)];
-                investBtn.userInteractionEnabled = NO;
+                investBtn.enabled = NO;
             }
         }
         
@@ -298,33 +261,15 @@ Strong     LoanBase * baseModel;
 }
 -(BOOL)checkNum{
   NSString *    str = [_phoneTextFiled.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-    if(str.length ==0)
-    {
-        [SVProgressHUD showInfoWithStatus:@"投资金额不能为空"];
-         return FALSE;
-    }
-    else  if(![CommonUtils isNumber:str])
-    {
-         [SVProgressHUD showInfoWithStatus: @"投资金额必须是数字"];
-         return FALSE;
-    }
-    else  if([CommonUtils isNumber:str])
-    {
-        NSInteger num=[str intValue];
-        NSString * str1=self.baseModel.loan_info.tender_amount_min;
-        NSInteger zuiixao= [str1 intValue];
-        if(num>=zuiixao&&(num%zuiixao==0))
-        {
-            [investBtn setBackgroundColor:navigationBarColor];
-            return TRUE;
-        }
-        else
-        {
-            [SVProgressHUD showInfoWithStatus:[NSString stringWithFormat:@"投资金额需大于等于%@的倍数",str1]];
-            return FALSE;
+    if ([CommonUtils isNumber:str]) {
+        if ([str floatValue]>[self.baseModel.balance_amount floatValue]) {
+            [SVProgressHUD showInfoWithStatus:@"可用余额不足，请先充值"];
+            return NO;
+        }else{
+            return YES;
         }
     }
-       return FALSE;
+    return NO;
 }
 
 -(void) getRequest{
@@ -374,8 +319,7 @@ Strong     LoanBase * baseModel;
 
 -(void) investBtnClick:(UIButton *)sender
 {
-    BOOL chk=[self checkNum];
-    if(chk)
+    if([self checkNum])
     {
         //是否已经实名认证
         if([CommonUtils isVerifyRealName])
@@ -387,10 +331,6 @@ Strong     LoanBase * baseModel;
             [self goRealNameVC];
             
         }
-    }
-    else
-    {
-         [investBtn setBackgroundColor:RGB(200,226,242)];
     }
 }
 

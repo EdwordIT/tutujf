@@ -19,7 +19,7 @@
 #import "AccountInfoController.h"//个人资料详情
 #import "RegisterViewController.h"//注册
 #import "ForgetPasswordViewController.h"//忘记密码
-#import "ProgrameNewDetailController.h"//项目详情
+#import "ProgrameDetailController.h"//项目详情
 #import "RushPurchaseController.h"//快速投资
 #import <AlicloudHttpDNS/AlicloudHttpDNS.h>
 #import "ChangePasswordViewController.h"
@@ -299,7 +299,7 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
         if ([urlPath rangeOfString:@"tutujf:home.loaninfoview?loan_id="].location!=NSNotFound) {
             
             //跳转项目详情页
-            ProgrameNewDetailController *detail = InitObject(ProgrameNewDetailController);
+            ProgrameDetailController *detail = InitObject(ProgrameDetailController);
             detail.isBackToRootVC = YES;
             NSRange range = [urlPath rangeOfString:@"tutujf:home.loaninfoview?loan_id="];
             NSString *loan_id = [urlPath substringFromIndex:range.location+range.length];
@@ -322,17 +322,27 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
         
         return;
     }
-   //既不是自己内部的url，又不是调用内部功能如打电话等
+   //既不是自己内部的url，又不是调用内部功能如打电话等，表示是汇付支付的页面，隐藏刷新按钮，显示关闭按钮
     if ([urlPath rangeOfString:urlCheckAddress].location==NSNotFound&&[urlPath rangeOfString:@"tel:"].location==NSNotFound) {
-        
         [self.closeBtn setHidden:NO];
         [self.refreshBtn setHidden:YES];
         
     }else{
-        [self.closeBtn setHidden:YES];
-        [self.refreshBtn setHidden:NO];
+        //对于 当Url参数中带有@“appfun=XXX”,表示对于顶部按钮有特殊处理
+        //隐藏全部顶部功能按钮，仅保留标题
+        if ([urlPath rangeOfString:@"appfun=notfun"].location!=NSNotFound) {
+            [self.backBtn setHidden:YES];
+            [self.closeBtn setHidden:YES];
+            [self.refreshBtn setHidden:YES];
+        }else{
+            //如果是自己内部的url，保留刷新以及返回按钮
+            [self.backBtn setHidden:NO];
+            [self.refreshBtn setHidden:NO];
+            [self.closeBtn setHidden:YES];
+        }
         
     }
+  
 }
 -(void)refreshUrl:(NSString *)urlString{
     NSString *resaultUrl = @"";
@@ -376,7 +386,6 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
         [self.refreshBtn setHidden:YES];
         [self loadRequest:urlString];
     }
-    
 }
 
 

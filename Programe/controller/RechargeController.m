@@ -11,6 +11,7 @@
 #import "GradientButton.h"
 #import "RechargeModel.h"
 #import "HomeWebController.h"
+#import "UIImage+Color.h"
 @interface RechargeController ()<UITextFieldDelegate,UITextViewDelegate>
 Strong UIView *topView;//白色背景
 Strong UILabel *amountTitle;
@@ -31,7 +32,7 @@ Strong RechargeModel *rechargeModel;
     [super viewDidLoad];
     self.titleString = @"充值";
     [self initSubViews];
-    
+
     [self getRequest];
     
     // Do any additional setup after loading the view.
@@ -104,7 +105,7 @@ Strong RechargeModel *rechargeModel;
     if (!_amountTextField) {
         _amountTextField = InitObject(UITextField);
         _amountTextField.placeholder = @"请输入充值金额";
-        [_amountTextField addTarget:self action:@selector(textFieldDidChanged:) forControlEvents:UIControlEventValueChanged];
+        [_amountTextField addTarget:self action:@selector(textFieldDidChanged:) forControlEvents:UIControlEventEditingChanged];
         _amountTextField.delegate = self;
         _amountTextField.font = NUMBER_FONT(30);
     }
@@ -113,13 +114,14 @@ Strong RechargeModel *rechargeModel;
 -(GradientButton *)rechargeBtn{
     if (!_rechargeBtn) {
         _rechargeBtn = InitObject(GradientButton);
-        [_rechargeBtn setBackgroundColor:COLOR_Red];
+        [_rechargeBtn setBackgroundImage:[UIImage imageWithColor:COLOR_Red] forState:UIControlStateNormal];
+        [_rechargeBtn setBackgroundImage:[UIImage imageWithColor:COLOR_Btn_Unsel] forState:UIControlStateDisabled];
         [_rechargeBtn setTitleColor:COLOR_White forState:UIControlStateNormal];
         [_rechargeBtn addTarget:self action:@selector(rechargeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [_rechargeBtn.titleLabel setFont:SYSTEMSIZE(36)];
         _rechargeBtn.layer.cornerRadius = kSizeFrom750(105)/2;
         _rechargeBtn.layer.masksToBounds = YES;
-        [_rechargeBtn setTitle:@"确认充值" forState:UIControlStateNormal];
+        _rechargeBtn.enabled = NO;
     }
     return _rechargeBtn;
 }
@@ -142,6 +144,7 @@ Strong RechargeModel *rechargeModel;
         [_historyBtn addTarget:self action:@selector(historyBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [_historyBtn setTitle:@"充值记录" forState:UIControlStateNormal];
         [_historyBtn setTitleColor:COLOR_Red forState:UIControlStateNormal];
+
     }
     return _historyBtn;
 }
@@ -256,32 +259,31 @@ Strong RechargeModel *rechargeModel;
 #pragma textField delegate
 -(void)textFieldDidChanged:(UITextField *)textField
 {
+    if ([self.rechargeModel.bt_state isEqualToString:@"-1"]) {//不可充值
+        self.rechargeBtn.enabled = NO;
+        return;
+    }
     NSString *    str = [textField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
     if(str.length >0)
     {
         if(![CommonUtils isNumber:str])
         {
-            [self.rechargeBtn setBackgroundColor:COLOR_Btn_Unsel];
-            self.rechargeBtn.userInteractionEnabled = NO;
+            self.rechargeBtn.enabled = NO;
         }
         else  if([CommonUtils isNumber:str])
         {
-            if([str intValue]>0&&str.integerValue>=[self.rechargeModel.mine_amount integerValue])
+            if(str.floatValue>=[self.rechargeModel.min_amount floatValue])
             {
-                [self.rechargeBtn setBackgroundColor:COLOR_Red];
-                self.rechargeBtn.userInteractionEnabled = YES;
+                self.rechargeBtn.enabled = YES;
             }
             else
             {
-                [self.rechargeBtn setBackgroundColor:COLOR_Btn_Unsel];
-                self.rechargeBtn.userInteractionEnabled = NO;
+                self.rechargeBtn.enabled = NO;
             }
         }
-        
     }
     else{
-        [self.rechargeBtn setBackgroundColor:COLOR_Btn_Unsel];
-        self.rechargeBtn.userInteractionEnabled = NO;
+        self.rechargeBtn.enabled = NO;
     }
 }
 #pragma mark --buttonClick

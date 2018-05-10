@@ -8,6 +8,9 @@
 
 #import "BaseCell.h"
 #import "MessageModel.h"
+/**
+ 站内信
+ */
 @interface MessageCell : BaseCell
 -(void)loadInfoWithModel:(MessageModel *)model;
 @end

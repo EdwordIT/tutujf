@@ -29,5 +29,5 @@ Copy NSString * bt_state  ;//    string    提交按钮状态 ，-1 不可提交
 Copy NSString * bt_name ;//     string    提交按钮文本
 Copy NSString * trust_account ;//     string    托管账号是否开通， -1 未开通  1已开通（注：要先判断是否实名认证）
 Copy NSString * trust_reg_url  ;//    string    汇付托管注册地址
-Copy NSString *mine_amount;//最低充值金额
+Copy NSString *min_amount;//最低充值金额
 @end

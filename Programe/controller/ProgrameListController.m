@@ -12,7 +12,7 @@
 #import "QuicklyModel.h"
 #import "HomeWebController.h"
 #import "RushPurchaseController.h"
-#import "ProgrameNewDetailController.h"
+#import "ProgrameDetailController.h"
 #import "CountDownManager.h"
 #import "NavSwitchView.h"
 #import "CreditAssignCell.h"
@@ -20,8 +20,8 @@
 #import "BuyCreditAssignController.h"//债权购买
 #import "CreditModel.h"
 @interface ProgrameListController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate>
-Assign  BOOL isGetCredit;
-Assign NSInteger currentPage;/**< 页数 */
+Assign  BOOL isGetCredit;//是否初次加载债权转让内容
+Assign NSInteger currentPage;/**当前页数 */
 Assign NSInteger total_pages;/**总的页数**/
 Assign NSInteger creditPage;
 Assign NSInteger creDitTotlaPages;//债权总页数
@@ -39,13 +39,9 @@ Strong BaseUITableView *creditTabView;//债权转让
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.titleString = @"项目列表";
-    [self.backBtn setHidden:YES];
-    self.currentPage = 1;//默认选项
-    self.total_pages=1;
-    self.creditPage = 1;
-    self.creDitTotlaPages = 1;
+
     
+    [self loadNav];
     [self.view addSubview:self.backScroll];
     [self.view addSubview:self.switchView];
     [self.backScroll addSubview:self.tableView];//投资列表
@@ -74,6 +70,7 @@ Strong BaseUITableView *creditTabView;//债权转让
         _switchView.switchBlock = ^(NSInteger tag) {
             if (tag==1) {
                 if (!weakSelf.isGetCredit) {
+                    [SVProgressHUD show];
                     weakSelf.isGetCredit = YES;
                     [weakSelf getCreditRequest];
                 }
@@ -118,6 +115,14 @@ Strong BaseUITableView *creditTabView;//债权转让
         _creditTabView.showsVerticalScrollIndicator = NO;
     }
     return _creditTabView;
+}
+-(void)loadNav{
+    self.titleString = @"项目列表";
+    [self.backBtn setHidden:YES];
+    self.currentPage = 1;//默认选项
+    self.total_pages=1;
+    self.creditPage = 1;
+    self.creDitTotlaPages = 1;
 }
 //界面表格刷新
 -(void)loadRefresh{
@@ -203,7 +208,7 @@ Strong BaseUITableView *creditTabView;//债权转让
    
     if (tableView==self.tableView) {
         QuicklyModel * model=[_dataSourceArray objectAtIndex:indexPath.row];
-        ProgrameNewDetailController * vc=[[ProgrameNewDetailController alloc] init];
+        ProgrameDetailController * vc=[[ProgrameDetailController alloc] init];
         vc.loan_id=model.loan_id;
         [self.navigationController pushViewController:vc animated:YES];
     }else{

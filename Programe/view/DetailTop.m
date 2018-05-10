@@ -33,13 +33,21 @@ Strong UIButton *questionBtn;//问题弹框
 {
     self = [super init];
     if (self) {
-        [self initView];
+        [self initSubView];
+    }
+    return self;
+}
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self initSubView];
     }
     return self;
 }
 -(void)questionBtnClick:(UIButton *)sender
 {
-    [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:@"号"];
+    [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:@"债权价值为债权出售日，债权出售人所持有的所有待收本金，与该出售日距离上一期还款的天数所对应的利息之和"];
 }
 //债权转让内容
 -(void)loadCreditInfoWithModel:(LoanBase *)infoModel{
@@ -92,7 +100,7 @@ Strong UIButton *questionBtn;//问题弹框
                                               repeats:YES];
     
     //剩余可投资金额
-    NSString *remain = [NSString stringWithFormat:@"剩余可投%@元",[CommonUtils getHanleNums:infoModel.left_amount]];
+    NSString *remain = [NSString stringWithFormat:@"剩余可投 %@ 元",[CommonUtils getHanleNums:infoModel.left_amount]];
     NSMutableAttributedString *attr2 = [CommonUtils diffierentFontWithString:remain  rang:[remain rangeOfString:[CommonUtils getHanleNums:infoModel.left_amount]] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.programRemainLabel setAttributedText:attr2];
     
@@ -103,11 +111,6 @@ Strong UIButton *questionBtn;//问题弹框
 
 
      
-}
--(void)initView
-{
-    [self initSubView];
-
 }
 
 -(void)initSubView

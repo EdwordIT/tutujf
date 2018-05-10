@@ -18,7 +18,7 @@
 #import "HomeWebController.h"
 #import "AutoLoginView.h"
 #import "RushPurchaseController.h"
-#import "ProgrameNewDetailController.h"
+#import "ProgrameDetailController.h"
 #import "RegisterViewController.h"//注册页面
 #import "TotalTradesView.h"//总成交金额
 #import "CustomerServiceView.h"//客户服务
@@ -614,7 +614,7 @@ Strong UIView *functionTopView;//功能按钮
 -(void)didSelectedQuicklyAtIndex1:(NSInteger)index
 {
     QuicklyModel * model=[self.homePageModel.loan_items objectAtIndex:index];
-    ProgrameNewDetailController * vc=[[ProgrameNewDetailController alloc] init];
+    ProgrameDetailController * vc=[[ProgrameDetailController alloc] init];
     vc.loan_id=model.loan_id;
     [self.navigationController pushViewController:vc animated:YES];
 }

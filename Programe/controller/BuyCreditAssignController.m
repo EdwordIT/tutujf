@@ -14,6 +14,7 @@
 #import "HomeWebController.h"
 #import "HomeWebController.h"
 #import "RechargeController.h"//充值页面
+#import "GradientButton.h"
 #define blackfont  RGB(111,187,255)
 @interface BuyCreditAssignController ()<UIScrollViewDelegate,UITextFieldDelegate>
 {
@@ -22,14 +23,14 @@
     UILabel * limitLabel;//借款期限
     UILabel *investLabel;//投资金额
     UILabel *accountrepayTimeLabel;//账户余额
-    UILabel * expectLabel;//预期收益金额
-    UIButton * investBtn;//投资按钮
+    GradientButton * investBtn;//投资按钮
     UILabel *repayMethodLabel;//还款方式
     UILabel *repayTimeLabel;//债权转让最终时间
 }
 Strong UIScrollView *scrollView;
-Strong UILabel *waittingLabel;//待收本金
+Strong UILabel *waittingLabel;//债权价值
 Strong     LoanBase * baseModel;
+Strong UIButton *questionBtn;
 @end
 
 @implementation BuyCreditAssignController
@@ -55,9 +56,11 @@ Strong     LoanBase * baseModel;
 {
     [self.scrollView removeAllSubViews];
     
+    CGFloat sectionSpace = kSizeFrom750(40);
+    CGFloat rowSpace = kSizeFrom750(20);
     LoanInfo * info=self.baseModel.loan_info;
-    self.titleString = @"投标";
-    UIView * mainview=[[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(280))];
+    self.titleString = @"购买";
+    UIView * mainview=[[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(380))];
     mainview.backgroundColor=navigationBarColor;
     [self.scrollView addSubview:mainview];
     
@@ -69,13 +72,13 @@ Strong     LoanBase * baseModel;
     [mainview addSubview:title];
     
     
-    UILabel *repayTitle = [[UILabel alloc] initWithFrame:CGRectMake(title.left, title.bottom+kSizeFrom750(20), kSizeFrom750(200),kSizeFrom750(30))];
+    UILabel *repayTitle = [[UILabel alloc] initWithFrame:CGRectMake(title.left, title.bottom+sectionSpace, kSizeFrom750(200),kSizeFrom750(30))];
     repayTitle.font = SYSTEMSIZE(28);
     repayTitle.textColor =  blackfont;
     repayTitle.text=@"还款方式";
     [mainview addSubview:repayTitle];
     
-    repayMethodLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayTitle.left, repayTitle.bottom+kSizeFrom750(10), repayTitle.width,repayTitle.height)];
+    repayMethodLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayTitle.left, repayTitle.bottom+rowSpace, repayTitle.width,repayTitle.height)];
     repayMethodLabel.font = SYSTEMSIZE(28);
     repayMethodLabel.textColor =  COLOR_White;
     repayMethodLabel.text =self.baseModel.repay_type_name;
@@ -95,14 +98,14 @@ Strong     LoanBase * baseModel;
     [mainview addSubview:creditTotalLabel];
     
     
-    UILabel *limitTitle = [[UILabel alloc] initWithFrame:CGRectMake(repayTitle.left, repayMethodLabel.bottom+kSizeFrom750(20), repayTitle.width,repayTitle.height)];
+    UILabel *limitTitle = [[UILabel alloc] initWithFrame:CGRectMake(repayTitle.left, repayMethodLabel.bottom+sectionSpace, repayTitle.width,repayTitle.height)];
     limitTitle.font = SYSTEMSIZE(28);
     limitTitle.textColor =  blackfont;
     limitTitle.text=@"借款期限";
     [mainview addSubview:limitTitle];
     
     //借款期限
-    limitLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayMethodLabel.left, limitTitle.bottom+kSizeFrom750(10), repayMethodLabel.width,repayMethodLabel.height)];
+    limitLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayMethodLabel.left, limitTitle.bottom+rowSpace, repayMethodLabel.width,repayMethodLabel.height)];
     limitLabel.font = SYSTEMSIZE(28);
     limitLabel.textColor =  COLOR_White;
     limitLabel.text=[NSString stringWithFormat:@"%@",info.period_name];
@@ -117,32 +120,54 @@ Strong     LoanBase * baseModel;
     [mainview addSubview:repayTimeTitle];
     
     //还款期限(下次回款时间)
-    repayTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayTimeTitle.left, repayTimeTitle.bottom+kSizeFrom750(10), repayTimeTitle.width,repayTimeTitle.height)];
+    repayTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayTimeTitle.left, repayTimeTitle.bottom+rowSpace, repayTimeTitle.width,repayTimeTitle.height)];
     repayTimeLabel.font = SYSTEMSIZE(28);
     repayTimeLabel.textColor =  COLOR_White;
     repayTimeLabel.text = self.baseModel.transfer_ret.next_repay_time;
     [mainview addSubview: repayTimeLabel];
     
-    self.waittingLabel = [[UILabel alloc]initWithFrame:RECT(0, mainview.bottom, screen_width, kSizeFrom750(88))];
-    self.waittingLabel.backgroundColor = RGB(39, 141 ,233);
-    self.waittingLabel.text = [NSString stringWithFormat:@"待收本金：%@",[@"¥" stringByAppendingString:[CommonUtils getHanleNums:self.baseModel.transfer_ret.wait_principal]]];
+    UIView *waittingView = [[UIView alloc]initWithFrame:RECT(0, mainview.bottom, screen_width, kSizeFrom750(75))];
+    waittingView.backgroundColor = RGB(39, 141 ,233);
+    [self.scrollView addSubview:waittingView];
+    
+    self.waittingLabel =InitObject(UILabel);
     self.waittingLabel.textAlignment = NSTextAlignmentCenter;
     self.waittingLabel.textColor = COLOR_White;
-    [self.scrollView addSubview:self.waittingLabel];
+    [waittingView addSubview:self.waittingLabel];
+    [self.waittingLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(waittingView.mas_height);
+        make.top.mas_equalTo(0);
+    }];
+    self.waittingLabel.text = [NSString stringWithFormat:@"债权价值：%@",[@"¥" stringByAppendingString:[CommonUtils getHanleNums:self.baseModel.transfer_ret.wait_principal]]];
+
+    [waittingView layoutIfNeeded];
+    [self.waittingLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo((screen_width - self.waittingLabel.width)/2 - rowSpace);
+    }];
     
+    self.questionBtn = [[UIButton alloc]init];
+    [self.questionBtn setImage:IMAGEBYENAME(@"icons_question") forState:UIControlStateNormal];
+    [self.questionBtn addTarget:self action:@selector(questionBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [waittingView addSubview:self.questionBtn];
+    
+    [self.questionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.waittingLabel.mas_centerY);
+        make.left.mas_equalTo(self.waittingLabel.mas_right).offset(rowSpace);
+        make.width.height.mas_equalTo(kSizeFrom750(30));
+    }];
 #pragma mark --余额
     
-    UIView * bottomView =[[UIView alloc] initWithFrame:CGRectMake(0, self.waittingLabel.bottom, screen_width, kViewHeight - self.waittingLabel.bottom)];
+    UIView * bottomView =[[UIView alloc] initWithFrame:CGRectMake(0, waittingView.bottom, screen_width, kViewHeight - self.waittingLabel.bottom)];
     
     bottomView.backgroundColor=COLOR_Background;
     bottomView.userInteractionEnabled=YES;
     [self.scrollView addSubview:bottomView];
     
     
-    accountrepayTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, kSizeFrom750(20), screen_width,kSizeFrom750(30))];
+    accountrepayTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, sectionSpace, screen_width,kSizeFrom750(40))];
     accountrepayTimeLabel.font = SYSTEMSIZE(26);
-    accountrepayTimeLabel.textColor =  blackfont;
-    NSString *account = [NSString stringWithFormat:@"账户余额%@元",[NSString stringWithFormat:@"%.2f",[self.baseModel.balance_amount floatValue]]];
+    accountrepayTimeLabel.textColor =  RGB_183;
+    NSString *account = [NSString stringWithFormat:@"可用余额 %@ 元",[NSString stringWithFormat:@"%.2f",[self.baseModel.balance_amount floatValue]]];
     NSMutableAttributedString *attr = [CommonUtils diffierentFontWithString:account rang:[account rangeOfString:[NSString stringWithFormat:@"%.2f",[self.baseModel.balance_amount floatValue]]] font:NUMBER_FONT(30) color:COLOR_Red spacingBeforeValue:0 lineSpace:0];
     [accountrepayTimeLabel setAttributedText:attr];
     [bottomView addSubview:accountrepayTimeLabel];
@@ -153,51 +178,50 @@ Strong     LoanBase * baseModel;
     btn1.titleLabel.font = SYSTEMSIZE(26);
     [btn1 addTarget:self action:@selector(rechargeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [btn1 setBackgroundColor:COLOR_Red];
-    btn1.layer.cornerRadius = kSizeFrom750(10);
+    btn1.layer.cornerRadius = kSizeFrom750(50)/2;
     btn1.layer.masksToBounds = YES;
     btn1.tag=1;
     [bottomView addSubview:btn1];
     
     
-    UIView * investView =[[UIView alloc] initWithFrame:CGRectMake(0, accountrepayTimeLabel.bottom+kSizeFrom750(20), screen_width, kSizeFrom750(80))];
+    UIView * investView =[[UIView alloc] initWithFrame:CGRectMake(0, accountrepayTimeLabel.bottom+sectionSpace, screen_width, kSizeFrom750(80))];
     investView.backgroundColor=COLOR_White;
     [bottomView addSubview:investView];
     
-    UILabel *investTitle = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, 0, kSizeFrom750(130),kSizeFrom750(30))];
-    investTitle.centerY = investView.height/2;
-    investTitle.font = SYSTEMSIZE(26);
-    investTitle.textColor =  RGB_51;
-    investTitle.text=@"转让价格";
-    [investView addSubview:investTitle];
    
-    UILabel *invest = [[UILabel alloc] initWithFrame:CGRectMake(investTitle.right, 0, kSizeFrom750(300),kSizeFrom750(30))];
-    invest.centerY = investView.height/2;
-    invest.font = NUMBER_FONT(26);
-    invest.textColor =  COLOR_Red;
-    invest.text=[NSString stringWithFormat:@"%@元",self.baseModel.transfer_ret.actual_amount];
-    [investView addSubview:invest];
+    UILabel *investLabel = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, 0, kSizeFrom750(300),kSizeFrom750(30))];
+    investLabel.centerY = investView.height/2;
+    investLabel.font = SYSTEMSIZE(26);
+    investLabel.textColor =  RGB_51;
+    NSString *attrStr = [NSString stringWithFormat:@"%@ 元",self.baseModel.transfer_ret.actual_amount];
+    NSString *text = [@"转让价格 " stringByAppendingString:attrStr];
+    [investLabel setAttributedText:[CommonUtils diffierentFontWithString:text rang:[text rangeOfString:attrStr] font:NUMBER_FONT(28) color:COLOR_Red spacingBeforeValue:0 lineSpace:0]];
+    [investView addSubview:investLabel];
     
-    expectLabel = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, investView.bottom+kSizeFrom750(20), screen_width,kSizeFrom750(30))];
-    expectLabel.font = SYSTEMSIZE(26);
-    expectLabel.textColor =  blackfont;
-    NSString *expect =[NSString stringWithFormat:@"预期收益金额%@元",self.baseModel.transfer_ret.wait_interest];
-    NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:expect rang:[expect rangeOfString:self.baseModel.transfer_ret.wait_interest] font:NUMBER_FONT(30) color:COLOR_Red spacingBeforeValue:0 lineSpace:0];
-    [expectLabel setAttributedText:attr1];
-    [bottomView addSubview:expectLabel];
+
     
-    investBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    investBtn.frame = CGRectMake(kOriginLeft,expectLabel.bottom+kSizeFrom750(80), screen_width-kOriginLeft*2, kSizeFrom750(90));
+    investBtn = InitObject(GradientButton);
+    investBtn.frame = CGRectMake(kOriginLeft,investView.bottom+kSizeFrom750(70), kContentWidth, kSizeFrom750(80));
     [investBtn setTitle:@"立即购买" forState:UIControlStateNormal];
     investBtn.titleLabel.font = SYSTEMSIZE(32);
     [investBtn addTarget:self action:@selector(investBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [investBtn setBackgroundColor:RGB(200,226,242)];
     investBtn.layer.cornerRadius = investBtn.height/2;
-    investBtn.tag=2;
+    investBtn.layer.masksToBounds = YES;
+    [investBtn setGradientColors:@[COLOR_DarkBlue,COLOR_LightBlue]];
+    [investBtn setUntouchedColor:COLOR_Btn_Unsel];
+    //可购买
+    if ([self.baseModel.transfer_ret.buy_state isEqualToString:@"1"]) {
+        investBtn.enabled = YES;
+    }else{
+        investBtn.enabled = NO;
+    }
     [bottomView addSubview:investBtn];
 }
 
-
+-(void)questionBtnClick:(UIButton *)sender{
+    
+    [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:@"债权价值为债权出售日，债权出售人所持有的所有待收本金，与该出售日距离上一期还款的天数所对应的利息之和"];
+}
 
 -(void) getRequest{
     NSArray *keys = @[@"transfer_id",kToken];

@@ -67,13 +67,11 @@
 -(void)OnTapImage:(UITapGestureRecognizer *)sender{
     [self.delegate didopMineAtIndex:sender.view.tag];
 }
-
 -(void)OnMenuBtn:(UIButton *)sender
 {
         [self.delegate didopMineAtIndex:sender.tag];
     
 }
-
 -(void)setModelData:(MyAccountModel *)userinfo
 {
     
