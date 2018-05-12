@@ -33,14 +33,10 @@ Strong GetCashModel *cashModel;
     self.titleString = @"提现";
     [self initSubViews];
     [SVProgressHUD show];
+    [self getRequest];
     // Do any additional setup after loading the view.
 }
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self getRequest];
 
-}
 #pragma mark lazyLoading--
 -(void)initSubViews{
     
@@ -91,7 +87,6 @@ Strong GetCashModel *cashModel;
 -(UILabel *)amountLabel{
     if (!_amountLabel) {
         _amountLabel = InitObject(UILabel);
-        _amountLabel.text = @"5698.00";
         _amountLabel.textColor = COLOR_DarkBlue;
         _amountLabel.font = NUMBER_FONT_BOLD(46);
         _amountLabel.textAlignment = NSTextAlignmentCenter;
@@ -163,7 +158,7 @@ Strong GetCashModel *cashModel;
         [_remindTitle setTitle:@"温馨提示" forState:UIControlStateNormal];
         [_remindTitle.titleLabel setFont:SYSTEMSIZE(26)];
         [_remindTitle setTitleColor:RGB_51 forState:UIControlStateNormal];
-        [_remindTitle setImage:IMAGEBYENAME(@"home_club") forState:UIControlStateNormal];
+        [_remindTitle setImage:IMAGEBYENAME(@"recharge_remind") forState:UIControlStateNormal];
         [_remindTitle setTitleEdgeInsets:UIEdgeInsetsMake(0, -kSizeFrom750(20), 0, 0)];
         [_remindTitle setImageEdgeInsets:UIEdgeInsetsMake(0, -(kSizeFrom750(180) - kSizeFrom750(30) - kSizeFrom750(100)), 0, 0)];
     }
@@ -323,13 +318,16 @@ Strong GetCashModel *cashModel;
         UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self goWebViewWithPath:self.cashModel.bind_bank_url];
         }];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
         [alertController addAction:alertAction];
+        [alertController addAction:cancelAction];
         [self presentViewController:alertController animated:YES completion:nil];
         
-    }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 }
 -(void)loadTextView{
    
+    [self checkBankBind];
     self.amountTextField.placeholder = self.cashModel.txtamount_placeholder;//提示文字
     [self.remindTitle setTitle:self.cashModel.prompt forState:UIControlStateNormal];
     self.desLabel.text = self.cashModel.left_msg;

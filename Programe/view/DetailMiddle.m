@@ -17,11 +17,8 @@
     NSInteger secondsCountDown;//倒计时总时长
     NSTimer *countDownTimer;
     UILabel * kaiqian;
-    DetailMiddleMenu  * m1;
-    DetailMiddleMenu  * m2;
-    DetailMiddleMenu  * m3;
-    DetailMiddleMenu  * m4;
-    DetailMiddleMenu  * m5;
+    NSMutableArray *menuArray;
+    DetailMiddleMenu  * endTimeMenu;
     NSString * countDownTime;
 //    LoanBase * model;
     
@@ -35,26 +32,28 @@
 {
     self = [super init];
     if (self) {
+        menuArray = InitObject(NSMutableArray);
         self.backgroundColor=RGB_233;
         secondsCountDown = 0;
-
         [self initSubViews];
     }
     return self;
 }
-
+//项目详情
 -(void)loadInfoWithModel:(LoanBase *)programModel{
     
     LoanInfo * info=programModel.loan_info;
     
     [mtop setproName:info.name];//项目名称
     
-    [m1 setMenu:@"最低投标金额" content:[NSString stringWithFormat:@"%@元",info.tender_amount_min]];
-
-    [m2 setMenu:@"还款方式" content:programModel.repay_type_name];
+    NSArray *nameArray = @[@"最低投标金额",@"还款方式",@"项目状态"];
+    NSArray *valueArray = @[[NSString stringWithFormat:@"%@元",info.tender_amount_min],programModel.repay_type_name,info.status_name];
+    for (int i=0; i<nameArray.count; i++) {
+        DetailMiddleMenu *menu = [menuArray objectAtIndex:i];
+        [menu setMenu:nameArray[i] content:valueArray[i]];
+    }
     
-    [m3 setMenu:@"项目状态" content:info.status_name];
-    
+    endTimeMenu = [menuArray objectAtIndex:nameArray.count];
     secondsCountDown = [CommonUtils getDifferenceByDate:info.overdue_time_date];//倒计时秒数(48小时换算成的秒数,项目中需要从服务器获取)
     if (secondsCountDown>0) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countDownNotification:) name:Noti_CountDown object:nil];
@@ -63,54 +62,48 @@
         [self mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(kSizeFrom750(520));
         }];
-        [m4 setMenu:@"结束时间" content:[CommonUtils getCountDownTime:secondsCountDown]];
+        [endTimeMenu setHidden:NO];
+        [endTimeMenu setMenu:@"结束时间" content:[CommonUtils getCountDownTime:secondsCountDown]];
     }else{
         [self mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(kSizeFrom750(430));
         }];
-         [m4 setHidden:TRUE];
+         [endTimeMenu setHidden:YES];
     }
     [self layoutIfNeeded];//刷新UI控件frame
 }
 //债权转让
 -(void)loadCreditInfoWithModel:(LoanBase *)programModel{
     
-    
     LoanInfo * info=programModel.loan_info;
-    
     [mtop setproName:info.name];//项目名称
-    
-    [m1 setMenu:@"待收本金" content:[NSString stringWithFormat:@"%@元",[CommonUtils getHanleNums:programModel.transfer_ret.wait_principal]]];
-    
-    [m2 setMenu:@"待收利息" content:[NSString stringWithFormat:@"%@元", [CommonUtils getHanleNums:programModel.transfer_ret.wait_interest]]];
-
-    [m3 setMenu:@"还款方式" content:programModel.repay_type_name];
-    
-    [m4 setMenu:@"还款状态" content:info.status_name];
-    
-    [m5 setHidden:NO];
-    
-    [m5 setMenu:@"还款期限" content:programModel.transfer_ret.next_repay_time];
-    
+    NSArray *nameArray = @[@"待收本金",@"待收利息",@"还款方式",@"还款状态",@"还款期限"];
+    NSArray *valueArray = @[[NSString stringWithFormat:@"%@元",[CommonUtils getHanleNums:programModel.transfer_ret.wait_principal]],[NSString stringWithFormat:@"%@元", [CommonUtils getHanleNums:programModel.transfer_ret.wait_interest]],programModel.repay_type_name,info.status_name,programModel.transfer_ret.next_repay_time];
+    for (int i=0; i<menuArray.count; i++) {
+        DetailMiddleMenu *menu = [menuArray objectAtIndex:i];
+        [menu setMenu:nameArray[i] content:valueArray[i]];
+        if (i==4) {
+            [menu setHidden:NO];
+        }
+    }
     [self layoutIfNeeded];//刷新UI控件frame
 }
 
 - (void)initSubViews{
     
-    
+   
     mtop=[[DetailMiddleTop alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(160))];
     [self addSubview:mtop];
-     m1=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0,mtop.bottom, screen_width, kSizeFrom750(90))];
-    [self addSubview:m1];
-     m2=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0, m1.bottom, screen_width, kSizeFrom750(90))];
-    [self addSubview:m2];
-     m3=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0, m2.bottom, screen_width, kSizeFrom750(90))];
-    [self addSubview:m3];
-     m4=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0, m3.bottom, screen_width, kSizeFrom750(90))];
-    [self addSubview:m4];
-    m5=[[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0, m4.bottom, screen_width, kSizeFrom750(90))];
-    [m5 setHidden:YES];
-    [self addSubview:m5];
+    
+    for (int i=0; i<5; i++) {
+        DetailMiddleMenu *menu = [[DetailMiddleMenu alloc] initWithFrame:CGRectMake(0,mtop.bottom+kSizeFrom750(90)*i, screen_width, kSizeFrom750(90))];
+        if (i==4) {
+            [menu setHidden:YES];
+        }
+        [self addSubview:menu];
+        
+        [menuArray addObject:menu];
+    }
   
 }
 //一秒获取一次心跳
@@ -121,7 +114,7 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_CountDown object:nil];//移除通知监听
         [[NSNotificationCenter defaultCenter] postNotificationName:Noti_CountDownFinished object:nil];//
     }
-    [m4 setMenu:@"结束时间" content:[CommonUtils getCountDownTime:secondsCountDown]];
+    [endTimeMenu setMenu:@"结束时间" content:[CommonUtils getCountDownTime:secondsCountDown]];
 }
 
 

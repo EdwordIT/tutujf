@@ -157,23 +157,16 @@ Strong LoanBase *baseModel;
     
     [self.bottomView loadBottomWithModel:self.baseModel];
     
-    if([self.baseModel.loan_info.open_up_status isEqualToString:@"1"])//如果含有倒计时，则为标的定时抢购
+    [self.footerBtn setTitle:self.baseModel.transfer_ret.buy_name forState:UIControlStateNormal];
+    
+    if([self.baseModel.transfer_ret.buy_state isEqualToString:@"-1"])//不可购买状态
     {
         self.footerBtn.backgroundColor=COLOR_Btn_Unsel;
         self.footerBtn.userInteractionEnabled = NO;
     }else{
-        [self.footerBtn setTitle:self.baseModel.loan_info.buy_name forState:UIControlStateNormal];
-        //状态，3 可以购买，4满标待审，6还款中，7已还完， 其他 不可购买
-        if ([self.baseModel.loan_info.buy_state isEqualToString:@"-1"]) {//满标待审、还款中，则不可点击
-            self.footerBtn.backgroundColor=COLOR_Btn_Unsel;
-            self.footerBtn.userInteractionEnabled = NO;
-            
-        }else{
-            
-            //如果不含倒计时或者倒计时结束，直接显示可购买
-            self.footerBtn.backgroundColor=navigationBarColor;
-            self.footerBtn.userInteractionEnabled = YES;
-        }
+     
+        self.footerBtn.backgroundColor=navigationBarColor;
+        self.footerBtn.userInteractionEnabled = YES;
     }
     
     

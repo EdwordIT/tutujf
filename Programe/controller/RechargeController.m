@@ -155,7 +155,7 @@ Strong RechargeModel *rechargeModel;
         [_remindTitle setTitle:@"温馨提示" forState:UIControlStateNormal];
         [_remindTitle.titleLabel setFont:SYSTEMSIZE(26)];
         [_remindTitle setTitleColor:RGB_51 forState:UIControlStateNormal];
-        [_remindTitle setImage:IMAGEBYENAME(@"home_club") forState:UIControlStateNormal];
+        [_remindTitle setImage:IMAGEBYENAME(@"recharge_remind") forState:UIControlStateNormal];
         [_remindTitle setTitleEdgeInsets:UIEdgeInsetsMake(0, -kSizeFrom750(20), 0, 0)];
         [_remindTitle setImageEdgeInsets:UIEdgeInsetsMake(0, -(kSizeFrom750(180) - kSizeFrom750(30) - kSizeFrom750(100)), 0, 0)];
     }

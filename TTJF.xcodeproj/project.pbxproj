@@ -193,6 +193,8 @@
 		CB3D302820A2FD7A0040FE30 /* icons_question@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D302620A2FD7A0040FE30 /* icons_question@3x.png */; };
 		CB3D302920A2FD7A0040FE30 /* icons_question@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D302720A2FD7A0040FE30 /* icons_question@2x.png */; };
 		CB3D302C20A438900040FE30 /* GetCashModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D302B20A438900040FE30 /* GetCashModel.m */; };
+		CB3D302F20A581700040FE30 /* recharge_remind@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D302D20A5816F0040FE30 /* recharge_remind@2x.png */; };
+		CB3D303020A581700040FE30 /* recharge_remind@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D302E20A581700040FE30 /* recharge_remind@3x.png */; };
 		CB731555209A9CE200B3B8FA /* CooperationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB731554209A9CE200B3B8FA /* CooperationController.m */; };
 		CB73155A209AE9C200B3B8FA /* cooperation_pull@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */; };
 		CB73155B209AE9C200B3B8FA /* cooperation_pull@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731557209AE9C100B3B8FA /* cooperation_pull@3x.png */; };
@@ -769,6 +771,8 @@
 		CB3D302720A2FD7A0040FE30 /* icons_question@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_question@2x.png"; sourceTree = "<group>"; };
 		CB3D302A20A438900040FE30 /* GetCashModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetCashModel.h; sourceTree = "<group>"; };
 		CB3D302B20A438900040FE30 /* GetCashModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GetCashModel.m; sourceTree = "<group>"; };
+		CB3D302D20A5816F0040FE30 /* recharge_remind@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "recharge_remind@2x.png"; sourceTree = "<group>"; };
+		CB3D302E20A581700040FE30 /* recharge_remind@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "recharge_remind@3x.png"; sourceTree = "<group>"; };
 		CB731553209A9CE200B3B8FA /* CooperationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperationController.h; sourceTree = "<group>"; };
 		CB731554209A9CE200B3B8FA /* CooperationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperationController.m; sourceTree = "<group>"; };
 		CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cooperation_pull@2x.png"; sourceTree = "<group>"; };
@@ -2126,6 +2130,8 @@
 				CB731559209AE9C200B3B8FA /* cooperationBottom@2x.png */,
 				CB731558209AE9C100B3B8FA /* cooperationBottom@3x.png */,
 				E7DBE5911F2559B4000517D7 /* fanhui@3x.png */,
+				CB3D302D20A5816F0040FE30 /* recharge_remind@2x.png */,
+				CB3D302E20A581700040FE30 /* recharge_remind@3x.png */,
 				1B583B02205F890D00CC70E4 /* home_01@2x.png */,
 				1B583B08205F890E00CC70E4 /* home_01@3x.png */,
 				1B583B06205F890E00CC70E4 /* home_02@2x.png */,
@@ -2879,6 +2885,7 @@
 				1B788F14207DB8DB00F03863 /* icons_nodata@2x.png in Resources */,
 				1B1E308C2088811700B3974F /* program_full@2x.png in Resources */,
 				1B1E307620887E4E00B3974F /* icons_back@2x.png in Resources */,
+				CB3D303020A581700040FE30 /* recharge_remind@3x.png in Resources */,
 				E7067B901E60C9AA00E32B86 /* icon_feedCell_star_empty@2x.png in Resources */,
 				1B583B3A2060B35200CC70E4 /* service_top@2x.png in Resources */,
 				CB731599209B0A2B00B3B8FA /* refresh_011.jpg in Resources */,
@@ -2935,6 +2942,7 @@
 				E70A7D261FA0C0DB00C0628A /* logo_ico02.png in Resources */,
 				E7DBE5971F2559B4000517D7 /* background.png in Resources */,
 				E7067B911E60C9AA00E32B86 /* icon_feedCell_star_full@2x.png in Resources */,
+				CB3D302F20A581700040FE30 /* recharge_remind@2x.png in Resources */,
 				1B788F2B208058FE00F03863 /* icons_code@3x.png in Resources */,
 				CB731587209B0A2B00B3B8FA /* refresh_018.jpg in Resources */,
 				CB731580209B0A2B00B3B8FA /* refresh_06.jpg in Resources */,

@@ -19,8 +19,7 @@
     if (self) {
         [self.contentView setBackgroundColor:COLOR_Background];
         //适配X下的nav的高度
-        CGFloat navTitleHeight = kNavHight;
-        UIView *topBg = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(350)+navTitleHeight)];
+        UIView *topBg = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(400))];
         topBg.backgroundColor = navigationBarColor;
         [self.contentView addSubview:topBg];
         

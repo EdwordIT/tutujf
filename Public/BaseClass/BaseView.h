@@ -10,5 +10,5 @@
 #import "UIButton+button.h"
 #import "BaseUITableView.h"
 @interface BaseView : UIView
-
+- (UIViewController *)superVC;//获取当前view的父类视图
 @end

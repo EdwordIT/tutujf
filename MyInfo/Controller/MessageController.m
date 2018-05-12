@@ -96,6 +96,9 @@ Assign NSInteger totalPages;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     MessageModel *model = [self.dataSource objectAtIndex:indexPath.row];
     [self goWebViewWithPath:model.link_url];
+    //点击之后，内容置灰
+     model.status = @"2";
+    [self.mainTab reloadData];
 }
 #pragma request
 //获取站内信列表
@@ -106,11 +109,16 @@ Assign NSInteger totalPages;
         if (self.currentPage==1) {
             [self.dataSource removeAllObjects];
         }
+        
         self.totalPages = [[successDic objectForKey:@"total_pages"] integerValue];
         for (NSDictionary *dic in [successDic objectForKey:@"items"]) {
             MessageModel *model = [MessageModel yy_modelWithJSON:dic];
             [self.dataSource addObject:model];
         }
+        if (self.dataSource.count==0) {
+            [self.rightBtn setHidden:YES];
+        }else
+            [self.rightBtn setHidden:NO];
         [self.mainTab reloadData];
     } failure:^(NSDictionary *errorDic) {
         
@@ -127,11 +135,22 @@ Assign NSInteger totalPages;
     }
 }
 -(void)rightBtnClick:(UIButton *)sender{
-    [[HttpCommunication sharedInstance] postSignRequestWithPath:postMarkedAsReadedUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:nil success:^(NSDictionary *successDic) {
-        [self getRequest];
-    } failure:^(NSDictionary *errorDic) {
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"是否清除全部站内信？" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"清除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        [[HttpCommunication sharedInstance] postSignRequestWithPath:postMarkedAsReadedUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:nil success:^(NSDictionary *successDic) {
+            [self getRequest];
+        } failure:^(NSDictionary *errorDic) {
+            
+        }];
         
     }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:alertAction];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+   
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

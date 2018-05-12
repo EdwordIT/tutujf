@@ -14,7 +14,6 @@
 #import "HomeWebController.h"
 #import "TopScrollMode.h"
 #import "AccountInfoController.h"
-#import "LoginViewController.h"
 #import "AccountTitleView.h"//顶部导航栏
 #import "MyAccountModel.h"
 #import <MJRefreshNormalHeader.h>
@@ -30,7 +29,6 @@ OpenShowAdvertDelegate>
     TopScrollMode * scrollmodel;
     MineTopCell *topcell;
     NSArray *middleMenuArray;//我的投资，我的红包，我的资金流向
-    CGFloat navTitleHeight;
 }
 Strong AccountTitleView *accountTitleView;//导航栏视图
 Strong MyAccountModel *accountModel;//数据源
@@ -44,8 +42,6 @@ Strong MyAccountModel *accountModel;//数据源
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.titleView.backgroundColor = [UIColor clearColor];
-    //用于区分X下和普通屏幕下的高度适配问题
-    navTitleHeight = kNavHight;
     [self initTableView];
     [self initAdvertMaskView];//托管页面
 }
@@ -85,19 +81,21 @@ Strong MyAccountModel *accountModel;//数据源
 //初始化主界面
 -(void)initTableView{
 
-    self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height-kTabbarHeight) style:UITableViewStyleGrouped];
+    self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, screen_height-kTabbarHeight-kNavHight) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.estimatedRowHeight = 0;
+    self.tableView.estimatedSectionHeaderHeight = 0;
+    self.tableView.estimatedSectionFooterHeight = 0;
     // 设置表格尾部
      self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    [self.tableView setSeparatorColor:separaterColor];
-    
+    __weak typeof(self) weakSelf = self;
+    MJRefreshHeader *header  = [TTJFRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf getRequest];
+    }];
+    self.tableView.mj_header = header;
     [self.view addSubview:self.tableView];
-    
-    [self setUpTableView];
-    
     [self.view addSubview:self.accountTitleView];
     
         
@@ -106,7 +104,8 @@ Strong MyAccountModel *accountModel;//数据源
 -(AccountTitleView *)accountTitleView{
     if (!_accountTitleView) {
         _accountTitleView = InitObject(AccountTitleView);
-        _accountTitleView.frame = RECT(0, 0, screen_width, navTitleHeight);
+        _accountTitleView.frame = RECT(0, 0, screen_width, kNavHight);
+        _accountTitleView.backgroundColor = navigationBarColor;
         WEAK_SELF;
         _accountTitleView.accountTitleBlock = ^(NSInteger tag) {
           
@@ -129,16 +128,7 @@ Strong MyAccountModel *accountModel;//数据源
     }
     return _accountTitleView;
 }
-//界面表格刷新
--(void)setUpTableView{
-   
-   __weak typeof(self) weakSelf = self;
-    MJRefreshHeader *header  = [TTJFRefreshNormalHeader headerWithRefreshingBlock:^{
-        [weakSelf getRequest];
-    }];
-    self.tableView.mj_header = header;
 
-}
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
@@ -160,7 +150,7 @@ Strong MyAccountModel *accountModel;//数据源
     if (indexPath.section == 0) {
         {
             if(indexPath.row==0)
-                return kSizeFrom750(470)+navTitleHeight;//顶部抬头+资金信息高度
+                return kSizeFrom750(520);//资金信息高度
             else
             {
                 return kSizeFrom750(266);//中间菜单栏高度
@@ -356,17 +346,17 @@ Strong MyAccountModel *accountModel;//数据源
 {
     //设置渐变区域高度为120
     CGFloat contentOffset = self.tableView.contentOffset.y - self.tableView.top;
-    
+
 //    NSLog(@"contentoffset = %.2f",contentOffset);
     if (contentOffset>0&&contentOffset<120) {
-        
+
         [self.accountTitleView reloadNav:contentOffset];
     }
     if(contentOffset>=0){
-        [self.accountTitleView setBackgroundColor:navigationBarColor];//遮挡住tabView，作为导航栏显示，设置背景色
+//        [self.accountTitleView setBackgroundColor:navigationBarColor];//遮挡住tabView，作为导航栏显示，设置背景色
     }
    else  {
-       [self.accountTitleView setBackgroundColor:[UIColor clearColor]];
+//       [self.accountTitleView setBackgroundColor:[UIColor clearColor]];
     }
 }
 

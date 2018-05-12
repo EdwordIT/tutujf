@@ -56,15 +56,15 @@ Strong UIButton *questionBtn;//问题弹框
     NSString *rate = [infoModel.loan_info.apr stringByAppendingString:@"%"];
     NSMutableAttributedString *attr = [CommonUtils diffierentFontWithString:rate  rang:NSMakeRange(rate.length-1, 1) font:NUMBER_FONT(24) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.rateLabel setAttributedText:attr];
-    //总额
-    NSString *totalAmout = [NSString stringWithFormat:@"%@元",[CommonUtils getHanleNums:infoModel.loan_info.amount]];
+    //债权价值
+    NSString *totalAmout = [NSString stringWithFormat:@"%@ 元",[CommonUtils getHanleNums:infoModel.transfer_ret.amount_money]];
     NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:totalAmout  rang:NSMakeRange(totalAmout.length-1, 1) font:SYSTEMSIZE(30) color:RGB(141,200,255) spacingBeforeValue:0 lineSpace:0];
     [self.programTotalLabel setAttributedText:attr1];
     //项目期限
     self.programLimitLabel.text=infoModel.loan_info.period_name;
-    //剩余可投资金额
-    NSString *remain = [NSString stringWithFormat:@"转让金额 %@元",[CommonUtils getHanleNums:infoModel.loan_info.credited_amount]];
-    NSMutableAttributedString *attr2 = [CommonUtils diffierentFontWithString:remain  rang:[remain rangeOfString:[CommonUtils getHanleNums:infoModel.loan_info.left_amount]] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
+    //转让金额
+    NSString *remain = [NSString stringWithFormat:@"转让金额 %@ 元",[CommonUtils getHanleNums:infoModel.transfer_ret.actual_amount]];
+    NSMutableAttributedString *attr2 = [CommonUtils diffierentFontWithString:remain  rang:[remain rangeOfString:[CommonUtils getHanleNums:infoModel.transfer_ret.actual_amount]] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.programRemainLabel setAttributedText:attr2];
     
     self.investLabel.hidden = NO;
@@ -72,7 +72,8 @@ Strong UIButton *questionBtn;//问题弹框
     self.progressLabel.hidden = YES;
         //投资人数
     
-    NSString *period = [NSString stringWithFormat:@"已还 %@ 期",infoModel.transfer_ret.period];
+    
+    NSString *period = [NSString stringWithFormat:@"转让期数：%@ 期",infoModel.transfer_ret.period];
     NSString *totalPeriod = [NSString stringWithFormat:@"/共 %@ 期",infoModel.transfer_ret.total_period];
     NSMutableAttributedString *attr3 = [CommonUtils diffierentFontWithString:period  rang:[period rangeOfString:infoModel.transfer_ret.period] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     NSMutableAttributedString *attr4 = [CommonUtils diffierentFontWithString:totalPeriod  rang:[totalPeriod rangeOfString:infoModel.transfer_ret.total_period] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];

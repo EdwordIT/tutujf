@@ -8,7 +8,12 @@
 
 #import "DetailProduct.h"
 #import "JGGView.h"
+#import "BaseViewController.h"
+/**
+ 一级标题
+ */
 @interface TitleLabel :UIView
+
 Strong UIImageView *titleImage;
 
 Strong UILabel *textLabel;
@@ -28,7 +33,7 @@ Strong UILabel *textLabel;
         self.textLabel = [[UILabel alloc]initWithFrame:RECT(self.titleImage.right+kSizeFrom750(10), kSizeFrom750(10), kSizeFrom750(500), kSizeFrom750(30))];
         self.textLabel.font = SYSTEMSIZE(26);
         self.textLabel.centerY = self.titleImage.centerY;
-        self.textLabel.textColor = HEXCOLOR(@"#666666");
+        self.textLabel.textColor = RGB_102;
         [self addSubview:self.textLabel];
     }
     return self;
@@ -36,6 +41,9 @@ Strong UILabel *textLabel;
 
 @end
 @interface DetailProduct()
+{
+    NSString *sub_link;
+}
 @end
 @implementation DetailProduct
 
@@ -58,7 +66,13 @@ Strong UILabel *textLabel;
 - (void)initSubViews{
    
 }
-
+-(void)websiteBtnBtnClick:(UIButton *)sender{
+    
+    UIViewController *vc = self.superVC;
+    if ([vc isKindOfClass:[BaseViewController class]]) {
+        [((BaseViewController*)vc) goWebViewWithPath:sub_link];
+    }
+}
 -(void)loadInfoWithModel:(ProductDetailModel *)model{
     
     [self removeAllSubViews];
@@ -68,14 +82,26 @@ Strong UILabel *textLabel;
     CGFloat labelHeight = kSizeFrom750(50);
     CGFloat labelWidth = self.width - originLeft*2;
     CGFloat lineHeight = kLineHeight;
-   //项目说明
-    
+   
+    //项目说明
     TitleLabel *proLabel = [[TitleLabel alloc]initWithFrame:RECT(originLeft, spaceTop, labelWidth, labelHeight)];
     proLabel.textLabel.text = model.project_desc.title;
     [self addSubview:proLabel];
+    sub_link = model.project_desc.sub_title_link;
+    UIButton *websiteBtn = InitObject(UIButton);
+    websiteBtn.frame =RECT(kSizeFrom750(130), 0, kSizeFrom750(120), kSizeFrom750(30));
+    websiteBtn.centerY = proLabel.textLabel.centerY;
+    [websiteBtn setTitleColor:COLOR_Red forState:UIControlStateNormal];
+    websiteBtn.adjustsImageWhenHighlighted = NO;
+    [websiteBtn.titleLabel setFont:SYSTEMSIZE(28)];
+
+    [websiteBtn addTarget:self action:@selector(websiteBtnBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [websiteBtn setTitle:model.project_desc.sub_title forState:UIControlStateNormal];
+    [proLabel addSubview:websiteBtn];
+    
     
     UILabel *subTitleLabel = [[UILabel alloc]initWithFrame:RECT(proLabel.left, proLabel.bottom, labelWidth, 0)];
-    [subTitleLabel setTextColor:HEXCOLOR(@"#666666")];
+    [subTitleLabel setTextColor:RGB_102];
     subTitleLabel.numberOfLines = 0;
     [subTitleLabel setFont:SYSTEMSIZE(26)];
     CGFloat subTitleHeight = [CommonUtils getSpaceLabelHeight:model.project_desc.content withFont:subTitleLabel.font withWidth:subTitleLabel.width lineSpace:kSizeFrom750(10)];
@@ -83,12 +109,12 @@ Strong UILabel *textLabel;
     subTitleLabel.height = subTitleHeight+spaceTop/2;
     [self addSubview:subTitleLabel];
     
-    UIView *line1 = [[UIView alloc]initWithFrame:RECT(originLeft, subTitleLabel.bottom, labelWidth, lineHeight)];
+    UIView *line1 = [[UIView alloc]initWithFrame:RECT(originLeft, subTitleLabel.bottom+spaceTop, labelWidth, lineHeight)];
     line1.backgroundColor = separaterColor;
     [self addSubview:line1];
-    totalHeight = subTitleLabel.bottom;
-    //借款人基本信息等
+    totalHeight = line1.bottom;
     
+    //借款人基本信息等
     CGFloat borrowerOriginY = 0;//因为借款人每一项信息的类目个数不同，此处用于计算高度
     for (int i=0; i<model.borrower_list.count; i++) {
         BorrowerModel *borrowModel = model.borrower_list[i];
@@ -146,14 +172,14 @@ Strong UILabel *textLabel;
         
         auditLabel.text = auditModel.info_name;
         auditLabel.font = SYSTEMSIZE(26);
-        auditLabel.textColor = HEXCOLOR(@"#666666");
+        auditLabel.textColor = RGB_102;
         [self addSubview:auditLabel];
         
         UILabel *auditTextLabel = [[UILabel alloc]initWithFrame:RECT(self.width - kSizeFrom750(250), auditLabel.top, kSizeFrom750(200), labelHeight)];
         auditTextLabel.text = auditModel.audit_result;
         auditTextLabel.textAlignment = NSTextAlignmentRight;
         auditTextLabel.font = SYSTEMSIZE(26);
-        auditTextLabel.textColor = HEXCOLOR(@"#666666");
+        auditTextLabel.textColor = RGB_102;
         [self addSubview:auditTextLabel];
         
         if (i!=0) {
