@@ -85,9 +85,7 @@ Strong MyAccountModel *accountModel;//数据源
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.estimatedRowHeight = 0;
-    self.tableView.estimatedSectionHeaderHeight = 0;
-    self.tableView.estimatedSectionFooterHeight = 0;
+    self.tableView.estimatedRowHeight = 0;//不自动计算行高
     // 设置表格尾部
      self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     __weak typeof(self) weakSelf = self;

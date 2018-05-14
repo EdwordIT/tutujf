@@ -89,6 +89,10 @@
  提现记录
  */
 #define getCashRecordUrl @"/api/cash/getCashLog"
+/**
+ 即时到账提现手续费接口
+ */
+#define getCashFeeAmtUrl @"/api/cash/cashFeeAmt"
 /*****************************************我的************************************************************/
 //登录接口
 #define loginUrl  @"/api/Users/Login"

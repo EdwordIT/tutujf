@@ -195,6 +195,12 @@
 		CB3D302C20A438900040FE30 /* GetCashModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D302B20A438900040FE30 /* GetCashModel.m */; };
 		CB3D302F20A581700040FE30 /* recharge_remind@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D302D20A5816F0040FE30 /* recharge_remind@2x.png */; };
 		CB3D303020A581700040FE30 /* recharge_remind@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D302E20A581700040FE30 /* recharge_remind@3x.png */; };
+		CB3D303720A695310040FE30 /* getCash_remind@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303120A6952F0040FE30 /* getCash_remind@2x.png */; };
+		CB3D303820A695310040FE30 /* point_unsel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303220A695300040FE30 /* point_unsel@2x.png */; };
+		CB3D303920A695310040FE30 /* point_unsel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303320A695300040FE30 /* point_unsel@3x.png */; };
+		CB3D303A20A695310040FE30 /* point_sel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303420A695300040FE30 /* point_sel@3x.png */; };
+		CB3D303B20A695310040FE30 /* getCash_remind@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303520A695310040FE30 /* getCash_remind@3x.png */; };
+		CB3D303C20A695310040FE30 /* point_sel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303620A695310040FE30 /* point_sel@2x.png */; };
 		CB731555209A9CE200B3B8FA /* CooperationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB731554209A9CE200B3B8FA /* CooperationController.m */; };
 		CB73155A209AE9C200B3B8FA /* cooperation_pull@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */; };
 		CB73155B209AE9C200B3B8FA /* cooperation_pull@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731557209AE9C100B3B8FA /* cooperation_pull@3x.png */; };
@@ -773,6 +779,12 @@
 		CB3D302B20A438900040FE30 /* GetCashModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GetCashModel.m; sourceTree = "<group>"; };
 		CB3D302D20A5816F0040FE30 /* recharge_remind@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "recharge_remind@2x.png"; sourceTree = "<group>"; };
 		CB3D302E20A581700040FE30 /* recharge_remind@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "recharge_remind@3x.png"; sourceTree = "<group>"; };
+		CB3D303120A6952F0040FE30 /* getCash_remind@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "getCash_remind@2x.png"; sourceTree = "<group>"; };
+		CB3D303220A695300040FE30 /* point_unsel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point_unsel@2x.png"; sourceTree = "<group>"; };
+		CB3D303320A695300040FE30 /* point_unsel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point_unsel@3x.png"; sourceTree = "<group>"; };
+		CB3D303420A695300040FE30 /* point_sel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point_sel@3x.png"; sourceTree = "<group>"; };
+		CB3D303520A695310040FE30 /* getCash_remind@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "getCash_remind@3x.png"; sourceTree = "<group>"; };
+		CB3D303620A695310040FE30 /* point_sel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point_sel@2x.png"; sourceTree = "<group>"; };
 		CB731553209A9CE200B3B8FA /* CooperationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperationController.h; sourceTree = "<group>"; };
 		CB731554209A9CE200B3B8FA /* CooperationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperationController.m; sourceTree = "<group>"; };
 		CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cooperation_pull@2x.png"; sourceTree = "<group>"; };
@@ -2190,6 +2202,12 @@
 				1B1923772064CF13005B0C57 /* mobile_code@3x.png */,
 				1B1923742064CF12005B0C57 /* mobile@2x.png */,
 				1B19237A2064CF14005B0C57 /* mobile@3x.png */,
+				CB3D303120A6952F0040FE30 /* getCash_remind@2x.png */,
+				CB3D303520A695310040FE30 /* getCash_remind@3x.png */,
+				CB3D303620A695310040FE30 /* point_sel@2x.png */,
+				CB3D303420A695300040FE30 /* point_sel@3x.png */,
+				CB3D303220A695300040FE30 /* point_unsel@2x.png */,
+				CB3D303320A695300040FE30 /* point_unsel@3x.png */,
 				1B1923722064CF12005B0C57 /* password_insure@2x.png */,
 				1B19237B2064CF14005B0C57 /* password_insure@3x.png */,
 				1B19237C2064CF15005B0C57 /* password_lock@2x.png */,
@@ -2771,6 +2789,7 @@
 				1BE67344207209780003A30C /* icons_msg_unsel@2x.png in Resources */,
 				CB731584209B0A2B00B3B8FA /* refresh_016.jpg in Resources */,
 				E7DBE59C1F2559B4000517D7 /* platFee.png in Resources */,
+				CB3D303720A695310040FE30 /* getCash_remind@2x.png in Resources */,
 				1B19238A2064CF18005B0C57 /* register_red@3x.png in Resources */,
 				1B1E308D2088811700B3974F /* program_payback@3x.png in Resources */,
 				E7D4C1181E717D9000E828A5 /* iCategoryList.plist in Resources */,
@@ -2778,10 +2797,12 @@
 				E7067B931E60C9AA00E32B86 /* icon_map.png in Resources */,
 				E70D16FC1F2303C3007F12D0 /* sns_icon_24_s.png in Resources */,
 				E7067B7B1E60C9AA00E32B86 /* shareImg.png in Resources */,
+				CB3D303A20A695310040FE30 /* point_sel@3x.png in Resources */,
 				E7D4C1161E717D9000E828A5 /* classCategory.plist in Resources */,
 				1B583B13205F890F00CC70E4 /* home_03@3x.png in Resources */,
 				E70F3C9C1F92338200B4568C /* user03.png in Resources */,
 				E7067BC01E60C9AB00E32B86 /* icon_listheader_animation_1@2x.png in Resources */,
+				CB3D303820A695310040FE30 /* point_unsel@2x.png in Resources */,
 				1B583B21205F8D2A00CC70E4 /* ruler@2x.png in Resources */,
 				E7BF5F2D1E6066F200BCE81E /* LaunchScreen.storyboard in Resources */,
 				CB7315A0209B0A2B00B3B8FA /* refresh_012.jpg in Resources */,
@@ -2815,6 +2836,7 @@
 				CB73158D209B0A2B00B3B8FA /* refresh_027.jpg in Resources */,
 				CB73155C209AE9C200B3B8FA /* cooperationBottom@3x.png in Resources */,
 				E70F3C9D1F92338200B4568C /* user04.png in Resources */,
+				CB3D303C20A695310040FE30 /* point_sel@2x.png in Resources */,
 				CB731592209B0A2B00B3B8FA /* refresh_030.jpg in Resources */,
 				E70D16FE1F2303C3007F12D0 /* sns_icon_6_s.png in Resources */,
 				1BE67349207209780003A30C /* icons_msg_unsel@3x.png in Resources */,
@@ -2855,6 +2877,7 @@
 				1B1E307520887E4E00B3974F /* icons_close@2x.png in Resources */,
 				1B1923A02064D264005B0C57 /* service_sel@3x.png in Resources */,
 				E70D16F81F2303C3007F12D0 /* sns_icon_22_s.png in Resources */,
+				CB3D303920A695310040FE30 /* point_unsel@3x.png in Resources */,
 				1BE6736220734F720003A30C /* menu_home_unsel@2x.png in Resources */,
 				1B1E30942089873800B3974F /* mineTop_02@2x.png in Resources */,
 				E7E5866D1FA1DBB60031A71C /* menu5.png in Resources */,
@@ -2951,6 +2974,7 @@
 				1B4FC6CE2058BC6F00C7C88E /* redevenlope@2x.png in Resources */,
 				1B1923932064CF18005B0C57 /* service_unsel@3x.png in Resources */,
 				CB73158B209B0A2B00B3B8FA /* refresh_019.jpg in Resources */,
+				CB3D303B20A695310040FE30 /* getCash_remind@3x.png in Resources */,
 				E70F3C951F92338200B4568C /* menu1.png in Resources */,
 				1B583B3B2060B35200CC70E4 /* service_top@3x.png in Resources */,
 				1B1E30902088811700B3974F /* program_repayed@2x.png in Resources */,

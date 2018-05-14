@@ -12,7 +12,8 @@
 #import "GetCashRecordController.h"
 #import "HomeWebController.h"
 #import "GetCashModel.h"
-@interface GetCashController ()<UITextFieldDelegate,UITextViewDelegate,UIAlertViewDelegate>
+@interface GetCashController ()<UITextFieldDelegate,UITextViewDelegate,UIAlertViewDelegate,UIWebViewDelegate>
+Strong UIScrollView *bgScrollView;
 Strong UIView *topView;//白色背景
 Strong UILabel *amountTitle;
 Strong UILabel *amountLabel;//可提现余额
@@ -22,8 +23,12 @@ Strong GradientButton *getCashBtn;//
 Strong UILabel *desLabel;//进入第三方提现
 Strong UIButton *historyBtn;//提现明细
 Strong UIButton *remindTitle;
-Strong UITextView *remindTextView;//温馨提示
+Strong UIWebView *remindWeb;//温馨提示
 Strong GetCashModel *cashModel;
+Strong UIView *sectionView;//切换普通提现、及时提现
+Strong UIButton *commonBtn;//普通提现
+Strong UIButton *immediatelyBtn;//即时到账提现
+Strong UIButton *remindBtn;//提现手续费
 @end
 
 @implementation GetCashController
@@ -40,7 +45,9 @@ Strong GetCashModel *cashModel;
 #pragma mark lazyLoading--
 -(void)initSubViews{
     
-    [self.view addSubview:self.topView];
+    [self.view addSubview:self.bgScrollView];
+    
+    [self.bgScrollView addSubview:self.topView];
     
     [self.topView addSubview:self.amountTitle];
     
@@ -50,15 +57,23 @@ Strong GetCashModel *cashModel;
     
     [self.amountBgView addSubview:self.amountTextField];
     
+    [self.topView addSubview:self.sectionView];
+    
+    [self.sectionView addSubview:self.commonBtn];
+    
+    [self.sectionView addSubview:self.immediatelyBtn];
+    
+    [self.sectionView addSubview:self.remindBtn];
+    
     [self.topView addSubview:self.getCashBtn];
     
     [self.topView addSubview:self.desLabel];
     
     [self.topView addSubview:self.historyBtn];
     
-    [self.view addSubview:self.remindTitle];
+    [self.bgScrollView addSubview:self.remindTitle];
     
-    [self.view addSubview:self.remindTextView];
+    [self.bgScrollView addSubview:self.remindWeb];
     
     [self loadLayout];
     
@@ -66,6 +81,15 @@ Strong GetCashModel *cashModel;
     
     [self.getCashBtn setGradientColors:@[COLOR_DarkBlue,COLOR_LightBlue]];
 
+}
+-(UIScrollView *)bgScrollView{
+    if (!_bgScrollView) {
+        _bgScrollView = InitObject(UIScrollView);
+        _bgScrollView.showsVerticalScrollIndicator = NO;
+        _bgScrollView.showsHorizontalScrollIndicator = NO;
+
+    }
+    return _bgScrollView;
 }
 -(UIView *)topView{
     if (!_topView) {
@@ -115,6 +139,58 @@ Strong GetCashModel *cashModel;
     }
     return _amountTextField;
 }
+-(UIView *)sectionView{
+    if (!_sectionView) {
+        _sectionView = InitObject(UIView);
+    }
+    return _sectionView;
+}
+-(UIButton *)commonBtn{
+    if (!_commonBtn) {
+        _commonBtn = InitObject(UIButton);
+        [_commonBtn setImage:IMAGEBYENAME(@"point_sel") forState:UIControlStateSelected];
+        [_commonBtn setImage:IMAGEBYENAME(@"point_unsel") forState:UIControlStateNormal];
+        [_commonBtn setTitle:@"普通提现（免费）" forState:UIControlStateNormal];
+        [_commonBtn setTitle:@"普通提现（免费）" forState:UIControlStateSelected];
+        [_commonBtn.titleLabel setFont:SYSTEMSIZE(28)];
+        [_commonBtn setTitleColor:RGB_51 forState:UIControlStateNormal];
+        _commonBtn.tag = 1;
+        [_commonBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -kSizeFrom750(30), 0, 0)];
+        [_commonBtn setImageEdgeInsets:UIEdgeInsetsMake(0, -(kSizeFrom750(270) - kSizeFrom750(30) - kSizeFrom750(200)), 0, 0)];
+        [_commonBtn addTarget:self action:@selector(sectionClick:) forControlEvents:UIControlEventTouchUpInside];
+        _commonBtn.selected = YES;
+    }
+    return _commonBtn;
+}
+-(UIButton *)immediatelyBtn{
+    if (!_immediatelyBtn) {
+        _immediatelyBtn = InitObject(UIButton);
+        [_immediatelyBtn.titleLabel setFont:SYSTEMSIZE(28)];
+        [_immediatelyBtn setTitleColor:RGB_51 forState:UIControlStateNormal];
+        [_immediatelyBtn setImage:IMAGEBYENAME(@"point_sel") forState:UIControlStateSelected];
+        [_immediatelyBtn setImage:IMAGEBYENAME(@"point_unsel") forState:UIControlStateNormal];
+        [_immediatelyBtn setTitle:@"即时提现" forState:UIControlStateNormal];
+        [_immediatelyBtn setTitle:@"即时提现" forState:UIControlStateSelected];
+        _immediatelyBtn.tag = 2;
+        [_immediatelyBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -kSizeFrom750(30), 0, 0)];
+        [_immediatelyBtn setImageEdgeInsets:UIEdgeInsetsMake(0, -(kSizeFrom750(170) - kSizeFrom750(30) - kSizeFrom750(100)), 0, 0)];
+        [_immediatelyBtn addTarget:self action:@selector(sectionClick:) forControlEvents:UIControlEventTouchUpInside];
+
+    }
+    return _immediatelyBtn;
+}
+-(UIButton *)remindBtn{
+    if (!_remindBtn) {
+        _remindBtn = InitObject(UIButton);
+        [_remindBtn setBackgroundImage:IMAGEBYENAME(@"getCash_remind") forState:UIControlStateNormal];
+        [_remindBtn setTitleColor:RGB_153 forState:UIControlStateNormal];
+        [_remindBtn setTitle:@"提现手续费：0.00元" forState:UIControlStateNormal];
+        [_remindBtn.titleLabel setFont:SYSTEMSIZE(24)];
+        _remindBtn.contentMode = UIViewContentModeScaleAspectFit;
+        [_remindBtn setHidden:YES];
+    }
+    return _remindBtn;
+}
 -(GradientButton *)getCashBtn{
     if (!_getCashBtn) {
         _getCashBtn = InitObject(GradientButton);
@@ -147,7 +223,7 @@ Strong GetCashModel *cashModel;
         _historyBtn.titleLabel.font = SYSTEMSIZE(28);
         [_historyBtn addTarget:self action:@selector(historyBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [_historyBtn setTitle:@"提现明细" forState:UIControlStateNormal];
-        [_historyBtn setTitleColor:COLOR_Red forState:UIControlStateNormal];
+        [_historyBtn setTitleColor:COLOR_DarkBlue forState:UIControlStateNormal];
     }
     return _historyBtn;
 }
@@ -164,29 +240,30 @@ Strong GetCashModel *cashModel;
     }
     return _remindTitle;
 }
--(UITextView *)remindTextView
+-(UIWebView *)remindWeb
 {
-    if (!_remindTextView) {
-        _remindTextView = InitObject(UITextView);
-        _remindTextView.delegate = self;
-        _remindTextView.editable = NO;
-        _remindTextView.selectable = YES;
-        _remindTextView.scrollEnabled = NO;
-        _remindTextView.dataDetectorTypes = UIDataDetectorTypeLink;
-        _remindTextView.font = SYSTEMSIZE(22);
-        _remindTextView.backgroundColor = [UIColor clearColor];
+    if (!_remindWeb) {
+        _remindWeb = [[UIWebView alloc]init];
+        _remindWeb.delegate = self;
+        _remindWeb.scrollView.bounces = NO;
+        _remindWeb.scrollView.scrollEnabled = NO;
+        _remindWeb.opaque = NO;
+        _remindWeb.backgroundColor = [UIColor clearColor];
+        _remindWeb.backgroundColor = COLOR_Background;
     }
-    return _remindTextView;
+    return _remindWeb;
 }
 #pragma masonry
 -(void)loadLayout
 {
-    [self.topView mas_makeConstraints:^(MASConstraintMaker *make) {
+ 
+    [self.bgScrollView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(kNavHight);
-        make.left.mas_equalTo(0);
         make.width.mas_equalTo(screen_width);
-        make.height.mas_equalTo(kSizeFrom750(572));
+        make.height.mas_equalTo(kViewHeight);
+        make.left.mas_equalTo(0);
     }];
+    
     [self.amountTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(kSizeFrom750(65));
         make.left.mas_equalTo(0);
@@ -211,10 +288,40 @@ Strong GetCashModel *cashModel;
         make.left.mas_equalTo(kOriginLeft);
         make.width.mas_equalTo(kSizeFrom750(600));
     }];
+    
+    
+    [self.commonBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.mas_equalTo(0);
+        make.width.mas_equalTo(kSizeFrom750(270));
+        make.height.mas_equalTo(kSizeFrom750(50));
+    }];
+    
+    [self.immediatelyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.height.mas_equalTo(self.commonBtn);
+        make.width.mas_equalTo(kSizeFrom750(170));
+        make.left.mas_equalTo(self.commonBtn.mas_right).offset(kSizeFrom750(60));
+    }];
+    [self.remindBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.immediatelyBtn.mas_bottom);
+        make.width.mas_equalTo(kSizeFrom750(300));
+        make.height.mas_equalTo(kSizeFrom750(0));
+        make.left.mas_equalTo(kSizeFrom750(190));
+    }];
+    
+    [self.sectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.amountBgView.mas_bottom).offset(kSizeFrom750(30));
+        make.width.mas_equalTo(kSizeFrom750(600));
+        make.left.mas_equalTo(kSizeFrom750(75));
+        make.bottom.mas_equalTo(self.remindBtn.mas_bottom).offset(kSizeFrom750(30));
+    }];
+    
+    
     [self.getCashBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.amountBgView.mas_bottom).offset(kSizeFrom750(42));
+        make.top.mas_equalTo(self.sectionView.mas_bottom);
         make.left.width.height.mas_equalTo(self.amountBgView);
     }];
+
+    
     [self.desLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.getCashBtn);
         make.width.mas_equalTo(kSizeFrom750(500));
@@ -234,40 +341,53 @@ Strong GetCashModel *cashModel;
         make.height.mas_equalTo(kSizeFrom750(35));
     }];
     
-    [self.remindTextView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(self.remindTitle);
+    [self.remindWeb mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.remindTitle.mas_bottom).offset(kSizeFrom750(20));
-        make.width.mas_equalTo(kSizeFrom750(690));
+        make.width.mas_equalTo(kSizeFrom750(680));
+        make.left.mas_equalTo(self.remindTitle);
+        make.height.mas_equalTo(10);
+    }];
+    
+    [self.topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.mas_equalTo(0);
+        make.width.mas_equalTo(screen_width);
+        make.bottom.mas_equalTo(self.historyBtn.mas_bottom).offset(kSizeFrom750(20));
     }];
 }
 #pragma textField delegate
 -(void)textFieldDidChanged:(UITextField *)textField
 {
-    if ([self.cashModel.bt_state isEqualToString:@"-1"]) {//不可提现
+    if ([self.cashModel.bt_state isEqualToString:@"-1"]||self.commonBtn.selected==YES) {//不可提现和非即时到账，都不用计算手续费
         self.getCashBtn.enabled = NO;
         return;
     }
-    NSString * str = [textField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString *    str = [self.amountTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
     if(str.length >0)
     {
         if(![CommonUtils isNumber:str])
         {
-            self.getCashBtn.enabled =NO;
+            self.getCashBtn.enabled = NO;
+            
         }
         else  if([CommonUtils isNumber:str])
         {
-            if([str floatValue]>=self.cashModel.min_amount.floatValue&&str.floatValue<=[self.cashModel.amount floatValue])
+            NSInteger num=[str intValue];
+            NSString * str1=self.cashModel.min_amount;
+            NSInteger minInvest= [str1 intValue];
+            if(num>=minInvest)
             {
-               self.getCashBtn.enabled =YES;
+                self.getCashBtn.enabled = YES;
+                [self getCashFeeRequest];
             }
             else
             {
-               self.getCashBtn.enabled =NO;
+                self.getCashBtn.enabled = NO;
             }
         }
+        
     }
     else{
-            self.getCashBtn.enabled =NO;
+        
     }
 }
 #pragma mark--request
@@ -280,11 +400,29 @@ Strong GetCashModel *cashModel;
         
     }];
 }
+//获取即时提现手续费
+-(void)getCashFeeRequest{
+    
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getCashFeeAmtUrl keysArray:@[@"amount"] valuesArray:@[self.amountTextField.text] refresh:nil success:^(NSDictionary *successDic) {
+       
+        NSString *fee = [successDic objectForKey:@"fee_amt"];
+        [self.remindBtn setTitle:[NSString stringWithFormat:@"提现手续费：%@元",fee] forState:UIControlStateNormal];
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
+}
 #pragma mark --buttonClick
 //提现按钮点击
 -(void)withDrowBtnClick:(UIButton *)sender{
-    NSArray *keys = @[kToken,@"amount"];
-    NSArray *values = @[[CommonUtils getToken],self.amountTextField.text];
+    
+    if ([self checkNum]) {
+        
+    }else{
+        return;
+    }
+    NSString *withdraw =  self.commonBtn.selected?@"0":@"1";
+    NSArray *keys = @[kToken,@"amount",@"withdraw_type",withdraw];
+    NSArray *values = @[[CommonUtils getToken],self.amountTextField.text,withdraw];
     [[HttpCommunication sharedInstance] postSignRequestWithPath:postCashUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
         
         NSString * form=[NSString stringWithFormat:@"%@",[successDic objectForKey:@"form"]];//json字符串
@@ -310,6 +448,28 @@ Strong GetCashModel *cashModel;
     GetCashRecordController *record = InitObject(GetCashRecordController);
     [self.navigationController pushViewController:record animated:YES];
 }
+//提现方式切换
+-(void)sectionClick:(UIButton *)sender{
+    
+    if (sender.tag==1) {
+        self.commonBtn.selected = YES;
+        self.immediatelyBtn.selected = NO;
+        [self.remindBtn setHidden:YES];
+        [self.remindBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(0);
+        }];
+    }else{
+        self.immediatelyBtn.selected = YES;
+        self.commonBtn.selected = NO;
+        [self.remindBtn setHidden:NO];
+        [self.remindBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(kSizeFrom750(65));
+        }];
+        [self textFieldDidChanged:self.amountTextField];
+    }
+    [self.bgScrollView layoutIfNeeded];
+    self.bgScrollView.contentSize = CGSizeMake(screen_width, self.remindWeb.bottom);
+}
 -(void)checkBankBind{
     
     if ([self.cashModel.is_bind_bank isEqualToString:@"-1"]) {//未绑定银行卡，弹出提示框，跳转到绑定银行卡页面
@@ -325,6 +485,7 @@ Strong GetCashModel *cashModel;
         
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 }
+//数据加载
 -(void)loadTextView{
    
     [self checkBankBind];
@@ -335,21 +496,36 @@ Strong GetCashModel *cashModel;
     [self.getCashBtn setTitle:self.cashModel.bt_name forState:UIControlStateNormal];
     [self.amountTitle setText:self.cashModel.amount_title];
     [self.amountLabel setText:[CommonUtils getHanleNums:self.cashModel.amount]];
-    
-    
-    NSString *str = self.cashModel.prompt_content;
-    if ([str rangeOfString:@"\\n"].location!=NSNotFound) {
-        str = [str stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
-    }
-    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc]initWithString:str];
-    [attr addAttribute:NSForegroundColorAttributeName value:RGB_166 range:NSMakeRange(0, str.length)];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:kLabelSpace];
-    [paragraphStyle setHeadIndent:kSizeFrom750(35)];
-    [attr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [str length])];//设置行间距
+ 
+    [self.remindWeb loadRequest:[NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.cashModel.prompt_content]]];
 
-    [self.remindTextView setAttributedText:attr];
 }
+-(BOOL)checkNum{
+    NSString *    str = [self.amountTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if ([CommonUtils isNumber:str]) {
+        if ([str floatValue]>[self.cashModel.amount floatValue]) {
+            [SVProgressHUD showInfoWithStatus:@"可提现余额不足"];
+            return NO;
+        }else{
+            return YES;
+        }
+    }
+    return NO;
+}
+
+//webView加载结束
+-(void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    NSString *webHeight = [webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"];
+    CGFloat height = [webHeight floatValue];
+    [self.remindWeb mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(height);
+    }];
+    [self.bgScrollView layoutIfNeeded];
+    
+    self.bgScrollView.contentSize = CGSizeMake(screen_width, self.remindWeb.bottom);
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
