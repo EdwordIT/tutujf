@@ -116,7 +116,7 @@
     if (keys==nil) {
         bodyStr = [newPath substringFromIndex:urlString.length];
     }else
-        bodyStr = [newPath substringFromIndex:urlString.length+1];//请求体封装
+        bodyStr = [newPath substringFromIndex:urlString.length+1];//请求体封装(有？的情况)
     NSData *bodyData = [bodyStr dataUsingEncoding:NSUTF8StringEncoding];
     urlRequest.HTTPBody = bodyData;
     NSURLSession *session = [NSURLSession sharedSession];

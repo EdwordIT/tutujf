@@ -112,9 +112,14 @@ Strong UIWebView *mainWebView;
     self.mainWebView.scrollView.bounces = NO;
     [self addSubview:self.mainWebView];
     
-    NSURL *url = [[NSURL alloc] initWithString:oyUrlAddress];
+    
+    NSString *sign = [HttpSignCreate GetSignStrWithKeys:@[kUsername,kToken] andValues:@[user_name,[CommonUtils getToken]]];
+    NSString *loginPath = [NSString stringWithFormat:loginWebUrl,oyUrlAddress,user_name,[CommonUtils getToken],sign];
+
+    
+    NSURL *url = [[NSURL alloc] initWithString:loginPath];
     NSMutableURLRequest *request;
-    request = [NSMutableURLRequest requestWithURL:url];
+    request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:20];//超时时间12秒
     NSMutableString *cookies = [NSMutableString string];
     NSArray *tmp = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     for (NSHTTPCookie * cookie in tmp) {

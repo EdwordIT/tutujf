@@ -357,7 +357,7 @@ Strong UIButton *remindBtn;//提现手续费
 #pragma textField delegate
 -(void)textFieldDidChanged:(UITextField *)textField
 {
-    if ([self.cashModel.bt_state isEqualToString:@"-1"]||self.commonBtn.selected==YES) {//不可提现和非即时到账，都不用计算手续费
+    if ([self.cashModel.bt_state isEqualToString:@"-1"]) {//不可提现和非即时到账，都不用计算手续费
         self.getCashBtn.enabled = NO;
         return;
     }
@@ -377,7 +377,9 @@ Strong UIButton *remindBtn;//提现手续费
             if(num>=minInvest)
             {
                 self.getCashBtn.enabled = YES;
-                [self getCashFeeRequest];
+                if (self.immediatelyBtn.selected) {
+                    [self getCashFeeRequest];
+                }
             }
             else
             {
@@ -421,7 +423,7 @@ Strong UIButton *remindBtn;//提现手续费
         return;
     }
     NSString *withdraw =  self.commonBtn.selected?@"0":@"1";
-    NSArray *keys = @[kToken,@"amount",@"withdraw_type",withdraw];
+    NSArray *keys = @[kToken,@"amount",@"withdraw_type"];
     NSArray *values = @[[CommonUtils getToken],self.amountTextField.text,withdraw];
     [[HttpCommunication sharedInstance] postSignRequestWithPath:postCashUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
         

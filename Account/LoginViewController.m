@@ -13,7 +13,7 @@
 #import "AutoLoginView.h"
 #import "RegisterViewController.h"
 #import "ForgetPasswordViewController.h"
-@interface LoginViewController ()<UITextFieldDelegate,UIWebViewDelegate>
+@interface LoginViewController ()<UITextFieldDelegate>
 /**抬头*/
 Strong UIImageView *titleImgView;
 //账号
@@ -27,7 +27,6 @@ Strong UIButton *registerBtn;
 //忘记密码
 Strong UIButton *forgetPdwBtn;
 
-Strong UIWebView *loginWebView;
 
 Strong UIButton *pwdBtn;//切换是否明文显示
 
@@ -113,7 +112,6 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     if (!_loginBtn) {
         _loginBtn = InitObject(UIButton);
         _loginBtn.adjustsImageWhenHighlighted = NO;
-//        [_loginBtn setBackgroundImage:IMAGEBYENAME(@"loginBtn") forState:UIControlStateNormal];
         [_loginBtn setBackgroundColor:RGB(200,226,242)];
         _loginBtn.userInteractionEnabled = NO;
         [_loginBtn setTitle:@"登录" forState:UIControlStateNormal];

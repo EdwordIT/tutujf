@@ -6,12 +6,7 @@
 //  Copyright © 2017年 占碧光. All rights reserved.
 //
 
-/**
- 会员在项目中登录之后，需要在web中调用一次登录接口，使web上的会员同时处于登录状态
- 1、此链接不是接口，是web访问地址
- 2、equipment不加入sign验签
- */
-#define webLoginUrl @"%@/wap/system/login2?user_name=%@&user_token=%@&sign=%@&equipment=%@"
+
 /**
  获取系统配置
  */
@@ -96,6 +91,12 @@
 /*****************************************我的************************************************************/
 //登录接口
 #define loginUrl  @"/api/Users/Login"
+/**
+ 会员在项目中登录之后，需要在web中调用一次登录接口，使web上的会员同时处于登录状态
+ 1、此链接不是接口，是web访问地址
+ 2、equipment不加入sign验签
+ */
+#define loginWebUrl @"%@/wap/system/login2?user_name=%@&user_token=%@&sign=%@"
 //获取我的账户信息相关接口
 #define getMyAccountUrl  @"/api/Users/getMyAccountData"
 /**

@@ -323,7 +323,7 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
         return;
     }
    //既不是自己内部的url，又不是调用内部功能如打电话等，表示是汇付支付的页面，隐藏刷新按钮，显示关闭按钮
-    if ([urlPath rangeOfString:urlCheckAddress].location==NSNotFound&&[urlPath rangeOfString:@"tel:"].location==NSNotFound) {
+    if (![urlPath hasPrefix:oyUrlAddress]&&[urlPath rangeOfString:@"tel:"].location==NSNotFound) {
         [self.closeBtn setHidden:NO];
         [self.refreshBtn setHidden:YES];
         
@@ -406,7 +406,7 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
     }
         // 注入Cookie，识别webView登录状态
     [request setValue:cookies forHTTPHeaderField:@"Cookie"];
-    [request setValue:@"Mozilla/5.0 (iPhone; CPU iPhone like Mac OS X; zh-CN;) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/14C92 TutuBrowser/1.1.1 Mobile AliApp(TUnionSDK/0.1.12) AliApp(TUnionSDK/0.1.12)" forHTTPHeaderField:@"User-Agent"];
+//    [request setValue:@"Mozilla/5.0 (iPhone; CPU iPhone like Mac OS X; zh-CN;) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/14C92 TutuBrowser/1.1.1 Mobile AliApp(TUnionSDK/0.1.12) AliApp(TUnionSDK/0.1.12)" forHTTPHeaderField:@"User-Agent"];
     [request setHTTPShouldHandleCookies:YES];
     [self.mainWebView loadRequest:request];
     
