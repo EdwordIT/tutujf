@@ -13,7 +13,7 @@ typedef void (^NoticeSwitchOffBlock)(BOOL isCancel);
 @interface MainViewController : BaseViewController
 
 @property(nonatomic, copy)NoticeSwitchOffBlock noticBlock;
-
+Strong NSDictionary *userInfo;
 -(void) setBanndrNum;
 
 @end
