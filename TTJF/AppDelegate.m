@@ -38,7 +38,7 @@
     
     MainViewController *VC1 ;
 }
-
+Strong NSDictionary *notificationInfo;
 @end
 
 @implementation AppDelegate
@@ -67,6 +67,12 @@
     [self registerShareSDK];
     //取消引导页
     //[self setupIntroductoryPage];
+    
+    /** app进程被杀死后，启动app获取推送消息 */
+    NSDictionary * userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (userInfo) {
+        self.notificationInfo = userInfo;
+    }
     //初始化
     [self initRootVC];
     //信鸽推送信息上送到推送端
@@ -244,6 +250,9 @@
     self.window.hidden = NO;
     //1.
     VC1 = [[MainViewController alloc] init];
+    if (self.notificationInfo) {
+        VC1.userInfo = self.notificationInfo;
+    }
     UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:VC1];
     
     ProgrameListController *VC2 = [[ProgrameListController alloc] init];

@@ -726,7 +726,6 @@
 		1BE673B72074A98F0003A30C /* refresh_mine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh_mine@2x.png"; sourceTree = "<group>"; };
 		530F50B485B54F29F2A51634 /* Pods-TTJF.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TTJF.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TTJF/Pods-TTJF.debug.xcconfig"; sourceTree = "<group>"; };
 		6818A4E486372F136DB09D7C /* libPods-TTJF.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TTJF.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB0D379E209DB05F0067CBE5 /* public.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = public.der; sourceTree = "<group>"; };
 		CB1BFB95208EBC790045C0F0 /* RechargeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeController.h; sourceTree = "<group>"; };
 		CB1BFB96208EBC790045C0F0 /* RechargeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeController.m; sourceTree = "<group>"; };
 		CB1BFB98208EBD040045C0F0 /* GetCashController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetCashController.h; sourceTree = "<group>"; };
@@ -1382,7 +1381,6 @@
 		1B583B492063535D00CC70E4 /* SystemConfig */ = {
 			isa = PBXGroup;
 			children = (
-				CB0D379E209DB05F0067CBE5 /* public.der */,
 				E7067ACD1E60C9AA00E32B86 /* Constant.h */,
 				E7067AD41E60C9AA00E32B86 /* Public.h */,
 				1B583B3C2060B6A600CC70E4 /* Environment.h */,

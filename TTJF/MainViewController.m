@@ -129,6 +129,8 @@ Strong UIView *functionTopView;//功能按钮
         
     }
     [self initSubViews];
+    
+    [self checkNotification];
     //注入是否登录更新首页内容通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getHomePageInfo) name:Noti_LoginChanged object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadConfig) name:Noti_GetSystemConfig object:nil];
@@ -139,6 +141,21 @@ Strong UIView *functionTopView;//功能按钮
     [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_LoginChanged object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_GetSystemConfig object:nil];
 
+}
+//app通过点击通知打开app，此处校验通知内容，做出相应的跳转
+-(void)checkNotification{
+    if (self.userInfo) {
+        NSDictionary *aps = [self.userInfo objectForKey:@"aps"];
+        if (aps!=nil) {
+            NSString *category = [aps objectForKey:@"category"];
+            if(!IsEmptyStr(category)){
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self goWebViewWithUrl:category];
+                });
+            }
+        }
+        
+    }
 }
 //初始化主界面
 -(void)initSubViews{
