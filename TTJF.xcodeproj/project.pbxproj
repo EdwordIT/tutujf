@@ -3536,7 +3536,7 @@
 					"\"WechatConnector\"",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = tutujf.1;
+				PRODUCT_BUNDLE_IDENTIFIER = tutujf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3646,7 +3646,7 @@
 					"\"WechatConnector\"",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = tutujf.1;
+				PRODUCT_BUNDLE_IDENTIFIER = tutujf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
