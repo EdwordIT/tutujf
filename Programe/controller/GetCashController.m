@@ -374,7 +374,7 @@ Strong UIButton *remindBtn;//提现手续费
             NSInteger num=[str intValue];
             NSString * str1=self.cashModel.min_amount;
             NSInteger minInvest= [str1 intValue];
-            if(num>=minInvest)
+            if(num>=minInvest&&num<=[self.cashModel.amount floatValue])
             {
                 self.getCashBtn.enabled = YES;
                 if (self.immediatelyBtn.selected) {
@@ -383,13 +383,14 @@ Strong UIButton *remindBtn;//提现手续费
             }
             else
             {
+                [self.remindBtn setTitle:@"提现手续费：0.00元" forState:UIControlStateNormal];
                 self.getCashBtn.enabled = NO;
+
             }
         }
-        
     }
     else{
-        
+       [self.remindBtn setTitle:@"提现手续费：0.00元" forState:UIControlStateNormal];
     }
 }
 #pragma mark--request
