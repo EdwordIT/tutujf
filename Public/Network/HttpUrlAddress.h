@@ -137,5 +137,9 @@
  一键标记为已读
  */
 #define postMarkedAsReadedUrl  @"/api/users/batchDelUserMessage"
+/**
+ 我的投资页面接口
+ */
+#define getMyInvestUrl @"/api/users/myInvest"
 
 

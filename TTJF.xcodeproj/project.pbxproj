@@ -201,6 +201,9 @@
 		CB3D303A20A695310040FE30 /* point_sel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303420A695300040FE30 /* point_sel@3x.png */; };
 		CB3D303B20A695310040FE30 /* getCash_remind@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303520A695310040FE30 /* getCash_remind@3x.png */; };
 		CB3D303C20A695310040FE30 /* point_sel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303620A695310040FE30 /* point_sel@2x.png */; };
+		CB6810CF20AAB7920062B7FD /* MyInvestController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810CE20AAB7920062B7FD /* MyInvestController.m */; };
+		CB6810D220AAB9190062B7FD /* MyInvestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D120AAB9190062B7FD /* MyInvestCell.m */; };
+		CB6810D520AAE21E0062B7FD /* MyInvestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D420AAE21E0062B7FD /* MyInvestModel.m */; };
 		CB731555209A9CE200B3B8FA /* CooperationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB731554209A9CE200B3B8FA /* CooperationController.m */; };
 		CB73155A209AE9C200B3B8FA /* cooperation_pull@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */; };
 		CB73155B209AE9C200B3B8FA /* cooperation_pull@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731557209AE9C100B3B8FA /* cooperation_pull@3x.png */; };
@@ -784,6 +787,12 @@
 		CB3D303420A695300040FE30 /* point_sel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point_sel@3x.png"; sourceTree = "<group>"; };
 		CB3D303520A695310040FE30 /* getCash_remind@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "getCash_remind@3x.png"; sourceTree = "<group>"; };
 		CB3D303620A695310040FE30 /* point_sel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point_sel@2x.png"; sourceTree = "<group>"; };
+		CB6810CD20AAB7920062B7FD /* MyInvestController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyInvestController.h; sourceTree = "<group>"; };
+		CB6810CE20AAB7920062B7FD /* MyInvestController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyInvestController.m; sourceTree = "<group>"; };
+		CB6810D020AAB9190062B7FD /* MyInvestCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyInvestCell.h; sourceTree = "<group>"; };
+		CB6810D120AAB9190062B7FD /* MyInvestCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyInvestCell.m; sourceTree = "<group>"; };
+		CB6810D320AAE21E0062B7FD /* MyInvestModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyInvestModel.h; sourceTree = "<group>"; };
+		CB6810D420AAE21E0062B7FD /* MyInvestModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyInvestModel.m; sourceTree = "<group>"; };
 		CB731553209A9CE200B3B8FA /* CooperationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperationController.h; sourceTree = "<group>"; };
 		CB731554209A9CE200B3B8FA /* CooperationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperationController.m; sourceTree = "<group>"; };
 		CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cooperation_pull@2x.png"; sourceTree = "<group>"; };
@@ -2500,6 +2509,8 @@
 				1B583B462063474400CC70E4 /* SystemConfigModel.m */,
 				1B583B4A2063A3C500CC70E4 /* HomepageModel.h */,
 				1B583B4B2063A3C500CC70E4 /* HomepageModel.m */,
+				CB6810D320AAE21E0062B7FD /* MyInvestModel.h */,
+				CB6810D420AAE21E0062B7FD /* MyInvestModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2547,6 +2558,8 @@
 				E70A6DC11F9DC47D00A7B7E8 /* TopAccount.m */,
 				CB3D301D20A2D5F30040FE30 /* MessageCell.h */,
 				CB3D301E20A2D5F30040FE30 /* MessageCell.m */,
+				CB6810D020AAB9190062B7FD /* MyInvestCell.h */,
+				CB6810D120AAB9190062B7FD /* MyInvestCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2589,6 +2602,8 @@
 				CB1BFBAE209059B80045C0F0 /* RealNameController.m */,
 				CB3D301720A2D4930040FE30 /* MessageController.h */,
 				CB3D301820A2D4930040FE30 /* MessageController.m */,
+				CB6810CD20AAB7920062B7FD /* MyInvestController.h */,
+				CB6810CE20AAB7920062B7FD /* MyInvestController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3087,9 +3102,11 @@
 				E70A7D1F1FA0976700C0628A /* UserInfo.m in Sources */,
 				E7067AB21E60C93B00E32B86 /* UIImage+Resize.m in Sources */,
 				E7067AAB1E60C93B00E32B86 /* UIImage+FileName.m in Sources */,
+				CB6810D220AAB9190062B7FD /* MyInvestCell.m in Sources */,
 				E7067A3E1E60C88B00E32B86 /* RFViewController.m in Sources */,
 				E7B02E551E72C41100F967CE /* MineViewController.m in Sources */,
 				1B583AF9205F649E00CC70E4 /* ClubeCell.m in Sources */,
+				CB6810CF20AAB7920062B7FD /* MyInvestController.m in Sources */,
 				CB3D301C20A2D5A40040FE30 /* BaseCell.m in Sources */,
 				1BCF2233206E2BD300D75662 /* ProgrameListController.m in Sources */,
 				E73B1C621FA6207F00273C89 /* MBProgressHUD.m in Sources */,
@@ -3113,6 +3130,7 @@
 				E7039A951E751FE100436715 /* QuicklyModel.m in Sources */,
 				1B1923A32064DD9D005B0C57 /* UIImageView+SDImage.m in Sources */,
 				E7067AB11E60C93B00E32B86 /* UIImage+RemoteSize.m in Sources */,
+				CB6810D520AAE21E0062B7FD /* MyInvestModel.m in Sources */,
 				1B1923A920662500005B0C57 /* ForgetPasswordViewController.m in Sources */,
 				E70CFAAA1F1047A10035FC58 /* NetworkManager.m in Sources */,
 				CB1BFBA3209013830045C0F0 /* RechargeRecordCell.m in Sources */,

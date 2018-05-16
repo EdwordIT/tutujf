@@ -124,7 +124,7 @@
         if(self.stateView==nil){
             self.stateView = [[UIView alloc]init];
         }
-        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x, self.frame.size.height - _SCType_Underline_HEI, _selectBtnWID, _SCType_Underline_HEI);
+        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x+(_selectBtnWID - _SCType_Underline_WIDTH)/2, self.frame.size.height - _SCType_Underline_HEI, _SCType_Underline_WIDTH, _SCType_Underline_HEI);
         self.stateView.backgroundColor = _selectTitleColor;
         [self.scrollView addSubview:self.stateView];
     }else if(self.SCType == SCType_Dot){
@@ -191,7 +191,7 @@
     if(self.SCType == SCType_Underline){
         //下划线
         [UIView animateWithDuration:_animateDuration animations:^{
-            self.stateView.frame = CGRectMake(button.frame.origin.x, self.frame.size.height - _SCType_Underline_HEI, _selectBtnWID, _SCType_Underline_HEI);
+            self.stateView.frame = CGRectMake(button.frame.origin.x+(_selectBtnWID - _SCType_Underline_WIDTH)/2, self.frame.size.height - _SCType_Underline_HEI, _SCType_Underline_WIDTH, _SCType_Underline_HEI);
         }];
     }else if(self.SCType == SCType_Dot){
         [UIView animateWithDuration:_animateDuration animations:^{
@@ -268,13 +268,21 @@
     _SCType_Underline_HEI = SCType_Underline_HEI;
     UIButton *selectBtn = (UIButton *)self.scrollView.subviews[_selectIndex];
     if(self.SCType == SCType_Underline){
-        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x, self.frame.size.height - _SCType_Underline_HEI, _selectBtnWID, _SCType_Underline_HEI);
+        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x+(_selectBtnWID - _SCType_Underline_WIDTH)/2, self.frame.size.height - _SCType_Underline_HEI, _SCType_Underline_WIDTH, _SCType_Underline_HEI);
     }else if(self.SCType == SCType_Dot){
         self.stateView.frame = CGRectMake(selectBtn.frame.origin.x + (_selectBtnWID - _SCType_Underline_HEI)/2, self.frame.size.height - _SCType_Underline_HEI, _SCType_Underline_HEI, _SCType_Underline_HEI);
         self.stateView.layer.cornerRadius = _SCType_Underline_HEI/2;
     }else if(self.SCType == SCType_Ellipse){
         self.stateView.layer.cornerRadius = _cornerRadius;
         self.layer.cornerRadius = _cornerRadius;
+    }
+}
+
+- (void)setSCType_Underline_WIDTH:(CGFloat)SCType_Underline_WIDTH{
+    _SCType_Underline_WIDTH = SCType_Underline_WIDTH;
+    UIButton *selectBtn = (UIButton *)self.scrollView.subviews[_selectIndex];
+    if(self.SCType == SCType_Underline){
+        self.stateView.frame = CGRectMake(selectBtn.frame.origin.x+(_selectBtnWID - SCType_Underline_WIDTH)/2, self.frame.size.height - _SCType_Underline_HEI, _SCType_Underline_WIDTH, _SCType_Underline_HEI);
     }
 }
 

@@ -21,6 +21,7 @@
 #import "GetCashController.h"//提现
 #import "TTJFRefreshNormalHeader.h"
 #import "MessageController.h"
+#import "MyInvestController.h"
 @interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
 {
@@ -315,9 +316,11 @@ Strong MyAccountModel *accountModel;//数据源
     {
         if(index==0)
         {
-        HomeWebController *discountVC = [[HomeWebController alloc] init];
-        discountVC.urlStr=self.accountModel.bt_my_investment.link_url;
-        [self.navigationController pushViewController:discountVC animated:YES];
+            MyInvestController *invest = InitObject(MyInvestController);
+            [self.navigationController pushViewController:invest animated:YES];
+//        HomeWebController *discountVC = [[HomeWebController alloc] init];
+//        discountVC.urlStr=self.accountModel.bt_my_investment.link_url;
+//        [self.navigationController pushViewController:discountVC animated:YES];
         }
        else if(index==1)
         {

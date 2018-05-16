@@ -69,6 +69,7 @@ typedef void (^ SelectBtn)(NSInteger selectIndex,NSString *selectIndexTitle);
 //下划线的高度 &&&& 圆点的直径
 @property (nonatomic,assign) CGFloat SCType_Underline_HEI;//默认的高度为2
 
+@property (nonatomic,assign) CGFloat SCType_Underline_WIDTH;//下划线宽度 默认为item宽度
 //椭圆背景的背景颜色
 @property (nonatomic,strong) UIColor *ellipseBackColor;//默认黑色 透明度0.2
 @property (nonatomic,assign) CGFloat cornerRadius;//设置圆角 为0不设置 默认2
