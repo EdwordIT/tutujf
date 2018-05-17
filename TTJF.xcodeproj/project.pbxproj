@@ -204,6 +204,12 @@
 		CB6810CF20AAB7920062B7FD /* MyInvestController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810CE20AAB7920062B7FD /* MyInvestController.m */; };
 		CB6810D220AAB9190062B7FD /* MyInvestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D120AAB9190062B7FD /* MyInvestCell.m */; };
 		CB6810D520AAE21E0062B7FD /* MyInvestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D420AAE21E0062B7FD /* MyInvestModel.m */; };
+		CB6810D820AC047B0062B7FD /* CreditAssignHistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D720AC047B0062B7FD /* CreditAssignHistoryController.m */; };
+		CB6810DB20AC0E310062B7FD /* CreditAssignHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810DA20AC0E310062B7FD /* CreditAssignHistoryCell.m */; };
+		CB6810DE20AC0ED50062B7FD /* CreditAssignHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810DD20AC0ED50062B7FD /* CreditAssignHistoryModel.m */; };
+		CB6810E120AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E020AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m */; };
+		CB6810E420AC275B0062B7FD /* MyRedEnvelopeController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E320AC275B0062B7FD /* MyRedEnvelopeController.m */; };
+		CB6810E720AD12BF0062B7FD /* MyRedEnvelopeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E620AD12BF0062B7FD /* MyRedEnvelopeCell.m */; };
 		CB731555209A9CE200B3B8FA /* CooperationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB731554209A9CE200B3B8FA /* CooperationController.m */; };
 		CB73155A209AE9C200B3B8FA /* cooperation_pull@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */; };
 		CB73155B209AE9C200B3B8FA /* cooperation_pull@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731557209AE9C100B3B8FA /* cooperation_pull@3x.png */; };
@@ -793,6 +799,18 @@
 		CB6810D120AAB9190062B7FD /* MyInvestCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyInvestCell.m; sourceTree = "<group>"; };
 		CB6810D320AAE21E0062B7FD /* MyInvestModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyInvestModel.h; sourceTree = "<group>"; };
 		CB6810D420AAE21E0062B7FD /* MyInvestModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyInvestModel.m; sourceTree = "<group>"; };
+		CB6810D620AC047B0062B7FD /* CreditAssignHistoryController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditAssignHistoryController.h; sourceTree = "<group>"; };
+		CB6810D720AC047B0062B7FD /* CreditAssignHistoryController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignHistoryController.m; sourceTree = "<group>"; };
+		CB6810D920AC0E310062B7FD /* CreditAssignHistoryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditAssignHistoryCell.h; sourceTree = "<group>"; };
+		CB6810DA20AC0E310062B7FD /* CreditAssignHistoryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignHistoryCell.m; sourceTree = "<group>"; };
+		CB6810DC20AC0ED50062B7FD /* CreditAssignHistoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditAssignHistoryModel.h; sourceTree = "<group>"; };
+		CB6810DD20AC0ED50062B7FD /* CreditAssignHistoryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignHistoryModel.m; sourceTree = "<group>"; };
+		CB6810DF20AC0F6A0062B7FD /* CreditAssignHistoryDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditAssignHistoryDetailController.h; sourceTree = "<group>"; };
+		CB6810E020AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignHistoryDetailController.m; sourceTree = "<group>"; };
+		CB6810E220AC275B0062B7FD /* MyRedEnvelopeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRedEnvelopeController.h; sourceTree = "<group>"; };
+		CB6810E320AC275B0062B7FD /* MyRedEnvelopeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyRedEnvelopeController.m; sourceTree = "<group>"; };
+		CB6810E520AD12BF0062B7FD /* MyRedEnvelopeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRedEnvelopeCell.h; sourceTree = "<group>"; };
+		CB6810E620AD12BF0062B7FD /* MyRedEnvelopeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyRedEnvelopeCell.m; sourceTree = "<group>"; };
 		CB731553209A9CE200B3B8FA /* CooperationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperationController.h; sourceTree = "<group>"; };
 		CB731554209A9CE200B3B8FA /* CooperationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperationController.m; sourceTree = "<group>"; };
 		CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cooperation_pull@2x.png"; sourceTree = "<group>"; };
@@ -2560,6 +2578,10 @@
 				CB3D301E20A2D5F30040FE30 /* MessageCell.m */,
 				CB6810D020AAB9190062B7FD /* MyInvestCell.h */,
 				CB6810D120AAB9190062B7FD /* MyInvestCell.m */,
+				CB6810D920AC0E310062B7FD /* CreditAssignHistoryCell.h */,
+				CB6810DA20AC0E310062B7FD /* CreditAssignHistoryCell.m */,
+				CB6810E520AD12BF0062B7FD /* MyRedEnvelopeCell.h */,
+				CB6810E620AD12BF0062B7FD /* MyRedEnvelopeCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2587,6 +2609,8 @@
 				CB3D301220A1763E0040FE30 /* RealnameModel.m */,
 				CB3D302020A2DB710040FE30 /* MessageModel.h */,
 				CB3D302120A2DB710040FE30 /* MessageModel.m */,
+				CB6810DC20AC0ED50062B7FD /* CreditAssignHistoryModel.h */,
+				CB6810DD20AC0ED50062B7FD /* CreditAssignHistoryModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2604,6 +2628,12 @@
 				CB3D301820A2D4930040FE30 /* MessageController.m */,
 				CB6810CD20AAB7920062B7FD /* MyInvestController.h */,
 				CB6810CE20AAB7920062B7FD /* MyInvestController.m */,
+				CB6810D620AC047B0062B7FD /* CreditAssignHistoryController.h */,
+				CB6810D720AC047B0062B7FD /* CreditAssignHistoryController.m */,
+				CB6810DF20AC0F6A0062B7FD /* CreditAssignHistoryDetailController.h */,
+				CB6810E020AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m */,
+				CB6810E220AC275B0062B7FD /* MyRedEnvelopeController.h */,
+				CB6810E320AC275B0062B7FD /* MyRedEnvelopeController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3123,6 +3153,7 @@
 				CB1BFB9A208EBD040045C0F0 /* GetCashController.m in Sources */,
 				E70380001E9C96EF00C5E13D /* UIViewExt.m in Sources */,
 				E7067B5B1E60C9AA00E32B86 /* HttpSignCreate.m in Sources */,
+				CB6810E420AC275B0062B7FD /* MyRedEnvelopeController.m in Sources */,
 				E7A45DDF1E7423C60032613E /* HomeBanner.m in Sources */,
 				E7B063D21E62F419005D6972 /* MainViewController.m in Sources */,
 				1B788F0B207B54EE00F03863 /* CustomProgressView.m in Sources */,
@@ -3208,6 +3239,7 @@
 				1B4EEC83206CEFF800117EF0 /* SDWaitingView.m in Sources */,
 				1BCF226A206E2BFD00D75662 /* DetailBottom.m in Sources */,
 				1B583B44206346F400CC70E4 /* BaseModel.m in Sources */,
+				CB6810E720AD12BF0062B7FD /* MyRedEnvelopeCell.m in Sources */,
 				CB3D301F20A2D5F30040FE30 /* MessageCell.m in Sources */,
 				1B4EEC82206CEFF800117EF0 /* SDPhotoBrowser.m in Sources */,
 				E7071BA71F21C30C00293B38 /* PCCircleInfoView.m in Sources */,
@@ -3220,6 +3252,7 @@
 				E7A45DE81E74B04B0032613E /* HotQueueModel.m in Sources */,
 				CB1BFBA0209012110045C0F0 /* RechargeRecordController.m in Sources */,
 				1B4EEC8A206E1A5100117EF0 /* HomeTabBarController.m in Sources */,
+				CB6810E120AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m in Sources */,
 				E70917601FC2FD9A003CF8E2 /* FoundListModel.m in Sources */,
 				1BCF2270206E2BFD00D75662 /* DetailInvest.m in Sources */,
 				E70380011E9C96EF00C5E13D /* Utility.m in Sources */,
@@ -3234,6 +3267,7 @@
 				E7067AA81E60C93B00E32B86 /* UIImage+Blur.m in Sources */,
 				1B788F422081E4F400F03863 /* HYSegmentedControl.m in Sources */,
 				E7067AAA1E60C93B00E32B86 /* UIImage+Color.m in Sources */,
+				CB6810DE20AC0ED50062B7FD /* CreditAssignHistoryModel.m in Sources */,
 				1BCF2248206E2BE700D75662 /* RepayModel.m in Sources */,
 				E70C2A901F1E6126005BA9EF /* CustomURLProtocol.m in Sources */,
 				1B583B3720609CD800CC70E4 /* CustomerServiceView.m in Sources */,
@@ -3247,6 +3281,7 @@
 				1BCF224C206E2BE700D75662 /* LoanInfo.m in Sources */,
 				E7067B521E60C9AA00E32B86 /* KDGoalBar.m in Sources */,
 				E73B1C591FA6144600273C89 /* SYSafeCategory.m in Sources */,
+				CB6810D820AC047B0062B7FD /* CreditAssignHistoryController.m in Sources */,
 				E70B649D1ECB3D52004D5CCB /* GTMBase64.m in Sources */,
 				E7F81C841F8B91B200A856B3 /* ggHttpFounction.m in Sources */,
 				E7A45DEE1E74E03D0032613E /* ImmediateCell.m in Sources */,
@@ -3267,6 +3302,7 @@
 				1BCF2282206F357400D75662 /* BaseViewController.m in Sources */,
 				E712F6CF1FFDD5E6005C8C24 /* NSString+XN.m in Sources */,
 				1B788F08207A1A5300F03863 /* AppDelegate+XGPushConfig.m in Sources */,
+				CB6810DB20AC0E310062B7FD /* CreditAssignHistoryCell.m in Sources */,
 				1B583B29205F90A100CC70E4 /* PlatformDataCell.m in Sources */,
 				E7067A3F1E60C88B00E32B86 /* SearchSegment.m in Sources */,
 				1BCF224D206E2BE700D75662 /* SecurityModel.m in Sources */,

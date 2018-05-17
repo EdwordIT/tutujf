@@ -19,18 +19,19 @@ Strong UILabel *periodLabel;//期数
 Strong NSMutableArray *titleArr;
 Strong NSMutableArray *textArr;
 //中间内容页面
-Copy UILabel *labelTitle1;
-Copy UILabel *labelTitle2;
-Copy UILabel *labelTitle3;
-Copy UILabel *labelText1;
-Copy UILabel *labelText2;
-Copy UILabel *labelText3;
+Weak UILabel *labelTitle1;
+Weak UILabel *labelTitle2;
+Weak UILabel *labelTitle3;
+Weak UILabel *labelText1;
+Weak UILabel *labelText2;
+Weak UILabel *labelText3;
 @end
 @implementation MyInvestCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.contentView.backgroundColor = COLOR_White;
         self.titleArr = InitObject(NSMutableArray);
         self.textArr = InitObject(NSMutableArray);
         [self initSubViews];
@@ -39,6 +40,7 @@ Copy UILabel *labelText3;
 }
 -(void)initSubViews
 {
+    [self.contentView addSubview:self.sepView];
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.typeImage];
     [self.contentView addSubview:self.stateImage];
@@ -83,6 +85,7 @@ Copy UILabel *labelText3;
             self.labelText3 = textLabel;
         }
     }
+    [self loadLayout];
 }
 #pragma mark --lazyLoading
 -(UIView *)sepView{
@@ -115,7 +118,7 @@ Copy UILabel *labelText3;
 -(UIImageView *)investIcon{
     if (!_investIcon) {
         _investIcon = InitObject(UIImageView);
-        [_investIcon setImage:IMAGEBYENAME(@"")];
+        [_investIcon setImage:IMAGEBYENAME(@"icons_portrait")];
     }
     return _investIcon;
 }
@@ -130,7 +133,7 @@ Copy UILabel *labelText3;
 -(UIImageView *)periodIcon{
     if (!_periodIcon) {
         _periodIcon = InitObject(UIImageView);
-        [_periodIcon setImage:IMAGEBYENAME(@"")];
+        [_periodIcon setImage:IMAGEBYENAME(@"icons_portrait")];
     }
     return _periodIcon;
 }
@@ -153,7 +156,7 @@ Copy UILabel *labelText3;
     }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(kOriginLeft);
-        make.top.mas_equalTo(self.sepView.mas_bottom).offset(kSizeFrom750(20));
+        make.top.mas_equalTo(self.sepView.mas_bottom).offset(kSizeFrom750(25));
         make.height.mas_equalTo(kSizeFrom750(30));
     }];
     [self.typeImage mas_makeConstraints:^(MASConstraintMaker *make) {

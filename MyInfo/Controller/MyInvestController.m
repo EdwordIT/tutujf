@@ -96,7 +96,7 @@ Assign NSInteger paidTotalPages;
 -(UIScrollView *)backScroll{
     if (!_backScroll) {
         _backScroll = [[UIScrollView alloc]initWithFrame:RECT(0, self.segmentView.bottom, screen_width, screen_height - self.segmentView.bottom)];
-        _backScroll.contentSize = CGSizeMake(screen_width*2, _backScroll.height);
+        _backScroll.contentSize = CGSizeMake(screen_width*3, _backScroll.height);
         _backScroll.showsHorizontalScrollIndicator = NO;//水平
         _backScroll.pagingEnabled = YES;
         _backScroll.delegate = self;
@@ -105,25 +105,30 @@ Assign NSInteger paidTotalPages;
 }
 -(BaseUITableView *)mainTableView{
     if (!_mainTableView) {
-        _mainTableView = [[BaseUITableView alloc]initWithFrame:RECT(0, 0, screen_width, self.backScroll.height) style:UITableViewStyleGrouped];
+        _mainTableView = [[BaseUITableView alloc]initWithFrame:RECT(0, 0, screen_width, self.backScroll.height) style:UITableViewStylePlain];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
+        _mainTableView.rowHeight = kSizeFrom750(325);
+
     }
     return _mainTableView;
 }
 -(BaseUITableView *)paybackTableView{
     if (!_paybackTableView) {
-        _paybackTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width, 0, screen_width, self.mainTableView.height) style:UITableViewStyleGrouped];
+        _paybackTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width, 0, screen_width, self.mainTableView.height) style:UITableViewStylePlain];
         _paybackTableView.delegate = self;
         _paybackTableView.dataSource = self;
+        _paybackTableView.rowHeight = kSizeFrom750(325);
+
     }
     return _paybackTableView;
 }
 -(BaseUITableView *)paiedTableView{
     if (!_paiedTableView) {
-        _paiedTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width*2, 0, screen_width, self.mainTableView.height) style:UITableViewStyleGrouped];
+        _paiedTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width*2, 0, screen_width, self.mainTableView.height) style:UITableViewStylePlain];
         _paiedTableView.delegate = self;
         _paiedTableView.dataSource = self;
+        _paiedTableView.rowHeight = kSizeFrom750(325);
     }
     return _paiedTableView;
 }
@@ -197,7 +202,8 @@ Assign NSInteger paidTotalPages;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-  return ((NSMutableArray *)[self.dataSource objectAtIndex:self.selectedIndex]).count;
+//  return ((NSMutableArray *)[self.dataSource objectAtIndex:self.selectedIndex]).count;
+    return 3;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -206,8 +212,8 @@ Assign NSInteger paidTotalPages;
     if (cell==nil) {
         cell = [[MyInvestCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
     }
-    MyInvestModel *model = [[self.dataSource objectAtIndex:self.selectedIndex] objectAtIndex:indexPath.row];
-    [cell loadInfoWithModel:model];
+//    MyInvestModel *model = [[self.dataSource objectAtIndex:self.selectedIndex] objectAtIndex:indexPath.row];
+//    [cell loadInfoWithModel:model];
     return cell;
 }
 - (void)didReceiveMemoryWarning {
