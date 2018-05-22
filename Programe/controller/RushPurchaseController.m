@@ -350,7 +350,7 @@ Strong     LoanBase * baseModel;
     
     NSArray *keys = @[@"amount",@"period",@"apr",@"repay_type"];
     NSArray *values = @[amount,period,apr,repay_type];
-    [[HttpCommunication sharedInstance] postSignRequestWithPath:getInvestUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getExpectInvestUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
         NSString *interest = [successDic objectForKey:@"interest_total"];
         NSString *expectStr = [NSString stringWithFormat:@"预期收益金额%@元",interest];
         NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:expectStr rang:[expectStr rangeOfString:interest] font:NUMBER_FONT(30) color:COLOR_Red spacingBeforeValue:0 lineSpace:0];

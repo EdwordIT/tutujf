@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MJRefresh.h>
 #import "TTJFRefreshStateHeader.h"
 #import <SVProgressHUD.h>
 #import "ggHttpFounction.h"

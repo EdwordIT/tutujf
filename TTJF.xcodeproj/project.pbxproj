@@ -210,6 +210,11 @@
 		CB6810E120AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E020AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m */; };
 		CB6810E420AC275B0062B7FD /* MyRedEnvelopeController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E320AC275B0062B7FD /* MyRedEnvelopeController.m */; };
 		CB6810E720AD12BF0062B7FD /* MyRedEnvelopeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E620AD12BF0062B7FD /* MyRedEnvelopeCell.m */; };
+		CB6810EA20AE9F310062B7FD /* MyRedenvelopeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E920AE9F310062B7FD /* MyRedenvelopeModel.m */; };
+		CB6810ED20AEC6CC0062B7FD /* InvestRecordController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810EC20AEC6CC0062B7FD /* InvestRecordController.m */; };
+		CB6810F020AEC7210062B7FD /* InvestRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810EF20AEC7210062B7FD /* InvestRecordModel.m */; };
+		CB6810F320AEC7460062B7FD /* InvestRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810F220AEC7460062B7FD /* InvestRecordCell.m */; };
+		CB6810F620AFFDFD0062B7FD /* InvestSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810F520AFFDFD0062B7FD /* InvestSelectView.m */; };
 		CB731555209A9CE200B3B8FA /* CooperationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB731554209A9CE200B3B8FA /* CooperationController.m */; };
 		CB73155A209AE9C200B3B8FA /* cooperation_pull@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */; };
 		CB73155B209AE9C200B3B8FA /* cooperation_pull@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB731557209AE9C100B3B8FA /* cooperation_pull@3x.png */; };
@@ -811,6 +816,16 @@
 		CB6810E320AC275B0062B7FD /* MyRedEnvelopeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyRedEnvelopeController.m; sourceTree = "<group>"; };
 		CB6810E520AD12BF0062B7FD /* MyRedEnvelopeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRedEnvelopeCell.h; sourceTree = "<group>"; };
 		CB6810E620AD12BF0062B7FD /* MyRedEnvelopeCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyRedEnvelopeCell.m; sourceTree = "<group>"; };
+		CB6810E820AE9F310062B7FD /* MyRedenvelopeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRedenvelopeModel.h; sourceTree = "<group>"; };
+		CB6810E920AE9F310062B7FD /* MyRedenvelopeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyRedenvelopeModel.m; sourceTree = "<group>"; };
+		CB6810EB20AEC6CC0062B7FD /* InvestRecordController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvestRecordController.h; sourceTree = "<group>"; };
+		CB6810EC20AEC6CC0062B7FD /* InvestRecordController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvestRecordController.m; sourceTree = "<group>"; };
+		CB6810EE20AEC7210062B7FD /* InvestRecordModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvestRecordModel.h; sourceTree = "<group>"; };
+		CB6810EF20AEC7210062B7FD /* InvestRecordModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvestRecordModel.m; sourceTree = "<group>"; };
+		CB6810F120AEC7460062B7FD /* InvestRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvestRecordCell.h; sourceTree = "<group>"; };
+		CB6810F220AEC7460062B7FD /* InvestRecordCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvestRecordCell.m; sourceTree = "<group>"; };
+		CB6810F420AFFDFD0062B7FD /* InvestSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvestSelectView.h; sourceTree = "<group>"; };
+		CB6810F520AFFDFD0062B7FD /* InvestSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InvestSelectView.m; sourceTree = "<group>"; };
 		CB731553209A9CE200B3B8FA /* CooperationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CooperationController.h; sourceTree = "<group>"; };
 		CB731554209A9CE200B3B8FA /* CooperationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CooperationController.m; sourceTree = "<group>"; };
 		CB731556209AE9C100B3B8FA /* cooperation_pull@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cooperation_pull@2x.png"; sourceTree = "<group>"; };
@@ -2582,6 +2597,10 @@
 				CB6810DA20AC0E310062B7FD /* CreditAssignHistoryCell.m */,
 				CB6810E520AD12BF0062B7FD /* MyRedEnvelopeCell.h */,
 				CB6810E620AD12BF0062B7FD /* MyRedEnvelopeCell.m */,
+				CB6810F120AEC7460062B7FD /* InvestRecordCell.h */,
+				CB6810F220AEC7460062B7FD /* InvestRecordCell.m */,
+				CB6810F420AFFDFD0062B7FD /* InvestSelectView.h */,
+				CB6810F520AFFDFD0062B7FD /* InvestSelectView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2611,6 +2630,10 @@
 				CB3D302120A2DB710040FE30 /* MessageModel.m */,
 				CB6810DC20AC0ED50062B7FD /* CreditAssignHistoryModel.h */,
 				CB6810DD20AC0ED50062B7FD /* CreditAssignHistoryModel.m */,
+				CB6810E820AE9F310062B7FD /* MyRedenvelopeModel.h */,
+				CB6810E920AE9F310062B7FD /* MyRedenvelopeModel.m */,
+				CB6810EE20AEC7210062B7FD /* InvestRecordModel.h */,
+				CB6810EF20AEC7210062B7FD /* InvestRecordModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2634,6 +2657,8 @@
 				CB6810E020AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m */,
 				CB6810E220AC275B0062B7FD /* MyRedEnvelopeController.h */,
 				CB6810E320AC275B0062B7FD /* MyRedEnvelopeController.m */,
+				CB6810EB20AEC6CC0062B7FD /* InvestRecordController.h */,
+				CB6810EC20AEC6CC0062B7FD /* InvestRecordController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3145,6 +3170,7 @@
 				E7067AB01E60C93B00E32B86 /* UIImage+PDF.m in Sources */,
 				E7067B531E60C9AA00E32B86 /* KDGoalBarPercentLayer.m in Sources */,
 				CB731555209A9CE200B3B8FA /* CooperationController.m in Sources */,
+				CB6810F320AEC7460062B7FD /* InvestRecordCell.m in Sources */,
 				1B788F402081E4F400F03863 /* JRSegmentControl.m in Sources */,
 				E707BFBE1FA77762009BDDC7 /* AccountInfoController.m in Sources */,
 				1B4EEC6D206BADFA00117EF0 /* AutoLoginView.m in Sources */,
@@ -3157,6 +3183,7 @@
 				E7A45DDF1E7423C60032613E /* HomeBanner.m in Sources */,
 				E7B063D21E62F419005D6972 /* MainViewController.m in Sources */,
 				1B788F0B207B54EE00F03863 /* CustomProgressView.m in Sources */,
+				CB6810ED20AEC6CC0062B7FD /* InvestRecordController.m in Sources */,
 				1BCF226E206E2BFD00D75662 /* DetailSafe.m in Sources */,
 				E7039A951E751FE100436715 /* QuicklyModel.m in Sources */,
 				1B1923A32064DD9D005B0C57 /* UIImageView+SDImage.m in Sources */,
@@ -3197,6 +3224,7 @@
 				E7067A291E60C88A00E32B86 /* introductoryPagesView.m in Sources */,
 				E73B1C5A1FA6144600273C89 /* UITextField+Extension.m in Sources */,
 				E7071BA81F21C30C00293B38 /* PCLockLabel.m in Sources */,
+				CB6810EA20AE9F310062B7FD /* MyRedenvelopeModel.m in Sources */,
 				E70B64B51ECB51AF004D5CCB /* RSA.m in Sources */,
 				1B6281422050E16D00ECFD8D /* TTJFUserDefault.m in Sources */,
 				1B4EEC84206CEFF800117EF0 /* SDBrowserImageView.m in Sources */,
@@ -3264,6 +3292,7 @@
 				E7067B511E60C9AA00E32B86 /* CustomTextView.m in Sources */,
 				1BCF226B206E2BFD00D75662 /* DetailMiddleMenu.m in Sources */,
 				E7F3C91F1FA877500062B69B /* AccountRealname.m in Sources */,
+				CB6810F620AFFDFD0062B7FD /* InvestSelectView.m in Sources */,
 				E7067AA81E60C93B00E32B86 /* UIImage+Blur.m in Sources */,
 				1B788F422081E4F400F03863 /* HYSegmentedControl.m in Sources */,
 				E7067AAA1E60C93B00E32B86 /* UIImage+Color.m in Sources */,
@@ -3283,6 +3312,7 @@
 				E73B1C591FA6144600273C89 /* SYSafeCategory.m in Sources */,
 				CB6810D820AC047B0062B7FD /* CreditAssignHistoryController.m in Sources */,
 				E70B649D1ECB3D52004D5CCB /* GTMBase64.m in Sources */,
+				CB6810F020AEC7210062B7FD /* InvestRecordModel.m in Sources */,
 				E7F81C841F8B91B200A856B3 /* ggHttpFounction.m in Sources */,
 				E7A45DEE1E74E03D0032613E /* ImmediateCell.m in Sources */,
 				E70D1BF11F8B8E200093EE4F /* JSONKit.m in Sources */,

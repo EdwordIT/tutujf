@@ -18,13 +18,7 @@ Strong UIImageView *periodIcon;//期数
 Strong UILabel *periodLabel;//期数
 Strong NSMutableArray *titleArr;
 Strong NSMutableArray *textArr;
-//中间内容页面
-Weak UILabel *labelTitle1;
-Weak UILabel *labelTitle2;
-Weak UILabel *labelTitle3;
-Weak UILabel *labelText1;
-Weak UILabel *labelText2;
-Weak UILabel *labelText3;
+
 @end
 @implementation MyInvestCell
 
@@ -72,17 +66,6 @@ Weak UILabel *labelText3;
                 make.width.mas_equalTo(kLineHeight);
                 make.height.mas_equalTo(kSizeFrom750(80));
             }];
-        }
-       
-        if (i==0) {
-            self.labelTitle1 = titleL;
-            self.labelText1 = textLabel;
-        }else if(i==1){
-            self.labelTitle2 = titleL;
-            self.labelText2 = textLabel;
-        }else{
-            self.labelTitle3 = titleL;
-            self.labelText3 = textLabel;
         }
     }
     [self loadLayout];
@@ -189,12 +172,12 @@ Weak UILabel *labelText3;
         make.left.mas_equalTo(self.investIcon.mas_right).offset(kSizeFrom750(10));
         make.width.mas_equalTo(kSizeFrom750(300));
         make.height.mas_equalTo(kSizeFrom750(30));
-        make.centerY.mas_equalTo(self.investIcon.centerY);
+        make.centerY.mas_equalTo(self.investIcon.mas_centerY);
     }];
     
     [self.periodLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(self.contentView).offset(-kOriginLeft);
-        make.width.height.centerY.mas_equalTo(self.investTimeLabel);
+        make.height.centerY.mas_equalTo(self.investTimeLabel);
     }];
     
     [self.periodIcon mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -205,7 +188,17 @@ Weak UILabel *labelText3;
 }
 #pragma mark --loadView
 -(void)loadInfoWithModel:(MyInvestModel *)model{
-    
+    self.titleLabel.text = model.loan_name;
+    self.investTimeLabel.text = model.left_bottom_txt;
+    self.periodLabel.text = model.right_bottom_txt;
+    NSArray *titleArr = @[model.award_interest_txt,model.amount_txt,model.apr_txt];
+    NSArray *textArr = @[model.award_interest,model.amount,model.apr];
+    for (int i=0; i<titleArr.count; i++) {
+        UILabel *title = [self.titleArr objectAtIndex:i];
+        title.text = titleArr[i];
+        UILabel *textL = [self.textArr objectAtIndex:i];
+        textL.text = textArr[i];
+    }
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

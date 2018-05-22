@@ -99,8 +99,6 @@
 #define NUMBER_FONT(x)   [UIFont fontWithName:@"Helvetica" size:kSizeFrom750(x)]
 #define NUMBER_FONT_BOLD(x)   [UIFont fontWithName:@"Helvetica-Bold" size:kSizeFrom750(x)]
 //
-
-
 // 3.是否为4inch
 #define fourInch ([UIScreen mainScreen].bounds.size.height == 568)
 

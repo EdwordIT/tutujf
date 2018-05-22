@@ -167,6 +167,13 @@
              }else{
 
                  NSLog(@"json格式错误");
+                 [self endRefresh:scrollView];
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     
+                     if ([scrollView isKindOfClass:[UITableView class]]) {
+                         [((UITableView *)scrollView) reloadData];
+                     }
+                 });
              }
          }
          else if ([data length] == 0 &&

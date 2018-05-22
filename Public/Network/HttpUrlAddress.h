@@ -51,7 +51,7 @@
 /**
  预期收益接口?amount=%@&period=%@&apr=%@&repay_type=%@&sign=%@
  */
-#define getInvestUrl  @"/api/Loan/InvestInterest"
+#define getExpectInvestUrl  @"/api/Loan/InvestInterest"
 /**
  立即投资接口
  */
@@ -140,6 +140,9 @@
 /**
  我的投资页面接口
  */
-#define getMyInvestUrl @"/api/users/myInvest"
-
+#define getMyInvestUrl @"/api/tender/myTenderData"
+/**
+ 我的投资详情接口
+ */
+#define myInvestDetailUrl @"/api/tender/myTenderInfo"
 

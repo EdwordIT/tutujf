@@ -10,7 +10,6 @@
 #import "NavSwitchView.h"
 #import "CreditAssignHistoryCell.h"
 #import "CreditAssignHistoryDetailController.h"
-#import <MJRefresh.h>
 @interface CreditAssignHistoryController ()<UITableViewDelegate,UITableViewDataSource>
 
 Assign NSInteger currentPage;/**当前页数 */

@@ -9,15 +9,16 @@
 #import "MyInvestController.h"
 #import "ZFJSegmentedControl.h"
 #import "MyInvestCell.h"
-#import <MJRefresh.h>
+#import "InvestSelectView.h"
 @interface MyInvestController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
+Strong InvestSelectView *selectView;//筛选
 Strong ZFJSegmentedControl *segmentView;//切换
 Strong UIScrollView *backScroll;
 Strong BaseUITableView *mainTableView;//全部
 Strong BaseUITableView *paybackTableView;//回款中
 Strong BaseUITableView *paiedTableView;//已回款
 Strong NSMutableArray *mainDataArray;
-Strong NSMutableArray *pabackDataArray;
+Strong NSMutableArray *paybackDataArray;
 Strong NSMutableArray *paidBackDataArray;
 Assign NSInteger selectedIndex;//被选中状态
 Strong NSMutableArray *dataSource;//
@@ -27,7 +28,10 @@ Assign NSInteger paybackCurrentPage;
 Assign NSInteger paybackTotalPages;
 Assign NSInteger paidCurrentPage;
 Assign NSInteger paidTotalPages;
-
+Assign BOOL isPayback;
+Assign BOOL isPaidBack;
+Copy NSString *startTime;
+Copy NSString *endTime;
 @end
 
 @implementation MyInvestController
@@ -37,6 +41,14 @@ Assign NSInteger paidTotalPages;
     self.titleString = @"我的投资";
     
     self.selectedIndex = 0;
+    self.mainCurrentPage = 1;
+    self.paybackCurrentPage = 1;
+    self.paidCurrentPage = 1;
+    self.startTime = @"";
+    self.endTime = @"";
+    [self.rightBtn setImage:IMAGEBYENAME(@"icons_refresh") forState:UIControlStateNormal];
+    [self.rightBtn setHidden:NO];
+    [self.rightBtn addTarget:self action:@selector(selectClick:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.segmentView];
     
@@ -50,46 +62,26 @@ Assign NSInteger paidTotalPages;
     
     [self loadRefresh];
     
+    [self loadSelectView];
+    
+    [SVProgressHUD show];
+    
+    [self loadRequestAtIndex:0];
+    
     // Do any additional setup after loading the view.
 }
 #pragma mark lazyLoading
--(NSMutableArray *)mainDataArray{
-    if (!_mainDataArray) {
-        _mainDataArray = InitObject(NSMutableArray);
-    }
-    return _mainDataArray;
-}
--(NSMutableArray *)pabackDataArray {
-    if (!_pabackDataArray) {
-        _pabackDataArray = InitObject(NSMutableArray);
-    }
-    return _mainDataArray;
-}
--(NSMutableArray *)paidBackDataArray{
-    if (!_paidBackDataArray) {
-        _paidBackDataArray = InitObject(NSMutableArray);
-    }
-    return _mainDataArray;
-}
--(NSMutableArray *)dataSource{
-    if (!_dataSource) {
-        _dataSource = [[NSMutableArray alloc]initWithObjects:self.mainDataArray,self.pabackDataArray,self.paidBackDataArray,nil];
-    }
-    return _dataSource;
-}
 -(ZFJSegmentedControl *)segmentView
 {
     if (!_segmentView) {
         _segmentView = [[ZFJSegmentedControl alloc]initwithTitleArr:@[@"全部", @"还款中", @"已还款"] iconArr:nil SCType:SCType_Underline];
         _segmentView.frame = RECT(0, kNavHight, screen_width, kSizeFrom750(84));
-        _segmentView.backgroundColor = [UIColor whiteColor];
+        _segmentView.backgroundColor = COLOR_White;
         _segmentView.titleColor = RGB_153;
         _segmentView.selectTitleColor = RGB_51;
         _segmentView.selectIndex =  0;
         _segmentView.SCType_Underline_WIDTH = kSizeFrom750(40);//底部条宽度
         _segmentView.titleFont = SYSTEMSIZE(30);
-        _segmentView.selectTitleColor=navigationBarColor;
-     
     }
     return _segmentView;
 }
@@ -133,53 +125,84 @@ Assign NSInteger paidTotalPages;
     return _paiedTableView;
 }
 -(void)loadRefresh{
-    
+    self.mainDataArray = InitObject(NSMutableArray);
+    self.paybackDataArray = InitObject(NSMutableArray);
+    self.paidBackDataArray = InitObject(NSMutableArray);
+
+   self.dataSource = [[NSMutableArray alloc]initWithObjects:self.mainDataArray,self.paybackDataArray,self.paidBackDataArray,nil];
     WEAK_SELF;
     //全部
     self.mainTableView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
-        weakSelf.mainCurrentPage = 0;
+        [weakSelf.mainTableView.mj_footer endRefreshing];
         [weakSelf loadRequestAtIndex:weakSelf.selectedIndex];
     }];
     self.mainTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-           weakSelf.mainCurrentPage++;
         [weakSelf loadMoreData:weakSelf.selectedIndex];
     }];
     self.mainTableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
-        weakSelf.mainCurrentPage = 0;
+        weakSelf.mainCurrentPage = 1;
         [weakSelf loadRequestAtIndex:weakSelf.selectedIndex];
     }];
     //还款中
     self.paybackTableView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
-        weakSelf.paybackCurrentPage = 0;
+        [weakSelf.paybackTableView.mj_footer endRefreshing];
+
         [weakSelf loadRequestAtIndex:weakSelf.selectedIndex];
     }];
     self.paybackTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        weakSelf.paybackCurrentPage++;
         [weakSelf loadMoreData:weakSelf.selectedIndex];
     }];
     self.paybackTableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
-        weakSelf.paybackCurrentPage = 0;
+        weakSelf.paybackCurrentPage = 1;
         [weakSelf loadRequestAtIndex:weakSelf.selectedIndex];
     }];
     //已还完
     self.paiedTableView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
-        weakSelf.paidCurrentPage = 0;
+        [weakSelf.paiedTableView.mj_footer endRefreshing];
         [weakSelf loadRequestAtIndex:weakSelf.selectedIndex];
     }];
     self.paiedTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        weakSelf.paidCurrentPage++;
         [weakSelf loadMoreData:weakSelf.selectedIndex];
     }];
     self.paiedTableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
-        weakSelf.paidCurrentPage = 0;
+        weakSelf.paidCurrentPage = 1;
         [weakSelf loadRequestAtIndex:weakSelf.selectedIndex];
     }];
     
     //切换标签栏
     self.segmentView.selectType = ^(NSInteger selectIndex, NSString *selectIndexTitle) {
         weakSelf.selectedIndex = selectIndex;
-        weakSelf.backScroll.contentOffset = CGPointMake(screen_width*weakSelf.selectedIndex, 0);
+        weakSelf.backScroll.contentOffset = CGPointMake(selectIndex*screen_width, 0);
+        if (weakSelf.isPayback==NO&&selectIndex==1) {
+            [SVProgressHUD show];
+            weakSelf.isPayback = YES;
+            [weakSelf loadRequestAtIndex:selectIndex];
+        }
+       else if (weakSelf.isPaidBack==NO&&selectIndex==2) {
+            [SVProgressHUD show];
+            weakSelf.isPaidBack = YES;
+            [weakSelf loadRequestAtIndex:selectIndex];
+        }
     };
+}
+#pragma mark --筛选页面添加
+-(void)loadSelectView{
+   
+    self.selectView = [[InvestSelectView alloc] initWithFrame:RECT(0, kNavHight, screen_width, kViewHeight)];
+    WEAK_SELF;
+    self.selectView.selectBlock = ^(NSInteger tag, NSString *startTime, NSString *endTime) {
+        weakSelf.startTime = startTime;
+        weakSelf.endTime = endTime;
+        weakSelf.segmentView.selectIndex = tag;
+        [SVProgressHUD show];
+        [weakSelf loadRequestAtIndex:tag];
+    };
+    [self.view addSubview:self.selectView];
+    [self.selectView setHidden:YES];
+}
+-(void)selectClick:(UIButton *)sender
+{
+    [self.selectView showSelectView:self.selectView.hidden];
 }
 #pragma mark --scrollViewDelegate
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -190,11 +213,100 @@ Assign NSInteger paidTotalPages;
 }
 #pragma  mark --loadRequest
 -(void)loadRequestAtIndex:(NSInteger)index{
+    NSString *status_nid = @"";
+    NSString *page = @"1";
+    BaseUITableView *currentTableView;
     
-    
+    switch (index) {
+        case 0:{
+            status_nid = @"";
+            page = [NSString stringWithFormat:@"%ld",self.mainCurrentPage];
+            currentTableView = self.mainTableView;
+            }
+            break;
+        case 1:{
+            status_nid = @"recover";//回款中
+            page = [NSString stringWithFormat:@"%ld",self.paybackCurrentPage];
+            currentTableView = self.paybackTableView;
+        }
+            break;
+        case 2:{
+            status_nid = @"recover_yes";//已回款
+            page = [NSString stringWithFormat:@"%ld",self.paidCurrentPage];
+            currentTableView = self.paiedTableView;
+        }
+            break;
+        default:
+            break;
+    }
+    NSArray *keysArr = @[kToken,@"page",@"status_nid",@"start_time",@"end_time"];
+    NSArray *valuesArr = @[[CommonUtils getToken],page,status_nid,self.startTime,self.endTime];
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getMyInvestUrl keysArray:keysArr valuesArray:valuesArr refresh:currentTableView success:^(NSDictionary *successDic) {
+        
+        switch (index) {
+            case 0:
+                self.mainTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+                break;
+            case 1:
+                self.paybackTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+                break;
+            case 2:
+                self.paidTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+                break;
+            default:
+                break;
+        }
+
+        NSArray *items =  [successDic objectForKey:@"items"];
+        NSMutableArray *dataArr = [self.dataSource objectAtIndex:self.selectedIndex];
+        if ([page integerValue]==1) {
+            [dataArr removeAllObjects];
+        }
+        for (int i=0; i<items.count; i++) {
+            NSDictionary *dic = [items objectAtIndex:i];
+            MyInvestModel *model = [MyInvestModel yy_modelWithJSON:dic];
+            [dataArr addObject:model];
+        }
+        [currentTableView reloadData];
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
+
 }
 -(void)loadMoreData:(NSInteger)index{
-    
+    switch (index) {
+        case 0:
+            {
+                if (self.mainTotalPages==self.mainCurrentPage) {
+                    [self.mainTableView.mj_footer endRefreshingWithNoMoreData];
+                    return;
+                }
+                self.mainCurrentPage ++;
+            }
+            break;
+        case 1:
+        {
+            if (self.mainTotalPages==self.mainCurrentPage) {
+                [self.paybackTableView.mj_footer endRefreshingWithNoMoreData];
+                return;
+            }
+            self.paybackCurrentPage ++;
+        }
+            break;
+        case 2:
+        {
+            if (self.mainTotalPages==self.mainCurrentPage) {
+                [self.paiedTableView.mj_footer endRefreshingWithNoMoreData];
+                return;
+            }
+            self.paidCurrentPage ++;
+        }
+            break;
+            
+        default:
+            break;
+    }
+    [self loadRequestAtIndex:index];
 }
 #pragma mark -- dataSource and Delegate
 -(NSInteger )numberOfSectionsInTableView:(UITableView *)tableView{
@@ -202,8 +314,7 @@ Assign NSInteger paidTotalPages;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-//  return ((NSMutableArray *)[self.dataSource objectAtIndex:self.selectedIndex]).count;
-    return 3;
+  return ((NSMutableArray *)[self.dataSource objectAtIndex:self.selectedIndex]).count;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -212,8 +323,8 @@ Assign NSInteger paidTotalPages;
     if (cell==nil) {
         cell = [[MyInvestCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
     }
-//    MyInvestModel *model = [[self.dataSource objectAtIndex:self.selectedIndex] objectAtIndex:indexPath.row];
-//    [cell loadInfoWithModel:model];
+    MyInvestModel *model = [[self.dataSource objectAtIndex:self.selectedIndex] objectAtIndex:indexPath.row];
+    [cell loadInfoWithModel:model];
     return cell;
 }
 - (void)didReceiveMemoryWarning {

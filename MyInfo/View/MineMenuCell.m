@@ -35,6 +35,7 @@
     //图片
     UIImageView *imagev1 = [[UIImageView alloc] initWithFrame:CGRectMake(kSizeFrom750(25), kSizeFrom750(30), kSizeFrom750(50),kSizeFrom750(44))];
     imagev1.centerY = cellHeight/2;
+    imagev1.contentMode = UIViewContentModeScaleAspectFit;//保持图片不变形，但是会有部分留白
     [imagev1 setImageWithString:model.logo_url];
     [btn1 addSubview:imagev1];
     

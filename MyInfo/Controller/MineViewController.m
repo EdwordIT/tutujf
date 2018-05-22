@@ -22,6 +22,8 @@
 #import "TTJFRefreshNormalHeader.h"
 #import "MessageController.h"
 #import "MyInvestController.h"
+#import "MyRedEnvelopeController.h"
+#import "InvestRecordController.h"
 @interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
 {
@@ -316,6 +318,7 @@ Strong MyAccountModel *accountModel;//数据源
     {
         if(index==0)
         {
+            //我的投资
             MyInvestController *invest = InitObject(MyInvestController);
             [self.navigationController pushViewController:invest animated:YES];
 //        HomeWebController *discountVC = [[HomeWebController alloc] init];
@@ -324,15 +327,21 @@ Strong MyAccountModel *accountModel;//数据源
         }
        else if(index==1)
         {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr=self.accountModel.bt_my_red.link_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
+            //我的红包
+            MyRedEnvelopeController *red = InitObject(MyRedEnvelopeController);
+            [self.navigationController pushViewController:red animated:YES];
+            
+//            HomeWebController *discountVC = [[HomeWebController alloc] init];
+//            discountVC.urlStr=self.accountModel.bt_my_red.link_url;
+//            [self.navigationController pushViewController:discountVC animated:YES];
         }
        else if(index==2)
         {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr=self.accountModel.bt_my_capital_log.link_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
+//            HomeWebController *discountVC = [[HomeWebController alloc] init];
+//            discountVC.urlStr=self.accountModel.bt_my_capital_log.link_url;
+//            [self.navigationController pushViewController:discountVC animated:YES];
+            InvestRecordController *invest = InitObject(InvestRecordController);
+            [self.navigationController pushViewController:invest animated:YES];
         }
     }
     else
