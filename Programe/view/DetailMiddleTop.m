@@ -11,6 +11,7 @@
 {
     UILabel * proName;
    
+    UIImageView *topImage;
 }
 @end
 
@@ -45,21 +46,9 @@
 
 - (void)initSubViews{
     
-    NSArray *imageArr = @[@"xm_xxcb",@"xm_mdba",@"xm_swdy",@"xm_cgsba",@"xm_stjyd"];
-    CGFloat imageW = kSizeFrom750(108);
-    CGFloat imageH = kSizeFrom750(36);
-    CGFloat spaceX = (screen_width - kOriginLeft*2 - imageW*5 - kSizeFrom750(20)*2)/4;
-    
-    for (int i=0; i<imageArr.count; i++) {
-        UIImageView *iconImage;
-        if (i==3||i==4) {
-            iconImage =[[UIImageView alloc]initWithFrame:RECT(kOriginLeft+(imageW+spaceX)*i+kSizeFrom750(20)*(i-3), kSizeFrom750(20), kSizeFrom750(128), imageH)];
-        }else
-       iconImage =[[UIImageView alloc]initWithFrame:RECT(kOriginLeft+(imageW+spaceX)*i, kSizeFrom750(20), imageW, imageH)];
-        [self addSubview:iconImage];
-       
-        [iconImage setImage:IMAGEBYENAME([imageArr objectAtIndex:i])];
-    }
+  
+    topImage = [[UIImageView alloc]initWithFrame:RECT(kOriginLeft, kSizeFrom750(20), kContentWidth, kSizeFrom750(36))];
+    [self addSubview:topImage];
 
     UILabel * lab=[[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, kSizeFrom750(100), kSizeFrom750(200), kSizeFrom750(30))];
     lab.text=@"项目名称";
@@ -79,9 +68,10 @@
     [self addSubview:proName];
 }
 
--(void)setproName:(NSString *)mc
+-(void)setproName:(NSString *)mc image:(NSString *)imgUrl
 {
     proName.text=mc;
+    [topImage setImageWithString:imgUrl];
 }
 
 @end

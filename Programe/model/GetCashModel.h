@@ -8,6 +8,12 @@
 
 #import "BaseModel.h"
 
+@interface CashInfoModel :BaseModel
+Copy NSString *status;//状态
+Copy NSString *title;
+Copy NSString *content;
+Strong NSArray *content_rep_red;//标红内容
+@end
 /**
  提现页面数据
  */
@@ -27,5 +33,7 @@ Copy NSString * bt_name   ;//  string    提交按钮文本
 Copy NSString * is_bind_bank   ;//  string    是否绑定银行卡，-1 未绑定，1已绑定
 Copy NSString * bind_bank_txt   ;//  string    绑定银行卡文本
 Copy NSString * bind_bank_url   ;//  string    银行卡绑定连接
+Strong CashInfoModel *ordinary_cash;//普通提现
+Strong CashInfoModel *fast_cash;//快速提现
 
 @end
