@@ -44,8 +44,8 @@
     
     LoanInfo * info=programModel.loan_info;
     
-    [mtop setproName:info.name];//项目名称
-    
+    [mtop setproName:info.name image:info.select_type_img];//项目名称
+
     NSArray *nameArray = @[@"最低投标金额",@"还款方式",@"项目状态"];
     NSArray *valueArray = @[[NSString stringWithFormat:@"%@元",info.tender_amount_min],programModel.repay_type_name,info.status_name];
     for (int i=0; i<nameArray.count; i++) {
@@ -76,7 +76,7 @@
 -(void)loadCreditInfoWithModel:(LoanBase *)programModel{
     
     LoanInfo * info=programModel.loan_info;
-    [mtop setproName:info.name];//项目名称
+    [mtop setproName:info.name image:info.select_type_img];//项目名称
     NSArray *nameArray = @[@"待收本金",@"待收利息",@"还款方式",@"还款状态",@"还款期限"];
     NSArray *valueArray = @[[NSString stringWithFormat:@"%@元",[CommonUtils getHanleNums:programModel.transfer_ret.wait_principal]],[NSString stringWithFormat:@"%@元", [CommonUtils getHanleNums:programModel.transfer_ret.wait_interest]],programModel.repay_type_name,info.status_name,programModel.transfer_ret.next_repay_time];
     for (int i=0; i<menuArray.count; i++) {

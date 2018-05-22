@@ -10,6 +10,6 @@
 
 @interface DetailMiddleTop : UIView
 //设置项目名称
--(void)setproName:(NSString *)name;
+-(void)setproName:(NSString *)mc image:(NSString *)imgUrl;
 
 @end

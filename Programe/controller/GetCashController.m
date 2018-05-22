@@ -22,13 +22,17 @@ Strong UITextField *amountTextField;//输入框
 Strong GradientButton *getCashBtn;//
 Strong UILabel *desLabel;//进入第三方提现
 Strong UIButton *historyBtn;//提现明细
-Strong UIButton *remindTitle;
-Strong UIWebView *remindWeb;//温馨提示
+//Strong UIButton *remindTitle;
+//Strong UIWebView *remindWeb;//温馨提示
 Strong GetCashModel *cashModel;
-Strong UIView *sectionView;//切换普通提现、及时提现
+Strong UIView *commonView;//普通提现
+Strong UILabel *commonSubLabel;//普通提现说明
 Strong UIButton *commonBtn;//普通提现
-Strong UIButton *immediatelyBtn;//即时到账提现
-Strong UIButton *remindBtn;//提现手续费
+Strong UILabel *commentTitleLabel;//
+Strong UIView *sectionView;//快速提现
+Strong UIButton *immediatelyBtn;//即时到账提现(含手续费)
+Strong UILabel *serviceChargeLabel;//手续费
+Strong UILabel *immediatelyLabel;//即时到账提现说明
 @end
 
 @implementation GetCashController
@@ -57,23 +61,32 @@ Strong UIButton *remindBtn;//提现手续费
     
     [self.amountBgView addSubview:self.amountTextField];
     
-    [self.topView addSubview:self.sectionView];
+    [self.bgScrollView addSubview:self.commonView];
     
-    [self.sectionView addSubview:self.commonBtn];
+    [self.commonView addSubview:self.commonBtn];
+    
+    [self.commonView addSubview:self.commentTitleLabel];
+    
+    [self.commonView addSubview:self.commonSubLabel];
+    
+    
+    [self.bgScrollView addSubview:self.sectionView];//快速提现可能没有此选项
     
     [self.sectionView addSubview:self.immediatelyBtn];
     
-    [self.sectionView addSubview:self.remindBtn];
+    [self.sectionView addSubview:self.serviceChargeLabel];
     
-    [self.topView addSubview:self.getCashBtn];
+    [self.sectionView addSubview:self.immediatelyLabel];
     
-    [self.topView addSubview:self.desLabel];
+    [self.bgScrollView addSubview:self.getCashBtn];
     
-    [self.topView addSubview:self.historyBtn];
+    [self.bgScrollView addSubview:self.desLabel];
     
-    [self.bgScrollView addSubview:self.remindTitle];
+    [self.bgScrollView addSubview:self.historyBtn];
     
-    [self.bgScrollView addSubview:self.remindWeb];
+//    [self.bgScrollView addSubview:self.remindTitle];
+//
+//    [self.bgScrollView addSubview:self.remindWeb];
     
     [self loadLayout];
     
@@ -139,9 +152,20 @@ Strong UIButton *remindBtn;//提现手续费
     }
     return _amountTextField;
 }
+-(UIView *)commonView{
+    if (!_commonView) {
+        _commonView = InitObject(UIView);
+        _commonView.backgroundColor = COLOR_White;
+    }
+    return _commonView;
+}
 -(UIView *)sectionView{
     if (!_sectionView) {
         _sectionView = InitObject(UIView);
+        _sectionView.backgroundColor = COLOR_White;
+        UIView *lineView = [[UIView alloc]initWithFrame:RECT(kOriginLeft, 0, kContentWidth, kLineHeight)];
+        [lineView setBackgroundColor:separaterColor];
+        [_sectionView addSubview:lineView];
     }
     return _sectionView;
 }
@@ -150,47 +174,59 @@ Strong UIButton *remindBtn;//提现手续费
         _commonBtn = InitObject(UIButton);
         [_commonBtn setImage:IMAGEBYENAME(@"point_sel") forState:UIControlStateSelected];
         [_commonBtn setImage:IMAGEBYENAME(@"point_unsel") forState:UIControlStateNormal];
-        [_commonBtn setTitle:@"普通提现（免费）" forState:UIControlStateNormal];
-        [_commonBtn setTitle:@"普通提现（免费）" forState:UIControlStateSelected];
-        [_commonBtn.titleLabel setFont:SYSTEMSIZE(28)];
-        [_commonBtn setTitleColor:RGB_51 forState:UIControlStateNormal];
         _commonBtn.tag = 1;
-        [_commonBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -kSizeFrom750(30), 0, 0)];
-        [_commonBtn setImageEdgeInsets:UIEdgeInsetsMake(0, -(kSizeFrom750(270) - kSizeFrom750(30) - kSizeFrom750(200)), 0, 0)];
         [_commonBtn addTarget:self action:@selector(sectionClick:) forControlEvents:UIControlEventTouchUpInside];
         _commonBtn.selected = YES;
     }
     return _commonBtn;
 }
+-(UILabel *)commentTitleLabel{
+    if (!_commentTitleLabel) {
+        _commentTitleLabel = InitObject(UILabel);
+        _commentTitleLabel.textColor = RGB_51;
+        _commentTitleLabel.font = SYSTEMSIZE(28);
+    }
+    return _commentTitleLabel;
+}
+-(UILabel *)commonSubLabel{
+    if (!_commonSubLabel) {
+        _commonSubLabel = InitObject(UILabel);
+        _commonSubLabel.textColor = RGB_166;
+        _commonSubLabel.font = SYSTEMSIZE(26);
+        _commonSubLabel.numberOfLines = 0;
+
+    }
+    return _commonSubLabel;
+}
 -(UIButton *)immediatelyBtn{
     if (!_immediatelyBtn) {
         _immediatelyBtn = InitObject(UIButton);
-        [_immediatelyBtn.titleLabel setFont:SYSTEMSIZE(28)];
-        [_immediatelyBtn setTitleColor:RGB_51 forState:UIControlStateNormal];
         [_immediatelyBtn setImage:IMAGEBYENAME(@"point_sel") forState:UIControlStateSelected];
         [_immediatelyBtn setImage:IMAGEBYENAME(@"point_unsel") forState:UIControlStateNormal];
-        [_immediatelyBtn setTitle:@"即时提现" forState:UIControlStateNormal];
-        [_immediatelyBtn setTitle:@"即时提现" forState:UIControlStateSelected];
         _immediatelyBtn.tag = 2;
-        [_immediatelyBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -kSizeFrom750(30), 0, 0)];
-        [_immediatelyBtn setImageEdgeInsets:UIEdgeInsetsMake(0, -(kSizeFrom750(170) - kSizeFrom750(30) - kSizeFrom750(100)), 0, 0)];
         [_immediatelyBtn addTarget:self action:@selector(sectionClick:) forControlEvents:UIControlEventTouchUpInside];
 
     }
     return _immediatelyBtn;
 }
--(UIButton *)remindBtn{
-    if (!_remindBtn) {
-        _remindBtn = InitObject(UIButton);
-        [_remindBtn setBackgroundImage:IMAGEBYENAME(@"getCash_remind") forState:UIControlStateNormal];
-        [_remindBtn setTitleColor:RGB_153 forState:UIControlStateNormal];
-        [_remindBtn setTitle:@"提现手续费：0.00元" forState:UIControlStateNormal];
-        [_remindBtn.titleLabel setFont:SYSTEMSIZE(24)];
-        _remindBtn.contentMode = UIViewContentModeScaleAspectFit;
-        [_remindBtn setHidden:YES];
+-(UILabel *)serviceChargeLabel{
+    if (!_serviceChargeLabel) {
+        _serviceChargeLabel = InitObject(UILabel);
+        [_serviceChargeLabel setFont:SYSTEMSIZE(28)];
+        _serviceChargeLabel.textColor = RGB_51;
     }
-    return _remindBtn;
+    return _serviceChargeLabel;
 }
+-(UILabel *)immediatelyLabel{
+    if (!_immediatelyLabel) {
+        _immediatelyLabel = InitObject(UILabel);
+        _immediatelyLabel.textColor = RGB_166;
+        _immediatelyLabel.font = SYSTEMSIZE(26);
+        _immediatelyLabel.numberOfLines = 0;
+    }
+    return _immediatelyLabel;
+}
+
 -(GradientButton *)getCashBtn{
     if (!_getCashBtn) {
         _getCashBtn = InitObject(GradientButton);
@@ -227,32 +263,32 @@ Strong UIButton *remindBtn;//提现手续费
     }
     return _historyBtn;
 }
--(UIButton *)remindTitle
-{
-    if (!_remindTitle) {
-        _remindTitle = InitObject(UIButton);
-        [_remindTitle setTitle:@"温馨提示" forState:UIControlStateNormal];
-        [_remindTitle.titleLabel setFont:SYSTEMSIZE(26)];
-        [_remindTitle setTitleColor:RGB_51 forState:UIControlStateNormal];
-        [_remindTitle setImage:IMAGEBYENAME(@"recharge_remind") forState:UIControlStateNormal];
-        [_remindTitle setTitleEdgeInsets:UIEdgeInsetsMake(0, -kSizeFrom750(20), 0, 0)];
-        [_remindTitle setImageEdgeInsets:UIEdgeInsetsMake(0, -(kSizeFrom750(180) - kSizeFrom750(30) - kSizeFrom750(100)), 0, 0)];
-    }
-    return _remindTitle;
-}
--(UIWebView *)remindWeb
-{
-    if (!_remindWeb) {
-        _remindWeb = [[UIWebView alloc]init];
-        _remindWeb.delegate = self;
-        _remindWeb.scrollView.bounces = NO;
-        _remindWeb.scrollView.scrollEnabled = NO;
-        _remindWeb.opaque = NO;
-        _remindWeb.backgroundColor = [UIColor clearColor];
-        _remindWeb.backgroundColor = COLOR_Background;
-    }
-    return _remindWeb;
-}
+//-(UIButton *)remindTitle
+//{
+//    if (!_remindTitle) {
+//        _remindTitle = InitObject(UIButton);
+//        [_remindTitle setTitle:@"温馨提示" forState:UIControlStateNormal];
+//        [_remindTitle.titleLabel setFont:SYSTEMSIZE(26)];
+//        [_remindTitle setTitleColor:RGB_51 forState:UIControlStateNormal];
+//        [_remindTitle setImage:IMAGEBYENAME(@"recharge_remind") forState:UIControlStateNormal];
+//        [_remindTitle setTitleEdgeInsets:UIEdgeInsetsMake(0, -kSizeFrom750(20), 0, 0)];
+//        [_remindTitle setImageEdgeInsets:UIEdgeInsetsMake(0, -(kSizeFrom750(180) - kSizeFrom750(30) - kSizeFrom750(100)), 0, 0)];
+//    }
+//    return _remindTitle;
+//}
+//-(UIWebView *)remindWeb
+//{
+//    if (!_remindWeb) {
+//        _remindWeb = [[UIWebView alloc]init];
+//        _remindWeb.delegate = self;
+//        _remindWeb.scrollView.bounces = NO;
+//        _remindWeb.scrollView.scrollEnabled = NO;
+//        _remindWeb.opaque = NO;
+//        _remindWeb.backgroundColor = [UIColor clearColor];
+//        _remindWeb.backgroundColor = COLOR_Background;
+//    }
+//    return _remindWeb;
+//}
 #pragma masonry
 -(void)loadLayout
 {
@@ -289,35 +325,61 @@ Strong UIButton *remindBtn;//提现手续费
         make.width.mas_equalTo(kSizeFrom750(600));
     }];
     
+    [self.topView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.mas_equalTo(0);
+        make.width.mas_equalTo(screen_width);
+        make.bottom.mas_equalTo(self.amountBgView.mas_bottom).offset(kSizeFrom750(20));
+    }];
+    
     
     [self.commonBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.mas_equalTo(0);
-        make.width.mas_equalTo(kSizeFrom750(270));
-        make.height.mas_equalTo(kSizeFrom750(50));
+        make.left.mas_equalTo(kOriginLeft);
+        make.top.mas_equalTo(kSizeFrom750(20));
+        make.width.height.mas_equalTo(30);
+    }];
+    [self.commentTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.commonBtn.mas_right);
+        make.height.mas_equalTo(kSizeFrom750(30));
+        make.centerY.mas_equalTo(self.commonBtn.mas_centerY);
+    }];
+    [self.commonSubLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.commentTitleLabel.mas_left);
+        make.top.mas_equalTo(self.commonBtn.mas_bottom).offset(kSizeFrom750(20));
+        make.right.mas_equalTo(-kOriginLeft);
+    }];
+    
+    [self.commonView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.width.mas_equalTo(screen_width);
+        make.top.mas_equalTo(self.topView.mas_bottom).offset(kSizeFrom750(20));
+        make.bottom.mas_equalTo(self.commonSubLabel.mas_bottom).offset(kSizeFrom750(20));
     }];
     
     [self.immediatelyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.height.mas_equalTo(self.commonBtn);
-        make.width.mas_equalTo(kSizeFrom750(170));
-        make.left.mas_equalTo(self.commonBtn.mas_right).offset(kSizeFrom750(60));
+        make.top.mas_equalTo(kSizeFrom750(20));
+        make.left.width.height.mas_equalTo(self.commonBtn);
     }];
-    [self.remindBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.immediatelyBtn.mas_bottom);
-        make.width.mas_equalTo(kSizeFrom750(300));
-        make.height.mas_equalTo(kSizeFrom750(0));
-        make.left.mas_equalTo(kSizeFrom750(190));
+    [self.serviceChargeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.immediatelyBtn.mas_right);
+        make.height.mas_equalTo(kSizeFrom750(30));
+        make.centerY.mas_equalTo(self.immediatelyBtn.mas_centerY);
     }];
+    [self.immediatelyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_equalTo(self.commonSubLabel);
+        make.top.mas_equalTo(self.immediatelyBtn.mas_bottom).offset(kSizeFrom750(20));
+    }];
+
     
     [self.sectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.amountBgView.mas_bottom).offset(kSizeFrom750(30));
-        make.width.mas_equalTo(kSizeFrom750(600));
-        make.left.mas_equalTo(kSizeFrom750(75));
-        make.bottom.mas_equalTo(self.remindBtn.mas_bottom).offset(kSizeFrom750(30));
+        make.top.mas_equalTo(self.commonView.mas_bottom);
+        make.width.mas_equalTo(screen_width);
+        make.left.mas_equalTo(0);
+        make.bottom.mas_equalTo(self.immediatelyLabel.mas_bottom).offset(kSizeFrom750(20));
     }];
     
     
     [self.getCashBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.sectionView.mas_bottom);
+        make.top.mas_equalTo(self.sectionView.mas_bottom).offset(kSizeFrom750(40));
         make.left.width.height.mas_equalTo(self.amountBgView);
     }];
 
@@ -334,25 +396,20 @@ Strong UIButton *remindBtn;//提现手续费
         make.top.height.mas_equalTo(self.desLabel);
     }];
     
-    [self.remindTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(kOriginLeft);
-        make.top.mas_equalTo(self.topView.mas_bottom).offset(kSizeFrom750(30));
-        make.width.mas_equalTo(kSizeFrom750(180));
-        make.height.mas_equalTo(kSizeFrom750(35));
-    }];
-    
-    [self.remindWeb mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.remindTitle.mas_bottom).offset(kSizeFrom750(20));
-        make.width.mas_equalTo(kSizeFrom750(680));
-        make.left.mas_equalTo(self.remindTitle);
-        make.height.mas_equalTo(10);
-    }];
-    
-    [self.topView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.mas_equalTo(0);
-        make.width.mas_equalTo(screen_width);
-        make.bottom.mas_equalTo(self.historyBtn.mas_bottom).offset(kSizeFrom750(20));
-    }];
+//    [self.remindTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(kOriginLeft);
+//        make.top.mas_equalTo(self.historyBtn.mas_bottom).offset(kSizeFrom750(20));
+//        make.width.mas_equalTo(kSizeFrom750(180));
+//        make.height.mas_equalTo(kSizeFrom750(35));
+//    }];
+//
+//    [self.remindWeb mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(self.remindTitle.mas_bottom).offset(kSizeFrom750(20));
+//        make.width.mas_equalTo(kSizeFrom750(680));
+//        make.left.mas_equalTo(self.remindTitle);
+//        make.height.mas_equalTo(10);
+//    }];
+  
 }
 #pragma textField delegate
 -(void)textFieldDidChanged:(UITextField *)textField
@@ -383,14 +440,15 @@ Strong UIButton *remindBtn;//提现手续费
             }
             else
             {
-                [self.remindBtn setTitle:@"提现手续费：0.00元" forState:UIControlStateNormal];
+                [self.serviceChargeLabel setAttributedText: [CommonUtils diffierentFontWithString:@"快速提现（手续费：0.00元）" rang:[@"快速提现（手续费：0.00元）" rangeOfString:@"0.00"] font:NUMBER_FONT(28) color:COLOR_LightBlue spacingBeforeValue:0 lineSpace:0]];
                 self.getCashBtn.enabled = NO;
 
             }
         }
     }
     else{
-       [self.remindBtn setTitle:@"提现手续费：0.00元" forState:UIControlStateNormal];
+        [self.serviceChargeLabel setAttributedText: [CommonUtils diffierentFontWithString:@"快速提现（手续费：0.00元）" rang:[@"快速提现（手续费：0.00元）" rangeOfString:@"0.00"] font:NUMBER_FONT(28) color:COLOR_LightBlue spacingBeforeValue:0 lineSpace:0]];
+        
     }
 }
 #pragma mark--request
@@ -408,8 +466,9 @@ Strong UIButton *remindBtn;//提现手续费
     
     [[HttpCommunication sharedInstance] postSignRequestWithPath:getCashFeeAmtUrl keysArray:@[@"amount"] valuesArray:@[self.amountTextField.text] refresh:nil success:^(NSDictionary *successDic) {
        
-        NSString *fee = [successDic objectForKey:@"fee_amt"];
-        [self.remindBtn setTitle:[NSString stringWithFormat:@"提现手续费：%@元",fee] forState:UIControlStateNormal];
+        NSString *fee = [NSString stringWithFormat:@"%@",[successDic objectForKey:@"fee_amt"]];
+        NSString *str = [NSString stringWithFormat:@"提现手续费：(%@元）",fee];
+      [self.serviceChargeLabel setAttributedText: [CommonUtils diffierentFontWithString:str rang:[str rangeOfString:fee] font:NUMBER_FONT(28) color:COLOR_LightBlue spacingBeforeValue:0 lineSpace:0]];
     } failure:^(NSDictionary *errorDic) {
         
     }];
@@ -457,21 +516,13 @@ Strong UIButton *remindBtn;//提现手续费
     if (sender.tag==1) {
         self.commonBtn.selected = YES;
         self.immediatelyBtn.selected = NO;
-        [self.remindBtn setHidden:YES];
-        [self.remindBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(0);
-        }];
     }else{
         self.immediatelyBtn.selected = YES;
         self.commonBtn.selected = NO;
-        [self.remindBtn setHidden:NO];
-        [self.remindBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(kSizeFrom750(65));
-        }];
         [self textFieldDidChanged:self.amountTextField];
     }
     [self.bgScrollView layoutIfNeeded];
-    self.bgScrollView.contentSize = CGSizeMake(screen_width, self.remindWeb.bottom);
+    self.bgScrollView.contentSize = CGSizeMake(screen_width, self.historyBtn.bottom+kSizeFrom750(20));
 }
 -(void)checkBankBind{
     
@@ -493,14 +544,41 @@ Strong UIButton *remindBtn;//提现手续费
    
     [self checkBankBind];
     self.amountTextField.placeholder = self.cashModel.txtamount_placeholder;//提示文字
-    [self.remindTitle setTitle:self.cashModel.prompt forState:UIControlStateNormal];
+    NSLog(@"%@",self.cashModel.ordinary_cash.content);
+    [CommonUtils setAttString:self.cashModel.ordinary_cash.content withLineSpace:kLabelSpace titleLabel:self.commonSubLabel];
+    [self.commentTitleLabel setText:self.cashModel.ordinary_cash.title];
+    if ([self.cashModel.fast_cash.status isEqualToString:@"1"]) {//即时到账提现
+        [self.sectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.mas_equalTo(self.immediatelyLabel.mas_bottom).offset(kSizeFrom750(20));
+        }];
+        self.sectionView.hidden = NO;
+        [self.serviceChargeLabel setAttributedText: [CommonUtils diffierentFontWithString:@"快速提现（手续费：0.00元）" rang:[@"快速提现（手续费：0.00元）" rangeOfString:@"0.00"] font:NUMBER_FONT(28) color:COLOR_LightBlue spacingBeforeValue:0 lineSpace:0]];
+        NSMutableAttributedString *attr = [[NSMutableAttributedString alloc]initWithString:self.cashModel.fast_cash.content];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineSpacing:kLabelSpace];
+        [attr addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle} range:NSMakeRange(0,self.cashModel.fast_cash.content.length)];
+        for (NSString *matchStr  in self.cashModel.fast_cash.content_rep_red) {
+            
+            [attr addAttribute:NSForegroundColorAttributeName value:RGB_166 range:NSMakeRange(0, self.cashModel.fast_cash.content.length)];
+            [attr addAttribute:NSForegroundColorAttributeName value:COLOR_Red range:[self.cashModel.fast_cash.content rangeOfString:matchStr]];//设置颜色
+        }
+        [self.immediatelyLabel setAttributedText:attr];
+    }else{
+        self.sectionView.hidden = YES;
+        [self.sectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.mas_equalTo(self.immediatelyBtn.mas_top);
+        }];
+    }
+   
+    
     self.desLabel.text = self.cashModel.left_msg;
     [self.historyBtn setTitle:self.cashModel.cash_list_title forState:UIControlStateNormal];
     [self.getCashBtn setTitle:self.cashModel.bt_name forState:UIControlStateNormal];
     [self.amountTitle setText:self.cashModel.amount_title];
     [self.amountLabel setText:[CommonUtils getHanleNums:self.cashModel.amount]];
- 
-    [self.remindWeb loadRequest:[NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.cashModel.prompt_content]]];
+    
+    
+//    [self.remindWeb loadRequest:[NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.cashModel.prompt_content]]];
 
 }
 -(BOOL)checkNum{
@@ -516,18 +594,18 @@ Strong UIButton *remindBtn;//提现手续费
     return NO;
 }
 
-//webView加载结束
--(void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    NSString *webHeight = [webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"];
-    CGFloat height = [webHeight floatValue];
-    [self.remindWeb mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(height);
-    }];
-    [self.bgScrollView layoutIfNeeded];
-    
-    self.bgScrollView.contentSize = CGSizeMake(screen_width, self.remindWeb.bottom);
-}
+////webView加载结束
+//-(void)webViewDidFinishLoad:(UIWebView *)webView
+//{
+//    NSString *webHeight = [webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"];
+//    CGFloat height = [webHeight floatValue];
+//    [self.remindWeb mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.height.mas_equalTo(height);
+//    }];
+//    [self.bgScrollView layoutIfNeeded];
+//
+//    self.bgScrollView.contentSize = CGSizeMake(screen_width, self.remindWeb.bottom);
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

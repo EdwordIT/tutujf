@@ -8,6 +8,11 @@
 
 #import "GetCashModel.h"
 
+
+@implementation CashInfoModel
+
+@end
+
 @implementation GetCashModel
 
 @end
