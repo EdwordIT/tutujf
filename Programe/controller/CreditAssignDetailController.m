@@ -193,7 +193,7 @@ Strong LoanBase *baseModel;
 }
 //获取详情页面数据
 -(void) getRequest{
-    self.footerBtn.userInteractionEnabled = NO;
+   
     NSArray *keys = @[@"transfer_id",kToken];
     NSArray *values = @[self.transfer_id,[CommonUtils getToken]];
     
