@@ -136,7 +136,7 @@ Strong UIWebView *mainWebView;
 {
     [self cleanCaches];
     [self removeUserInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];//登录状态变更，刷新首页数据
+    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];//登录状态变更，刷新登陆状态未登陆状态数据不一样页面内容
 }
 
 -(void)removeUserInfo{

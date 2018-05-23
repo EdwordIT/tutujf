@@ -28,7 +28,7 @@ Strong LoanBase *baseModel;
 
 @implementation CreditAssignDetailController
 -(void)dealloc{
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_LoginChanged object:nil];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -40,16 +40,14 @@ Strong LoanBase *baseModel;
     [SVProgressHUD show];
     [SVProgressHUD showWithStatus:@"数据加载中..."];
     [self getRequest];
-    
-    
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getRequest) name:Noti_LoginChanged object:nil];//登录状态变更，刷新数据
 }
 #pragma  投资按钮点击事件
 -(void)footerBtnClick:(UIButton*)sender
 {
     if([CommonUtils isLogin])
     {
-        if([self.baseModel.trust_account isEqual:@"1"])
+        if([self.baseModel.trust_account isEqualToString:@"1"])
         {
             BuyCreditAssignController * vc=[[BuyCreditAssignController alloc] init];
             vc.transfer_id=  self.transfer_id;
@@ -63,6 +61,7 @@ Strong LoanBase *baseModel;
         }
     }
     else{
+        self.footerBtn.userInteractionEnabled = NO;
         [self goLoginVC];
     }
 }
@@ -151,6 +150,8 @@ Strong LoanBase *baseModel;
 #pragma  主体
 -(void) reloadInfo
 {
+    self.footerBtn.userInteractionEnabled = YES;
+
     [self.topView loadCreditInfoWithModel:self.baseModel];
     
     [self.middleView loadCreditInfoWithModel:self.baseModel];
@@ -168,7 +169,6 @@ Strong LoanBase *baseModel;
         self.footerBtn.backgroundColor=navigationBarColor;
         self.footerBtn.userInteractionEnabled = YES;
     }
-    
     
 }
 
@@ -193,7 +193,7 @@ Strong LoanBase *baseModel;
 }
 //获取详情页面数据
 -(void) getRequest{
-    
+    self.footerBtn.userInteractionEnabled = NO;
     NSArray *keys = @[@"transfer_id",kToken];
     NSArray *values = @[self.transfer_id,[CommonUtils getToken]];
     

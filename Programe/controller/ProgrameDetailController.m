@@ -31,6 +31,7 @@ Strong LoanBase *baseModel;
 @implementation ProgrameDetailController
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_CountDown object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_LoginChanged object:nil];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -42,6 +43,7 @@ Strong LoanBase *baseModel;
     [self.view addSubview:self.footerBtn];
     [SVProgressHUD show];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countDownFinished:) name:Noti_CountDownFinished object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getRequest) name:Noti_LoginChanged object:nil];//登录状态变更，刷新数据
     [SVProgressHUD showWithStatus:@"数据加载中..."];
     [self getRequest];
 
@@ -67,6 +69,7 @@ Strong LoanBase *baseModel;
         }
     }
     else{
+        self.footerBtn.userInteractionEnabled = NO;//进入登陆页面不可点击
         [self goLoginVC];
     }
 }
@@ -155,6 +158,8 @@ Strong LoanBase *baseModel;
 #pragma  主体
 -(void) reloadInfo
 {
+    self.footerBtn.userInteractionEnabled = YES;//进入登陆页面不可点击
+    
     [self.topView loadInfoWithModel:self.baseModel.loan_info];
     
     [self.middleView loadInfoWithModel:self.baseModel];
@@ -213,6 +218,7 @@ Strong LoanBase *baseModel;
     NSArray *values = @[self.loan_id,[CommonUtils getToken]];
     
     [[HttpCommunication sharedInstance] postSignRequestWithPath:getLoanDetailUrl keysArray:keys valuesArray:values refresh:self.scrollView success:^(NSDictionary *successDic) {
+        
         [[CountDownManager manager] start];
         self.baseModel = [LoanBase yy_modelWithJSON:successDic];
         self.baseModel.repay_type_name=[[successDic objectForKey:@"repay_type"] objectForKey:@"name"];
