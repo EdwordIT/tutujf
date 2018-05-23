@@ -101,7 +101,7 @@ Strong NSMutableArray *textArr;
 -(UIImageView *)investIcon{
     if (!_investIcon) {
         _investIcon = InitObject(UIImageView);
-        [_investIcon setImage:IMAGEBYENAME(@"icons_portrait")];
+        [_investIcon setImage:IMAGEBYENAME(@"myinvest_time")];
     }
     return _investIcon;
 }
@@ -116,7 +116,7 @@ Strong NSMutableArray *textArr;
 -(UIImageView *)periodIcon{
     if (!_periodIcon) {
         _periodIcon = InitObject(UIImageView);
-        [_periodIcon setImage:IMAGEBYENAME(@"icons_portrait")];
+        [_periodIcon setImage:IMAGEBYENAME(@"myinvest_period")];
     }
     return _periodIcon;
 }

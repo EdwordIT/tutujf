@@ -145,4 +145,12 @@
  我的投资详情接口
  */
 #define myInvestDetailUrl @"/api/tender/myTenderInfo"
+/**
+ 我的红包接口
+ */
+#define myRedEnvelopeUrl @"/api/bounty/myBountyList"
+/**
+ 资金列表接口
+ */
+#define myAccountLogUrl @"/api/account/myAccountLog"
 

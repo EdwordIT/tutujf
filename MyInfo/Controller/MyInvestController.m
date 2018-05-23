@@ -10,6 +10,7 @@
 #import "ZFJSegmentedControl.h"
 #import "MyInvestCell.h"
 #import "InvestSelectView.h"
+#import "MyInvestDetailController.h"
 @interface MyInvestController ()<UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate>
 Strong InvestSelectView *selectView;//筛选
 Strong ZFJSegmentedControl *segmentView;//切换
@@ -78,7 +79,7 @@ Copy NSString *endTime;
         _segmentView.frame = RECT(0, kNavHight, screen_width, kSizeFrom750(84));
         _segmentView.backgroundColor = COLOR_White;
         _segmentView.titleColor = RGB_153;
-        _segmentView.selectTitleColor = RGB_51;
+        _segmentView.selectTitleColor = navigationBarColor;
         _segmentView.selectIndex =  0;
         _segmentView.SCType_Underline_WIDTH = kSizeFrom750(40);//底部条宽度
         _segmentView.titleFont = SYSTEMSIZE(30);
@@ -326,6 +327,13 @@ Copy NSString *endTime;
     MyInvestModel *model = [[self.dataSource objectAtIndex:self.selectedIndex] objectAtIndex:indexPath.row];
     [cell loadInfoWithModel:model];
     return cell;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MyInvestModel *model = [[self.dataSource objectAtIndex:self.selectedIndex] objectAtIndex:indexPath.row];
+    MyInvestDetailController *detail = InitObject(MyInvestDetailController);
+    detail.tender_id = model.tender_id;
+    [self.navigationController pushViewController:detail animated:YES];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

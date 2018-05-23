@@ -9,7 +9,7 @@
 #import "MyRedEnvelopeCell.h"
 
 @interface MyRedEnvelopeCell()
-Strong UIImageView *bgImage;
+Strong UIButton *bgImage;
 Strong UILabel *titleLabel;//标题
 Strong UIButton *tagImage;//标签(还有XXX过期)
 Strong UILabel *amountLabel;//金额
@@ -55,9 +55,12 @@ Strong UIImageView *stateImage;//激活成功、已失效
     
     [self loadLayout];
 }
--(UIImageView *)bgImage{
+-(UIButton *)bgImage{
     if (!_bgImage) {
-        _bgImage = InitObject(UIImageView);
+        _bgImage = InitObject(UIButton);
+        [_bgImage setImage:IMAGEBYENAME(@"re_canuse_bg") forState:UIControlStateNormal];
+        [_bgImage setImage:IMAGEBYENAME(@"re_overdue_bg") forState:UIControlStateSelected];
+        _bgImage.adjustsImageWhenHighlighted = NO;
     }
     return _bgImage;
 }
@@ -82,14 +85,15 @@ Strong UIImageView *stateImage;//激活成功、已失效
     if (!_amountLabel) {
         _amountLabel = InitObject(UILabel);
         _amountLabel.font = SYSTEMSIZE(30);
+        _amountLabel.textColor = RGBA(255, 255, 255, 0.8);
     }
     return _amountLabel;
 }
 -(UILabel *)amountTitle{
     if (!_amountTitle) {
         _amountTitle = InitObject(UILabel);
-        _amountTitle.font = SYSTEMSIZE(26);
-        _amountTitle.textAlignment = NSTextAlignmentCenter;
+        _amountTitle.font = SYSTEMSIZE(28);
+        _amountTitle.textColor = RGBA(255, 255, 255, 0.8);
     }
     return _amountTitle;
 }
@@ -105,7 +109,7 @@ Strong UIImageView *stateImage;//激活成功、已失效
         _desLabel = InitObject(UILabel);
         _desLabel.numberOfLines = 0;
         _desLabel.font = SYSTEMSIZE(28);
-        _desLabel.textColor = COLOR_White;
+        _desLabel.textColor = RGBA(255, 255, 255, 0.8);
     }
     return _desLabel;
 }
@@ -113,20 +117,21 @@ Strong UIImageView *stateImage;//激活成功、已失效
     if (!_timeLabel) {
         _timeLabel = InitObject(UILabel);
         _timeLabel.textColor = RGB_102;
-        _timeLabel.font = SYSTEMSIZE(26);
+        _timeLabel.font = SYSTEMSIZE(28);
     }
     return _timeLabel;
 }
 -(UIButton *)useBtn{
     if (!_useBtn) {
         _useBtn = InitObject(UIButton);
-        _useBtn.layer.cornerRadius = kSizeFrom750(52)/2;
+        _useBtn.layer.cornerRadius = kSizeFrom750(44)/2;
         _useBtn.layer.borderColor = [COLOR_Red CGColor];
-        _useBtn.layer.borderWidth = kLineHeight;
+        _useBtn.layer.borderWidth = 1;
         [_useBtn setTitleColor:COLOR_Red forState:UIControlStateNormal];
         _useBtn.adjustsImageWhenHighlighted = NO;
         [_useBtn.titleLabel setFont:SYSTEMSIZE(28)];
         [_useBtn setTitle:@"立即使用" forState:UIControlStateNormal];
+        [_useBtn addTarget:self action:@selector(investClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _useBtn;
 }
@@ -159,49 +164,87 @@ Strong UIImageView *stateImage;//激活成功、已失效
     }];
     [self.amountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(kSizeFrom750(30));
-        make.left.mas_equalTo(0);
-        make.width.mas_equalTo(kSizeFrom750(230));
+        make.left.mas_equalTo(self.titleLabel);
         make.height.mas_equalTo(kSizeFrom750(70));
     }];
     [self.amountTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.width.mas_equalTo(self.amountLabel);
+        make.left.mas_equalTo(self.amountLabel);
         make.top.mas_equalTo(self.amountLabel.mas_bottom);
         make.height.mas_equalTo(kSizeFrom750(28));
     }];
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(kSizeFrom750(110));
-        make.left.mas_equalTo(kSizeFrom750(235));
+        make.left.mas_equalTo(self.amountLabel.mas_right).offset(kSizeFrom750(40));
         make.width.mas_equalTo(kLineHeight);
         make.height.mas_equalTo(kSizeFrom750(90));
     }];
     [self.desLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(kSizeFrom750(116));
+        make.top.mas_equalTo(kSizeFrom750(110));
         make.left.mas_equalTo(self.lineView.mas_right).offset(kSizeFrom750(50));
-        make.width.mas_equalTo(kSizeFrom750(375));
     }];
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(kSizeFrom750(35));
-        make.top.mas_equalTo(kSizeFrom750(255));
+        make.top.mas_equalTo(kSizeFrom750(250));
         make.height.mas_equalTo(kSizeFrom750(30));
     }];
     
     [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-kOriginLeft);
-        make.centerY.mas_equalTo(self.timeLabel);
-        make.height.mas_equalTo(kSizeFrom750(52));
+        make.right.mas_equalTo(self.bgImage.mas_right).offset(-kOriginLeft);
+        make.centerY.mas_equalTo(self.timeLabel.mas_centerY).offset(-kSizeFrom750(5));
+        make.height.mas_equalTo(kSizeFrom750(44));
         make.width.mas_equalTo(kSizeFrom750(180));
     }];
     [self.stateImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(kSizeFrom750(175));
-        make.height.mas_equalTo(kSizeFrom750(140));
+        make.width.mas_equalTo(kSizeFrom750(163));
+        make.height.mas_equalTo(kSizeFrom750(136));
         make.right.mas_equalTo(0);
-        make.top.mas_equalTo(kSizeFrom750(20));
+        make.top.mas_equalTo(kSizeFrom750(15));
     }];
+}
+#pragma mark --按钮点击
+-(void)investClick:(UIButton *)sender{
+    if (self.investBlock) {
+        self.investBlock();
+    }
 }
 #pragma mark --数据加载
 -(void)loadInfoWithModel:(MyRedenvelopeModel *)model
 {
+    self.titleLabel.text = model.name;
+    NSString *str = [NSString stringWithFormat:@"%@元",model.amount];
+    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc]initWithString:str];
+    [attr addAttribute:NSFontAttributeName value:NUMBER_FONT_BOLD(60) range:[str rangeOfString:model.amount]];
+    [self.amountLabel setAttributedText:attr];
+    self.amountTitle.text = model.type_name;
+    [CommonUtils setAttString:[model.condition_txt stringByReplacingOccurrencesOfString:@"\\r" withString:@"\n"] withLineSpace:kLabelSpace titleLabel:self.desLabel];
+    self.timeLabel.text =model.end_time;
+    //状态1 可用（立刻使用）【可用】 ， 2 待激活【已使用】(等待扣款状态)， 3 激活成功【已使用】， 4 过期 ，5 失效
+    if ([model.status isEqualToString:@"1"]||[model.status isEqualToString:@"2"]) {
+        self.bgImage.selected = NO;
+        
+    }else{
+        self.bgImage.selected = YES;
+    }
+    if ([model.status isEqualToString:@"1"]) {
+        [self.useBtn setHidden:NO];
+        [self.stateImage setHidden:YES];
+    }else{
+        [self.useBtn setHidden:YES];
+        [self.stateImage setHidden:NO];
+    }
     
+    if ([model.status isEqualToString:@"2"]) {//红包待激活
+         [self.stateImage setImage:IMAGEBYENAME(@"re_canuse")];//待激活
+    }
+    if ([model.status isEqualToString:@"3"]) {
+        [self.stateImage setImage:IMAGEBYENAME(@"re_canuse")];//激活成功
+    };
+    if ([model.status isEqualToString:@"4"]) {
+        [self.stateImage setImage:IMAGEBYENAME(@"re_overdue")];//过期
+    };
+    if ([model.status isEqualToString:@"5"]) {
+        [self.stateImage setImage:IMAGEBYENAME(@"re_overdue")];//失效
+    };
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

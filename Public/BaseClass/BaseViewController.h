@@ -15,6 +15,13 @@
 #import "HttpUrlAddress.h"
 #import "HttpCommunication.h"
 #import "BaseView.h"
+
+typedef enum {
+    TabBarHomePage = 0,
+    TabBarProgrameList,
+    TabBarDiscover,
+    TabBarMine
+}TabBarSelectedIndex;//主视图处于哪个Section选中状态
 /**
     基础控件
  */

@@ -8,9 +8,11 @@
 
 #import "BaseCell.h"
 #import "MyRedenvelopeModel.h"
+typedef void (^InvestBlock)(void);
 /**
  我的红包
  */
 @interface MyRedEnvelopeCell : BaseCell
+Copy InvestBlock investBlock;
 -(void)loadInfoWithModel:(MyRedenvelopeModel *)model;
 @end

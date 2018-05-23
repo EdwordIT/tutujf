@@ -300,9 +300,11 @@
         return;
     }
     if (hidden==YES&&tabbar.hidden==YES) {
+        tabbar.frame = RECT(0, screen_height, screen_width, kTabbarHeight);
         return;
     }
     if (hidden==NO&&tabbar.hidden==NO) {
+        tabbar.frame = RECT(0, screen_height-kTabbarHeight, screen_width, kTabbarHeight);
         return;
     }
     if (!hidden) {

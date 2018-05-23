@@ -10,24 +10,24 @@
 #import "MyRedEnvelopeCell.h"
 #import "ZFJSegmentedControl.h"
 @interface MyRedEnvelopeController ()<UITableViewDelegate,UITableViewDataSource>
-Strong BaseUITableView *tableView;
-Strong NSMutableArray *dataArray;
 Strong ZFJSegmentedControl *segmentView;//切换
 Strong UIScrollView *backScroll;
-Strong BaseUITableView *mainTableView;//全部
-Strong BaseUITableView *paybackTableView;//回款中
-Strong BaseUITableView *paiedTableView;//已回款
-Strong NSMutableArray *mainDataArray;
-Strong NSMutableArray *pabackDataArray;
-Strong NSMutableArray *paidBackDataArray;
+Strong BaseUITableView *unuseTableView;//未使用
+Strong BaseUITableView *usedTableView;//已使用
+Strong BaseUITableView *overdueTableView;//已过期
+Strong NSMutableArray *unusedDataArray;
+Strong NSMutableArray *usedDataArray;
+Strong NSMutableArray *overduedDataArray;
 Assign NSInteger selectedIndex;//被选中状态
 Strong NSMutableArray *dataSource;//
-Assign NSInteger mainCurrentPage;
-Assign NSInteger mainTotalPages;
-Assign NSInteger paybackCurrentPage;
-Assign NSInteger paybackTotalPages;
-Assign NSInteger paidCurrentPage;
-Assign NSInteger paidTotalPages;
+Assign NSInteger unusedCurrentPage;
+Assign NSInteger unusedTotalPages;
+Assign NSInteger usedCurrentPage;
+Assign NSInteger usedTotalPages;
+Assign NSInteger overduedCurrentPage;
+Assign NSInteger overduedTotalPages;
+Assign BOOL isused;
+Assign BOOL isoverdued;
 @end
 
 @implementation MyRedEnvelopeController
@@ -37,59 +37,40 @@ Assign NSInteger paidTotalPages;
     self.titleString = @"红包列表";
     
     self.selectedIndex = 0;
+    self.unusedCurrentPage = 1;
+    self.usedCurrentPage = 1;
+    self.overduedCurrentPage = 1;
     
     [self.view addSubview:self.segmentView];
     
     [self.view addSubview:self.backScroll];
     
-    [self.backScroll addSubview:self.mainTableView];
+    [self.backScroll addSubview:self.unuseTableView];
     
-    [self.backScroll addSubview:self.paybackTableView];
+    [self.backScroll addSubview:self.usedTableView];
     
-    [self.backScroll addSubview:self.paiedTableView];
+    [self.backScroll addSubview:self.overdueTableView];
     
     [self loadRefresh];
+    
+    [SVProgressHUD show];
+    
+    [self loadRequestAtIndex:0];
     
     // Do any additional setup after loading the view.
 }
 #pragma mark lazyLoading
--(NSMutableArray *)mainDataArray{
-    if (!_mainDataArray) {
-        _mainDataArray = InitObject(NSMutableArray);
-    }
-    return _mainDataArray;
-}
--(NSMutableArray *)pabackDataArray {
-    if (!_pabackDataArray) {
-        _pabackDataArray = InitObject(NSMutableArray);
-    }
-    return _mainDataArray;
-}
--(NSMutableArray *)paidBackDataArray{
-    if (!_paidBackDataArray) {
-        _paidBackDataArray = InitObject(NSMutableArray);
-    }
-    return _mainDataArray;
-}
--(NSMutableArray *)dataSource{
-    if (!_dataSource) {
-        _dataSource = [[NSMutableArray alloc]initWithObjects:self.mainDataArray,self.pabackDataArray,self.paidBackDataArray,nil];
-    }
-    return _dataSource;
-}
 -(ZFJSegmentedControl *)segmentView
 {
     if (!_segmentView) {
         _segmentView = [[ZFJSegmentedControl alloc]initwithTitleArr:@[@"未使用", @"已使用", @"已过期"] iconArr:nil SCType:SCType_Underline];
         _segmentView.frame = RECT(0, kNavHight, screen_width, kSizeFrom750(84));
-        _segmentView.backgroundColor = [UIColor whiteColor];
+        _segmentView.backgroundColor = COLOR_White;
         _segmentView.titleColor = RGB_153;
-        _segmentView.selectTitleColor = RGB_51;
+        _segmentView.selectTitleColor = navigationBarColor;
         _segmentView.selectIndex =  0;
         _segmentView.SCType_Underline_WIDTH = kSizeFrom750(40);//底部条宽度
         _segmentView.titleFont = SYSTEMSIZE(30);
-        _segmentView.selectTitleColor=navigationBarColor;
-        
     }
     return _segmentView;
 }
@@ -103,84 +84,97 @@ Assign NSInteger paidTotalPages;
     }
     return _backScroll;
 }
--(BaseUITableView *)mainTableView{
-    if (!_mainTableView) {
-        _mainTableView = [[BaseUITableView alloc]initWithFrame:RECT(0, 0, screen_width, self.backScroll.height) style:UITableViewStylePlain];
-        _mainTableView.delegate = self;
-        _mainTableView.dataSource = self;
-        _mainTableView.rowHeight = kSizeFrom750(375);
+-(BaseUITableView *)unuseTableView{
+    if (!_unuseTableView) {
+        _unuseTableView = [[BaseUITableView alloc]initWithFrame:RECT(0, 0, screen_width, self.backScroll.height) style:UITableViewStylePlain];
+        _unuseTableView.delegate = self;
+        _unuseTableView.dataSource = self;
+        _unuseTableView.rowHeight = kSizeFrom750(375);
         
     }
-    return _mainTableView;
+    return _unuseTableView;
 }
--(BaseUITableView *)paybackTableView{
-    if (!_paybackTableView) {
-        _paybackTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width, 0, screen_width, self.mainTableView.height) style:UITableViewStylePlain];
-        _paybackTableView.delegate = self;
-        _paybackTableView.dataSource = self;
-        _paybackTableView.rowHeight = kSizeFrom750(375);
+-(BaseUITableView *)usedTableView{
+    if (!_usedTableView) {
+        _usedTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width, 0, screen_width, self.unuseTableView.height) style:UITableViewStylePlain];
+        _usedTableView.delegate = self;
+        _usedTableView.dataSource = self;
+        _usedTableView.rowHeight = kSizeFrom750(375);
         
     }
-    return _paybackTableView;
+    return _usedTableView;
 }
--(BaseUITableView *)paiedTableView{
-    if (!_paiedTableView) {
-        _paiedTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width*2, 0, screen_width, self.mainTableView.height) style:UITableViewStylePlain];
-        _paiedTableView.delegate = self;
-        _paiedTableView.dataSource = self;
-        _paiedTableView.rowHeight = kSizeFrom750(375);
+-(BaseUITableView *)overdueTableView{
+    if (!_overdueTableView) {
+        _overdueTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width*2, 0, screen_width, self.unuseTableView.height) style:UITableViewStylePlain];
+        _overdueTableView.delegate = self;
+        _overdueTableView.dataSource = self;
+        _overdueTableView.rowHeight = kSizeFrom750(375);
     }
-    return _paiedTableView;
+    return _overdueTableView;
 }
 -(void)loadRefresh{
+    self.unusedDataArray = InitObject(NSMutableArray);
+    self.usedDataArray = InitObject(NSMutableArray);
+    self.overduedDataArray = InitObject(NSMutableArray);
     
+    self.dataSource = [[NSMutableArray alloc]initWithObjects:self.unusedDataArray,self.usedDataArray,self.overduedDataArray,nil];
     WEAK_SELF;
-    //全部
-    self.mainTableView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
-        weakSelf.mainCurrentPage = 0;
+    //未使用
+    self.unuseTableView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
+        [weakSelf.unuseTableView.mj_footer endRefreshing];
         [weakSelf loadRequestAtIndex:weakSelf.selectedIndex];
     }];
-    self.mainTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        weakSelf.mainCurrentPage++;
+    self.unuseTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [weakSelf loadMoreData:weakSelf.selectedIndex];
     }];
-    self.mainTableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
-        weakSelf.mainCurrentPage = 0;
+    self.unuseTableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
+        weakSelf.unusedCurrentPage = 1;
         [weakSelf loadRequestAtIndex:weakSelf.selectedIndex];
     }];
-    //还款中
-    self.paybackTableView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
-        weakSelf.paybackCurrentPage = 0;
+    //已使用
+    self.usedTableView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
+        [weakSelf.usedTableView.mj_footer endRefreshing];
+        
         [weakSelf loadRequestAtIndex:weakSelf.selectedIndex];
     }];
-    self.paybackTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        weakSelf.paybackCurrentPage++;
+    self.usedTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [weakSelf loadMoreData:weakSelf.selectedIndex];
     }];
-    self.paybackTableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
-        weakSelf.paybackCurrentPage = 0;
+    self.usedTableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
+        weakSelf.usedCurrentPage = 1;
         [weakSelf loadRequestAtIndex:weakSelf.selectedIndex];
     }];
-    //已还完
-    self.paiedTableView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
-        weakSelf.paidCurrentPage = 0;
+    //已过期
+    self.overdueTableView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
+        [weakSelf.overdueTableView.mj_footer endRefreshing];
         [weakSelf loadRequestAtIndex:weakSelf.selectedIndex];
     }];
-    self.paiedTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        weakSelf.paidCurrentPage++;
+    self.overdueTableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [weakSelf loadMoreData:weakSelf.selectedIndex];
     }];
-    self.paiedTableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
-        weakSelf.paidCurrentPage = 0;
+    self.overdueTableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
+        weakSelf.overduedCurrentPage = 1;
         [weakSelf loadRequestAtIndex:weakSelf.selectedIndex];
     }];
     
     //切换标签栏
     self.segmentView.selectType = ^(NSInteger selectIndex, NSString *selectIndexTitle) {
         weakSelf.selectedIndex = selectIndex;
-        weakSelf.backScroll.contentOffset = CGPointMake(screen_width*weakSelf.selectedIndex, 0);
+        weakSelf.backScroll.contentOffset = CGPointMake(selectIndex*screen_width, 0);
+        if (weakSelf.isused==NO&&selectIndex==1) {
+            [SVProgressHUD show];
+            weakSelf.isused = YES;
+            [weakSelf loadRequestAtIndex:selectIndex];
+        }
+        else if (weakSelf.isoverdued==NO&&selectIndex==2) {
+            [SVProgressHUD show];
+            weakSelf.isoverdued = YES;
+            [weakSelf loadRequestAtIndex:selectIndex];
+        }
     };
 }
+
 #pragma mark --scrollViewDelegate
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
@@ -190,11 +184,100 @@ Assign NSInteger paidTotalPages;
 }
 #pragma  mark --loadRequest
 -(void)loadRequestAtIndex:(NSInteger)index{
+    NSString *use_type = @"1";
+    NSString *page = @"1";
+    BaseUITableView *currentTableView;
     
+    switch (index) {
+        case 0:{
+            use_type = @"1";//未使用
+            page = [NSString stringWithFormat:@"%ld",self.unusedCurrentPage];
+            currentTableView = self.unuseTableView;
+        }
+            break;
+        case 1:{
+            use_type = @"2";//已使用（待激活+激活）
+            page = [NSString stringWithFormat:@"%ld",self.usedCurrentPage];
+            currentTableView = self.usedTableView;
+        }
+            break;
+        case 2:{
+            use_type = @"3";//已过期
+            page = [NSString stringWithFormat:@"%ld",self.overduedCurrentPage];
+            currentTableView = self.overdueTableView;
+        }
+            break;
+        default:
+            break;
+    }
+    NSArray *keysArr = @[kToken,@"page",@"use_type"];
+    NSArray *valuesArr = @[[CommonUtils getToken],page,use_type];
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:myRedEnvelopeUrl keysArray:keysArr valuesArray:valuesArr refresh:currentTableView success:^(NSDictionary *successDic) {
+        
+        switch (index) {
+            case 0:
+                self.unusedTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+                break;
+            case 1:
+                self.usedTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+                break;
+            case 2:
+                self.overduedTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+                break;
+            default:
+                break;
+        }
+        
+        NSArray *items =  [successDic objectForKey:@"items"];
+        NSMutableArray *dataArr = [self.dataSource objectAtIndex:self.selectedIndex];
+        if ([page integerValue]==1) {
+            [dataArr removeAllObjects];
+        }
+        for (int i=0; i<items.count; i++) {
+            NSDictionary *dic = [items objectAtIndex:i];
+            MyRedenvelopeModel *model = [MyRedenvelopeModel yy_modelWithJSON:dic];
+            [dataArr addObject:model];
+        }
+        [currentTableView reloadData];
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
     
 }
 -(void)loadMoreData:(NSInteger)index{
-    
+    switch (index) {
+        case 0:
+        {
+            if (self.unusedTotalPages==self.unusedCurrentPage) {
+                [self.unuseTableView.mj_footer endRefreshingWithNoMoreData];
+                return;
+            }
+            self.unusedCurrentPage ++;
+        }
+            break;
+        case 1:
+        {
+            if (self.unusedTotalPages==self.unusedCurrentPage) {
+                [self.usedTableView.mj_footer endRefreshingWithNoMoreData];
+                return;
+            }
+            self.usedCurrentPage ++;
+        }
+            break;
+        case 2:
+        {
+            if (self.unusedTotalPages==self.unusedCurrentPage) {
+                [self.overdueTableView.mj_footer endRefreshingWithNoMoreData];
+                return;
+            }
+            self.overduedCurrentPage ++;
+        }
+            break;
+            
+        default:
+            break;
+    }
+    [self loadRequestAtIndex:index];
 }
 #pragma mark -- dataSource and Delegate
 -(NSInteger )numberOfSectionsInTableView:(UITableView *)tableView{
@@ -202,19 +285,24 @@ Assign NSInteger paidTotalPages;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    //  return ((NSMutableArray *)[self.dataSource objectAtIndex:self.selectedIndex]).count;
-    return 3;
+    return ((NSMutableArray *)[self.dataSource objectAtIndex:self.selectedIndex]).count;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellId = @"MyInvestCell";
+    static NSString *cellId = @"MyRedEnvelopeCell";
     MyRedEnvelopeCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (cell==nil) {
         cell = [[MyRedEnvelopeCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
     }
-    
-    //    MyRedenvelopeModel *model = [[self.dataSource objectAtIndex:self.selectedIndex] objectAtIndex:indexPath.row];
-    //    [cell loadInfoWithModel:model];
+    WEAK_SELF;
+    cell.investBlock = ^{
+        //切换到相应的标签栏，之后跳转
+        weakSelf.tabBarController.selectedIndex = TabBarProgrameList;
+        //首页还是要返回到主页面，防止页面切换
+        [weakSelf.navigationController popToRootViewControllerAnimated:YES];
+    };
+    MyRedenvelopeModel *model = [[self.dataSource objectAtIndex:self.selectedIndex] objectAtIndex:indexPath.row];
+    [cell loadInfoWithModel:model];
     return cell;
 }
 - (void)didReceiveMemoryWarning {
