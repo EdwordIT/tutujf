@@ -188,6 +188,22 @@ Strong NSMutableArray *textArr;
 }
 #pragma mark --loadView
 -(void)loadInfoWithModel:(MyInvestModel *)model{
+    //投资中=tzz；已回款=yhk；投资失败=tzsb；回购中=hgz；已回购=yhg；回款中=hkz
+    if ([model.status_rid isEqualToString:@"tzz"]) {//投资中
+        [self.typeImage setImage:IMAGEBYENAME(@"myinvest_inInvest")];
+    }
+    if ([model.status_rid isEqualToString:@"yhk"]) {//已回款
+        [self.typeImage setImage:IMAGEBYENAME(@"myinvest_paidback")];
+    }
+    if ([model.status_rid isEqualToString:@"hkz"]) {//回款中
+        [self.typeImage setImage:IMAGEBYENAME(@"myinvest_payback")];
+    }
+    if ([model.status_rid isEqualToString:@"tzsb"]) {//投资失败
+        [self.typeImage setImage:IMAGEBYENAME(@"myinvest_failed")];
+    }
+    if ([model.status_rid isEqualToString:@"yhg"]) {//已回购
+        [self.typeImage setImage:IMAGEBYENAME(@"myinvest_buybacked")];
+    }
     self.titleLabel.text = model.loan_name;
     self.investTimeLabel.text = model.left_bottom_txt;
     self.periodLabel.text = model.right_bottom_txt;

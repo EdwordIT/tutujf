@@ -30,7 +30,7 @@ Assign NSInteger paybackTotalPages;
 Assign NSInteger paidCurrentPage;
 Assign NSInteger paidTotalPages;
 Assign BOOL isPayback;
-Assign BOOL isPaidBack;
+Assign BOOL isAll;
 Copy NSString *startTime;
 Copy NSString *endTime;
 @end
@@ -47,7 +47,7 @@ Copy NSString *endTime;
     self.paidCurrentPage = 1;
     self.startTime = @"";
     self.endTime = @"";
-    [self.rightBtn setImage:IMAGEBYENAME(@"icons_refresh") forState:UIControlStateNormal];
+    [self.rightBtn setImage:IMAGEBYENAME(@"myinvest_search") forState:UIControlStateNormal];
     [self.rightBtn setHidden:NO];
     [self.rightBtn addTarget:self action:@selector(selectClick:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -75,7 +75,7 @@ Copy NSString *endTime;
 -(ZFJSegmentedControl *)segmentView
 {
     if (!_segmentView) {
-        _segmentView = [[ZFJSegmentedControl alloc]initwithTitleArr:@[@"全部", @"还款中", @"已还款"] iconArr:nil SCType:SCType_Underline];
+        _segmentView = [[ZFJSegmentedControl alloc]initwithTitleArr:@[ @"回款中", @"已回款",@"全部"] iconArr:nil SCType:SCType_Underline];
         _segmentView.frame = RECT(0, kNavHight, screen_width, kSizeFrom750(84));
         _segmentView.backgroundColor = COLOR_White;
         _segmentView.titleColor = RGB_153;
@@ -98,7 +98,7 @@ Copy NSString *endTime;
 }
 -(BaseUITableView *)mainTableView{
     if (!_mainTableView) {
-        _mainTableView = [[BaseUITableView alloc]initWithFrame:RECT(0, 0, screen_width, self.backScroll.height) style:UITableViewStylePlain];
+        _mainTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width*2, 0, screen_width, self.backScroll.height) style:UITableViewStylePlain];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
         _mainTableView.rowHeight = kSizeFrom750(325);
@@ -108,7 +108,7 @@ Copy NSString *endTime;
 }
 -(BaseUITableView *)paybackTableView{
     if (!_paybackTableView) {
-        _paybackTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width, 0, screen_width, self.mainTableView.height) style:UITableViewStylePlain];
+        _paybackTableView = [[BaseUITableView alloc]initWithFrame:RECT(0, 0, screen_width, self.mainTableView.height) style:UITableViewStylePlain];
         _paybackTableView.delegate = self;
         _paybackTableView.dataSource = self;
         _paybackTableView.rowHeight = kSizeFrom750(325);
@@ -118,7 +118,7 @@ Copy NSString *endTime;
 }
 -(BaseUITableView *)paiedTableView{
     if (!_paiedTableView) {
-        _paiedTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width*2, 0, screen_width, self.mainTableView.height) style:UITableViewStylePlain];
+        _paiedTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width, 0, screen_width, self.mainTableView.height) style:UITableViewStylePlain];
         _paiedTableView.delegate = self;
         _paiedTableView.dataSource = self;
         _paiedTableView.rowHeight = kSizeFrom750(325);
@@ -130,7 +130,7 @@ Copy NSString *endTime;
     self.paybackDataArray = InitObject(NSMutableArray);
     self.paidBackDataArray = InitObject(NSMutableArray);
 
-   self.dataSource = [[NSMutableArray alloc]initWithObjects:self.mainDataArray,self.paybackDataArray,self.paidBackDataArray,nil];
+   self.dataSource = [[NSMutableArray alloc]initWithObjects:self.paybackDataArray,self.paidBackDataArray,self.mainDataArray,nil];
     WEAK_SELF;
     //全部
     self.mainTableView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
@@ -179,9 +179,9 @@ Copy NSString *endTime;
             weakSelf.isPayback = YES;
             [weakSelf loadRequestAtIndex:selectIndex];
         }
-       else if (weakSelf.isPaidBack==NO&&selectIndex==2) {
+       else if (weakSelf.isAll==NO&&selectIndex==2) {
             [SVProgressHUD show];
-            weakSelf.isPaidBack = YES;
+            weakSelf.isAll = YES;
             [weakSelf loadRequestAtIndex:selectIndex];
         }
     };
@@ -220,21 +220,23 @@ Copy NSString *endTime;
     
     switch (index) {
         case 0:{
-            status_nid = @"";
-            page = [NSString stringWithFormat:@"%ld",self.mainCurrentPage];
-            currentTableView = self.mainTableView;
-            }
-            break;
-        case 1:{
             status_nid = @"recover";//回款中
             page = [NSString stringWithFormat:@"%ld",self.paybackCurrentPage];
             currentTableView = self.paybackTableView;
-        }
+           
+            }
             break;
-        case 2:{
+        case 1:{
             status_nid = @"recover_yes";//已回款
             page = [NSString stringWithFormat:@"%ld",self.paidCurrentPage];
             currentTableView = self.paiedTableView;
+        }
+            break;
+        case 2:{
+            status_nid = @"";//全部
+            page = [NSString stringWithFormat:@"%ld",self.mainCurrentPage];
+            currentTableView = self.mainTableView;
+           
         }
             break;
         default:
@@ -246,13 +248,15 @@ Copy NSString *endTime;
         
         switch (index) {
             case 0:
-                self.mainTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+                self.paybackTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+
                 break;
             case 1:
-                self.paybackTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+                self.paidTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+
                 break;
             case 2:
-                self.paidTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+                     self.mainTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
                 break;
             default:
                 break;
@@ -278,29 +282,31 @@ Copy NSString *endTime;
     switch (index) {
         case 0:
             {
-                if (self.mainTotalPages==self.mainCurrentPage) {
-                    [self.mainTableView.mj_footer endRefreshingWithNoMoreData];
+                if (self.paybackTotalPages==self.paybackTotalPages) {
+                    [self.paybackTableView.mj_footer endRefreshingWithNoMoreData];
                     return;
                 }
-                self.mainCurrentPage ++;
+                self.paybackCurrentPage ++;
             }
             break;
         case 1:
         {
-            if (self.mainTotalPages==self.mainCurrentPage) {
-                [self.paybackTableView.mj_footer endRefreshingWithNoMoreData];
+            if (self.paidTotalPages==self.paidCurrentPage) {
+                [self.paiedTableView.mj_footer endRefreshingWithNoMoreData];
                 return;
             }
-            self.paybackCurrentPage ++;
+            self.paidCurrentPage ++;
+           
         }
             break;
         case 2:
         {
             if (self.mainTotalPages==self.mainCurrentPage) {
-                [self.paiedTableView.mj_footer endRefreshingWithNoMoreData];
+                [self.mainTableView.mj_footer endRefreshingWithNoMoreData];
                 return;
             }
-            self.paidCurrentPage ++;
+            self.mainCurrentPage ++;
+           
         }
             break;
             

@@ -106,7 +106,7 @@ Strong MyInvestDetailModel *detailModel;
   
     if (self.detailModel.repay_items.count>0) {
         
-        NSArray *nameArr = @[@"回款时间",@"本金（元）",@"收益",@"状态"];
+        NSArray *nameArr = @[@"回款时间",@"本金（元）",@"收益（元）",@"状态"];
         NSArray *widthArr = @[@(160),@(220),@(200),@(140)];
         NSArray *leftArr = @[@(30),@(190),@(410),@(610)];
         CGFloat bottom = 0;

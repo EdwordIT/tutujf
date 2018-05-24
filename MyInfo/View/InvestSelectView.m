@@ -45,7 +45,7 @@ Strong UIDatePicker *datePicker;
     self.titleLabel.text = @"交易分类";
     self.titleLabel.font = SYSTEMSIZE(28);
     [self.headerView addSubview:self.titleLabel];
-    NSArray *nameArr = @[@"回款中",@"投资中",@"已回款"];
+    NSArray *nameArr = @[@"回款中",@"已回款",@"全部"];
     for (int i=0; i<nameArr.count; i++) {
         
         UIButton *btn = [[UIButton alloc]initWithFrame:RECT(kOriginLeft+kSizeFrom750(160)*i, self.titleLabel.bottom+kSizeFrom750(30), kSizeFrom750(126), kSizeFrom750(55))];
@@ -53,13 +53,19 @@ Strong UIDatePicker *datePicker;
         [btn setTitleColor:RGB_102 forState:UIControlStateNormal];
         [btn setTitleColor:COLOR_DarkBlue forState:UIControlStateSelected];
         btn.tag = i;
-        [btn setBackgroundImage:[UIImage imageWithColor:separaterColor] forState:UIControlStateNormal];
-        [btn setBackgroundImage:[UIImage imageWithColor:RGB(248, 253, 255)] forState:UIControlStateSelected];
+        btn.layer.borderColor = [RGB_183 CGColor];
+        btn.layer.cornerRadius = kSizeFrom750(5);
+        btn.layer.borderWidth = kLineHeight;
+        btn.layer.masksToBounds = YES;
         [btn addTarget:self action:@selector(sectionClick:) forControlEvents:UIControlEventTouchUpInside];
         [btn setTitle:[nameArr objectAtIndex:i] forState:UIControlStateNormal];
+        [btn setTitle:[nameArr objectAtIndex:i] forState:UIControlStateSelected];
+
         btn.adjustsImageWhenHighlighted = NO;
         if (i==0) {
             btn.selected = YES;
+            btn.layer.borderColor = [COLOR_DarkBlue CGColor];
+
         }
         [self.headerView addSubview:btn];
         [self.buttonArray addObject:btn];
@@ -85,7 +91,10 @@ Strong UIDatePicker *datePicker;
 
     self.startTextField = [[UITextField alloc]initWithFrame:RECT(kOriginLeft, subTitle.bottom+kSizeFrom750(30), kSizeFrom750(280), kSizeFrom750(55))];
     [self.headerView addSubview:self.startTextField];
-    self.startTextField.backgroundColor = separaterColor;
+    self.startTextField.layer.borderColor = [RGB_183 CGColor];
+    self.startTextField.layer.borderWidth = kLineHeight;
+    self.startTextField.layer.cornerRadius = kSizeFrom750(5);
+
     self.startTextField.font = SYSTEMSIZE(26);
     self.startTextField.placeholder = @"   选择开始时间";
     self.startTextField.textColor = RGB_183;
@@ -101,7 +110,9 @@ Strong UIDatePicker *datePicker;
     self.endTextField = [[UITextField alloc]initWithFrame:RECT(sepLine.right+kSizeFrom750(20), subTitle.bottom+kSizeFrom750(30), kSizeFrom750(280), kSizeFrom750(55))];
     [self.headerView addSubview:self.endTextField];
     self.endTextField.delegate = self;
-    self.endTextField.backgroundColor = separaterColor;
+    self.endTextField.layer.borderColor = [RGB_183 CGColor];
+    self.endTextField.layer.borderWidth = kLineHeight;
+    self.endTextField.layer.cornerRadius = kSizeFrom750(5);
     self.endTextField.font = SYSTEMSIZE(26);
     self.endTextField.placeholder = @"   选择结束时间";
     self.endTextField.textColor = RGB_183;
@@ -110,9 +121,12 @@ Strong UIDatePicker *datePicker;
     
     UIButton *resetBtn = [[UIButton alloc]initWithFrame:RECT(0,self.headerView.height - kSizeFrom750(88), screen_width/2, kSizeFrom750(88))];
     [resetBtn setTitle:@"条件重置" forState:UIControlStateNormal];
+    
     [resetBtn.titleLabel setFont:SYSTEMSIZE(30)];
-    resetBtn.layer.borderColor = [COLOR_DarkBlue CGColor];
-    resetBtn.layer.borderWidth = kLineHeight;
+    CALayer *topLaber = [CALayer layer];
+    topLaber.frame = RECT(0, 0, resetBtn.width, kLineHeight);
+    topLaber.backgroundColor = [COLOR_DarkBlue CGColor];
+    [resetBtn.layer addSublayer:topLaber];
     resetBtn.tag = 0;
     [resetBtn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [resetBtn setTitleColor:COLOR_DarkBlue forState:UIControlStateNormal];
@@ -162,8 +176,11 @@ Strong UIDatePicker *datePicker;
         if (btn.tag==sender.tag) {
             btn.selected = YES;
             self.selectTag = sender.tag;
+            btn.layer.borderColor = [COLOR_DarkBlue CGColor];
         }else{
             btn.selected = NO;
+            btn.layer.borderColor = [RGB_183 CGColor];
+
         }
     }
 }
@@ -174,6 +191,14 @@ Strong UIDatePicker *datePicker;
         self.endTime = @"";
         self.startTextField.text = @"";
         self.endTextField.text = @"";
+        for (UIButton *btn in self.buttonArray) {
+            if (btn.tag==0) {//默认搜索回款中内容
+                btn.selected = YES;
+                self.selectTag = sender.tag;
+            }else{
+                btn.selected = NO;
+            }
+        }
     }else{
         self.startTime = [self.startTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         self.endTime = [self.endTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];

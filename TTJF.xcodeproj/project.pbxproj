@@ -218,6 +218,12 @@
 		CB3CC5EF20B553DC00CBE5DF /* myinvest_time@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5E320B553DC00CBE5DF /* myinvest_time@2x.png */; };
 		CB3CC5F020B553DC00CBE5DF /* myinvest_payback@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5E420B553DC00CBE5DF /* myinvest_payback@3x.png */; };
 		CB3CC5F120B553DC00CBE5DF /* myinvest_search@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5E520B553DC00CBE5DF /* myinvest_search@3x.png */; };
+		CB3CC5F620B6469300CBE5DF /* myinvest_failed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5F220B6469200CBE5DF /* myinvest_failed@2x.png */; };
+		CB3CC5F720B6469300CBE5DF /* myinvest_failed@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5F320B6469200CBE5DF /* myinvest_failed@3x.png */; };
+		CB3CC5F820B6469300CBE5DF /* myinvest_buyback@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5F420B6469200CBE5DF /* myinvest_buyback@3x.png */; };
+		CB3CC5F920B6469300CBE5DF /* myinvest_buyback@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5F520B6469300CBE5DF /* myinvest_buyback@2x.png */; };
+		CB3CC5FC20B6471E00CBE5DF /* myinvest_buybacked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5FA20B6471E00CBE5DF /* myinvest_buybacked@2x.png */; };
+		CB3CC5FD20B6471E00CBE5DF /* myinvest_buybacked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5FB20B6471E00CBE5DF /* myinvest_buybacked@3x.png */; };
 		CB3D301020A14BBF0040FE30 /* CreditInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D300F20A14BBF0040FE30 /* CreditInfoModel.m */; };
 		CB3D301320A1763E0040FE30 /* RealnameModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D301220A1763E0040FE30 /* RealnameModel.m */; };
 		CB3D301620A2945C0040FE30 /* RushPurchaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D301420A2945C0040FE30 /* RushPurchaseController.m */; };
@@ -844,6 +850,12 @@
 		CB3CC5E320B553DC00CBE5DF /* myinvest_time@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myinvest_time@2x.png"; sourceTree = "<group>"; };
 		CB3CC5E420B553DC00CBE5DF /* myinvest_payback@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myinvest_payback@3x.png"; sourceTree = "<group>"; };
 		CB3CC5E520B553DC00CBE5DF /* myinvest_search@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myinvest_search@3x.png"; sourceTree = "<group>"; };
+		CB3CC5F220B6469200CBE5DF /* myinvest_failed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myinvest_failed@2x.png"; sourceTree = "<group>"; };
+		CB3CC5F320B6469200CBE5DF /* myinvest_failed@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myinvest_failed@3x.png"; sourceTree = "<group>"; };
+		CB3CC5F420B6469200CBE5DF /* myinvest_buyback@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myinvest_buyback@3x.png"; sourceTree = "<group>"; };
+		CB3CC5F520B6469300CBE5DF /* myinvest_buyback@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myinvest_buyback@2x.png"; sourceTree = "<group>"; };
+		CB3CC5FA20B6471E00CBE5DF /* myinvest_buybacked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myinvest_buybacked@2x.png"; sourceTree = "<group>"; };
+		CB3CC5FB20B6471E00CBE5DF /* myinvest_buybacked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myinvest_buybacked@3x.png"; sourceTree = "<group>"; };
 		CB3D300E20A14BBF0040FE30 /* CreditInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditInfoModel.h; sourceTree = "<group>"; };
 		CB3D300F20A14BBF0040FE30 /* CreditInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditInfoModel.m; sourceTree = "<group>"; };
 		CB3D301120A1763E0040FE30 /* RealnameModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RealnameModel.h; sourceTree = "<group>"; };
@@ -1742,7 +1754,7 @@
 			path = transfer;
 			sourceTree = "<group>";
 		};
-		CB3CC5C820B54A6F00CBE5DF /* redenvelope */ = {
+		CB3CC5C820B54A6F00CBE5DF /* redenvelope(红包) */ = {
 			isa = PBXGroup;
 			children = (
 				CB3CC5CB20B54A8900CBE5DF /* re_canuse_bg@2x.png */,
@@ -1754,12 +1766,18 @@
 				CB3CC5CD20B54A8900CBE5DF /* re_overdue@2x.png */,
 				CB3CC5C920B54A8900CBE5DF /* re_overdue@3x.png */,
 			);
-			path = redenvelope;
+			path = "redenvelope(红包)";
 			sourceTree = "<group>";
 		};
 		CB3CC5D920B553C100CBE5DF /* myinvest(我的投资) */ = {
 			isa = PBXGroup;
 			children = (
+				CB3CC5FA20B6471E00CBE5DF /* myinvest_buybacked@2x.png */,
+				CB3CC5FB20B6471E00CBE5DF /* myinvest_buybacked@3x.png */,
+				CB3CC5F520B6469300CBE5DF /* myinvest_buyback@2x.png */,
+				CB3CC5F420B6469200CBE5DF /* myinvest_buyback@3x.png */,
+				CB3CC5F220B6469200CBE5DF /* myinvest_failed@2x.png */,
+				CB3CC5F320B6469200CBE5DF /* myinvest_failed@3x.png */,
 				CB3CC5DC20B553DA00CBE5DF /* myinvest_inInvest@2x.png */,
 				CB3CC5DD20B553DB00CBE5DF /* myinvest_inInvest@3x.png */,
 				CB3CC5E120B553DB00CBE5DF /* myinvest_paidback@2x.png */,
@@ -1774,6 +1792,41 @@
 				CB3CC5DF20B553DB00CBE5DF /* myinvest_time@3x.png */,
 			);
 			path = "myinvest(我的投资)";
+			sourceTree = "<group>";
+		};
+		CB3CC5FE20B6481400CBE5DF /* homepage */ = {
+			isa = PBXGroup;
+			children = (
+				1B583B02205F890D00CC70E4 /* home_01@2x.png */,
+				1B583B08205F890E00CC70E4 /* home_01@3x.png */,
+				1B583B06205F890E00CC70E4 /* home_02@2x.png */,
+				1B583B01205F890C00CC70E4 /* home_02@3x.png */,
+				1B583B04205F890D00CC70E4 /* home_03@2x.png */,
+				1B583B07205F890E00CC70E4 /* home_03@3x.png */,
+				1B583B00205F890C00CC70E4 /* home_04@2x.png */,
+				1B583B05205F890E00CC70E4 /* home_04@3x.png */,
+				1B583B2E2060990700CC70E4 /* home_club@2x.png */,
+				1B583B302060990800CC70E4 /* home_club@3x.png */,
+				1B1E307220887E4D00B3974F /* icons_back@2x.png */,
+				1B1E307320887E4E00B3974F /* icons_back@3x.png */,
+				1B1E307120887E4D00B3974F /* icons_close@2x.png */,
+				1B1E307420887E4E00B3974F /* icons_close@3x.png */,
+				1B788F28208058FD00F03863 /* icons_code@2x.png */,
+				1B788F29208058FD00F03863 /* icons_code@3x.png */,
+				1BE67340207209750003A30C /* icons_msg_sel@2x.png */,
+				1BE6733F207209750003A30C /* icons_msg_sel@3x.png */,
+				1BE6733E207209730003A30C /* icons_msg_unsel@2x.png */,
+				1BE67343207209780003A30C /* icons_msg_unsel@3x.png */,
+				1B788F12207DB8DA00F03863 /* icons_nodata@2x.png */,
+				1B788F13207DB8DB00F03863 /* icons_nodata@3x.png */,
+				1BE67341207209760003A30C /* icons_portrait@2x.png */,
+				1BE67342207209770003A30C /* icons_portrait@3x.png */,
+				1B1E308220887FBD00B3974F /* icons_refresh@2x.png */,
+				1B1E308120887FBC00B3974F /* icons_refresh@3x.png */,
+				1B583B09205F890F00CC70E4 /* info_disclosure@2x.png */,
+				1B583B0A205F890F00CC70E4 /* info_disclosure@3x.png */,
+			);
+			path = homepage;
 			sourceTree = "<group>";
 		};
 		E7037FF71E9C96EF00C5E13D /* SegmentLine */ = {
@@ -2302,8 +2355,9 @@
 		E70D16E21F2303C3007F12D0 /* Img */ = {
 			isa = PBXGroup;
 			children = (
+				CB3CC5FE20B6481400CBE5DF /* homepage */,
 				CB3CC5D920B553C100CBE5DF /* myinvest(我的投资) */,
-				CB3CC5C820B54A6F00CBE5DF /* redenvelope */,
+				CB3CC5C820B54A6F00CBE5DF /* redenvelope(红包) */,
 				CB3CC5AB20B54A3500CBE5DF /* transfer */,
 				E7DBE58F1F2559B4000517D7 /* background.png */,
 				E7DBE5901F2559B4000517D7 /* bankAmt.png */,
@@ -2316,34 +2370,6 @@
 				E7DBE5911F2559B4000517D7 /* fanhui@3x.png */,
 				CB3D302D20A5816F0040FE30 /* recharge_remind@2x.png */,
 				CB3D302E20A581700040FE30 /* recharge_remind@3x.png */,
-				1B583B02205F890D00CC70E4 /* home_01@2x.png */,
-				1B583B08205F890E00CC70E4 /* home_01@3x.png */,
-				1B583B06205F890E00CC70E4 /* home_02@2x.png */,
-				1B583B01205F890C00CC70E4 /* home_02@3x.png */,
-				1B583B04205F890D00CC70E4 /* home_03@2x.png */,
-				1B583B07205F890E00CC70E4 /* home_03@3x.png */,
-				1B583B00205F890C00CC70E4 /* home_04@2x.png */,
-				1B583B05205F890E00CC70E4 /* home_04@3x.png */,
-				1B583B2E2060990700CC70E4 /* home_club@2x.png */,
-				1B583B302060990800CC70E4 /* home_club@3x.png */,
-				1B1E307220887E4D00B3974F /* icons_back@2x.png */,
-				1B1E307320887E4E00B3974F /* icons_back@3x.png */,
-				1B1E307120887E4D00B3974F /* icons_close@2x.png */,
-				1B1E307420887E4E00B3974F /* icons_close@3x.png */,
-				1B788F28208058FD00F03863 /* icons_code@2x.png */,
-				1B788F29208058FD00F03863 /* icons_code@3x.png */,
-				1BE67340207209750003A30C /* icons_msg_sel@2x.png */,
-				1BE6733F207209750003A30C /* icons_msg_sel@3x.png */,
-				1BE6733E207209730003A30C /* icons_msg_unsel@2x.png */,
-				1BE67343207209780003A30C /* icons_msg_unsel@3x.png */,
-				1B788F12207DB8DA00F03863 /* icons_nodata@2x.png */,
-				1B788F13207DB8DB00F03863 /* icons_nodata@3x.png */,
-				1BE67341207209760003A30C /* icons_portrait@2x.png */,
-				1BE67342207209770003A30C /* icons_portrait@3x.png */,
-				1B1E308220887FBD00B3974F /* icons_refresh@2x.png */,
-				1B1E308120887FBC00B3974F /* icons_refresh@3x.png */,
-				1B583B09205F890F00CC70E4 /* info_disclosure@2x.png */,
-				1B583B0A205F890F00CC70E4 /* info_disclosure@3x.png */,
 				E7DBE5931F2559B4000517D7 /* ipsFee.png */,
 				1B1923732064CF12005B0C57 /* logo@2x.png */,
 				1B1923752064CF13005B0C57 /* logo@3x.png */,
@@ -2981,6 +3007,7 @@
 				CB3CC5D820B54A8A00CBE5DF /* re_overdue_bg@3x.png in Resources */,
 				E70A7D281FA0C2FB00C0628A /* colse.png in Resources */,
 				E70D16F91F2303C3007F12D0 /* sns_icon_22_s@2x.png in Resources */,
+				CB3CC5FD20B6471E00CBE5DF /* myinvest_buybacked@3x.png in Resources */,
 				1B788F2A208058FE00F03863 /* icons_code@2x.png in Resources */,
 				E70D16FF1F2303C3007F12D0 /* sns_icon_6_s@2x.png in Resources */,
 				E7067B8B1E60C9AA00E32B86 /* film@2x.png in Resources */,
@@ -3017,6 +3044,7 @@
 				1B583B25205F8D2A00CC70E4 /* wings_right@3x.png in Resources */,
 				E70D16F51F2303C3007F12D0 /* sns_icon_1_s@2x.png in Resources */,
 				1B1E307720887E4E00B3974F /* icons_back@3x.png in Resources */,
+				CB3CC5F620B6469300CBE5DF /* myinvest_failed@2x.png in Resources */,
 				1B4FC6CD2058BC6F00C7C88E /* eye_close@2x.png in Resources */,
 				1B1E30932089873800B3974F /* mineTop_01@2x.png in Resources */,
 				CB731593209B0A2B00B3B8FA /* refresh_026.jpg in Resources */,
@@ -3062,6 +3090,7 @@
 				E7067BC61E60C9AB00E32B86 /* icon_tabbar_onsite@2x.png in Resources */,
 				CB731595209B0A2B00B3B8FA /* refresh_020.jpg in Resources */,
 				CB3CC5D420B54A8A00CBE5DF /* re_overdue_bg@2x.png in Resources */,
+				CB3CC5F920B6469300CBE5DF /* myinvest_buyback@2x.png in Resources */,
 				1B583B11205F890F00CC70E4 /* home_04@3x.png in Resources */,
 				E7DBE5981F2559B4000517D7 /* bankAmt.png in Resources */,
 				CB3D302920A2FD7A0040FE30 /* icons_question@2x.png in Resources */,
@@ -3096,6 +3125,7 @@
 				1BE6736220734F720003A30C /* menu_home_unsel@2x.png in Resources */,
 				1B1E30942089873800B3974F /* mineTop_02@2x.png in Resources */,
 				E7E5866D1FA1DBB60031A71C /* menu5.png in Resources */,
+				CB3CC5F720B6469300CBE5DF /* myinvest_failed@3x.png in Resources */,
 				1B583B342060990800CC70E4 /* home_club@3x.png in Resources */,
 				1B1923862064CF18005B0C57 /* password_insure@2x.png in Resources */,
 				E7BF5F281E6066F200BCE81E /* Main.storyboard in Resources */,
@@ -3141,6 +3171,7 @@
 				1BE6736420734F720003A30C /* menu_program_sel@2x.png in Resources */,
 				CB3CC5F020B553DC00CBE5DF /* myinvest_payback@3x.png in Resources */,
 				1BE6736620734F720003A30C /* menu_program_unsel@2x.png in Resources */,
+				CB3CC5F820B6469300CBE5DF /* myinvest_buyback@3x.png in Resources */,
 				1B1923952064CF18005B0C57 /* register_red@2x.png in Resources */,
 				CB3CC5BB20B54A5C00CBE5DF /* transfer_record_selling@3x.png in Resources */,
 				1B19238B2064CF18005B0C57 /* mobile_code@3x.png in Resources */,
@@ -3152,6 +3183,7 @@
 				E70D16F61F2303C3007F12D0 /* sns_icon_21_s.png in Resources */,
 				1B583B26205F8D2A00CC70E4 /* wings_left@2x.png in Resources */,
 				CB3CC5BE20B54A5C00CBE5DF /* transfer_record_canceled@2x.png in Resources */,
+				CB3CC5FC20B6471E00CBE5DF /* myinvest_buybacked@2x.png in Resources */,
 				E70F3C981F92338200B4568C /* menu4.png in Resources */,
 				E70F3C961F92338200B4568C /* menu2.png in Resources */,
 				1BE6737020734F720003A30C /* menu_discover_sel@2x.png in Resources */,
