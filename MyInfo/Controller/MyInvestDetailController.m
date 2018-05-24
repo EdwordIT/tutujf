@@ -67,7 +67,7 @@ Strong MyInvestDetailModel *detailModel;
     
     for (int i=0; i<self.detailModel.loan_info.count; i++) {
         MyInvestInfoModel *model = [self.detailModel.loan_info objectAtIndex:i];
-        UILabel *titleLabel = [[UILabel alloc]initWithFrame:RECT(kOriginLeft,kSizeFrom750(80)*i+kSizeFrom750(20)+titleL.bottom, kSizeFrom750(200), kSizeFrom750(40))];
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:RECT(kOriginLeft,kSizeFrom750(80)*i+kSizeFrom750(20)+titleL.bottom, kSizeFrom750(240), kSizeFrom750(40))];
         titleLabel.font = SYSTEMSIZE(28);
         titleLabel.textColor = RGB_183;
         titleLabel.text = model.title;
@@ -94,11 +94,11 @@ Strong MyInvestDetailModel *detailModel;
     [bottomView  addSubview:repayTitle];
     repayTitle.font = SYSTEMSIZE(30);
     repayTitle.textColor = RGB_51;
-    repayTitle.text =[@"  " stringByAppendingString:self.detailModel.repay_title];
+    repayTitle.text =self.detailModel.repay_title;
     
     UIView *line1 = [[UIView alloc]initWithFrame:RECT(0, repayTitle.height - kLineHeight, screen_width, kLineHeight)];
     line1.backgroundColor = separaterColor;
-    [bottomView addSubview:line];
+    [bottomView addSubview:line1];
     
  
     

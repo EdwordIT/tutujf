@@ -355,23 +355,33 @@
         return 0;
     }
     NSDate *nowDate = [NSDate date]; // 当前时间
-    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyy-MM-dd HH-mm-ss";
     NSDate *creat = [formatter dateFromString:creat_time]; // 传入的时间
+    NSTimeInterval timeInterval = [creat timeIntervalSinceDate:nowDate];
     
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSCalendarUnit unit = NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
-    NSDateComponents *compas = [calendar components:unit fromDate:nowDate toDate:creat options:0];
-    
-    
-    NSInteger day= [compas day];
-    if(day<0)
+    if (timeInterval<=0) {
         return 0;
-    NSInteger sss= [compas second]+compas.hour*60*60+[compas minute]*60+day*24*60*60;
-    if(sss<0)
-        return 0;
-    return sss;
+    }else{
+        return [[NSString stringWithFormat:@"%.0f",timeInterval] integerValue];
+    }
+//    NSCalendar *calendar = [NSCalendar currentCalendar];
+//    NSCalendarUnit unit = NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+//    NSDateComponents *compas = [calendar components:unit fromDate:nowDate toDate:creat options:0];
+//
+//
+//    NSInteger day= [compas day];
+//    NSInteger mounth = [compas month];
+//    NSInteger year = [compas year];
+//    NSInteger hour = [compas hour];
+//    NSInteger minute = [compas minute];
+//    NSInteger second = [compas second];
+//    if(day<0)
+//        return 0;
+//    NSInteger sss= [compas second]+compas.hour*HOUR+[compas minute]*MINUTE+day*DAY;
+//    if(sss<0)
+//        return 0;
+//    return sss;
 }
 //获取倒计时字符串
 +(NSString *)getCountDownTime:(NSInteger)timeInval

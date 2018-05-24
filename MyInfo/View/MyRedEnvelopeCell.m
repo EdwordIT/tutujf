@@ -211,6 +211,13 @@ Strong UIImageView *stateImage;//激活成功、已失效
 -(void)loadInfoWithModel:(MyRedenvelopeModel *)model
 {
     self.titleLabel.text = model.name;
+    NSInteger seconds = [CommonUtils getDifferenceByDate:[[model.end_time stringByReplacingOccurrencesOfString:@"有效期至" withString:@""] stringByAppendingString:@" 00-00-00"]];
+    //计算过期时间差
+//    if (seconds/DAY>0&&seconds/DAY<10) {
+//        [self.tagImage setTitle:[NSString stringWithFormat:@"%ld天后过期",seconds/DAY] forState:UIControlStateNormal];
+//    }
+    [self.tagImage setTitle:[NSString stringWithFormat:@"%ld天后过期",seconds/DAY] forState:UIControlStateNormal];
+
     NSString *str = [NSString stringWithFormat:@"%@元",model.amount];
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc]initWithString:str];
     [attr addAttribute:NSFontAttributeName value:NUMBER_FONT_BOLD(60) range:[str rangeOfString:model.amount]];
