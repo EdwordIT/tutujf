@@ -52,13 +52,15 @@ Strong LoanBase *baseModel;
     switch (sender.tag) {
         case 1:
             {
-                [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:self.baseModel.transfer_ret.actual_amount_notes];
+                //债权价值
+                [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:self.baseModel.transfer_ret.amount_money_notes];
 
             }
             break;
         case 2:
         {
-            [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:self.baseModel.transfer_ret.amount_money_notes];
+            //承接价格
+            [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:self.baseModel.transfer_ret.actual_amount_notes];
 
         }
             break;
@@ -77,7 +79,7 @@ Strong LoanBase *baseModel;
     NSMutableAttributedString *attr = [CommonUtils diffierentFontWithString:rate  rang:NSMakeRange(rate.length-1, 1) font:NUMBER_FONT(24) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.rateLabel setAttributedText:attr];
     //债权价值
-    NSString *totalAmout = [NSString stringWithFormat:@"%@ 元",[CommonUtils getHanleNums:infoModel.transfer_ret.actual_amount]];
+    NSString *totalAmout = [NSString stringWithFormat:@"%@ 元",[CommonUtils getHanleNums:infoModel.transfer_ret.amount_money]];
     NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:totalAmout  rang:NSMakeRange(totalAmout.length-1, 1) font:SYSTEMSIZE(30) color:RGB(141,200,255) spacingBeforeValue:0 lineSpace:0];
     [self.programTotalLabel setAttributedText:attr1];
     //剩余期限
@@ -88,8 +90,8 @@ Strong LoanBase *baseModel;
         [self.programLimitLabel setAttributedText:[CommonUtils diffierentFontWithString:attr rang:[attr rangeOfString:@"天"] font:SYSTEMSIZE(28) color:RGB(141,200,255) spacingBeforeValue:0 lineSpace:0]];
     }
     //承接价格
-    NSString *remain = [NSString stringWithFormat:@"承接价格 %@ 元",[CommonUtils getHanleNums:infoModel.transfer_ret.amount_money]];
-    NSMutableAttributedString *attr2 = [CommonUtils diffierentFontWithString:remain  rang:[remain rangeOfString:[CommonUtils getHanleNums:infoModel.transfer_ret.amount_money]] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
+    NSString *remain = [NSString stringWithFormat:@"承接价格 %@ 元",[CommonUtils getHanleNums:infoModel.transfer_ret.actual_amount]];
+    NSMutableAttributedString *attr2 = [CommonUtils diffierentFontWithString:remain  rang:[remain rangeOfString:[CommonUtils getHanleNums:infoModel.transfer_ret.actual_amount]] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.programRemainLabel setAttributedText:attr2];
     
     self.investLabel.hidden = NO;
