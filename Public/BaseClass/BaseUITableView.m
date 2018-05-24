@@ -28,7 +28,8 @@
 }
 -(void)loadBaseInfo{
     self.backgroundColor = COLOR_Background;
-     [self setSeparatorColor:separaterColor];
+     [self setSeparatorColor:[UIColor clearColor]];
+    self.separatorStyle = UITableViewCellSeparatorStyleNone;
     isFirstLoad = YES;
 }
 
