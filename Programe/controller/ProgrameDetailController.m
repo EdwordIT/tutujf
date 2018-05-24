@@ -31,6 +31,7 @@ Strong LoanBase *baseModel;
 @implementation ProgrameDetailController
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_CountDown object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_LoginChanged object:nil];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -42,6 +43,7 @@ Strong LoanBase *baseModel;
     [self.view addSubview:self.footerBtn];
     [SVProgressHUD show];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countDownFinished:) name:Noti_CountDownFinished object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getRequest) name:Noti_LoginChanged object:nil];//登录状态变更，刷新数据
     [SVProgressHUD showWithStatus:@"数据加载中..."];
     [self getRequest];
 
@@ -50,23 +52,16 @@ Strong LoanBase *baseModel;
 }
 #pragma  投资按钮点击事件
 -(void)footerBtnClick:(UIButton*)sender
-{
+{/***************************1.4.9**********************************************/
+    //只要登录状态，就可以跳转进入购买页面，在购买页面再判断是否实名制等内容
     if([CommonUtils isLogin])
     {
-        if([self.baseModel.trust_account isEqual:@"1"])
-        {
         RushPurchaseController * vc=[[RushPurchaseController alloc] init];
         vc.loan_id=  self.loan_id;
         [self.navigationController pushViewController:vc animated:YES];
-        }
-        else
-        {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr= self.baseModel.trust_reg_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
-        }
     }
     else{
+        self.footerBtn.userInteractionEnabled = NO;//进入登陆页面不可点击
         [self goLoginVC];
     }
 }
@@ -137,7 +132,7 @@ Strong LoanBase *baseModel;
         make.top.mas_equalTo(0);
         make.left.mas_equalTo(0);
         make.width.mas_equalTo(self.scrollView);
-        make.height.mas_equalTo(kSizeFrom750(370));
+        make.height.mas_equalTo(kSizeFrom750(300));
     }];
     
     [self.middleView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -155,6 +150,8 @@ Strong LoanBase *baseModel;
 #pragma  主体
 -(void) reloadInfo
 {
+    self.footerBtn.userInteractionEnabled = YES;//进入登陆页面不可点击
+    
     [self.topView loadInfoWithModel:self.baseModel.loan_info];
     
     [self.middleView loadInfoWithModel:self.baseModel];
@@ -213,6 +210,7 @@ Strong LoanBase *baseModel;
     NSArray *values = @[self.loan_id,[CommonUtils getToken]];
     
     [[HttpCommunication sharedInstance] postSignRequestWithPath:getLoanDetailUrl keysArray:keys valuesArray:values refresh:self.scrollView success:^(NSDictionary *successDic) {
+        
         [[CountDownManager manager] start];
         self.baseModel = [LoanBase yy_modelWithJSON:successDic];
         self.baseModel.repay_type_name=[[successDic objectForKey:@"repay_type"] objectForKey:@"name"];

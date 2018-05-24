@@ -8,6 +8,16 @@
 
 #import "LoanInfo.h"
 
-@implementation LoanInfo
 
+
+@implementation IntroduceModel
+
+@end
+
+@implementation LoanInfo
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    
+    return @{@"introduce":[IntroduceModel class]
+             };
+}
 @end

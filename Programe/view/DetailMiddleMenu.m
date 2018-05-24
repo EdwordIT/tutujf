@@ -8,11 +8,10 @@
 
 #import "DetailMiddleMenu.h"
 @interface DetailMiddleMenu ()
-{
-    UILabel * contentLab;
-    UILabel * title;
-    UIView * line1;
-}
+Strong UILabel *title;
+Strong UILabel *content;
+Strong UILabel *subContent;
+Strong UIView *line;
 @end
 
 @implementation DetailMiddleMenu
@@ -36,33 +35,58 @@
 
 - (void)initSubViews{
     
-    title=[[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, (self.frame.size.height-kSizeFrom750(30))/2, kSizeFrom750(250), kSizeFrom750(30))];
-    title.text=@"项目名称";
-    title.textAlignment=NSTextAlignmentLeft;
-    title.font=SYSTEMSIZE(28);
-    title.textColor=RGB(170,170, 170);
-    [self addSubview:title];
+    self.title=[[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, (self.frame.size.height-kSizeFrom750(30))/2, kSizeFrom750(220), kSizeFrom750(30))];
+    self.title.textAlignment=NSTextAlignmentLeft;
+    self.title.font=SYSTEMSIZE(28);
+    self.title.textColor=RGB_183;
+    [self addSubview:self.title];
     
-    contentLab=[[UILabel alloc] initWithFrame:CGRectMake(screen_width/2-kSizeFrom750(150), (self.frame.size.height-14)/2, screen_width/2+kSizeFrom750(120), kSizeFrom750(30))];
-    contentLab.text=@"丰田1712213213（温州总部）";
-    contentLab.textAlignment=NSTextAlignmentRight;
-    contentLab.font=SYSTEMSIZE(28);
-    contentLab.textColor=RGB(80,80, 80);
-    [self addSubview:contentLab];
+    self.content=[[UILabel alloc] init];
+    self.content.font=SYSTEMSIZE(28);
+    self.content.textColor=RGB(80,80, 80);
+    self.content.textAlignment = NSTextAlignmentRight;
+    [self addSubview:self.content];
     
-    line1=[[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height-kLineHeight, screen_width, kLineHeight)];
-    line1.backgroundColor=RGB_233;
-    [self addSubview:line1];
+    [self.content mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.title.mas_right).offset(kSizeFrom750(20));
+        make.right.mas_equalTo(self).offset(-kOriginLeft);
+        make.top.mas_equalTo(kSizeFrom750(30));
+        make.height.mas_equalTo(kSizeFrom750(30));
+    }];
+    
+    self.subContent=[[UILabel alloc] init];
+    self.subContent.font=SYSTEMSIZE(26);
+    self.subContent.textColor=RGB_183;
+    self.subContent.textAlignment = NSTextAlignmentRight;
+    [self addSubview:self.subContent];
+    
+    [self.subContent mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.height.mas_equalTo(self.content);
+        make.top.mas_equalTo(self.content.mas_bottom).offset(kSizeFrom750(10));
+    }];
+    
+    self.line=[[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height-kLineHeight, screen_width, kLineHeight)];
+    self.line.backgroundColor=separaterColor;
+    [self addSubview:self.line];
 }
-
+-(void)loadInfoWithModel:(IntroduceModel *)model{
+    self.title.text = model.title;
+    self.content.text = model.content;
+    if (!IsEmptyStr(model.sub_content)) {
+        [self.content mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(kSizeFrom750(10));
+        }];
+        self.subContent.text = model.sub_content;
+    }else{
+        [self.content mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(kSizeFrom750(30));
+        }];
+    }
+}
 -(void)setMenu:(NSString *)t1 content:(NSString *)c1
 {
-    title.text=t1;
-    contentLab.text=c1;
-    if([title isEqual:@"结束时间"])
-    {
-        [line1 setHidden:TRUE];
-    }
+    self.title.text=t1;
+    self.content.text=c1;
 }
 
 @end

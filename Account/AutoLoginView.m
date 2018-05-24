@@ -127,7 +127,7 @@ Strong UIWebView *mainWebView;
     }
     // 注入Cookie，识别webView登录状态
     [request setValue:cookies forHTTPHeaderField:@"Cookie"];
-//    [request setValue:@"Mozilla/5.0 (iPhone; CPU iPhone like Mac OS X; zh-CN;) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/14C92 TutuBrowser/1.1.1 Mobile AliApp(TUnionSDK/0.1.12) AliApp(TUnionSDK/0.1.12)" forHTTPHeaderField:@"User-Agent"];
+
     [request setHTTPShouldHandleCookies:YES];
     
     [self.mainWebView loadRequest:request];
@@ -136,7 +136,7 @@ Strong UIWebView *mainWebView;
 {
     [self cleanCaches];
     [self removeUserInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];//登录状态变更，刷新首页数据
+    [[NSNotificationCenter defaultCenter] postNotificationName:Noti_LoginChanged object:nil];//登录状态变更，刷新登陆状态未登陆状态数据不一样页面内容
 }
 
 -(void)removeUserInfo{

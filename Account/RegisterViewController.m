@@ -370,8 +370,23 @@ Strong UIWebView *loginWebView;
         return;
     }
    
-    NSArray *keys = @[@"phone",@"password",@"sms_code",@"referrer"];
-    NSArray *values = @[phone,password,sms_code,referrer];
+    /**
+     terminal_type    string    (终端类型)： android安卓,ios    苹果
+     terminal_id    string    安卓时传入接受人设备的：IMEI,  苹果时传入接受人设备的：UUID
+     terminal_name    string    (设备名称)：如 iPhone 6S
+     terminal_model    string    (设备型号)：iPhone 6S
+     terminal_token    string    推送token（为：device_token）
+     
+     */
+    NSString *version = @"20";//用于版本识别
+    NSString *terminal_type = @"ios";
+    NSString * terminal_id = [CommonUtils getUUID];
+    NSString * terminal_name = [UIDevice currentDevice].name;
+    NSString *terminal_model = [CommonUtils getDeviceVersion];
+    NSString * terminal_token = [CommonUtils getDeviceToken];
+    [SVProgressHUD show];
+    NSArray *keys = @[@"version",@"phone",@"password",@"sms_code",@"referrer",@"terminal_type",@"terminal_id",@"terminal_name",@"terminal_model",@"terminal_token"];
+    NSArray *values = @[version,phone,password,sms_code,referrer,terminal_type,terminal_id,terminal_name,terminal_model,terminal_token];
     [[HttpCommunication sharedInstance] postSignRequestWithPath:registerUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){
         if (!IsEmptyStr([successDic objectForKey:kToken])) {
             [TTJFUserDefault setStr:phone key:kUsername];

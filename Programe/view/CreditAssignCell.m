@@ -67,15 +67,16 @@ Strong UIView *sepView;//分割线
     }
     return _rateLabel;
 }
+//预期利率标题
 -(UILabel *)rateTitle{
     if (!_rateTitle) {
         _rateTitle = InitObject(UILabel);
         _rateTitle.font = SYSTEMSIZE(24);
         _rateTitle.textColor=RGB_183;
-        _rateTitle.text=@"预期利率";
     }
     return _rateTitle;
 }
+//债权价值
 -(UILabel *)amountLabel
 {
     if (!_amountLabel) {
@@ -85,6 +86,7 @@ Strong UIView *sepView;//分割线
     }
     return _amountLabel;
 }
+//剩余期限
 -(UILabel *)partLabel{
     if (!_partLabel) {
         _partLabel = InitObject(UILabel);
@@ -102,7 +104,7 @@ Strong UIView *sepView;//分割线
         _partTitle = InitObject(UILabel);
         _partTitle.font = SYSTEMSIZE(24);
         _partTitle.textColor=RGB_183;
-        _partTitle.text=@"转让期数";
+        _partTitle.text=@"剩余期限";
         _partTitle.textAlignment = NSTextAlignmentCenter;
 
     }
@@ -195,9 +197,9 @@ Strong UIView *sepView;//分割线
     self.titleLabel.text = model.loan_name;
     self.rateTitle.text = model.apr_txt;
     self.rateLabel.text = model.apr;
-    self.amountLabel.text = [NSString stringWithFormat:@"转让金额：%@",[CommonUtils getHanleNums:model.actual_amount]];
-    self.partTitle.text = model.period_str_txt;
-    self.partLabel.text = model.period_str;
+    self.amountLabel.text = [NSString stringWithFormat:@"承接价格：%@",[CommonUtils getHanleNums:model.actual_amount]];
+    self.partTitle.text = model.expire_date_txt;
+    self.partLabel.text = model.expire_date;
     [self.buyBtn setTitle:model.status_name forState:UIControlStateNormal];
     if ([model.status isEqualToString:@"1"]) {
         self.buyBtn.userInteractionEnabled = YES;
