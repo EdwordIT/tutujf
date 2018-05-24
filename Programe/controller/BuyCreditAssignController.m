@@ -31,6 +31,8 @@ Strong UIScrollView *scrollView;
 Strong UILabel *waittingLabel;//债权价值
 Strong     LoanBase * baseModel;
 Strong UIButton *questionBtn;
+Strong UIButton *priceQuestionBtn;//债权价值问题按钮
+Strong UILabel *periodLabel;
 @end
 
 @implementation BuyCreditAssignController
@@ -71,59 +73,80 @@ Strong UIButton *questionBtn;
     title.text=info.name;
     [mainview addSubview:title];
     
-    
+    //剩余时间
     UILabel *repayTitle = [[UILabel alloc] initWithFrame:CGRectMake(title.left, title.bottom+sectionSpace, kSizeFrom750(200),kSizeFrom750(30))];
     repayTitle.font = SYSTEMSIZE(28);
     repayTitle.textColor =  blackfont;
-    repayTitle.text=@"还款方式";
+    repayTitle.text=self.baseModel.transfer_ret.expire_date_txt;
     [mainview addSubview:repayTitle];
     
     repayMethodLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayTitle.left, repayTitle.bottom+rowSpace, repayTitle.width,repayTitle.height)];
     repayMethodLabel.font = SYSTEMSIZE(28);
     repayMethodLabel.textColor =  COLOR_White;
-    repayMethodLabel.text =self.baseModel.repay_type_name;
+    if ([CommonUtils isNumber:self.baseModel.transfer_ret.expire_date]) {
+       repayMethodLabel.text = [self.baseModel.transfer_ret.expire_date stringByAppendingString:@"天"];
+    }else{
+        repayMethodLabel.text = self.baseModel.transfer_ret.expire_date;
+    }
     [mainview addSubview: repayMethodLabel];
     
     UILabel *creditTitle = [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2, repayTitle.top, repayTitle.width,repayTitle.height)];
     creditTitle.font = SYSTEMSIZE(28);
     creditTitle.textColor =  blackfont;
-    creditTitle.text=@"转让期数";
+    creditTitle.text=@"还款期限";
     [mainview addSubview:creditTitle];
     
     //转让期数
     creditTotalLabel = [[UILabel alloc] initWithFrame:CGRectMake(creditTitle.left, repayMethodLabel.top, repayMethodLabel.width,repayMethodLabel.height)];
     creditTotalLabel.font = SYSTEMSIZE(28);
     creditTotalLabel.textColor =  COLOR_White;
-    creditTotalLabel.text=[NSString stringWithFormat:@"%@期/共%@期",self.baseModel.transfer_ret.period,self.baseModel.transfer_ret.total_period];
+    creditTotalLabel.text = self.baseModel.transfer_ret.next_repay_time;
+    //    creditTotalLabel.text=[NSString stringWithFormat:@"%@期/共%@期",self.baseModel.transfer_ret.period,self.baseModel.transfer_ret.total_period];
     [mainview addSubview:creditTotalLabel];
     
     
     UILabel *limitTitle = [[UILabel alloc] initWithFrame:CGRectMake(repayTitle.left, repayMethodLabel.bottom+sectionSpace, repayTitle.width,repayTitle.height)];
     limitTitle.font = SYSTEMSIZE(28);
     limitTitle.textColor =  blackfont;
-    limitTitle.text=@"借款期限";
+    limitTitle.text=@"待收本息";
     [mainview addSubview:limitTitle];
     
-    //借款期限
-    limitLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayMethodLabel.left, limitTitle.bottom+rowSpace, repayMethodLabel.width,repayMethodLabel.height)];
+    //待收本息
+    limitLabel = [[UILabel alloc] init];
     limitLabel.font = SYSTEMSIZE(28);
     limitLabel.textColor =  COLOR_White;
-    limitLabel.text=[NSString stringWithFormat:@"%@",info.period_name];
+    limitLabel.text=[NSString stringWithFormat:@"%@",self.baseModel.transfer_ret.wait_prin_inte];
     [mainview addSubview:limitLabel];
+    //WithFrame:CGRectMake(repayMethodLabel.left, limitTitle.bottom+rowSpace, repayMethodLabel.width,repayMethodLabel.height)
+    [limitLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(kOriginLeft);
+        make.top.mas_equalTo(limitTitle.mas_bottom).offset(rowSpace);
+        make.height.mas_equalTo(self->repayMethodLabel.mas_height);
+    }];
     
+    self.questionBtn = [[UIButton alloc]init];
+    self.questionBtn.tag = 1;
+    [self.questionBtn setImage:IMAGEBYENAME(@"icons_question") forState:UIControlStateNormal];
+    [self.questionBtn addTarget:self action:@selector(questionBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [mainview addSubview:self.questionBtn];
     
+    [self.questionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self->limitLabel.mas_centerY);
+        make.left.mas_equalTo(self->limitLabel.mas_right).offset(rowSpace);
+        make.width.height.mas_equalTo(kSizeFrom750(30));
+    }];
     
     UILabel *repayTimeTitle = [[UILabel alloc] initWithFrame:CGRectMake(creditTitle.left, limitTitle.top, limitTitle.width,limitTitle.height)];
     repayTimeTitle.font = SYSTEMSIZE(28);
     repayTimeTitle.textColor =  blackfont;
-    repayTimeTitle.text=@"还款期限";
+    repayTimeTitle.text=@"还款方式";
     [mainview addSubview:repayTimeTitle];
     
     //还款期限(下次回款时间)
     repayTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(repayTimeTitle.left, repayTimeTitle.bottom+rowSpace, repayTimeTitle.width,repayTimeTitle.height)];
     repayTimeLabel.font = SYSTEMSIZE(28);
     repayTimeLabel.textColor =  COLOR_White;
-    repayTimeLabel.text = self.baseModel.transfer_ret.next_repay_time;
+    repayTimeLabel.text = self.baseModel.repay_type_name;
     [mainview addSubview: repayTimeLabel];
     
     UIView *waittingView = [[UIView alloc]initWithFrame:RECT(0, mainview.bottom, screen_width, kSizeFrom750(75))];
@@ -133,28 +156,49 @@ Strong UIButton *questionBtn;
     self.waittingLabel =InitObject(UILabel);
     self.waittingLabel.textAlignment = NSTextAlignmentCenter;
     self.waittingLabel.textColor = COLOR_White;
+    self.waittingLabel.font = SYSTEMSIZE(28);
     [waittingView addSubview:self.waittingLabel];
     [self.waittingLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(waittingView.mas_height);
         make.top.mas_equalTo(0);
+        make.left.mas_equalTo(kOriginLeft);
     }];
-    self.waittingLabel.text = [NSString stringWithFormat:@"债权价值：%@",[@"¥" stringByAppendingString:[CommonUtils getHanleNums:self.baseModel.transfer_ret.wait_principal]]];
-
+    self.waittingLabel.text = [NSString stringWithFormat:@"债权价值：%@",[@"¥" stringByAppendingString:[CommonUtils getHanleNums:self.baseModel.transfer_ret.amount_money]]];
+    
+    
+    
+    self.periodLabel= [[UILabel alloc] init];
+    self.periodLabel.font =  SYSTEMSIZE(28);
+    self.periodLabel.textColor =  RGB(141,200,255);
+    self.periodLabel.textAlignment=NSTextAlignmentRight;
+    [waittingView addSubview:self.periodLabel];
+    [self.periodLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(waittingView.mas_right).offset(-kOriginLeft);
+        make.height.centerY.mas_equalTo(self.waittingLabel);
+    }];
+    
+    NSString *period = [NSString stringWithFormat:@"%@期",self.baseModel.transfer_ret.period];
+    NSString *totalPeriod = [NSString stringWithFormat:@"/共%@期",self.baseModel.transfer_ret.total_period];
+    NSMutableAttributedString *attr3 = [CommonUtils diffierentFontWithString:period  rang:[period rangeOfString:self.baseModel.transfer_ret.period] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
+    NSMutableAttributedString *attr4 = [CommonUtils diffierentFontWithString:totalPeriod  rang:[totalPeriod rangeOfString:self.baseModel.transfer_ret.total_period] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
+    [attr3 appendAttributedString:attr4];
+    [self.periodLabel setAttributedText:attr3];
+    
     [waittingView layoutIfNeeded];
-    [self.waittingLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo((screen_width - self.waittingLabel.width)/2 - rowSpace);
-    }];
     
-    self.questionBtn = [[UIButton alloc]init];
-    [self.questionBtn setImage:IMAGEBYENAME(@"icons_question") forState:UIControlStateNormal];
-    [self.questionBtn addTarget:self action:@selector(questionBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [waittingView addSubview:self.questionBtn];
+    self.priceQuestionBtn = [[UIButton alloc]init];
+    self.priceQuestionBtn.tag = 2;
+    [self.priceQuestionBtn setImage:IMAGEBYENAME(@"icons_question") forState:UIControlStateNormal];
+    [self.priceQuestionBtn addTarget:self action:@selector(questionBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [waittingView addSubview:self.priceQuestionBtn];
     
-    [self.questionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.priceQuestionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self.waittingLabel.mas_centerY);
         make.left.mas_equalTo(self.waittingLabel.mas_right).offset(rowSpace);
         make.width.height.mas_equalTo(kSizeFrom750(30));
     }];
+    [investBtn setTitle:info.buy_name forState:UIControlStateNormal];
+    
 #pragma mark --余额
     
     UIView * bottomView =[[UIView alloc] initWithFrame:CGRectMake(0, waittingView.bottom, screen_width, kViewHeight - self.waittingLabel.bottom)];
@@ -188,17 +232,17 @@ Strong UIButton *questionBtn;
     investView.backgroundColor=COLOR_White;
     [bottomView addSubview:investView];
     
-   
+    
     UILabel *investLabel = [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, 0, kSizeFrom750(300),kSizeFrom750(30))];
     investLabel.centerY = investView.height/2;
     investLabel.font = SYSTEMSIZE(26);
     investLabel.textColor =  RGB_51;
-    NSString *attrStr = [NSString stringWithFormat:@"%@ 元",self.baseModel.transfer_ret.actual_amount];
-    NSString *text = [@"转让价格 " stringByAppendingString:attrStr];
+    NSString *attrStr = [NSString stringWithFormat:@"%@ 元",self.baseModel.transfer_ret.amount_money];
+    NSString *text = [@"承接价格 " stringByAppendingString:attrStr];
     [investLabel setAttributedText:[CommonUtils diffierentFontWithString:text rang:[text rangeOfString:attrStr] font:NUMBER_FONT(28) color:COLOR_Red spacingBeforeValue:0 lineSpace:0]];
     [investView addSubview:investLabel];
     
-
+    
     
     investBtn = InitObject(GradientButton);
     investBtn.frame = CGRectMake(kOriginLeft,investView.bottom+kSizeFrom750(70), kContentWidth, kSizeFrom750(80));
@@ -219,8 +263,22 @@ Strong UIButton *questionBtn;
 }
 
 -(void)questionBtnClick:(UIButton *)sender{
-    
-    [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:@"债权价值为债权出售日，债权出售人所持有的所有待收本金，与该出售日距离上一期还款的天数所对应的利息之和"];
+    switch (sender.tag) {
+        case 1:
+        {
+            [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:self.baseModel.transfer_ret.wait_prin_intenotes];
+        }
+            break;
+        case 2:
+        {
+              [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:self.baseModel.transfer_ret.amount_money_notes];
+        }
+            break;
+            
+        default:
+            break;
+    }
+   
 }
 
 -(void) getRequest{

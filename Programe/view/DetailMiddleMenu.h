@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "LoanBase.h"
 @interface DetailMiddleMenu : UIView
 -(void)setMenu:(NSString *)t1 content:(NSString *)c1;
 
+-(void)loadInfoWithModel:(IntroduceModel *)model;
 @end

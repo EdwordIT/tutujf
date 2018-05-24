@@ -52,21 +52,13 @@ Strong LoanBase *baseModel;
 }
 #pragma  投资按钮点击事件
 -(void)footerBtnClick:(UIButton*)sender
-{
+{/***************************1.4.9**********************************************/
+    //只要登录状态，就可以跳转进入购买页面，在购买页面再判断是否实名制等内容
     if([CommonUtils isLogin])
     {
-        if([self.baseModel.trust_account isEqual:@"1"])
-        {
         RushPurchaseController * vc=[[RushPurchaseController alloc] init];
         vc.loan_id=  self.loan_id;
         [self.navigationController pushViewController:vc animated:YES];
-        }
-        else
-        {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr= self.baseModel.trust_reg_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
-        }
     }
     else{
         self.footerBtn.userInteractionEnabled = NO;//进入登陆页面不可点击
@@ -140,7 +132,7 @@ Strong LoanBase *baseModel;
         make.top.mas_equalTo(0);
         make.left.mas_equalTo(0);
         make.width.mas_equalTo(self.scrollView);
-        make.height.mas_equalTo(kSizeFrom750(370));
+        make.height.mas_equalTo(kSizeFrom750(300));
     }];
     
     [self.middleView mas_makeConstraints:^(MASConstraintMaker *make) {

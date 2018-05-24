@@ -42,23 +42,14 @@ Strong LoanBase *baseModel;
     [self getRequest];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getRequest) name:Noti_LoginChanged object:nil];//登录状态变更，刷新数据
 }
-#pragma  投资按钮点击事件
+#pragma  投资债权转让按钮点击事件
 -(void)footerBtnClick:(UIButton*)sender
 {
     if([CommonUtils isLogin])
     {
-        if([self.baseModel.trust_account isEqualToString:@"1"])
-        {
-            BuyCreditAssignController * vc=[[BuyCreditAssignController alloc] init];
-            vc.transfer_id=  self.transfer_id;
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-        else
-        {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr= self.baseModel.trust_reg_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
-        }
+        BuyCreditAssignController * vc=[[BuyCreditAssignController alloc] init];
+        vc.transfer_id=  self.transfer_id;
+        [self.navigationController pushViewController:vc animated:YES];
     }
     else{
         self.footerBtn.userInteractionEnabled = NO;
@@ -132,7 +123,7 @@ Strong LoanBase *baseModel;
         make.top.mas_equalTo(0);
         make.left.mas_equalTo(0);
         make.width.mas_equalTo(self.scrollView);
-        make.height.mas_equalTo(kSizeFrom750(370));
+        make.height.mas_equalTo(kSizeFrom750(300));
     }];
     
     [self.middleView mas_makeConstraints:^(MASConstraintMaker *make) {

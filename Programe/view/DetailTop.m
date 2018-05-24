@@ -12,10 +12,10 @@
 @interface DetailTop ()
 {
     NSTimer * myTimer;
-    LoanBase * model;
 }
 Strong CustomProgressView *progressView;//进度条
 Strong UILabel * rateLabel;//年化收益
+Strong UILabel *lab2;
 Strong UILabel *programLimitLabel;//项目期限
 Strong UILabel *programTotalLabel;//项目总额
 Strong UILabel *programRemainLabel;//剩余可投金额
@@ -25,6 +25,8 @@ Strong UILabel *investLabel;//投资人
 Strong UIView *progressTopView;//progressView覆盖层
 Strong UILabel *lab3;//项目总额
 Strong UIButton *questionBtn;//问题弹框
+Strong UIButton *priceQuestionBtn;//承接价格弹框
+Strong LoanBase *baseModel;
 @end
 
 @implementation DetailTop
@@ -47,39 +49,61 @@ Strong UIButton *questionBtn;//问题弹框
 }
 -(void)questionBtnClick:(UIButton *)sender
 {
-    [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:@"债权价值为债权出售日，债权出售人所持有的所有待收本金，与该出售日距离上一期还款的天数所对应的利息之和"];
+    switch (sender.tag) {
+        case 1:
+            {
+                [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:self.baseModel.transfer_ret.actual_amount_notes];
+
+            }
+            break;
+        case 2:
+        {
+            [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:self.baseModel.transfer_ret.amount_money_notes];
+
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 //债权转让内容
 -(void)loadCreditInfoWithModel:(LoanBase *)infoModel{
+    self.baseModel = infoModel;
     self.lab3.text=@"债权价值";
+    self.lab2.text = infoModel.transfer_ret.expire_date_txt;
     //利率
     NSString *rate = [infoModel.loan_info.apr stringByAppendingString:@"%"];
     NSMutableAttributedString *attr = [CommonUtils diffierentFontWithString:rate  rang:NSMakeRange(rate.length-1, 1) font:NUMBER_FONT(24) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.rateLabel setAttributedText:attr];
     //债权价值
-    NSString *totalAmout = [NSString stringWithFormat:@"%@ 元",[CommonUtils getHanleNums:infoModel.transfer_ret.amount_money]];
+    NSString *totalAmout = [NSString stringWithFormat:@"%@ 元",[CommonUtils getHanleNums:infoModel.transfer_ret.actual_amount]];
     NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:totalAmout  rang:NSMakeRange(totalAmout.length-1, 1) font:SYSTEMSIZE(30) color:RGB(141,200,255) spacingBeforeValue:0 lineSpace:0];
     [self.programTotalLabel setAttributedText:attr1];
-    //项目期限
-    self.programLimitLabel.text=infoModel.loan_info.period_name;
-    //转让金额
-    NSString *remain = [NSString stringWithFormat:@"转让金额 %@ 元",[CommonUtils getHanleNums:infoModel.transfer_ret.actual_amount]];
-    NSMutableAttributedString *attr2 = [CommonUtils diffierentFontWithString:remain  rang:[remain rangeOfString:[CommonUtils getHanleNums:infoModel.transfer_ret.actual_amount]] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
+    //剩余期限
+    if ([infoModel.transfer_ret.expire_date isEqualToString:@"-"]||IsEmptyStr(infoModel.transfer_ret.expire_date)) {
+        self.programLimitLabel.text = infoModel.transfer_ret.expire_date;
+    }else{
+        NSString *attr = [NSString stringWithFormat:@"%@ 天",infoModel.transfer_ret.expire_date];
+        [self.programLimitLabel setAttributedText:[CommonUtils diffierentFontWithString:attr rang:[attr rangeOfString:@"天"] font:SYSTEMSIZE(28) color:RGB(141,200,255) spacingBeforeValue:0 lineSpace:0]];
+    }
+    //承接价格
+    NSString *remain = [NSString stringWithFormat:@"承接价格 %@ 元",[CommonUtils getHanleNums:infoModel.transfer_ret.amount_money]];
+    NSMutableAttributedString *attr2 = [CommonUtils diffierentFontWithString:remain  rang:[remain rangeOfString:[CommonUtils getHanleNums:infoModel.transfer_ret.amount_money]] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.programRemainLabel setAttributedText:attr2];
     
     self.investLabel.hidden = NO;
     self.questionBtn.hidden = NO;
+    self.priceQuestionBtn.hidden = NO;
     self.progressLabel.hidden = YES;
-        //投资人数
     
-    
-    NSString *period = [NSString stringWithFormat:@"转让期数：%@ 期",infoModel.transfer_ret.period];
-    NSString *totalPeriod = [NSString stringWithFormat:@"/共 %@ 期",infoModel.transfer_ret.total_period];
-    NSMutableAttributedString *attr3 = [CommonUtils diffierentFontWithString:period  rang:[period rangeOfString:infoModel.transfer_ret.period] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
-    NSMutableAttributedString *attr4 = [CommonUtils diffierentFontWithString:totalPeriod  rang:[totalPeriod rangeOfString:infoModel.transfer_ret.total_period] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
-    [attr3 appendAttributedString:attr4];
-    [self.investLabel setAttributedText:attr3];
-    
+//    NSString *period = [NSString stringWithFormat:@"转让期数：%@ 期",infoModel.transfer_ret.period];
+//    NSString *totalPeriod = [NSString stringWithFormat:@"/共 %@ 期",infoModel.transfer_ret.total_period];
+//    NSMutableAttributedString *attr3 = [CommonUtils diffierentFontWithString:period  rang:[period rangeOfString:infoModel.transfer_ret.period] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
+//    NSMutableAttributedString *attr4 = [CommonUtils diffierentFontWithString:totalPeriod  rang:[totalPeriod rangeOfString:infoModel.transfer_ret.total_period] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
+//    [attr3 appendAttributedString:attr4];
+//    [self.investLabel setAttributedText:attr3];
+//
 }
 -(void)loadInfoWithModel:(LoanInfo *)infoModel{
     //利率
@@ -105,10 +129,10 @@ Strong UIButton *questionBtn;//问题弹框
     NSMutableAttributedString *attr2 = [CommonUtils diffierentFontWithString:remain  rang:[remain rangeOfString:[CommonUtils getHanleNums:infoModel.left_amount]] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.programRemainLabel setAttributedText:attr2];
     
-//    //投资人数
-//    NSString *invest = [NSString stringWithFormat:@"已经有%@位投资人",infoModel.tender_count];
-//    NSMutableAttributedString *attr3 = [CommonUtils diffierentFontWithString:invest  rang:[invest rangeOfString:infoModel.tender_count] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
-//    [self.investLabel setAttributedText:attr3];
+    //投资人数
+    NSString *invest = [NSString stringWithFormat:@"已经有%@位投资人",infoModel.tender_count];
+    NSMutableAttributedString *attr3 = [CommonUtils diffierentFontWithString:invest  rang:[invest rangeOfString:infoModel.tender_count] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
+    [self.investLabel setAttributedText:attr3];
 
 
      
@@ -116,7 +140,7 @@ Strong UIButton *questionBtn;//问题弹框
 
 -(void)initSubView
 {
-    UIView * uv=[[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(270))];
+    UIView * uv=[[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(220))];
     uv.backgroundColor= navigationBarColor;
     [self addSubview:uv];
 
@@ -135,18 +159,22 @@ Strong UIButton *questionBtn;//问题弹框
     lab1.text=@"预期利率";
     [uv addSubview:lab1];
     
-    UILabel *lab2 = [[UILabel alloc] initWithFrame:CGRectMake(line.right+kSizeFrom750(30), line.top+kSizeFrom750(10),kSizeFrom750(120), kSizeFrom750(30))];
-    lab2.font = SYSTEMSIZE(28);
-    lab2.textColor=RGB(141,200,255);
-    lab2.text=@"项目期限";
-    [uv addSubview:lab2];
+    self.lab2 = [[UILabel alloc] initWithFrame:CGRectMake(line.right+kSizeFrom750(30), line.top+kSizeFrom750(10),kSizeFrom750(120), kSizeFrom750(30))];
+    self.lab2.font = SYSTEMSIZE(28);
+    self.lab2.textColor=RGB(141,200,255);
+    self.lab2.text=@"项目期限";
+    [uv addSubview:self.lab2];
     
-    self.programLimitLabel = [[UILabel alloc] initWithFrame:CGRectMake(lab2.right+kSizeFrom750(10), lab2.top,kSizeFrom750(120), kSizeFrom750(30))];
-    self.programLimitLabel.font = SYSTEMSIZE(30);
-    self.programLimitLabel.textColor=RGB(255,255,255);
+    self.programLimitLabel = [[UILabel alloc] init];
+    self.programLimitLabel.font = NUMBER_FONT(30);
+    self.programLimitLabel.textColor=COLOR_White;
     [uv addSubview:self.programLimitLabel];
+    [self.programLimitLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(self.lab2.mas_right).offset(kSizeFrom750(10));
+        make.centerY.height.mas_equalTo(self.lab2);
+    }];
     
-    self.lab3 = [[UILabel alloc] initWithFrame:CGRectMake(lab2.left, lab2.bottom+kSizeFrom750(20),lab2.width, lab2.height)];
+    self.lab3 = [[UILabel alloc] initWithFrame:CGRectMake(self.lab2.left, self.lab2.bottom+kSizeFrom750(20),self.lab2.width, self.lab2.height)];
     self.lab3.font = SYSTEMSIZE(28);
     self.lab3.textAlignment=NSTextAlignmentLeft;
     self.lab3.textColor=RGB(141,200,255);
@@ -169,6 +197,7 @@ Strong UIButton *questionBtn;//问题弹框
     self.questionBtn = [[UIButton alloc]init];
     [self.questionBtn setImage:IMAGEBYENAME(@"icons_question") forState:UIControlStateNormal];
     [self.questionBtn setHidden:YES];
+    self.questionBtn.tag = 1;
     [self.questionBtn addTarget:self action:@selector(questionBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [uv addSubview:self.questionBtn];
     
@@ -198,23 +227,44 @@ Strong UIButton *questionBtn;//问题弹框
     self.progressTopView.backgroundColor = navigationBarColor;
     [uv addSubview:self.progressTopView];
  
-    UIView * bottom=[[UIView alloc] initWithFrame:CGRectMake(0, kSizeFrom750(270), screen_width, kSizeFrom750(100))];
+    UIView * bottom=[[UIView alloc] initWithFrame:CGRectMake(0, kSizeFrom750(220), screen_width, kSizeFrom750(80))];
     bottom.backgroundColor= RGB(37,142,233);
     [self addSubview:bottom];
     
-    self.programRemainLabel = [[UILabel alloc] initWithFrame:CGRectMake(kSizeFrom750(30), kSizeFrom750(30),kSizeFrom750(320),kSizeFrom750(40))];
+    self.programRemainLabel = [[UILabel alloc] init];
     self.programRemainLabel.font =  SYSTEMSIZE(28);
     self.programRemainLabel.textColor =  RGB(111,187,255);
     [bottom addSubview:self.programRemainLabel];
     
+    [self.programRemainLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(kOriginLeft);
+        make.top.mas_equalTo(kSizeFrom750(20));
+        make.height.mas_equalTo(kSizeFrom750(40));
+    }];
     
+    self.priceQuestionBtn = [[UIButton alloc]init];
+    [self.priceQuestionBtn setImage:IMAGEBYENAME(@"icons_question") forState:UIControlStateNormal];
+    [self.priceQuestionBtn setHidden:YES];
+    self.priceQuestionBtn.tag = 2;
+    [self.priceQuestionBtn addTarget:self action:@selector(questionBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [bottom addSubview:self.priceQuestionBtn];
     
-    self.investLabel= [[UILabel alloc] initWithFrame:CGRectMake(screen_width/2, self.programRemainLabel.top,screen_width/2-kSizeFrom750(30),self.programRemainLabel.height)];
-    self.investLabel.font =  SYSTEMSIZE(28);
-    self.investLabel.textColor =  RGB(141,200,255);
-    self.investLabel.textAlignment=NSTextAlignmentRight;
-    self.investLabel.hidden = YES;
-    [bottom addSubview:self.investLabel];
+    [self.priceQuestionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.programRemainLabel.mas_centerY);
+        make.left.mas_equalTo(self.programRemainLabel.mas_right).offset(kSizeFrom750(10));
+        make.width.height.mas_equalTo(kSizeFrom750(30));
+    }];
+    
+//    self.investLabel= [[UILabel alloc] init];
+//    self.investLabel.font =  SYSTEMSIZE(28);
+//    self.investLabel.textColor =  RGB(141,200,255);
+//    self.investLabel.textAlignment=NSTextAlignmentRight;
+//    self.investLabel.hidden = YES;
+//    [bottom addSubview:self.investLabel];
+//    [self.investLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.mas_equalTo(bottom.mas_right).offset(-kOriginLeft);
+//        make.height.centerY.mas_equalTo(self.programRemainLabel);
+//    }];
     bottom.tag=2;
     
 

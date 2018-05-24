@@ -8,6 +8,13 @@
 
 #import "BaseModel.h"
 
+
+@interface IntroduceModel:BaseModel
+Copy NSString * title;//标题
+Copy NSString * content;//内容
+Copy NSString * sub_content;//二级说明
+@end
+
 @interface LoanInfo : BaseModel
 
 @property(nonatomic, strong) NSString    * id;
@@ -17,8 +24,9 @@
 
 @property(nonatomic, strong) NSString  *  amount; //借款金额
 @property(nonatomic, strong) NSString  *  credited_amount; //已借到金额
-@property(nonatomic, strong) NSString  *  apr; //年利率
-
+@property(nonatomic, strong) NSString  *  apr; //预期收益
+Copy NSString *apr_txt;//预期收益文本
+Strong NSArray *introduce;//中间说明文字内容
 @property(nonatomic, strong) NSString  *  additional_status; //1 是新手标 ，其他普通标
 @property(nonatomic, strong) NSString  *  activity_url_img; //活动标识图片
 @property(nonatomic, strong) NSString  *  activity_img_width; //活动标识图片宽

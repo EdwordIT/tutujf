@@ -127,7 +127,7 @@
              error == nil){
              [self endRefresh:scrollView];
              //特殊接口：登录和注册，都需要静默登录webView，需等到webView加载完成之后才退出提示框
-             if ([urlString isEqualToString:loginUrl]||[urlString isEqualToString:registerUrl]) {
+             if ([urlString hasSuffix:loginUrl]||[urlString hasSuffix:registerUrl]) {
                  //不隐藏提示框
              }else
                  [SVProgressHUD dismissWithDelay:0.5];

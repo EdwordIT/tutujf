@@ -130,6 +130,7 @@ Strong     LoanBase * baseModel;
      remainLabel.text =temp;
     [mainview addSubview: remainLabel];
     
+    [investBtn setTitle:info.buy_name forState:UIControlStateNormal];
 
 #pragma mark --余额
     
