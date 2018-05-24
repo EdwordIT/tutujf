@@ -165,6 +165,8 @@ Strong UIView *functionTopView;//功能按钮
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.separatorColor = separaterColor;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     // 设置表格尾部
     [self.tableView setTableFooterView:footerView];
     [self.view addSubview:self.tableView];
