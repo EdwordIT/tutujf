@@ -28,7 +28,6 @@ typedef NS_ENUM(NSUInteger, ZFJButtonEdgeInsetsStyle) {
 typedef void (^ SelectBtn)(NSInteger selectIndex,NSString *selectIndexTitle);
 
 @interface ZFJSegmentedControl : UIView
-
 //titleArr 选择按钮的title
 //iconArr  选择按钮的icon
 //SCType   选择器的风格
@@ -74,7 +73,7 @@ typedef void (^ SelectBtn)(NSInteger selectIndex,NSString *selectIndexTitle);
 @property (nonatomic,strong) UIColor *ellipseBackColor;//默认黑色 透明度0.2
 @property (nonatomic,assign) CGFloat cornerRadius;//设置圆角 为0不设置 默认2
 
-
+-(void)resetTitleArray:(NSArray *)arr;
 @end
 
 

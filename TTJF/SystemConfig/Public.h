@@ -115,9 +115,12 @@ static CGFloat const space                   = 10;
 #define kStatusBarHeight    (kDevice_Is_iPhoneX ? 44 : 20)
 //导航栏高度
 #define kNavHight (kSizeFrom750(88)+kStatusBarHeight)
-
+//默认边距 30
 #define kOriginLeft kSizeFrom750(30)
-
+//默认行高 30
+#define kLabelHeight kSizeFrom750(30)
+//默认主标题高度 88
+#define kTitleHeight kSizeFrom750(88)
 #define kContentWidth kSizeFrom750(690)
 //默认label行间距
 #define kLabelSpace kSizeFrom750(12)

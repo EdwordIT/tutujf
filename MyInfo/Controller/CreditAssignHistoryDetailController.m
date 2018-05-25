@@ -9,14 +9,37 @@
 #import "CreditAssignHistoryDetailController.h"
 
 @interface CreditAssignHistoryDetailController ()
-
+Strong UIScrollView *backScroll;
 @end
 
 @implementation CreditAssignHistoryDetailController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.titleString = @"购买详情";
+    [self.view addSubview:self.backScroll];
+    
+    [self getRequest];
     // Do any additional setup after loading the view.
+}
+-(UIScrollView *)backScroll{
+    if (!_backScroll) {
+        _backScroll = [[UIScrollView alloc]initWithFrame:RECT(0, kNavHight, screen_width, kViewHeight)];
+        
+    }
+    return _backScroll;
+}
+-(void)getRequest
+{
+    [self loadSubViews];
+}
+-(void)loadSubViews
+{
+    UIView *topView = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kOriginLeft)];
+    topView.backgroundColor = COLOR_White;
+    [self.backScroll addSubview:topView];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {

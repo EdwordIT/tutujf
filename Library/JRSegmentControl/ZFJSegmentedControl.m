@@ -33,6 +33,11 @@
     }
     return self;
 }
+-(void)resetTitleArray:(NSArray *)arr{
+    self.titleArr = arr;
+    [self uiConfig];
+}
+
 
 - (void)initValue{
     self.clipsToBounds = YES;

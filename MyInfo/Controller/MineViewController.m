@@ -24,6 +24,7 @@
 #import "MyInvestController.h"
 #import "MyRedEnvelopeController.h"
 #import "InvestRecordController.h"
+#import "CreditAssignHistoryController.h"
 @interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
 {
@@ -247,10 +248,15 @@ Strong MyAccountModel *accountModel;//数据源
     if([CommonUtils isLogin])
     {
         UserContentModel *model = [self.accountModel.bt_user_content objectAtIndex:index];
-        NSString * url=model.link_url;
-        HomeWebController *discountVC = [[HomeWebController alloc] init];
-        discountVC.urlStr=url;
-        [self.navigationController pushViewController:discountVC animated:YES];
+        if ([model.title isEqualToString:@"债权转让"]) {
+            CreditAssignHistoryController *history = InitObject(CreditAssignHistoryController);
+            [self.navigationController pushViewController:history animated:YES];
+        }else{
+            NSString * url=model.link_url;
+            HomeWebController *discountVC = [[HomeWebController alloc] init];
+            discountVC.urlStr=url;
+            [self.navigationController pushViewController:discountVC animated:YES];
+        }
     }
     else
     {

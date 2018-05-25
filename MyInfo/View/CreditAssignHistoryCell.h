@@ -8,9 +8,11 @@
 
 #import "BaseCell.h"
 #import "CreditAssignHistoryModel.h"
+typedef void (^CreditAssignBlock)(NSInteger tag);
 /**
  债权转让记录
  */
 @interface CreditAssignHistoryCell : BaseCell
 -(void)loadInfoWithModel:(CreditAssignHistoryModel *)model;
+Copy CreditAssignBlock alertBlock;//点击显示温馨提示内容
 @end
