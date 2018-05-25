@@ -18,7 +18,7 @@ typedef enum{
 /**
  获取手机型号
  */
-+(NSString*)getDeviceVersion;
++(NSString*)getPhoneModel;
 /**
  获取手机UUID
  */

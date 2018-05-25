@@ -327,23 +327,22 @@ Strong UILabel *periodLabel;
 
 -(void) investBtnClick:(UIButton *)sender
 {
- 
-        //如果已经开通托管账号，去投资
-        if([self.baseModel.trust_account isEqual:@"1"])
-        {
+    //是否已经实名认证
+    if([CommonUtils isVerifyRealName])
+    {
+        //是否开通汇付
+        if ([self.baseModel.trust_account isEqualToString:@"1"]) {
             [self getFormData];
+        }else{
+            [self goWebViewWithPath:self.baseModel.trust_reg_url];
         }
-        else
-        {
-            if ([CommonUtils isVerifyRealName]) {
-                HomeWebController *discountVC = [[HomeWebController alloc] init];
-                discountVC.urlStr= self.baseModel.trust_reg_url;
-                [self.navigationController pushViewController:discountVC animated:YES];
-            }else{
-                [self goRealNameVC];
-            }
-        }
-  
+        
+    }
+    else
+    {
+        [self goRealNameVC];
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning {

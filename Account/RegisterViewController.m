@@ -382,7 +382,7 @@ Strong UIWebView *loginWebView;
     NSString *terminal_type = @"ios";
     NSString * terminal_id = [CommonUtils getUUID];
     NSString * terminal_name = [UIDevice currentDevice].name;
-    NSString *terminal_model = [CommonUtils getDeviceVersion];
+    NSString *terminal_model = [CommonUtils getPhoneModel];
     NSString * terminal_token = [CommonUtils getDeviceToken];
     [SVProgressHUD show];
     NSArray *keys = @[@"version",@"phone",@"password",@"sms_code",@"referrer",@"terminal_type",@"terminal_id",@"terminal_name",@"terminal_model",@"terminal_token"];
