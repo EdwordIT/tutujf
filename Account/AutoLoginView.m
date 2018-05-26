@@ -36,7 +36,7 @@ Strong UIWebView *mainWebView;
     */
     
     NSArray *keys =@[@"user_name",@"password",@"terminal_type",@"terminal_id",@"terminal_name",@"terminal_model",@"terminal_token"];
-    NSArray *values = @[user_name,password,@"ios",[CommonUtils getUUID],[UIDevice currentDevice].name,[CommonUtils getDeviceVersion],[CommonUtils getDeviceToken]];
+    NSArray *values = @[user_name,password,@"ios",[CommonUtils getUUID],[UIDevice currentDevice].name,[CommonUtils getPhoneModel],[CommonUtils getDeviceToken]];
     [[HttpCommunication sharedInstance] postSignRequestWithPath:loginUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
         //登陆成功
             NSString * temp=[[successDic objectForKey:kExpirationTime] substringToIndex:10];

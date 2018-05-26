@@ -107,6 +107,7 @@ Strong RechargeModel *rechargeModel;
         _amountTextField.placeholder = @"请输入充值金额";
         [_amountTextField addTarget:self action:@selector(textFieldDidChanged:) forControlEvents:UIControlEventEditingChanged];
         _amountTextField.delegate = self;
+        _amountTextField.keyboardType = UIKeyboardTypeNumberPad;//纯数字
         _amountTextField.font = NUMBER_FONT(30);
     }
     return _amountTextField;

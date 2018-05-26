@@ -39,7 +39,11 @@ Strong     LoanBase * baseModel;
 @end
 
 @implementation RushPurchaseController
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+     [self getRequest];//下单页面刷新内容
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initSubViews];
@@ -53,7 +57,7 @@ Strong     LoanBase * baseModel;
     self.scrollView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
         [weakSelf getRequest];
     }];
-    [self getRequest];
+   
     [SVProgressHUD showWithStatus:@"数据加载中..."];
     
 }
@@ -176,6 +180,7 @@ Strong     LoanBase * baseModel;
     _phoneTextFiled = [[UITextField alloc]initWithFrame:CGRectMake(investTitle.right, investTitle.top, screen_width - investTitle.right - kOriginLeft, kSizeFrom750(50))];
     _phoneTextFiled.centerY = investTitle.centerY;
     _phoneTextFiled.delegate = self;
+    _phoneTextFiled.keyboardType = UIKeyboardTypeNumberPad;//纯数字;
     _phoneTextFiled.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;//内容垂直居中
     _phoneTextFiled.placeholder = [NSString stringWithFormat:@"投资金额需为%@的倍数",self.baseModel.loan_info.tender_amount_min];
     _phoneTextFiled.font =SYSTEMSIZE(26);
@@ -320,19 +325,25 @@ Strong     LoanBase * baseModel;
 
 -(void) investBtnClick:(UIButton *)sender
 {
-    if([self checkNum])
-    {
+   
         //是否已经实名认证
         if([CommonUtils isVerifyRealName])
         {
-            [self getFormData];
+            //是否开通汇付
+            if ([self.baseModel.trust_account isEqualToString:@"1"]) {
+                if ([self checkNum]) {
+                    [self getFormData];
+                }
+            }else{
+                [self goWebViewWithPath:self.baseModel.trust_reg_url];
+            }
+           
         }
         else
         {
             [self goRealNameVC];
             
         }
-    }
 }
 
 - (void)didReceiveMemoryWarning {

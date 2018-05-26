@@ -369,9 +369,10 @@ Strong NSDictionary *notificationInfo;
     [[XGPushTokenManager defaultTokenManager] registerDeviceToken:deviceToken];
     NSString *device_token = [XGPushTokenManager defaultTokenManager].deviceTokenString;
     NSLog(@"deviceToken:%@",device_token);
-    [TTJFUserDefault setStr:device_token key:kDeviceToken];
-    //如果是第一次打开应用，则调用此接口上送deviceToken到服务器
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:isBindUser]) {
+    NSString *str = [[NSUserDefaults standardUserDefaults] objectForKey:kDeviceToken];
+    
+    //如果是第一次打开应用，或者deviceToken变更，则调用此接口上送deviceToken到服务器
+    if (IsEmptyStr(str)||(![str isEqualToString:device_token])) {
      /*   手机类型 1=android，2=IOS
        terminal_id IMEI,  UUID
        terminal_name (设备名称)：如 iPhone 6S
@@ -381,21 +382,22 @@ Strong NSDictionary *notificationInfo;
         NSString *phone_type = @"2";
         NSString * terminal_id = [CommonUtils getUUID];
         NSString * terminal_name = [UIDevice currentDevice].name;
-        NSString *terminal_model = [CommonUtils getDeviceVersion];
+        NSString *terminal_model = [CommonUtils getPhoneModel];
         NSString * terminal_device_token = device_token;
   
         NSArray *keys = @[@"phone_type",@"terminal_id",@"terminal_name",@"terminal_model",@"terminal_device_token"];
         NSArray *values = @[phone_type,terminal_id,terminal_name,terminal_model,terminal_device_token];
         
         [[HttpCommunication sharedInstance] postSignRequestWithPath:sendDeviceTokenUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic){            //存储device_token
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:isBindUser];
+          
+            
         } failure:^(NSDictionary *errorDic) {
             
         }];
-       
     }else{
         
     }
+     [TTJFUserDefault setStr:device_token key:kDeviceToken];
 }
 
 //如果deviceToken获取不到会进入此事件

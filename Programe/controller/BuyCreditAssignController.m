@@ -117,7 +117,6 @@ Strong UILabel *periodLabel;
     limitLabel.textColor =  COLOR_White;
     limitLabel.text=[NSString stringWithFormat:@"%@",self.baseModel.transfer_ret.wait_prin_inte];
     [mainview addSubview:limitLabel];
-    //WithFrame:CGRectMake(repayMethodLabel.left, limitTitle.bottom+rowSpace, repayMethodLabel.width,repayMethodLabel.height)
     [limitLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(kOriginLeft);
         make.top.mas_equalTo(limitTitle.mas_bottom).offset(rowSpace);
@@ -237,7 +236,7 @@ Strong UILabel *periodLabel;
     investLabel.centerY = investView.height/2;
     investLabel.font = SYSTEMSIZE(26);
     investLabel.textColor =  RGB_51;
-    NSString *attrStr = [NSString stringWithFormat:@"%@ 元",self.baseModel.transfer_ret.amount_money];
+    NSString *attrStr = [NSString stringWithFormat:@"%@ 元",self.baseModel.transfer_ret.actual_amount];
     NSString *text = [@"承接价格 " stringByAppendingString:attrStr];
     [investLabel setAttributedText:[CommonUtils diffierentFontWithString:text rang:[text rangeOfString:attrStr] font:NUMBER_FONT(28) color:COLOR_Red spacingBeforeValue:0 lineSpace:0]];
     [investView addSubview:investLabel];
@@ -265,11 +264,11 @@ Strong UILabel *periodLabel;
 -(void)questionBtnClick:(UIButton *)sender{
     switch (sender.tag) {
         case 1:
-        {
+        {//待收本息
             [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:self.baseModel.transfer_ret.wait_prin_intenotes];
         }
             break;
-        case 2:
+        case 2://债券价值
         {
               [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:self.baseModel.transfer_ret.amount_money_notes];
         }
@@ -328,23 +327,22 @@ Strong UILabel *periodLabel;
 
 -(void) investBtnClick:(UIButton *)sender
 {
- 
-        //如果已经开通托管账号，去投资
-        if([self.baseModel.trust_account isEqual:@"1"])
-        {
+    //是否已经实名认证
+    if([CommonUtils isVerifyRealName])
+    {
+        //是否开通汇付
+        if ([self.baseModel.trust_account isEqualToString:@"1"]) {
             [self getFormData];
+        }else{
+            [self goWebViewWithPath:self.baseModel.trust_reg_url];
         }
-        else
-        {
-            if ([CommonUtils isVerifyRealName]) {
-                HomeWebController *discountVC = [[HomeWebController alloc] init];
-                discountVC.urlStr= self.baseModel.trust_reg_url;
-                [self.navigationController pushViewController:discountVC animated:YES];
-            }else{
-                [self goRealNameVC];
-            }
-        }
-  
+        
+    }
+    else
+    {
+        [self goRealNameVC];
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning {

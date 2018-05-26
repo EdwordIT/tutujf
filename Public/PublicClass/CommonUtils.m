@@ -145,8 +145,12 @@
 }
 +(BOOL)isNumber:(NSString *)str {
     str = [str stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
-    if(str.length > 0) {
-        return NO;
+    if (str.length>0) {
+        //带小数点的数字
+        if ([str isEqualToString:@"."]) {
+            return YES;
+        }else
+            return NO;
     }
     return YES;
 }
@@ -201,7 +205,7 @@
         return [TTJFUserDefault strForKey:@"ttjf_uuid"];
 }
 //获取手机型号
-+(NSString*)getDeviceVersion
++(NSString*)getPhoneModel
 {
     struct utsname systemInfo;
     uname(&systemInfo);

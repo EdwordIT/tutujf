@@ -19,6 +19,7 @@ Strong UILabel *amountTitle;
 Strong UILabel *amountLabel;//可提现余额
 Strong UIView *amountBgView;//背景色
 Strong UITextField *amountTextField;//输入框
+Strong UIButton *getAllBtn;//全部提现
 Strong GradientButton *getCashBtn;//
 Strong UILabel *desLabel;//进入第三方提现
 Strong UIButton *historyBtn;//提现明细
@@ -60,6 +61,8 @@ Strong UILabel *immediatelyLabel;//即时到账提现说明
     [self.topView addSubview:self.amountBgView];
     
     [self.amountBgView addSubview:self.amountTextField];
+    
+    [self.amountBgView addSubview:self.getAllBtn];
     
     [self.bgScrollView addSubview:self.commonView];
     
@@ -144,13 +147,24 @@ Strong UILabel *immediatelyLabel;//即时到账提现说明
 -(UITextField *)amountTextField{
     if (!_amountTextField) {
         _amountTextField = InitObject(UITextField);
-        _amountTextField.placeholder = @"请输入充值金额";
-        
+        _amountTextField.placeholder = @"请输入提现金额";
         [_amountTextField addTarget:self action:@selector(textFieldDidChanged:) forControlEvents:UIControlEventEditingChanged];
         _amountTextField.delegate = self;
+        _amountTextField.keyboardType = UIKeyboardTypeDecimalPad;
         _amountTextField.font = NUMBER_FONT(30);
     }
     return _amountTextField;
+}
+-(UIButton *)getAllBtn{
+    if (!_getAllBtn) {
+        _getAllBtn = InitObject(UIButton);
+        [_getAllBtn setTitle:@"全部提现" forState:UIControlStateNormal];
+        [_getAllBtn addTarget:self action:@selector(getAllBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_getAllBtn setTitleColor:RGB_102 forState:UIControlStateNormal];
+        _getAllBtn.adjustsImageWhenHighlighted = NO;
+        [_getAllBtn.titleLabel setFont:SYSTEMSIZE(28)];
+    }
+    return _getAllBtn;
 }
 -(UIView *)commonView{
     if (!_commonView) {
@@ -322,7 +336,14 @@ Strong UILabel *immediatelyLabel;//即时到账提现说明
         make.height.mas_equalTo(kSizeFrom750(40));
         make.top.mas_equalTo(kSizeFrom750(32.5));
         make.left.mas_equalTo(kOriginLeft);
-        make.width.mas_equalTo(kSizeFrom750(600));
+        make.width.mas_equalTo(kSizeFrom750(450));
+    }];
+    
+    [self.getAllBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(kSizeFrom750(150));
+        make.height.mas_equalTo(kSizeFrom750(40));
+        make.centerY.mas_equalTo(self.amountTextField);
+        make.right.mas_equalTo(self.amountBgView.mas_right);
     }];
     
     [self.topView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -474,6 +495,14 @@ Strong UILabel *immediatelyLabel;//即时到账提现说明
     }];
 }
 #pragma mark --buttonClick
+-(void)getAllBtnClick:(UIButton *)sender{
+    //全部提现
+    self.amountTextField.text = self.cashModel.amount;
+    if (self.immediatelyBtn.selected) {
+        [self textFieldDidChanged:self.amountTextField];
+    }
+    
+}
 //提现按钮点击
 -(void)withDrowBtnClick:(UIButton *)sender{
     
@@ -516,6 +545,7 @@ Strong UILabel *immediatelyLabel;//即时到账提现说明
     if (sender.tag==1) {
         self.commonBtn.selected = YES;
         self.immediatelyBtn.selected = NO;
+        [self.serviceChargeLabel setAttributedText: [CommonUtils diffierentFontWithString:@"快速提现（手续费：0.00元）" rang:[@"快速提现（手续费：0.00元）" rangeOfString:@"0.00"] font:NUMBER_FONT(28) color:COLOR_LightBlue spacingBeforeValue:0 lineSpace:0]];
     }else{
         self.immediatelyBtn.selected = YES;
         self.commonBtn.selected = NO;
