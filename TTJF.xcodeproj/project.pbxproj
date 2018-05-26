@@ -224,6 +224,10 @@
 		CB3CC5F920B6469300CBE5DF /* myinvest_buyback@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5F520B6469300CBE5DF /* myinvest_buyback@2x.png */; };
 		CB3CC5FC20B6471E00CBE5DF /* myinvest_buybacked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5FA20B6471E00CBE5DF /* myinvest_buybacked@2x.png */; };
 		CB3CC5FD20B6471E00CBE5DF /* myinvest_buybacked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5FB20B6471E00CBE5DF /* myinvest_buybacked@3x.png */; };
+		CB3CC60720B8ECA900CBE5DF /* FDSlideBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3CC60420B8ECA900CBE5DF /* FDSlideBarItem.m */; };
+		CB3CC60820B8ECA900CBE5DF /* FDSlideBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3CC60620B8ECA900CBE5DF /* FDSlideBar.m */; };
+		CB3CC60B20B8ECF800CBE5DF /* TransferHistoryListController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3CC60A20B8ECF800CBE5DF /* TransferHistoryListController.m */; };
+		CB3CC60E20B8EFBF00CBE5DF /* ScrollerContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3CC60D20B8EFBF00CBE5DF /* ScrollerContentView.m */; };
 		CB3D301020A14BBF0040FE30 /* CreditInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D300F20A14BBF0040FE30 /* CreditInfoModel.m */; };
 		CB3D301320A1763E0040FE30 /* RealnameModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D301220A1763E0040FE30 /* RealnameModel.m */; };
 		CB3D301620A2945C0040FE30 /* RushPurchaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D301420A2945C0040FE30 /* RushPurchaseController.m */; };
@@ -851,6 +855,14 @@
 		CB3CC5F520B6469300CBE5DF /* myinvest_buyback@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myinvest_buyback@2x.png"; sourceTree = "<group>"; };
 		CB3CC5FA20B6471E00CBE5DF /* myinvest_buybacked@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myinvest_buybacked@2x.png"; sourceTree = "<group>"; };
 		CB3CC5FB20B6471E00CBE5DF /* myinvest_buybacked@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "myinvest_buybacked@3x.png"; sourceTree = "<group>"; };
+		CB3CC60320B8ECA800CBE5DF /* FDSlideBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDSlideBar.h; sourceTree = "<group>"; };
+		CB3CC60420B8ECA900CBE5DF /* FDSlideBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDSlideBarItem.m; sourceTree = "<group>"; };
+		CB3CC60520B8ECA900CBE5DF /* FDSlideBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDSlideBarItem.h; sourceTree = "<group>"; };
+		CB3CC60620B8ECA900CBE5DF /* FDSlideBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDSlideBar.m; sourceTree = "<group>"; };
+		CB3CC60920B8ECF800CBE5DF /* TransferHistoryListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransferHistoryListController.h; sourceTree = "<group>"; };
+		CB3CC60A20B8ECF800CBE5DF /* TransferHistoryListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferHistoryListController.m; sourceTree = "<group>"; };
+		CB3CC60C20B8EFBF00CBE5DF /* ScrollerContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollerContentView.h; sourceTree = "<group>"; };
+		CB3CC60D20B8EFBF00CBE5DF /* ScrollerContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollerContentView.m; sourceTree = "<group>"; };
 		CB3D300E20A14BBF0040FE30 /* CreditInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditInfoModel.h; sourceTree = "<group>"; };
 		CB3D300F20A14BBF0040FE30 /* CreditInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditInfoModel.m; sourceTree = "<group>"; };
 		CB3D301120A1763E0040FE30 /* RealnameModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RealnameModel.h; sourceTree = "<group>"; };
@@ -1911,6 +1923,19 @@
 			path = myInfo;
 			sourceTree = "<group>";
 		};
+		CB3CC60220B8EC9000CBE5DF /* FDSliderBar */ = {
+			isa = PBXGroup;
+			children = (
+				CB3CC60320B8ECA800CBE5DF /* FDSlideBar.h */,
+				CB3CC60620B8ECA900CBE5DF /* FDSlideBar.m */,
+				CB3CC60520B8ECA900CBE5DF /* FDSlideBarItem.h */,
+				CB3CC60420B8ECA900CBE5DF /* FDSlideBarItem.m */,
+				CB3CC60C20B8EFBF00CBE5DF /* ScrollerContentView.h */,
+				CB3CC60D20B8EFBF00CBE5DF /* ScrollerContentView.m */,
+			);
+			path = FDSliderBar;
+			sourceTree = "<group>";
+		};
 		E7037FF71E9C96EF00C5E13D /* SegmentLine */ = {
 			isa = PBXGroup;
 			children = (
@@ -1935,6 +1960,7 @@
 		E70679401E60C80B00E32B86 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				CB3CC60220B8EC9000CBE5DF /* FDSliderBar */,
 				1B4EEC7A206CEFBC00117EF0 /* SDPhotoBrowser */,
 				1B583AF3205F454F00CC70E4 /* UICountingLabel */,
 				E73B1C431FA6144600273C89 /* Other */,
@@ -2814,6 +2840,8 @@
 				CB6810EC20AEC6CC0062B7FD /* InvestRecordController.m */,
 				CB3CC5A520B3F97F00CBE5DF /* MyInvestDetailController.h */,
 				CB3CC5A620B3F97F00CBE5DF /* MyInvestDetailController.m */,
+				CB3CC60920B8ECF800CBE5DF /* TransferHistoryListController.h */,
+				CB3CC60A20B8ECF800CBE5DF /* TransferHistoryListController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3356,6 +3384,7 @@
 				1BCF2233206E2BD300D75662 /* ProgrameListController.m in Sources */,
 				E73B1C621FA6207F00273C89 /* MBProgressHUD.m in Sources */,
 				E7067BC81E60C9AB00E32B86 /* CoreMediaFuncManagerVC.m in Sources */,
+				CB3CC60820B8ECA900CBE5DF /* FDSlideBar.m in Sources */,
 				E7082C0F1F9CEA230058D963 /* TopScrollBasePage.m in Sources */,
 				E7067AB01E60C93B00E32B86 /* UIImage+PDF.m in Sources */,
 				E7067B531E60C9AA00E32B86 /* KDGoalBarPercentLayer.m in Sources */,
@@ -3368,6 +3397,7 @@
 				1B583AFC205F64F800CC70E4 /* MessageShowCell.m in Sources */,
 				CB1BFBA9209019770045C0F0 /* GetCashRecordController.m in Sources */,
 				CB1BFB9A208EBD040045C0F0 /* GetCashController.m in Sources */,
+				CB3CC60E20B8EFBF00CBE5DF /* ScrollerContentView.m in Sources */,
 				E70380001E9C96EF00C5E13D /* UIViewExt.m in Sources */,
 				E7067B5B1E60C9AA00E32B86 /* HttpSignCreate.m in Sources */,
 				CB6810E420AC275B0062B7FD /* MyRedEnvelopeController.m in Sources */,
@@ -3453,6 +3483,7 @@
 				E7F3C9191FA876740062B69B /* AccountModel.m in Sources */,
 				E7067B5E1E60C9AA00E32B86 /* ReturnCode.m in Sources */,
 				1B628148205224F800ECFD8D /* CommonUtils.m in Sources */,
+				CB3CC60B20B8ECF800CBE5DF /* TransferHistoryListController.m in Sources */,
 				E70A6DC51F9DD72500A7B7E8 /* TopAccountModel.m in Sources */,
 				1BCF2267206E2BFD00D75662 /* DetailMiddleTop.m in Sources */,
 				1B4EEC83206CEFF800117EF0 /* SDWaitingView.m in Sources */,
@@ -3468,6 +3499,7 @@
 				E7037FFF1E9C96EF00C5E13D /* HorizontalMenu.m in Sources */,
 				E73B1C571FA6144600273C89 /* NSString+Additions.m in Sources */,
 				E709175D1FC2FD1D003CF8E2 /* FoundListCell.m in Sources */,
+				CB3CC60720B8ECA900CBE5DF /* FDSlideBarItem.m in Sources */,
 				1BCF226D206E2BFD00D75662 /* DetailProduct.m in Sources */,
 				E7A45DE81E74B04B0032613E /* HotQueueModel.m in Sources */,
 				CB1BFBA0209012110045C0F0 /* RechargeRecordController.m in Sources */,

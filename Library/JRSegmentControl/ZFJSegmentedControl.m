@@ -18,6 +18,7 @@
 @property (nonatomic,strong) NSMutableArray *titleArray;       //存放按钮的数组
 @property (nonatomic,strong) UIView *stateView;                //按钮下面的伴随状态按钮
 @property (nonatomic,assign) BOOL isSetWID;                //是否是默认宽度
+Strong UIView *lineView;
 
 @end
 
@@ -28,6 +29,7 @@
         self.titleArr = titleArr;
         self.iconArr = iconArr;
         self.SCType = SCType;
+        [self addSubview:self.lineView];
         [self initValue];
         [self uiConfig];
     }
@@ -38,7 +40,13 @@
     [self uiConfig];
 }
 
-
+-(UIView *)lineView{
+    if (!_lineView) {
+        _lineView = [[UIView alloc]init];
+        _lineView.backgroundColor = separaterColor;
+    }
+    return _lineView;
+}
 - (void)initValue{
     self.clipsToBounds = YES;
     _edgeInsetsStyle = ZFJButtonEdgeInsetsStyleTop;
@@ -47,6 +55,7 @@
     _selectBtnSpace = 0;
     _selectIndex = 0;//默认选中第一个
     _SCType_Underline_HEI = 2;
+    _SCType_Underline_WIDTH = kSizeFrom750(40);
     _btnCount = self.titleArr.count!=0 ? self.titleArr.count : self.iconArr.count;
     _titleColor = [UIColor blackColor];
     _selectTitleColor =navigationBarColor;//RGB:238 52 9
@@ -55,6 +64,7 @@
     _cornerRadius = 2;
     _edgeInsetsSpace = 0;
     _titleFont = [UIFont systemFontOfSize:16];
+    
 }
 
 - (void)setFrame:(CGRect)frame{
@@ -77,7 +87,7 @@
 
 - (void)uiConfig{
     if(_btnCount==0) return;//如果没有值 直接返回
-    
+    _lineView.frame = RECT(0, self.height - kLineHeight, screen_width, kLineHeight);
     if(self.scrollView == nil){
         self.scrollView = [[UIScrollView alloc]init];
         self.scrollView.showsVerticalScrollIndicator = NO;

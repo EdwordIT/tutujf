@@ -30,11 +30,11 @@ Strong UIView *backView;
 {
     
     CGFloat btnW = kSizeFrom750(138);
-    CGFloat btnH = kSizeFrom750(58);
+    CGFloat btnH = kSizeFrom750(48);
     CGFloat cornerRadius = kSizeFrom750(8);
     self.backView = InitObject(UIView);
     self.backView.backgroundColor = COLOR_White;
-    self.backView.frame = RECT((screen_width - btnW*nameArray.count+titleSpace*2)/2, self.height - kSizeFrom750(78)-titleSpace*2,btnW*nameArray.count+titleSpace*2, btnH+titleSpace*2);
+    self.backView.frame = RECT((screen_width - btnW*nameArray.count+titleSpace*2)/2, self.height - kSizeFrom750(68)-titleSpace*2,btnW*nameArray.count+titleSpace*2, btnH+titleSpace*2);
     self.backView.layer.cornerRadius = cornerRadius*1.2;
     self.backView.layer.masksToBounds = YES;
     [self addSubview:self.backView];

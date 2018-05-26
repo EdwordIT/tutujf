@@ -153,4 +153,12 @@
  资金列表接口
  */
 #define myAccountLogUrl @"/api/account/myAccountLog"
+/**
+ 我的债权转让接口
+ */
+#define myTransferUrl @"/api/account/myAccountLog"
+/**
+ 债权转让记录详情接口
+ */
+#define myAccountLogUrl @"/api/account/myAccountLog"
 
