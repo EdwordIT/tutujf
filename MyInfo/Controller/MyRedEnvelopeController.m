@@ -248,7 +248,7 @@ Assign BOOL isoverdued;
     switch (index) {
         case 0:
         {
-            if (self.unusedTotalPages==self.unusedCurrentPage) {
+            if (self.unusedTotalPages==self.unusedCurrentPage) {//未使用
                 [self.unuseTableView.mj_footer endRefreshingWithNoMoreData];
                 return;
             }
@@ -257,7 +257,7 @@ Assign BOOL isoverdued;
             break;
         case 1:
         {
-            if (self.unusedTotalPages==self.unusedCurrentPage) {
+            if (self.usedTotalPages==self.usedCurrentPage) {//已使用
                 [self.usedTableView.mj_footer endRefreshingWithNoMoreData];
                 return;
             }
@@ -266,7 +266,7 @@ Assign BOOL isoverdued;
             break;
         case 2:
         {
-            if (self.unusedTotalPages==self.unusedCurrentPage) {
+            if (self.overduedTotalPages==self.overduedCurrentPage) {//已过期
                 [self.overdueTableView.mj_footer endRefreshingWithNoMoreData];
                 return;
             }

@@ -100,15 +100,13 @@ Strong MyInvestDetailModel *detailModel;
     line1.backgroundColor = separaterColor;
     [bottomView addSubview:line1];
     
- 
-    
-    
-  
     if (self.detailModel.repay_items.count>0) {
         
+      
+        
         NSArray *nameArr = @[@"回款时间",@"本金（元）",@"收益（元）",@"状态"];
-        NSArray *widthArr = @[@(160),@(220),@(200),@(140)];
-        NSArray *leftArr = @[@(30),@(190),@(410),@(610)];
+        NSArray *widthArr = @[@(160),@(220),@(140),@(200)];
+        NSArray *leftArr = @[@(30),@(190),@(410),@(550)];
         CGFloat bottom = 0;
         for (int i=0; i<nameArr.count; i++) {
             
@@ -154,6 +152,12 @@ Strong MyInvestDetailModel *detailModel;
             stateLabel.text = model.status_name;
             [bottomView addSubview:stateLabel];
             
+            if ([model.status isEqualToString:@"1"]) {
+                stateLabel.textColor = COLOR_Red;
+            }else{
+                stateLabel.textColor = RGB_51;
+            }
+            
             if (i==self.detailModel.repay_items.count-1) {
                 bottomView.frame = RECT(0, middleView.bottom+kSizeFrom750(20), screen_width, stateLabel.bottom+kSizeFrom750(20));
                 
@@ -163,6 +167,14 @@ Strong MyInvestDetailModel *detailModel;
                 [bottomView addSubview:line2];
             }
         }
+    }else{
+        
+        UILabel *remindLabel = [[UILabel alloc]initWithFrame:RECT(kOriginLeft, line1.bottom+kSizeFrom750(20),  kContentWidth, kLabelHeight)];
+        remindLabel.textColor = COLOR_Red;
+        remindLabel.font = SYSTEMSIZE(28);
+        remindLabel.text = self.detailModel.repay_not_msg;
+        [bottomView addSubview:remindLabel];
+        bottomView.frame = RECT(0, middleView.bottom+kSizeFrom750(20), screen_width, remindLabel.bottom+kSizeFrom750(20));
     }
     
     GradientButton * goOriginProgramBtn = InitObject(GradientButton);
