@@ -25,6 +25,7 @@
 #import "MyRedEnvelopeController.h"
 #import "InvestRecordController.h"
 #import "CreditAssignHistoryController.h"
+#import "PropertyController.h"
 @interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
 {
@@ -270,9 +271,13 @@ Strong MyAccountModel *accountModel;//数据源
     {
         if(index==3)//总资产
         {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-            discountVC.urlStr= self.accountModel.total_amount_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
+            PropertyController *pro = InitObject(PropertyController);
+            pro.isMyIncome = NO;
+            [self.navigationController pushViewController:pro animated:YES];
+            
+//            HomeWebController *discountVC = [[HomeWebController alloc] init];
+//            discountVC.urlStr= self.accountModel.total_amount_url;
+//            [self.navigationController pushViewController:discountVC animated:YES];
         }
         
         else if(index==4)//累计收益
