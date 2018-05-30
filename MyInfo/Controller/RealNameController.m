@@ -169,7 +169,6 @@ Weak UITextField *certificationTextField;
         textField.font = SYSTEMSIZE(30);
         textField.tag = i;
         [self.contentView addSubview:textField];
-        textField.delegate = self;
         if (i==0) {
             self.nameTextField = textField;
         }else if (i==1) {
