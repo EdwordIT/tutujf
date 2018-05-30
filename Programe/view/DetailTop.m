@@ -205,8 +205,8 @@ Strong LoanBase *baseModel;
     
     [self.questionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self.programTotalLabel.mas_centerY);
-        make.left.mas_equalTo(self.programTotalLabel.mas_right).offset(kSizeFrom750(10));
-        make.width.height.mas_equalTo(kSizeFrom750(30));
+        make.left.mas_equalTo(self.programTotalLabel.mas_right);
+        make.width.height.mas_equalTo(kSizeFrom750(60));
     }];
     
     self.progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, uv.height - kSizeFrom750(45),kSizeFrom750(150), kSizeFrom750(25))];
@@ -253,8 +253,8 @@ Strong LoanBase *baseModel;
     
     [self.priceQuestionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self.programRemainLabel.mas_centerY);
-        make.left.mas_equalTo(self.programRemainLabel.mas_right).offset(kSizeFrom750(10));
-        make.width.height.mas_equalTo(kSizeFrom750(30));
+        make.left.mas_equalTo(self.programRemainLabel.mas_right);
+        make.width.height.mas_equalTo(kSizeFrom750(60));
     }];
     
 //    self.investLabel= [[UILabel alloc] init];

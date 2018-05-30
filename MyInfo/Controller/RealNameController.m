@@ -10,7 +10,7 @@
 #import "GradientButton.h"
 #import "RealnameModel.h"
 #import "HomeWebController.h"
-@interface RealNameController ()<UITextFieldDelegate>
+@interface RealNameController ()
 Strong UIImageView *remindImage;
 Strong UILabel *remindLabel;
 Strong UIView *contentView;//中间内容
@@ -186,19 +186,6 @@ Weak UITextField *certificationTextField;
         }
     }
     
-}
-//结束输入
--(void)textFieldDidEndEditing:(UITextField *)textField
-{
-    //真实姓名
-    if (textField.tag==0) {
-      
-    }else{
-        //身份证号
-        if(![CommonUtils checkUserIdCard:textField.text]){
-            [SVProgressHUD showInfoWithStatus:@"身份证号码错误"];
-        }
-    }
 }
 -(void)certificationBtnClick:(UIButton *)sender{
     //身份证号

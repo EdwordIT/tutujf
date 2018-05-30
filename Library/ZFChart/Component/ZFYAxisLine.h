@@ -26,7 +26,7 @@
 /** 坐标轴颜色(默认为黑色) */
 @property (nonatomic, strong) UIColor * axisColor;
 
-#warning message - readonly(只读)
+// - readonly(只读)
 
 /** y轴宽度 */
 @property (nonatomic, assign, readonly) CGFloat yLineWidth;

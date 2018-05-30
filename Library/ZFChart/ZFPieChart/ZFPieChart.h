@@ -59,7 +59,7 @@
  */
 - (CGFloat)allowToShowMinLimitPercent:(ZFPieChart *)pieChart;
 
-#warning message - 此代理方法只适用于圆环类型
+// - 此代理方法只适用于圆环类型
 
 /**
  *  当饼图类型为圆环类型时，可通过此方法把半径平均分成n段，圆环的线宽为n分之1，简单理解就是调整圆环线宽的粗细

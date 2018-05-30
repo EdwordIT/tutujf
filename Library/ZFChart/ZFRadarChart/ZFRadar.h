@@ -43,7 +43,7 @@ typedef enum{
 @property (nonatomic, assign) kRadarPatternType radarPatternType;
 
 
-#warning message - readonly(只读)
+// - readonly(只读)
 
 /** itemLabel中心点数组 */
 @property (nonatomic, strong, readonly) NSArray * itemLabelCenterArray;

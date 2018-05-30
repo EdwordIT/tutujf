@@ -307,7 +307,7 @@
 		CBB4CD3920BBE50600EA877B /* UIColor+Zirkfied.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCEC20BBE50600EA877B /* UIColor+Zirkfied.m */; };
 		CBB4CD3A20BBE50600EA877B /* UIView+Zirkfied.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCEE20BBE50600EA877B /* UIView+Zirkfied.m */; };
 		CBB4CD3B20BBE50600EA877B /* ZFLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCF120BBE50600EA877B /* ZFLabel.m */; };
-		CBB4CD3C20BBE50600EA877B /* ZFPopoverLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCF320BBE50600EA877B /* ZFPopoverLabel.m */; };
+		CBB4CD3C20BBE50600EA877B /* ZFPopoverLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCF320BBE50600EA877B /* ZFPopoverLabel.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		CBB4CD3D20BBE50600EA877B /* ZFXAxisLine.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCF520BBE50600EA877B /* ZFXAxisLine.m */; };
 		CBB4CD3E20BBE50600EA877B /* ZFYAxisLine.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCF720BBE50600EA877B /* ZFYAxisLine.m */; };
 		CBB4CD3F20BBE50600EA877B /* ZFCurveAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCFA20BBE50600EA877B /* ZFCurveAttribute.m */; };

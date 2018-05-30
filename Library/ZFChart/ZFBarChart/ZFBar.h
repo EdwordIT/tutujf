@@ -11,7 +11,7 @@
 
 @interface ZFBar : UIControl
 
-#warning message - 以下属性可在点击后根据自身需求改动
+// - 以下属性可在点击后根据自身需求改动
 
 /** bar颜色 */
 @property (nonatomic, strong) UIColor * barColor;
@@ -23,7 +23,7 @@
 @property (nonatomic, assign) CGFloat opacity;
 
 
-#warning message - 下列参数请勿修改(Do not modify)
+// - 下列参数请勿修改(Do not modify)
 
 /** 百分比小数 */
 @property (nonatomic, assign) CGFloat percent;
@@ -39,7 +39,7 @@
 @property (nonatomic, strong) UIColor * shadowColor;
 
 
-#warning message - readonly(只读)
+// - readonly(只读)
 
 /** bar终点Y值 */
 @property (nonatomic, assign, readonly) CGFloat endYPos;

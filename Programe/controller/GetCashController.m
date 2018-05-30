@@ -455,7 +455,7 @@ Strong UILabel *immediatelyLabel;//即时到账提现说明
             if(num>=minInvest&&num<=[self.cashModel.amount floatValue])
             {
                 self.getCashBtn.enabled = YES;
-                if (self.immediatelyBtn.selected) {
+                if (self.immediatelyBtn.selected) {//即时提现
                     [self getCashFeeRequest];
                 }
             }
@@ -498,9 +498,7 @@ Strong UILabel *immediatelyLabel;//即时到账提现说明
 -(void)getAllBtnClick:(UIButton *)sender{
     //全部提现
     self.amountTextField.text = self.cashModel.amount;
-    if (self.immediatelyBtn.selected) {
-        [self textFieldDidChanged:self.amountTextField];
-    }
+    [self textFieldDidChanged:self.amountTextField];
     
 }
 //提现按钮点击

@@ -55,6 +55,10 @@
 -(void)loadBottomWithModel:(LoanBase *)model
 {
     [self removeAllSubViews];
+    BOOL isTransfer = YES;
+    if (model.transfer_ret==nil) {
+        isTransfer = NO;
+    }
     self.backgroundColor =[UIColor whiteColor];
     UIView * linebg=[[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(20))];
     linebg.backgroundColor=COLOR_Background;
@@ -62,19 +66,24 @@
     
     NSArray * repalys=  model.repay_plan.items;//还款计划列表
     NSString * display=[NSString stringWithFormat:@"%@",model.repay_plan.display];
-    if([repalys count]>0&&[display isEqual:@"2"])//是否有还款计划
-    {
+    
+    //如果是债权转让，则不需要投资记录
+    if(isTransfer){
+        sectionSeg = [[ZFJSegmentedControl alloc]initwithTitleArr:@[@"产品详情", @"安全审核", @"还款计划"] iconArr:nil SCType:SCType_Underline];
+    }else{
+        if([repalys count]>0&&[display isEqual:@"2"])//是否有还款计划
+        {
         sectionSeg = [[ZFJSegmentedControl alloc]initwithTitleArr:@[@"产品详情", @"安全审核", @"投资记录",@"还款计划"] iconArr:nil SCType:SCType_Underline];
-    }
-    else
+        }
+        else
         sectionSeg = [[ZFJSegmentedControl alloc]initwithTitleArr:@[@"产品详情", @"安全审核", @"投资记录"] iconArr:nil SCType:SCType_Underline];
+    }
     
     sectionSeg.frame = CGRectMake(0, kSizeFrom750(20), screen_width, kSizeFrom750(100));
     sectionSeg.backgroundColor = [UIColor whiteColor];
     sectionSeg.titleColor = RGB(83,83,83);
     sectionSeg.userInteractionEnabled=YES;
     sectionSeg.selectIndex =  0;
-    sectionSeg.SCType_Underline_HEI = 2;//设置底部横线的高度
     sectionSeg.titleFont = SYSTEMSIZE(30);
     sectionSeg.selectTitleColor=navigationBarColor;
     [self addSubview:sectionSeg];
@@ -114,10 +123,10 @@
     [self addSubview:repay];
     __weak typeof(self) weakSelf = self;
     sectionSeg.selectType = ^(NSInteger selectIndex,NSString *selectIndexTitle){
-        [weakSelf showView:selectIndex];
+        [weakSelf showView:selectIndex isTrans:isTransfer];
     };
 }
--(void)showView:(NSInteger )index{
+-(void)showView:(NSInteger )index isTrans:(BOOL)isTransfer{
     switch (index) {
         case 0:
         {
@@ -142,8 +151,13 @@
         {
             [product setHidden:YES];
             [safe setHidden:YES];
-            [invest setHidden:NO];
-            [repay setHidden:YES];
+            if (isTransfer) {//如果是债权转让，不要投资记录，即为还款计划内容前移一位
+                [repay setHidden:NO];
+                [invest setHidden:YES];
+            }else{
+                [invest setHidden:NO];
+                [repay setHidden:YES];
+            }
             [self.delegate didSelectedBottomAtIndex:index height:investHeight];
 
         }

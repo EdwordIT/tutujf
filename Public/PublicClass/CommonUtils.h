@@ -74,11 +74,15 @@ typedef enum{
 //移除所有缓存内容
 +(void)removeAllCache;
 /*******************常用方法***********************************************/
+
 /**
  获取千分位的数字
  */
 +(NSString *)getHanleNums:(NSString *)numbers;
-
+/**
+ 获取字符串中的数字内容
+ */
++(NSString *)getNumberFromString:(NSString *)str;
 /**
  获取根视图控制器
  */

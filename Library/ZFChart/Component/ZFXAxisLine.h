@@ -27,7 +27,7 @@
 @property (nonatomic, strong) UIColor * axisColor;
 
 
-#warning message - readonly(只读)
+// - readonly(只读)
 
 /** x轴高度 */
 @property (nonatomic, assign, readonly) CGFloat xLineHeight;

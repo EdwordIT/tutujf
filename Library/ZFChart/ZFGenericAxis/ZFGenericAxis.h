@@ -90,7 +90,7 @@
 @property (nonatomic, strong) NSArray<NSNumber *> * separateLineDashPattern;
 
 
-#warning message - readonly(只读)
+// - readonly(只读)
 /** 获取坐标轴起点x值 */
 @property (nonatomic, assign, readonly) CGFloat axisStartXPos;
 /** 获取坐标轴起点Y值 */

@@ -143,6 +143,22 @@
         return NO;
     }
 }
+/**
+ 获取字符串中的数字内容
+ */
++(NSString *)getNumberFromString:(NSString *)str{
+    NSScanner *scanner = [NSScanner scannerWithString:str];
+    
+    [scanner scanUpToCharactersFromSet:[NSCharacterSet decimalDigitCharacterSet] intoString:nil];
+    
+    float number;
+    
+    [scanner scanFloat:&number];
+    
+    NSString *num=[NSString stringWithFormat:@"%.2f",number];
+    
+    return num;
+}
 +(BOOL)isNumber:(NSString *)str {
     str = [str stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
     if (str.length>0) {
