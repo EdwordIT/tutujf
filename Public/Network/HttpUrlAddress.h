@@ -154,11 +154,23 @@
  */
 #define myAccountLogUrl @"/api/account/myAccountLog"
 /**
- 我的债权转让接口
+ 我的债权转让列表接口
  */
-#define myTransferUrl @"/api/account/myAccountLog"
+#define myTransferListUrl @"/api/transfer/myusertransferlist"
 /**
- 债权转让记录详情接口
+ 我的债权购买接口
  */
-#define myAccountLogUrl @"/api/account/myAccountLog"
+#define myTransferBuyUrl @"/api/transfer/myUserTransferBuyList"
+/**
+ 我的债权购买详情接口
+ */
+#define myTransferBuyDetailUrl @"/api/transfer/myUserTransferBuyInfo"
+/**
+ 债权转让提交接口
+ */
+#define postMyTransferSubmitUrl @"/api/transfer/myTransferSubmit"
+/**
+ 债权转让撤销接口
+ */
+#define cancelMyTransferUrl @"/api/transfer/myUserTransferCancel"
 

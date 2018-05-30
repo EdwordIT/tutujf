@@ -1,6 +1,6 @@
 platform :ios, '8.0'
-target ‘TTJF’  do
 inhibit_all_warnings!
+target ‘TTJF’  do
 pod 'AFNetworking', '~> 3.1.0'
 pod 'MJRefresh'
 pod 'SVProgressHUD'

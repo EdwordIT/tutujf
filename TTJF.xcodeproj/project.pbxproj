@@ -226,7 +226,7 @@
 		CB3CC5FD20B6471E00CBE5DF /* myinvest_buybacked@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5FB20B6471E00CBE5DF /* myinvest_buybacked@3x.png */; };
 		CB3CC60720B8ECA900CBE5DF /* FDSlideBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3CC60420B8ECA900CBE5DF /* FDSlideBarItem.m */; };
 		CB3CC60820B8ECA900CBE5DF /* FDSlideBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3CC60620B8ECA900CBE5DF /* FDSlideBar.m */; };
-		CB3CC60B20B8ECF800CBE5DF /* TransferHistoryListController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3CC60A20B8ECF800CBE5DF /* TransferHistoryListController.m */; };
+		CB3CC60B20B8ECF800CBE5DF /* MyTransferController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3CC60A20B8ECF800CBE5DF /* MyTransferController.m */; };
 		CB3CC60E20B8EFBF00CBE5DF /* ScrollerContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3CC60D20B8EFBF00CBE5DF /* ScrollerContentView.m */; };
 		CB3D301020A14BBF0040FE30 /* CreditInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D300F20A14BBF0040FE30 /* CreditInfoModel.m */; };
 		CB3D301320A1763E0040FE30 /* RealnameModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3D301220A1763E0040FE30 /* RealnameModel.m */; };
@@ -250,9 +250,9 @@
 		CB6810CF20AAB7920062B7FD /* MyInvestController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810CE20AAB7920062B7FD /* MyInvestController.m */; };
 		CB6810D220AAB9190062B7FD /* MyInvestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D120AAB9190062B7FD /* MyInvestCell.m */; };
 		CB6810D520AAE21E0062B7FD /* MyInvestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D420AAE21E0062B7FD /* MyInvestModel.m */; };
-		CB6810D820AC047B0062B7FD /* CreditAssignHistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D720AC047B0062B7FD /* CreditAssignHistoryController.m */; };
+		CB6810D820AC047B0062B7FD /* TransferListController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D720AC047B0062B7FD /* TransferListController.m */; };
 		CB6810DB20AC0E310062B7FD /* CreditAssignHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810DA20AC0E310062B7FD /* CreditAssignHistoryCell.m */; };
-		CB6810DE20AC0ED50062B7FD /* CreditAssignHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810DD20AC0ED50062B7FD /* CreditAssignHistoryModel.m */; };
+		CB6810DE20AC0ED50062B7FD /* MyTransferModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810DD20AC0ED50062B7FD /* MyTransferModel.m */; };
 		CB6810E120AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E020AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m */; };
 		CB6810E420AC275B0062B7FD /* MyRedEnvelopeController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E320AC275B0062B7FD /* MyRedEnvelopeController.m */; };
 		CB6810E720AD12BF0062B7FD /* MyRedEnvelopeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E620AD12BF0062B7FD /* MyRedEnvelopeCell.m */; };
@@ -300,6 +300,14 @@
 		CB73159F209B0A2B00B3B8FA /* refresh_010.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB73157D209B0A2B00B3B8FA /* refresh_010.jpg */; };
 		CB7315A0209B0A2B00B3B8FA /* refresh_012.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB73157E209B0A2B00B3B8FA /* refresh_012.jpg */; };
 		CB7315A1209B0A2B00B3B8FA /* refresh_031.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB73157F209B0A2B00B3B8FA /* refresh_031.jpg */; };
+		CB842C1F20BE877400FA42AE /* transfer_record_sold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1920BE877300FA42AE /* transfer_record_sold@2x.png */; };
+		CB842C2020BE877400FA42AE /* transfer_record_question@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1A20BE877300FA42AE /* transfer_record_question@2x.png */; };
+		CB842C2120BE877400FA42AE /* transfer_record_cantSell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1B20BE877300FA42AE /* transfer_record_cantSell@2x.png */; };
+		CB842C2220BE877400FA42AE /* transfer_record_question@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1C20BE877300FA42AE /* transfer_record_question@3x.png */; };
+		CB842C2320BE877400FA42AE /* transfer_record_cantSell@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1D20BE877400FA42AE /* transfer_record_cantSell@3x.png */; };
+		CB842C2420BE877400FA42AE /* transfer_record_sold@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1E20BE877400FA42AE /* transfer_record_sold@3x.png */; };
+		CB842C2720BE92DA00FA42AE /* MyTransferDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB842C2620BE92DA00FA42AE /* MyTransferDetailModel.m */; };
+		CB842C2A20BE9DB400FA42AE /* TransferSellDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB842C2920BE9DB400FA42AE /* TransferSellDetailController.m */; };
 		CBB4CCE220BBE46800EA877B /* PropertyController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCE120BBE46800EA877B /* PropertyController.m */; };
 		CBB4CD3620BBE50600EA877B /* NSNumber+Zirkfied.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCE620BBE50600EA877B /* NSNumber+Zirkfied.m */; };
 		CBB4CD3720BBE50600EA877B /* NSString+Zirkfied.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCE820BBE50600EA877B /* NSString+Zirkfied.m */; };
@@ -893,8 +901,8 @@
 		CB3CC60420B8ECA900CBE5DF /* FDSlideBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDSlideBarItem.m; sourceTree = "<group>"; };
 		CB3CC60520B8ECA900CBE5DF /* FDSlideBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDSlideBarItem.h; sourceTree = "<group>"; };
 		CB3CC60620B8ECA900CBE5DF /* FDSlideBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDSlideBar.m; sourceTree = "<group>"; };
-		CB3CC60920B8ECF800CBE5DF /* TransferHistoryListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransferHistoryListController.h; sourceTree = "<group>"; };
-		CB3CC60A20B8ECF800CBE5DF /* TransferHistoryListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferHistoryListController.m; sourceTree = "<group>"; };
+		CB3CC60920B8ECF800CBE5DF /* MyTransferController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTransferController.h; sourceTree = "<group>"; };
+		CB3CC60A20B8ECF800CBE5DF /* MyTransferController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTransferController.m; sourceTree = "<group>"; };
 		CB3CC60C20B8EFBF00CBE5DF /* ScrollerContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollerContentView.h; sourceTree = "<group>"; };
 		CB3CC60D20B8EFBF00CBE5DF /* ScrollerContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollerContentView.m; sourceTree = "<group>"; };
 		CB3D300E20A14BBF0040FE30 /* CreditInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditInfoModel.h; sourceTree = "<group>"; };
@@ -931,12 +939,12 @@
 		CB6810D120AAB9190062B7FD /* MyInvestCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyInvestCell.m; sourceTree = "<group>"; };
 		CB6810D320AAE21E0062B7FD /* MyInvestModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyInvestModel.h; sourceTree = "<group>"; };
 		CB6810D420AAE21E0062B7FD /* MyInvestModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyInvestModel.m; sourceTree = "<group>"; };
-		CB6810D620AC047B0062B7FD /* CreditAssignHistoryController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditAssignHistoryController.h; sourceTree = "<group>"; };
-		CB6810D720AC047B0062B7FD /* CreditAssignHistoryController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignHistoryController.m; sourceTree = "<group>"; };
+		CB6810D620AC047B0062B7FD /* TransferListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransferListController.h; sourceTree = "<group>"; };
+		CB6810D720AC047B0062B7FD /* TransferListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferListController.m; sourceTree = "<group>"; };
 		CB6810D920AC0E310062B7FD /* CreditAssignHistoryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditAssignHistoryCell.h; sourceTree = "<group>"; };
 		CB6810DA20AC0E310062B7FD /* CreditAssignHistoryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignHistoryCell.m; sourceTree = "<group>"; };
-		CB6810DC20AC0ED50062B7FD /* CreditAssignHistoryModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditAssignHistoryModel.h; sourceTree = "<group>"; };
-		CB6810DD20AC0ED50062B7FD /* CreditAssignHistoryModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignHistoryModel.m; sourceTree = "<group>"; };
+		CB6810DC20AC0ED50062B7FD /* MyTransferModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTransferModel.h; sourceTree = "<group>"; };
+		CB6810DD20AC0ED50062B7FD /* MyTransferModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTransferModel.m; sourceTree = "<group>"; };
 		CB6810DF20AC0F6A0062B7FD /* CreditAssignHistoryDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditAssignHistoryDetailController.h; sourceTree = "<group>"; };
 		CB6810E020AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignHistoryDetailController.m; sourceTree = "<group>"; };
 		CB6810E220AC275B0062B7FD /* MyRedEnvelopeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRedEnvelopeController.h; sourceTree = "<group>"; };
@@ -993,6 +1001,16 @@
 		CB73157D209B0A2B00B3B8FA /* refresh_010.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = refresh_010.jpg; sourceTree = "<group>"; };
 		CB73157E209B0A2B00B3B8FA /* refresh_012.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = refresh_012.jpg; sourceTree = "<group>"; };
 		CB73157F209B0A2B00B3B8FA /* refresh_031.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = refresh_031.jpg; sourceTree = "<group>"; };
+		CB842C1920BE877300FA42AE /* transfer_record_sold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_sold@2x.png"; sourceTree = "<group>"; };
+		CB842C1A20BE877300FA42AE /* transfer_record_question@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_question@2x.png"; sourceTree = "<group>"; };
+		CB842C1B20BE877300FA42AE /* transfer_record_cantSell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_cantSell@2x.png"; sourceTree = "<group>"; };
+		CB842C1C20BE877300FA42AE /* transfer_record_question@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_question@3x.png"; sourceTree = "<group>"; };
+		CB842C1D20BE877400FA42AE /* transfer_record_cantSell@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_cantSell@3x.png"; sourceTree = "<group>"; };
+		CB842C1E20BE877400FA42AE /* transfer_record_sold@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_sold@3x.png"; sourceTree = "<group>"; };
+		CB842C2520BE92DA00FA42AE /* MyTransferDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTransferDetailModel.h; sourceTree = "<group>"; };
+		CB842C2620BE92DA00FA42AE /* MyTransferDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTransferDetailModel.m; sourceTree = "<group>"; };
+		CB842C2820BE9DB400FA42AE /* TransferSellDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransferSellDetailController.h; sourceTree = "<group>"; };
+		CB842C2920BE9DB400FA42AE /* TransferSellDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferSellDetailController.m; sourceTree = "<group>"; };
 		CBB4CCE020BBE46800EA877B /* PropertyController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyController.h; sourceTree = "<group>"; };
 		CBB4CCE120BBE46800EA877B /* PropertyController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PropertyController.m; sourceTree = "<group>"; };
 		CBB4CCE520BBE50600EA877B /* NSNumber+Zirkfied.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Zirkfied.h"; sourceTree = "<group>"; };
@@ -1842,20 +1860,26 @@
 		CB3CC5AB20B54A3500CBE5DF /* transfer */ = {
 			isa = PBXGroup;
 			children = (
-				CB3CC5B920B54A5C00CBE5DF /* transfer_record_sell@2x.png */,
-				CB3CC5B120B54A5000CBE5DF /* transfer_record_sell@3x.png */,
+				CB3CC5B320B54A5100CBE5DF /* transfer_record_buy@2x.png */,
+				CB3CC5AF20B54A4F00CBE5DF /* transfer_record_buy@3x.png */,
 				CB3CC5B020B54A4F00CBE5DF /* transfer_record_canceled@2x.png */,
 				CB3CC5B720B54A5600CBE5DF /* transfer_record_canceled@3x.png */,
 				CB3CC5AE20B54A4F00CBE5DF /* transfer_record_canSell@2x.png */,
 				CB3CC5B220B54A5100CBE5DF /* transfer_record_canSell@3x.png */,
+				CB842C1B20BE877300FA42AE /* transfer_record_cantSell@2x.png */,
+				CB842C1D20BE877400FA42AE /* transfer_record_cantSell@3x.png */,
 				CB3CC5B820B54A5B00CBE5DF /* transfer_record_paidback@2x.png */,
 				CB3CC5B520B54A5400CBE5DF /* transfer_record_paidback@3x.png */,
+				CB842C1A20BE877300FA42AE /* transfer_record_question@2x.png */,
+				CB842C1C20BE877300FA42AE /* transfer_record_question@3x.png */,
 				CB3CC5B620B54A5500CBE5DF /* transfer_record_repay@2x.png */,
 				CB3CC5AC20B54A4E00CBE5DF /* transfer_record_repay@3x.png */,
-				CB3CC5B320B54A5100CBE5DF /* transfer_record_buy@2x.png */,
-				CB3CC5AF20B54A4F00CBE5DF /* transfer_record_buy@3x.png */,
+				CB3CC5B920B54A5C00CBE5DF /* transfer_record_sell@2x.png */,
+				CB3CC5B120B54A5000CBE5DF /* transfer_record_sell@3x.png */,
 				CB3CC5B420B54A5200CBE5DF /* transfer_record_selling@2x.png */,
 				CB3CC5AD20B54A4E00CBE5DF /* transfer_record_selling@3x.png */,
+				CB842C1920BE877300FA42AE /* transfer_record_sold@2x.png */,
+				CB842C1E20BE877400FA42AE /* transfer_record_sold@3x.png */,
 			);
 			path = transfer;
 			sourceTree = "<group>";
@@ -3097,14 +3121,16 @@
 				CB3D301220A1763E0040FE30 /* RealnameModel.m */,
 				CB3D302020A2DB710040FE30 /* MessageModel.h */,
 				CB3D302120A2DB710040FE30 /* MessageModel.m */,
-				CB6810DC20AC0ED50062B7FD /* CreditAssignHistoryModel.h */,
-				CB6810DD20AC0ED50062B7FD /* CreditAssignHistoryModel.m */,
+				CB6810DC20AC0ED50062B7FD /* MyTransferModel.h */,
+				CB6810DD20AC0ED50062B7FD /* MyTransferModel.m */,
 				CB6810E820AE9F310062B7FD /* MyRedenvelopeModel.h */,
 				CB6810E920AE9F310062B7FD /* MyRedenvelopeModel.m */,
 				CB6810EE20AEC7210062B7FD /* InvestRecordModel.h */,
 				CB6810EF20AEC7210062B7FD /* InvestRecordModel.m */,
 				CB3CC5A820B3F9ED00CBE5DF /* MyInvestDetailModel.h */,
 				CB3CC5A920B3F9ED00CBE5DF /* MyInvestDetailModel.m */,
+				CB842C2520BE92DA00FA42AE /* MyTransferDetailModel.h */,
+				CB842C2620BE92DA00FA42AE /* MyTransferDetailModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3122,8 +3148,8 @@
 				CB3D301820A2D4930040FE30 /* MessageController.m */,
 				CB6810CD20AAB7920062B7FD /* MyInvestController.h */,
 				CB6810CE20AAB7920062B7FD /* MyInvestController.m */,
-				CB6810D620AC047B0062B7FD /* CreditAssignHistoryController.h */,
-				CB6810D720AC047B0062B7FD /* CreditAssignHistoryController.m */,
+				CB6810D620AC047B0062B7FD /* TransferListController.h */,
+				CB6810D720AC047B0062B7FD /* TransferListController.m */,
 				CB6810DF20AC0F6A0062B7FD /* CreditAssignHistoryDetailController.h */,
 				CB6810E020AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m */,
 				CB6810E220AC275B0062B7FD /* MyRedEnvelopeController.h */,
@@ -3132,10 +3158,12 @@
 				CB6810EC20AEC6CC0062B7FD /* InvestRecordController.m */,
 				CB3CC5A520B3F97F00CBE5DF /* MyInvestDetailController.h */,
 				CB3CC5A620B3F97F00CBE5DF /* MyInvestDetailController.m */,
-				CB3CC60920B8ECF800CBE5DF /* TransferHistoryListController.h */,
-				CB3CC60A20B8ECF800CBE5DF /* TransferHistoryListController.m */,
+				CB3CC60920B8ECF800CBE5DF /* MyTransferController.h */,
+				CB3CC60A20B8ECF800CBE5DF /* MyTransferController.m */,
 				CBB4CCE020BBE46800EA877B /* PropertyController.h */,
 				CBB4CCE120BBE46800EA877B /* PropertyController.m */,
+				CB842C2820BE9DB400FA42AE /* TransferSellDetailController.h */,
+				CB842C2920BE9DB400FA42AE /* TransferSellDetailController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3315,10 +3343,12 @@
 				1B1923882064CF18005B0C57 /* mobile@2x.png in Resources */,
 				E7067B991E60C9AA00E32B86 /* icon_search.png in Resources */,
 				E7067B8D1E60C9AA00E32B86 /* icon_arrow_dropdown_selected.png in Resources */,
+				CB842C2220BE877400FA42AE /* transfer_record_question@3x.png in Resources */,
 				1B583B15205F890F00CC70E4 /* info_disclosure@2x.png in Resources */,
 				CB731588209B0A2B00B3B8FA /* refresh_04.jpg in Resources */,
 				E7082C091F9CE3D40058D963 /* user07.png in Resources */,
 				CB3CC5D820B54A8A00CBE5DF /* re_overdue_bg@3x.png in Resources */,
+				CB842C2320BE877400FA42AE /* transfer_record_cantSell@3x.png in Resources */,
 				E70A7D281FA0C2FB00C0628A /* colse.png in Resources */,
 				E70D16F91F2303C3007F12D0 /* sns_icon_22_s@2x.png in Resources */,
 				CB3CC5FD20B6471E00CBE5DF /* myinvest_buybacked@3x.png in Resources */,
@@ -3387,6 +3417,7 @@
 				E7067A5D1E60C88B00E32B86 /* bt_previous@2x.png in Resources */,
 				CB73158D209B0A2B00B3B8FA /* refresh_027.jpg in Resources */,
 				CB3CC5EF20B553DC00CBE5DF /* myinvest_time@2x.png in Resources */,
+				CB842C1F20BE877400FA42AE /* transfer_record_sold@2x.png in Resources */,
 				CB73155C209AE9C200B3B8FA /* cooperationBottom@3x.png in Resources */,
 				E70F3C9D1F92338200B4568C /* user04.png in Resources */,
 				CB3D303C20A695310040FE30 /* point_sel@2x.png in Resources */,
@@ -3458,6 +3489,7 @@
 				E7067B5F1E60C9AA00E32B86 /* back@2x.png in Resources */,
 				CB3CC5BF20B54A5C00CBE5DF /* transfer_record_sell@3x.png in Resources */,
 				1B1E308B2088811700B3974F /* program_repayed@3x.png in Resources */,
+				CB842C2020BE877400FA42AE /* transfer_record_question@2x.png in Resources */,
 				CB73155B209AE9C200B3B8FA /* cooperation_pull@3x.png in Resources */,
 				1BE673B82074A98F0003A30C /* refresh_mine@3x.png in Resources */,
 				CB73159E209B0A2B00B3B8FA /* refresh_028.jpg in Resources */,
@@ -3485,6 +3517,7 @@
 				CB3CC5F820B6469300CBE5DF /* myinvest_buyback@3x.png in Resources */,
 				1B1923952064CF18005B0C57 /* register_red@2x.png in Resources */,
 				CB3CC5BB20B54A5C00CBE5DF /* transfer_record_selling@3x.png in Resources */,
+				CB842C2120BE877400FA42AE /* transfer_record_cantSell@2x.png in Resources */,
 				1B19238B2064CF18005B0C57 /* mobile_code@3x.png in Resources */,
 				1B1E307E20887E8300B3974F /* message_point@2x.png in Resources */,
 				E7067B821E60C9AA00E32B86 /* icon_map_cateid_22.png in Resources */,
@@ -3576,6 +3609,7 @@
 				E7067A5C1E60C88B00E32B86 /* bt_next@2x.png in Resources */,
 				E7067B9A1E60C9AA00E32B86 /* icon_search_selected.png in Resources */,
 				CB73159F209B0A2B00B3B8FA /* refresh_010.jpg in Resources */,
+				CB842C2420BE877400FA42AE /* transfer_record_sold@3x.png in Resources */,
 				1B1E308420887FBD00B3974F /* icons_refresh@2x.png in Resources */,
 				1BE6736F20734F720003A30C /* menu_my_sel@2x.png in Resources */,
 				CB731596209B0A2B00B3B8FA /* refresh_033.jpg in Resources */,
@@ -3760,6 +3794,7 @@
 				E70B09081F91FA33008C9F09 /* MineMenuCell.m in Sources */,
 				E7067B571E60C9AA00E32B86 /* FlowView.m in Sources */,
 				CBB4CD4320BBE50600EA877B /* ZFBar.m in Sources */,
+				CB842C2A20BE9DB400FA42AE /* TransferSellDetailController.m in Sources */,
 				E7D94A781E95A167000E3919 /* UITextField+Shake.m in Sources */,
 				E7039A921E751FCF00436715 /* QuicklyCell.m in Sources */,
 				CB1BFBB520915F4D0045C0F0 /* TTJFRefreshNormalHeader.m in Sources */,
@@ -3796,7 +3831,7 @@
 				E7F3C9191FA876740062B69B /* AccountModel.m in Sources */,
 				E7067B5E1E60C9AA00E32B86 /* ReturnCode.m in Sources */,
 				1B628148205224F800ECFD8D /* CommonUtils.m in Sources */,
-				CB3CC60B20B8ECF800CBE5DF /* TransferHistoryListController.m in Sources */,
+				CB3CC60B20B8ECF800CBE5DF /* MyTransferController.m in Sources */,
 				CBB4CD3E20BBE50600EA877B /* ZFYAxisLine.m in Sources */,
 				E70A6DC51F9DD72500A7B7E8 /* TopAccountModel.m in Sources */,
 				1BCF2267206E2BFD00D75662 /* DetailMiddleTop.m in Sources */,
@@ -3813,6 +3848,7 @@
 				E712F6D21FFDD73F005C8C24 /* YBLUserManageCenter.m in Sources */,
 				E7037FFF1E9C96EF00C5E13D /* HorizontalMenu.m in Sources */,
 				E73B1C571FA6144600273C89 /* NSString+Additions.m in Sources */,
+				CB842C2720BE92DA00FA42AE /* MyTransferDetailModel.m in Sources */,
 				E709175D1FC2FD1D003CF8E2 /* FoundListCell.m in Sources */,
 				CB3CC60720B8ECA900CBE5DF /* FDSlideBarItem.m in Sources */,
 				1BCF226D206E2BFD00D75662 /* DetailProduct.m in Sources */,
@@ -3840,7 +3876,7 @@
 				1B788F422081E4F400F03863 /* HYSegmentedControl.m in Sources */,
 				CBB4CD4020BBE50600EA877B /* ZFGradientAttribute.m in Sources */,
 				E7067AAA1E60C93B00E32B86 /* UIImage+Color.m in Sources */,
-				CB6810DE20AC0ED50062B7FD /* CreditAssignHistoryModel.m in Sources */,
+				CB6810DE20AC0ED50062B7FD /* MyTransferModel.m in Sources */,
 				1BCF2248206E2BE700D75662 /* RepayModel.m in Sources */,
 				E70C2A901F1E6126005BA9EF /* CustomURLProtocol.m in Sources */,
 				1B583B3720609CD800CC70E4 /* CustomerServiceView.m in Sources */,
@@ -3856,7 +3892,7 @@
 				E7067B521E60C9AA00E32B86 /* KDGoalBar.m in Sources */,
 				E73B1C591FA6144600273C89 /* SYSafeCategory.m in Sources */,
 				CBB4CD5120BBE50600EA877B /* ZFTranslucencePath.m in Sources */,
-				CB6810D820AC047B0062B7FD /* CreditAssignHistoryController.m in Sources */,
+				CB6810D820AC047B0062B7FD /* TransferListController.m in Sources */,
 				E70B649D1ECB3D52004D5CCB /* GTMBase64.m in Sources */,
 				CB6810F020AEC7210062B7FD /* InvestRecordModel.m in Sources */,
 				E7F81C841F8B91B200A856B3 /* ggHttpFounction.m in Sources */,

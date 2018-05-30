@@ -24,6 +24,7 @@ Strong UILabel *interestLabel;//
 Strong UIButton *qBtn1;//
 Strong UIButton *qBtn2;//
 Strong UIButton *qBtn3;//
+Strong MyTransferModel *baseModel;
 
 @end
 
@@ -260,19 +261,19 @@ Strong UIButton *qBtn3;//
     }];
  
     [self.qBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.mas_equalTo(kSizeFrom750(30));
+        make.width.height.mas_equalTo(kSizeFrom750(60));
         make.centerY.mas_equalTo(self.amountTitle);
-        make.left.mas_equalTo(self.amountTitle.mas_right).offset(kSizeFrom750(10));
+        make.left.mas_equalTo(self.amountTitle.mas_right);
     }];
     [self.qBtn2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.mas_equalTo(kSizeFrom750(30));
+        make.width.height.mas_equalTo(kSizeFrom750(60));
         make.centerY.mas_equalTo(self.principalTitle);
-        make.left.mas_equalTo(self.principalTitle.mas_right).offset(kSizeFrom750(10));
+        make.left.mas_equalTo(self.principalTitle.mas_right);
     }];
     [self.qBtn3 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.mas_equalTo(kSizeFrom750(30));
+        make.width.height.mas_equalTo(kSizeFrom750(60));
         make.centerY.mas_equalTo(self.interestTitle);
-        make.left.mas_equalTo(self.interestTitle.mas_right).offset(kSizeFrom750(10));
+        make.left.mas_equalTo(self.interestTitle.mas_right);
     }];
 }
 -(void)buttonClick:(UIButton *)sender{
@@ -280,8 +281,41 @@ Strong UIButton *qBtn3;//
         self.alertBlock(sender.tag);
     }
 }
--(void)loadInfoWithModel:(CreditAssignHistoryModel *)model{
-    
+-(void)loadInfoWithModel:(MyTransferModel *)model{
+    switch ([model.status intValue]) {//-1 不可转让，1 可以转让 2 转让中 3 已转让
+        case -1:
+            {
+                [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_cantSell")];
+            }
+            break;
+        case 1:
+        {
+            [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_canSell")];
+        }
+            break;
+        case 2:
+        {
+            [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_selling")];
+        }
+            break;
+        case 3:
+        {
+            [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_sold")];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    self.baseModel = model;
+    self.titleLabel.text = model.loan_name;
+    self.subTitleLabel.text = model.expire_time;
+    self.amountLabel.text =[@"￥" stringByAppendingString:[CommonUtils getHanleNums:model.transfer_amount]];
+    self.amountTitle.text = model.transfer_amount_txt;
+    self.principalLabel.text =[@"￥" stringByAppendingString: [CommonUtils getHanleNums:model.actual_amount_money]];
+    self.principalTitle.text = model.actual_amount_money_txt;
+    self.interestLabel.text =[@"￥" stringByAppendingString: [CommonUtils getHanleNums:model.repay_amount]];
+    self.interestTitle.text = model.repay_amount_txt;
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

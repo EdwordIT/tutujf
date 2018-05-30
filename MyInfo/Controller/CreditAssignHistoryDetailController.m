@@ -33,6 +33,13 @@ Strong UIScrollView *backScroll;
 }
 -(void)getRequest
 {
+    NSArray *keys = @[@"tender_id",kToken];
+    NSArray *values = @[self.tender_id,[CommonUtils getToken]];
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:myTransferBuyDetailUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
+        
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
     [self loadSubViews];
 }
 -(void)loadSubViews

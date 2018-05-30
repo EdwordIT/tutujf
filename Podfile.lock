@@ -22,11 +22,11 @@ PODS:
     - FMDB/standard (= 2.7.2)
   - FMDB/standard (2.7.2)
   - "FontAwesome+iOS (0.1.4)"
-  - IQKeyboardManager (6.0.2)
+  - IQKeyboardManager (6.0.3)
   - LYEmptyView (1.0.3)
   - Masonry (1.1.0)
   - MJRefresh (3.1.15.3)
-  - MOBFoundation (3.1.5)
+  - MOBFoundation (3.1.6)
   - pop (1.0.10)
   - "POP+MCAnimate (2.0.1)":
     - pop (~> 1.0)
@@ -113,7 +113,7 @@ DEPENDENCIES:
   - YYModel (~> 1.0.4)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - AFNetworking
     - Bugly
     - EAIntroView
@@ -147,11 +147,11 @@ SPEC CHECKSUMS:
   EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
   FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
   "FontAwesome+iOS": 9070b682a9255ca0fdc34bcfb129ad0ba2b73b87
-  IQKeyboardManager: c49d59e358aeeffaa0280aa305093c2b194d2607
+  IQKeyboardManager: c390e612f4b98c8fd748016470138537dc163ead
   LYEmptyView: 3a7d1604cff1791d207a498a42101f31e9b12b8c
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
-  MOBFoundation: d961251ce6de54917f678dc711962d1385ae7ee1
+  MOBFoundation: a87c5f11fb87f873337189c3ec0add4d3ec6221a
   pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
   "POP+MCAnimate": a99e209148c602512de487f1160a44bf78572024
   QQ_XGPush: 2824cca429269a397cff8cf1028216412527c59e
@@ -167,6 +167,6 @@ SPEC CHECKSUMS:
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: a1a20cbda47ab9efabe604f59e70e048329abbce
+PODFILE CHECKSUM: 2f4eddf9540f3fa87aab742ea5a394eb612d942e
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

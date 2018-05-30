@@ -7,12 +7,12 @@
 //
 
 #import "BaseCell.h"
-#import "CreditAssignHistoryModel.h"
+#import "MyTransferModel.h"
 typedef void (^CreditAssignBlock)(NSInteger tag);
 /**
  债权转让记录
  */
 @interface CreditAssignHistoryCell : BaseCell
--(void)loadInfoWithModel:(CreditAssignHistoryModel *)model;
+-(void)loadInfoWithModel:(MyTransferModel *)model;
 Copy CreditAssignBlock alertBlock;//点击显示温馨提示内容
 @end

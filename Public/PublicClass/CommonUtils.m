@@ -494,6 +494,10 @@
 +(NSString *)getHanleNums:(NSString *)numbers{
    
     NSString *resault ;
+    if ([numbers isEqualToString:@"-"]) {
+        return resault;
+    }
+    
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     formatter.numberStyle = kCFNumberFormatterDecimalStyle;
     [formatter setPositiveFormat:@"###,##0.00"];//千分位格式

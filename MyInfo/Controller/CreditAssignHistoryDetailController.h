@@ -11,5 +11,5 @@
  债权转让记录详情
  */
 @interface CreditAssignHistoryDetailController : BaseViewController
-Copy NSString *transfer_id;
+Copy NSString *tender_id;
 @end

@@ -24,7 +24,7 @@
 #import "MyInvestController.h"
 #import "MyRedEnvelopeController.h"
 #import "InvestRecordController.h"
-#import "CreditAssignHistoryController.h"
+#import "TransferListController.h"
 #import "PropertyController.h"
 @interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
@@ -250,7 +250,7 @@ Strong MyAccountModel *accountModel;//数据源
     {
         UserContentModel *model = [self.accountModel.bt_user_content objectAtIndex:index];
         if ([model.title isEqualToString:@"债权转让"]) {
-            CreditAssignHistoryController *history = InitObject(CreditAssignHistoryController);
+            TransferListController *history = InitObject(TransferListController);
             [self.navigationController pushViewController:history animated:YES];
         }else{
             NSString * url=model.link_url;
