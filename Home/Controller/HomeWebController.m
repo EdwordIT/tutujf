@@ -166,6 +166,11 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
             NSLog(@"resaultUrl = %@",[resaultUrl stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]);
             if ([resaultUrl isEqualToString:@"close_page"]) {
                 [self.mainWebView stopLoading];
+                if (self.isJumped) {//从实名认证跳转进来
+                    NSArray *vcs = self.navigationController.viewControllers;
+                    //跳过中间的实名认证页面返回上上层
+                    [self.navigationController popToViewController:[vcs objectAtIndex:vcs.count-2] animated:YES];
+                }else
                 [self.navigationController popViewControllerAnimated:YES];//跳转原生
             }else if([resaultUrl isEqualToString:@"index"])
             {

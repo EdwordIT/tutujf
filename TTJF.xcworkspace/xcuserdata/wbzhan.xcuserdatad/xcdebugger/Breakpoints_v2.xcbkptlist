@@ -35,13 +35,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TTJF/AppDelegate.m"
-            timestampString = "548932996.540832"
+            filePath = "Home/Controller/HomeWebController.m"
+            timestampString = "549342679.625879"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "392"
-            endingLineNumber = "392"
-            landmarkName = "-application:didRegisterForRemoteNotificationsWithDeviceToken:"
+            startingLineNumber = "423"
+            endingLineNumber = "423"
+            landmarkName = "-userContentController:didReceiveScriptMessage:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -51,13 +51,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TTJF/AppDelegate.m"
-            timestampString = "548932996.5408911"
+            filePath = "Home/Controller/HomeWebController.m"
+            timestampString = "549342679.625959"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "382"
-            endingLineNumber = "382"
-            landmarkName = "-application:didRegisterForRemoteNotificationsWithDeviceToken:"
+            startingLineNumber = "442"
+            endingLineNumber = "442"
+            landmarkName = "-openShare:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

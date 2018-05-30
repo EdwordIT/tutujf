@@ -197,7 +197,9 @@ Strong UIView *sepView;//分割线
     self.titleLabel.text = model.loan_name;
     self.rateTitle.text = model.apr_txt;
     self.rateLabel.text = model.apr;
-    self.amountLabel.text = [NSString stringWithFormat:@"承接价格：%@",[CommonUtils getHanleNums:model.actual_amount]];
+
+    NSString *amountStr = [CommonUtils getNumberFromString:model.actual_amount];
+    [self.amountLabel setAttributedText:[CommonUtils diffierentFontWithString:model.actual_amount rang:[model.actual_amount rangeOfString:amountStr] font:NUMBER_FONT(28) color:self.amountLabel.textColor spacingBeforeValue:0 lineSpace:0]];
     self.partTitle.text = model.expire_date_txt;
     self.partLabel.text = model.expire_date;
     [self.buyBtn setTitle:model.status_name forState:UIControlStateNormal];

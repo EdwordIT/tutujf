@@ -131,8 +131,8 @@ Strong UILabel *periodLabel;
     
     [self.questionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self->limitLabel.mas_centerY);
-        make.left.mas_equalTo(self->limitLabel.mas_right).offset(rowSpace);
-        make.width.height.mas_equalTo(kSizeFrom750(30));
+        make.left.mas_equalTo(self->limitLabel.mas_right);
+        make.width.height.mas_equalTo(kSizeFrom750(60));
     }];
     
     UILabel *repayTimeTitle = [[UILabel alloc] initWithFrame:CGRectMake(creditTitle.left, limitTitle.top, limitTitle.width,limitTitle.height)];
@@ -193,8 +193,8 @@ Strong UILabel *periodLabel;
     
     [self.priceQuestionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self.waittingLabel.mas_centerY);
-        make.left.mas_equalTo(self.waittingLabel.mas_right).offset(rowSpace);
-        make.width.height.mas_equalTo(kSizeFrom750(30));
+        make.left.mas_equalTo(self.waittingLabel.mas_right);
+        make.width.height.mas_equalTo(kSizeFrom750(60));
     }];
     [investBtn setTitle:info.buy_name forState:UIControlStateNormal];
     
