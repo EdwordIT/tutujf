@@ -9,5 +9,4 @@
 #import "MyRedenvelopeModel.h"
 
 @implementation MyRedenvelopeModel
-
 @end

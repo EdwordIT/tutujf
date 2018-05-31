@@ -6,18 +6,18 @@
 //  Copyright © 2018年 TTJF. All rights reserved.
 //
 
-#import "CreditAssignHistoryDetailController.h"
-
-@interface CreditAssignHistoryDetailController ()
+#import "TransferBuyDetailController.h"
+#import "MyTransferBuyDetailModel.h"
+@interface TransferBuyDetailController ()
 Strong UIScrollView *backScroll;
-
+Strong MyTransferBuyDetailModel *baseModel;
 @end
 
-@implementation CreditAssignHistoryDetailController
+@implementation TransferBuyDetailController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.titleString = @"购买详情";
+    self.titleString = @"购买详情";//我购买的债权详情内容展示
     [self.view addSubview:self.backScroll];
     
     [self getRequest];
@@ -37,10 +37,13 @@ Strong UIScrollView *backScroll;
     NSArray *values = @[self.tender_id,[CommonUtils getToken]];
     [[HttpCommunication sharedInstance] postSignRequestWithPath:myTransferBuyDetailUrl keysArray:keys valuesArray:values refresh:nil success:^(NSDictionary *successDic) {
         
+        self.baseModel = [MyTransferBuyDetailModel yy_modelWithJSON:successDic];
+        
+        [self loadSubViews];
+
     } failure:^(NSDictionary *errorDic) {
         
     }];
-    [self loadSubViews];
 }
 -(void)loadSubViews
 {

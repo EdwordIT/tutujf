@@ -253,7 +253,7 @@
 		CB6810D820AC047B0062B7FD /* TransferListController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D720AC047B0062B7FD /* TransferListController.m */; };
 		CB6810DB20AC0E310062B7FD /* CreditAssignHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810DA20AC0E310062B7FD /* CreditAssignHistoryCell.m */; };
 		CB6810DE20AC0ED50062B7FD /* MyTransferModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810DD20AC0ED50062B7FD /* MyTransferModel.m */; };
-		CB6810E120AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E020AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m */; };
+		CB6810E120AC0F6A0062B7FD /* TransferBuyDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E020AC0F6A0062B7FD /* TransferBuyDetailController.m */; };
 		CB6810E420AC275B0062B7FD /* MyRedEnvelopeController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E320AC275B0062B7FD /* MyRedEnvelopeController.m */; };
 		CB6810E720AD12BF0062B7FD /* MyRedEnvelopeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E620AD12BF0062B7FD /* MyRedEnvelopeCell.m */; };
 		CB6810EA20AE9F310062B7FD /* MyRedenvelopeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810E920AE9F310062B7FD /* MyRedenvelopeModel.m */; };
@@ -342,6 +342,7 @@
 		CBB4CD5420BBE50600EA877B /* ZFRadarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD3020BBE50600EA877B /* ZFRadarChart.m */; };
 		CBB4CD5520BBE50600EA877B /* ZFWave.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD3320BBE50600EA877B /* ZFWave.m */; };
 		CBB4CD5620BBE50600EA877B /* ZFWaveChart.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD3520BBE50600EA877B /* ZFWaveChart.m */; };
+		CBFA80FC20BFA22600CB623E /* MyTransferBuyDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */; };
 		E701EDC61EA469C000DC234A /* OpenAdvertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E701EDC51EA469C000DC234A /* OpenAdvertView.m */; };
 		E70331E11EAA363F00C1FFD1 /* HomeWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70331DF1EAA363F00C1FFD1 /* HomeWebController.m */; };
 		E7037FFF1E9C96EF00C5E13D /* HorizontalMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E7037FF91E9C96EF00C5E13D /* HorizontalMenu.m */; };
@@ -945,8 +946,8 @@
 		CB6810DA20AC0E310062B7FD /* CreditAssignHistoryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignHistoryCell.m; sourceTree = "<group>"; };
 		CB6810DC20AC0ED50062B7FD /* MyTransferModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTransferModel.h; sourceTree = "<group>"; };
 		CB6810DD20AC0ED50062B7FD /* MyTransferModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTransferModel.m; sourceTree = "<group>"; };
-		CB6810DF20AC0F6A0062B7FD /* CreditAssignHistoryDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CreditAssignHistoryDetailController.h; sourceTree = "<group>"; };
-		CB6810E020AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignHistoryDetailController.m; sourceTree = "<group>"; };
+		CB6810DF20AC0F6A0062B7FD /* TransferBuyDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransferBuyDetailController.h; sourceTree = "<group>"; };
+		CB6810E020AC0F6A0062B7FD /* TransferBuyDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferBuyDetailController.m; sourceTree = "<group>"; };
 		CB6810E220AC275B0062B7FD /* MyRedEnvelopeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRedEnvelopeController.h; sourceTree = "<group>"; };
 		CB6810E320AC275B0062B7FD /* MyRedEnvelopeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyRedEnvelopeController.m; sourceTree = "<group>"; };
 		CB6810E520AD12BF0062B7FD /* MyRedEnvelopeCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRedEnvelopeCell.h; sourceTree = "<group>"; };
@@ -1081,6 +1082,8 @@
 		CBB4CD3320BBE50600EA877B /* ZFWave.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFWave.m; sourceTree = "<group>"; };
 		CBB4CD3420BBE50600EA877B /* ZFWaveChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFWaveChart.h; sourceTree = "<group>"; };
 		CBB4CD3520BBE50600EA877B /* ZFWaveChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFWaveChart.m; sourceTree = "<group>"; };
+		CBFA80FA20BFA22600CB623E /* MyTransferBuyDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTransferBuyDetailModel.h; sourceTree = "<group>"; };
+		CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTransferBuyDetailModel.m; sourceTree = "<group>"; };
 		E701EDC41EA469C000DC234A /* OpenAdvertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAdvertView.h; sourceTree = "<group>"; };
 		E701EDC51EA469C000DC234A /* OpenAdvertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenAdvertView.m; sourceTree = "<group>"; };
 		E70331DE1EAA363F00C1FFD1 /* HomeWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWebController.h; sourceTree = "<group>"; };
@@ -3131,6 +3134,8 @@
 				CB3CC5A920B3F9ED00CBE5DF /* MyInvestDetailModel.m */,
 				CB842C2520BE92DA00FA42AE /* MyTransferDetailModel.h */,
 				CB842C2620BE92DA00FA42AE /* MyTransferDetailModel.m */,
+				CBFA80FA20BFA22600CB623E /* MyTransferBuyDetailModel.h */,
+				CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3150,8 +3155,8 @@
 				CB6810CE20AAB7920062B7FD /* MyInvestController.m */,
 				CB6810D620AC047B0062B7FD /* TransferListController.h */,
 				CB6810D720AC047B0062B7FD /* TransferListController.m */,
-				CB6810DF20AC0F6A0062B7FD /* CreditAssignHistoryDetailController.h */,
-				CB6810E020AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m */,
+				CB6810DF20AC0F6A0062B7FD /* TransferBuyDetailController.h */,
+				CB6810E020AC0F6A0062B7FD /* TransferBuyDetailController.m */,
 				CB6810E220AC275B0062B7FD /* MyRedEnvelopeController.h */,
 				CB6810E320AC275B0062B7FD /* MyRedEnvelopeController.m */,
 				CB6810EB20AEC6CC0062B7FD /* InvestRecordController.h */,
@@ -3759,6 +3764,7 @@
 				E7067AB31E60C93B00E32B86 /* UIImage+RoundedCorner.m in Sources */,
 				E7067AB41E60C93B00E32B86 /* UIImage+Vector.m in Sources */,
 				CBB4CD4820BBE50600EA877B /* ZFGenericChart.m in Sources */,
+				CBFA80FC20BFA22600CB623E /* MyTransferBuyDetailModel.m in Sources */,
 				CBB4CD5220BBE50600EA877B /* ZFPolygon.m in Sources */,
 				E7067AA41E60C93B00E32B86 /* MyPageControl.m in Sources */,
 				E70E1ABD1FBFF30E00C6EFA6 /* TreasureMiddleCell.m in Sources */,
@@ -3856,7 +3862,7 @@
 				CBB4CD4420BBE50600EA877B /* ZFBarChart.m in Sources */,
 				CB1BFBA0209012110045C0F0 /* RechargeRecordController.m in Sources */,
 				1B4EEC8A206E1A5100117EF0 /* HomeTabBarController.m in Sources */,
-				CB6810E120AC0F6A0062B7FD /* CreditAssignHistoryDetailController.m in Sources */,
+				CB6810E120AC0F6A0062B7FD /* TransferBuyDetailController.m in Sources */,
 				CBB4CD3920BBE50600EA877B /* UIColor+Zirkfied.m in Sources */,
 				E70917601FC2FD9A003CF8E2 /* FoundListModel.m in Sources */,
 				1BCF2270206E2BFD00D75662 /* DetailInvest.m in Sources */,

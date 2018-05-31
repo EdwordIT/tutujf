@@ -8,8 +8,8 @@
 
 #import "BaseViewController.h"
 /**
- 债权转让记录详情
+ 债权转让购买记录详情
  */
-@interface CreditAssignHistoryDetailController : BaseViewController
+@interface TransferBuyDetailController : BaseViewController
 Copy NSString *tender_id;
 @end

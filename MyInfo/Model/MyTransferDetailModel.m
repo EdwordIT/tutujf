@@ -7,7 +7,20 @@
 //
 
 #import "MyTransferDetailModel.h"
+@implementation ContentInfoModel
+
+@end
+
+
+@implementation coefficientModel
+
+@end
 
 @implementation MyTransferDetailModel
-
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    
+    return @{@"transfer":[ContentInfoModel class]
+             };
+    
+}
 @end

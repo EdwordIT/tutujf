@@ -8,7 +8,7 @@
 
 #import "TransferListController.h"
 #import "NavSwitchView.h"
-#import "CreditAssignHistoryDetailController.h"
+#import "TransferBuyDetailController.h"
 #import "FDSlideBar.h"
 #import "ScrollerContentView.h"
 #import "MyTransferController.h"
@@ -40,10 +40,6 @@ Strong NSMutableArray *titleArr;//slideBar数据源
     [self.view addSubview:self.slideBar];
     [self.view addSubview:self.transferContentView];
     [self.view addSubview:self.buyContentView];
-
-//    [SVProgressHUD show];
-    
-//    [self loadRequestAtIndex:0];
     
     // Do any additional setup after loading the view.
 }
@@ -79,6 +75,7 @@ Strong NSMutableArray *titleArr;//slideBar数据源
         _transferContentView.dataSource = self;
         __weak typeof(self) weakSelf = self;
         [_transferContentView slideContentViewScrollFinished:^(NSUInteger index) {
+            self.selectedIndex = index;
             [weakSelf.slideBar selectSlideBarItemAtIndex:index];
         }];
     }
@@ -117,8 +114,12 @@ Strong NSMutableArray *titleArr;//slideBar数据源
 - (UIViewController *)slideContentView:(ScrollerContentView *)contentView viewControllerForIndex:(NSUInteger)index {
     //显示内容的控制器
     MyTransferController *contentVC = [[MyTransferController alloc] init];
-    contentVC.selectedIndex = self.selectedIndex;
-    contentVC.isBuy = self.isBuy;
+    contentVC.selectedIndex = index;
+    if (contentView==self.transferContentView) {
+        contentVC.isBuy = NO;
+    }else{
+        contentVC.isBuy = YES;
+    }
     return contentVC;
 }
 

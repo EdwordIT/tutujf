@@ -107,10 +107,9 @@ Strong MyTransferModel *baseModel;
 -(UILabel *)amountLabel{
     if (!_amountLabel) {
         _amountLabel = InitObject(UILabel);
-        _amountLabel.textColor = RGB(50, 186, 123);
-        _amountLabel.font = NUMBER_FONT_BOLD(40);
+        _amountLabel.textColor = COLOR_DarkBlue;
+        _amountLabel.font = SYSTEMSIZE(30);
         _amountLabel.textAlignment = NSTextAlignmentCenter;
-        _amountLabel.text = @"5555.5";
     }
     return _amountLabel;
 }
@@ -119,7 +118,6 @@ Strong MyTransferModel *baseModel;
         _amountTitle = InitObject(UILabel);
         _amountTitle.textColor = RGB_183;
         _amountTitle.textAlignment = NSTextAlignmentCenter;
-        _amountTitle.text = @"承接价格";
         _amountTitle.font = SYSTEMSIZE(28);
     }
     return _amountTitle;
@@ -130,7 +128,6 @@ Strong MyTransferModel *baseModel;
         _principalLabel.textColor = RGB_51;
         _principalLabel.font = NUMBER_FONT(30);
         _principalLabel.textAlignment = NSTextAlignmentCenter;
-        _principalLabel.text = @"6666.00";
         
     }
     return _principalLabel;
@@ -140,7 +137,6 @@ Strong MyTransferModel *baseModel;
         _principalTitle = InitObject(UILabel);
         _principalTitle.textColor = RGB_183;
         _principalTitle.textAlignment = NSTextAlignmentCenter;
-        _principalTitle.text = @"债权价值";
         _principalTitle.font = SYSTEMSIZE(28);
 
     }
@@ -159,7 +155,6 @@ Strong MyTransferModel *baseModel;
         _interestLabel.textColor = RGB_51;
         _interestLabel.font = NUMBER_FONT(30);
         _interestLabel.textAlignment = NSTextAlignmentCenter;
-        _interestLabel.text = @"5555.5";
 
         
     }
@@ -170,7 +165,6 @@ Strong MyTransferModel *baseModel;
         _interestTitle = InitObject(UILabel);
         _interestTitle.textColor = RGB_183;
         _interestTitle.textAlignment = NSTextAlignmentCenter;
-        _interestTitle.text = @"待收本息";
         _interestTitle.font = SYSTEMSIZE(28);
 
 
@@ -180,6 +174,8 @@ Strong MyTransferModel *baseModel;
 -(UIButton *)qBtn1{
     if (!_qBtn1) {
         _qBtn1 = InitObject(UIButton);
+        [_qBtn1 setImage:IMAGEBYENAME(@"transfer_record_question") forState:UIControlStateNormal];
+        _qBtn1.adjustsImageWhenHighlighted = NO;
         [_qBtn1 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         _qBtn1.tag = 0;
     }
@@ -188,7 +184,10 @@ Strong MyTransferModel *baseModel;
 -(UIButton *)qBtn2{
     if (!_qBtn2) {
         _qBtn2 = InitObject(UIButton);
+        _qBtn2.adjustsImageWhenHighlighted = NO;
+        [_qBtn2 setImage:IMAGEBYENAME(@"transfer_record_question") forState:UIControlStateNormal];
         [_qBtn2 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        
         _qBtn2.tag = 1;
     }
     return _qBtn2;
@@ -196,6 +195,8 @@ Strong MyTransferModel *baseModel;
 -(UIButton *)qBtn3{
     if (!_qBtn3) {
         _qBtn3 = InitObject(UIButton);
+        _qBtn3.adjustsImageWhenHighlighted = NO;
+        [_qBtn3 setImage:IMAGEBYENAME(@"transfer_record_question") forState:UIControlStateNormal];
         [_qBtn3 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         _qBtn3.tag = 2;
     }
@@ -282,39 +283,74 @@ Strong MyTransferModel *baseModel;
     }
 }
 -(void)loadInfoWithModel:(MyTransferModel *)model{
-    switch ([model.status intValue]) {//-1 不可转让，1 可以转让 2 转让中 3 已转让
-        case -1:
+    if (model.isBuy) {
+        self.amountLabel.textColor = RGB(51, 184, 124);
+        [self.qBtn1 setHidden:YES];
+        [self.qBtn2 setHidden:YES];
+        [self.qBtn3 setHidden:YES];
+        switch ([model.status intValue]) {//-1回收中 1、已回收
+            case -1:
+                {
+                    [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_repay")];
+                }
+                break;
+            case 1:
+            {
+               [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_paidback")];
+            }
+                break;
+            default:
+                break;
+        }
+    }else{
+        switch ([model.status intValue]) {//-1 不可转让，1 可以转让 2 转让中 3 已转让
+            case -1:
             {
                 [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_cantSell")];
             }
-            break;
-        case 1:
-        {
-            [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_canSell")];
+                break;
+            case 1:
+            {
+                [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_canSell")];
+            }
+                break;
+            case 2:
+            {
+                [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_selling")];
+            }
+                break;
+            case 3:
+            {
+                [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_sold")];
+            }
+                break;
+                
+            default:
+                break;
         }
-            break;
-        case 2:
-        {
-            [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_selling")];
-        }
-            break;
-        case 3:
-        {
-            [self.stateImage setImage:IMAGEBYENAME(@"transfer_record_sold")];
-        }
-            break;
-            
-        default:
-            break;
     }
+   
     self.baseModel = model;
     self.titleLabel.text = model.loan_name;
     self.subTitleLabel.text = model.expire_time;
-    self.amountLabel.text =[@"￥" stringByAppendingString:[CommonUtils getHanleNums:model.transfer_amount]];
+    //判断内容，如果是文字，则不加千分位符号
+    if ([model.transfer_amount rangeOfString:@"."].location==NSNotFound) {
+        self.amountLabel.text = model.transfer_amount;
+        self.amountLabel.font = SYSTEMSIZE(30);
+    }else{
+        self.amountLabel.text =[@"￥" stringByAppendingString:[CommonUtils getHanleNums:model.transfer_amount]];
+        self.amountLabel.font = NUMBER_FONT(40);
+    }
     self.amountTitle.text = model.transfer_amount_txt;
-    self.principalLabel.text =[@"￥" stringByAppendingString: [CommonUtils getHanleNums:model.actual_amount_money]];
+    if ([model.actual_amount_money isEqualToString:@"-"]) {
+        self.principalLabel.text = @"-";
+    }else
+        self.principalLabel.text =[@"￥" stringByAppendingString: [CommonUtils getHanleNums:model.actual_amount_money]];
     self.principalTitle.text = model.actual_amount_money_txt;
-    self.interestLabel.text =[@"￥" stringByAppendingString: [CommonUtils getHanleNums:model.repay_amount]];
+    if ([model.repay_amount isEqualToString:@"-"]) {
+        self.interestLabel.text = @"-";
+    }else
+        self.interestLabel.text =[@"￥" stringByAppendingString: [CommonUtils getHanleNums:model.repay_amount]];
     self.interestTitle.text = model.repay_amount_txt;
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

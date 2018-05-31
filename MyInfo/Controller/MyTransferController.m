@@ -8,7 +8,8 @@
 
 #import "MyTransferController.h"
 #import "CreditAssignHistoryCell.h"
-#import "CreditAssignHistoryDetailController.h"
+#import "TransferBuyDetailController.h"
+#import "TransferSellDetailController.h"
 @interface CreditAssignHeaderView:BaseView
 Strong UIImageView *iconImage;//icon
 Strong UILabel *creditAmountTitle;//
@@ -105,7 +106,7 @@ Assign NSInteger mainTotalPages;
     [self.titleView removeFromSuperview];
     [self.view addSubview:self.mainTableView];
     [self loadRefresh];
-    [self loadRequestAtIndex:0];
+    [self loadRequestAtIndex:self.selectedIndex];
     // Do any additional setup after loading the view.
 }
 -(NSMutableArray *)mainDataArray{
@@ -141,6 +142,50 @@ Assign NSInteger mainTotalPages;
 }
 #pragma  mark --loadRequest
 -(void)loadRequestAtIndex:(NSInteger)index{
+    if (self.isBuy) {//债券购买
+        NSString *transfer_buy_status = @"";
+        NSString *page = @"1";
+        switch (index) {
+            case 0:
+                {
+                    transfer_buy_status = @"";
+                }
+                break;
+            case 1:
+            {
+                transfer_buy_status = @"recover_wait";//等待回款
+
+            }
+                break;
+            case 2:
+            {
+                transfer_buy_status = @"recover_yes"; //已回款
+            }
+                break;
+            default:
+                break;
+        }
+        NSArray *keysArr = @[@"page",kToken,@"transfer_buy_status"];
+        NSArray *valuesArr = @[page,[CommonUtils getToken],transfer_buy_status];
+        [[HttpCommunication sharedInstance] postSignRequestWithPath:myTransferBuyUrl keysArray:keysArr valuesArray:valuesArr refresh:self.mainTableView success:^(NSDictionary *successDic) {
+            
+            self.mainTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+            NSArray *items =  [successDic objectForKey:@"items"];
+            if ([page integerValue]==1) {
+                [self.mainDataArray removeAllObjects];
+            }
+            for (int i=0; i<items.count; i++) {
+                NSDictionary *dic = [items objectAtIndex:i];
+                MyTransferModel *model = [MyTransferModel yy_modelWithJSON:dic];
+                model.isBuy = YES;
+                [self.mainDataArray addObject:model];
+            }
+            [self.mainTableView reloadData];
+            
+        } failure:^(NSDictionary *errorDic) {
+            
+        }];
+    }else{
     NSString *transfer_status = @"";//转让记录下状态：空 全部，can 可以转让 ,now 转让中 ,yes 转让成功,cancel 已撤销
     NSString *page = @"1";
     
@@ -167,7 +212,7 @@ Assign NSInteger mainTotalPages;
     }
     NSArray *keysArr = @[@"page",kToken,@"transfer_status"];
     NSArray *valuesArr = @[page,[CommonUtils getToken],transfer_status];
-    [[HttpCommunication sharedInstance] postSignRequestWithPath:myTransferListUrl keysArray:keysArr valuesArray:valuesArr refresh:self.self.mainTableView success:^(NSDictionary *successDic) {
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:myTransferListUrl keysArray:keysArr valuesArray:valuesArr refresh:self.mainTableView success:^(NSDictionary *successDic) {
 
         self.mainTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
         NSArray *items =  [successDic objectForKey:@"items"];
@@ -183,6 +228,7 @@ Assign NSInteger mainTotalPages;
     } failure:^(NSDictionary *errorDic) {
         
     }];
+    }
     
 }
 -(void)loadMoreData:(NSInteger)index{
@@ -229,16 +275,51 @@ Assign NSInteger mainTotalPages;
     }
     MyTransferModel *model = [self.mainDataArray objectAtIndex:indexPath.row];
     [cell loadInfoWithModel:model];
+    cell.alertBlock = ^(NSInteger tag) {
+        switch (tag) {
+            case 0:
+                {
+                    [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:model.transfer_amount_notes];
+                }
+                break;
+            case 1:
+            {
+                [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:model.amount_money_notes];
+
+            }
+                break;
+            case 2:
+            {
+                [CommonUtils showAlerWithTitle:@"温馨提示" withMsg:model.repay_amount_notes];
+
+            }
+                break;
+                
+            default:
+                break;
+        }
+    };
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MyTransferModel *model = [self.mainDataArray objectAtIndex:indexPath.row];
-    CreditAssignHistoryDetailController *detail = InitObject(CreditAssignHistoryDetailController);
-    detail.tender_id = model.tender_id;
-    
-    [[BaseViewController appRootViewController].navigationController pushViewController:detail animated:YES];
+     MyTransferModel *model = [self.mainDataArray objectAtIndex:indexPath.row];
+    //判断是购买债权详情还是出售债权详情
+    if (model.isBuy) {
+       
+        TransferBuyDetailController *detail = InitObject(TransferBuyDetailController);
+        detail.tender_id = model.tender_id;
+        
+        [[BaseViewController appRootViewController].navigationController pushViewController:detail animated:YES];
+    }else{
+        TransferSellDetailController *detail = InitObject(TransferSellDetailController);
+        detail.tender_id = model.tender_id;
+        [[BaseViewController appRootViewController].navigationController pushViewController:detail animated:YES];
+
+    }
+   
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -158,6 +158,10 @@
  */
 #define myTransferListUrl @"/api/transfer/myusertransferlist"
 /**
+ 我的债权转让详情接口
+ */
+#define myTransferInfoUrl @"/api/transfer/myUserTransferInfo"
+/**
  我的债权购买接口
  */
 #define myTransferBuyUrl @"/api/transfer/myUserTransferBuyList"
