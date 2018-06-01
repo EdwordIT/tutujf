@@ -273,6 +273,7 @@ Strong MyAccountModel *accountModel;//数据源
         {
             PropertyController *pro = InitObject(PropertyController);
             pro.isMyIncome = NO;
+            pro.titleString = @"我的资产";
             [self.navigationController pushViewController:pro animated:YES];
             
 //            HomeWebController *discountVC = [[HomeWebController alloc] init];
@@ -282,9 +283,13 @@ Strong MyAccountModel *accountModel;//数据源
         
         else if(index==4)//累计收益
         {
-            HomeWebController *discountVC = [[HomeWebController alloc] init];
-             discountVC.urlStr= self.accountModel.to_interest_award_url;
-            [self.navigationController pushViewController:discountVC animated:YES];
+            PropertyController *pro = InitObject(PropertyController);
+            pro.isMyIncome = YES;
+            pro.titleString = @"我的收益";
+            [self.navigationController pushViewController:pro animated:YES];
+//            HomeWebController *discountVC = [[HomeWebController alloc] init];
+//             discountVC.urlStr= self.accountModel.to_interest_award_url;
+//            [self.navigationController pushViewController:discountVC animated:YES];
         }
         else if(index==5)//充值
         {

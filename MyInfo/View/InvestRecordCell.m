@@ -137,7 +137,20 @@ Strong UILabel *amountLabel;
 }
 -(void)loadInfoWithModel:(InvestRecordModel *)model{
     
-    
-    
+    self.titleLabel.text = model.fee_name;
+    self.subLabel.text = model.loan_name;
+    self.timeLabel.text = model.add_time;
+    self.balanceLabel.text = model.balance_txt;
+    self.amountLabel.text = model.oper_amount_txt;
+    //string    资金颜色，blue 蓝色；red 红色；green 绿色
+    if ([model.money_color isEqualToString:@"blue"]) {
+        self.amountLabel.textColor = COLOR_DarkBlue;
+    }
+    if ([model.money_color isEqualToString:@"red"]) {
+        self.amountLabel.textColor = COLOR_Red;
+    }
+    if ([model.money_color isEqualToString:@"green"]) {
+        self.amountLabel.textColor = RGB(51, 184, 124);
+    }
 }
 @end

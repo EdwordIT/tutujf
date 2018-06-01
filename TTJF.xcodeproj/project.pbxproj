@@ -343,6 +343,7 @@
 		CBB4CD5520BBE50600EA877B /* ZFWave.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD3320BBE50600EA877B /* ZFWave.m */; };
 		CBB4CD5620BBE50600EA877B /* ZFWaveChart.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD3520BBE50600EA877B /* ZFWaveChart.m */; };
 		CBFA80FC20BFA22600CB623E /* MyTransferBuyDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */; };
+		CBFA80FF20C0E3EE00CB623E /* MyIncomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBFA80FE20C0E3EE00CB623E /* MyIncomeModel.m */; };
 		E701EDC61EA469C000DC234A /* OpenAdvertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E701EDC51EA469C000DC234A /* OpenAdvertView.m */; };
 		E70331E11EAA363F00C1FFD1 /* HomeWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70331DF1EAA363F00C1FFD1 /* HomeWebController.m */; };
 		E7037FFF1E9C96EF00C5E13D /* HorizontalMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E7037FF91E9C96EF00C5E13D /* HorizontalMenu.m */; };
@@ -1084,6 +1085,8 @@
 		CBB4CD3520BBE50600EA877B /* ZFWaveChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFWaveChart.m; sourceTree = "<group>"; };
 		CBFA80FA20BFA22600CB623E /* MyTransferBuyDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTransferBuyDetailModel.h; sourceTree = "<group>"; };
 		CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTransferBuyDetailModel.m; sourceTree = "<group>"; };
+		CBFA80FD20C0E3EE00CB623E /* MyIncomeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyIncomeModel.h; sourceTree = "<group>"; };
+		CBFA80FE20C0E3EE00CB623E /* MyIncomeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyIncomeModel.m; sourceTree = "<group>"; };
 		E701EDC41EA469C000DC234A /* OpenAdvertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAdvertView.h; sourceTree = "<group>"; };
 		E701EDC51EA469C000DC234A /* OpenAdvertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenAdvertView.m; sourceTree = "<group>"; };
 		E70331DE1EAA363F00C1FFD1 /* HomeWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWebController.h; sourceTree = "<group>"; };
@@ -3136,6 +3139,8 @@
 				CB842C2620BE92DA00FA42AE /* MyTransferDetailModel.m */,
 				CBFA80FA20BFA22600CB623E /* MyTransferBuyDetailModel.h */,
 				CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */,
+				CBFA80FD20C0E3EE00CB623E /* MyIncomeModel.h */,
+				CBFA80FE20C0E3EE00CB623E /* MyIncomeModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3898,6 +3903,7 @@
 				E7067B521E60C9AA00E32B86 /* KDGoalBar.m in Sources */,
 				E73B1C591FA6144600273C89 /* SYSafeCategory.m in Sources */,
 				CBB4CD5120BBE50600EA877B /* ZFTranslucencePath.m in Sources */,
+				CBFA80FF20C0E3EE00CB623E /* MyIncomeModel.m in Sources */,
 				CB6810D820AC047B0062B7FD /* TransferListController.m in Sources */,
 				E70B649D1ECB3D52004D5CCB /* GTMBase64.m in Sources */,
 				CB6810F020AEC7210062B7FD /* InvestRecordModel.m in Sources */,

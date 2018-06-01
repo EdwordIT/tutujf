@@ -8,6 +8,7 @@
 
 #import "PropertyController.h"
 #import "ZFChart.h"
+#import "MyIncomeModel.h"
 @interface PropertyController ()<ZFPieChartDelegate,ZFPieChartDataSource>
 {
     NSString *btnTitle;
@@ -19,28 +20,37 @@ Strong UIView *topView;
 Strong UIScrollView *backScroll;
 Strong UILabel *titleL;//总收益
 Strong UIButton *switchBtn;//切换收益
-Strong NSArray *colorsArray;
 Strong UIView *bottomView;
-
+Strong MyIncomeModel *baseModel;
+Strong UILabel *amountLabel;//总资产、总收益
+Strong NSMutableArray *colorsArray;//颜色数组
+Strong NSMutableArray *percentageArray;//百分比
 @end
 
 @implementation PropertyController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.titleString = @"资产详情";
     if (self.isMyIncome) {
         btnTitle = @"查看我的资产";
     }else{
         btnTitle = @"查看我的收益";
     }
-    self.colorsArray = @[RGB(103, 137, 255),RGB(237, 254, 65),RGB(255, 110, 64)];
+
+    self.colorsArray = InitObject(NSMutableArray);
+    self.percentageArray = InitObject(NSMutableArray);
+    
     [self.view addSubview:self.backScroll];
     [self.backScroll addSubview:self.topBackView];
     [self.backScroll addSubview:self.topView];
     [self.topView addSubview:self.pieChartView];
+    [self.topView addSubview:self.amountLabel];
     [self.topView addSubview:self.switchBtn];
     [self.backScroll addSubview:self.bottomView];
+  
+    [self.amountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.centerY.mas_equalTo(self.pieChartView);
+    }];
     [self getRequest];
     
     // Do any additional setup after loading the view.
@@ -75,9 +85,19 @@ Strong UIView *bottomView;
         _pieChartView.dataSource = self;
         _pieChartView.delegate = self;
         _pieChartView.isShadow = NO;
-        [_pieChartView strokePath];
+        _pieChartView.isShowPercent = NO;//不显示百分比
+        _pieChartView.piePatternType = kPieChartPatternTypeCirque;
     }
     return _pieChartView;
+}
+-(UILabel *)amountLabel{
+    if (!_amountLabel) {
+        _amountLabel = InitObject(UILabel);
+        _amountLabel.numberOfLines = 2;
+        _amountLabel.textColor = RGB_153;
+        _amountLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    return _amountLabel;
 }
 -(UIButton *)switchBtn{
     if (!_switchBtn) {
@@ -102,13 +122,35 @@ Strong UIView *bottomView;
     }
     return _bottomView;
 }
+#pragma mark --数据处理
 -(void)loadbottomView
 {
+    [self.pieChartView strokePath];
     [self.bottomView removeAllSubViews];
-    NSArray *titleArr = @[@"已收利息",@"待收利息",@"已收奖励",@"邀请已结算奖励"];
-    NSArray *textArr = @[@"¥110.00",@"¥110.00",@"¥110.00",@"¥110.00"];
     
-    for (int i=0 ; i<titleArr.count; i++) {
+    NSArray *dataArray ;
+    NSString *amount;
+    NSString *title;
+    if (self.isMyIncome) {
+        dataArray = self.baseModel.profit_amount_info;
+        amount = [[CommonUtils getHanleNums:self.baseModel.total_profit_amount] stringByAppendingString:@"\n"];
+        title = self.baseModel.total_profit_amount_txt;
+    }else
+        {
+        dataArray = self.baseModel.amount_info;
+            amount = [[CommonUtils getHanleNums:self.baseModel.total_amount] stringByAppendingString:@"\n"];
+            title = self.baseModel.total_amount_txt;
+            
+        }
+    //设置总资产
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",amount,title]];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:kLabelSpace];
+    [attributedString addAttributes:@{NSFontAttributeName:SYSTEMSIZE(28),NSForegroundColorAttributeName:RGB_153} range:NSMakeRange(0, attributedString.length)];
+    [attributedString addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle,NSForegroundColorAttributeName:RGB_51,NSFontAttributeName:NUMBER_FONT(35)} range:NSMakeRange(0, amount.length)];
+    [self.amountLabel setAttributedText:attributedString];
+    for (int i=0 ; i<dataArray.count; i++) {
+        InfoContentModel *model = [dataArray objectAtIndex:i];
         UIView *subView = [[UIView alloc]initWithFrame:RECT(0, kSizeFrom750(100)*i, self.bottomView.width, kSizeFrom750(70))];
         subView.layer.cornerRadius = kSizeFrom750(8);
         subView.layer.borderColor = [RGB_183 CGColor];
@@ -116,20 +158,29 @@ Strong UIView *bottomView;
         subView.backgroundColor = COLOR_White;
         [self.bottomView addSubview:subView];
 
-        UILabel *titleLabel = [[UILabel alloc]initWithFrame:RECT(kSizeFrom750(100),kSizeFrom750(20), kSizeFrom750(200), kSizeFrom750(30))];
+        
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:RECT(kSizeFrom750(50),kSizeFrom750(20), kSizeFrom750(200), kSizeFrom750(30))];
         titleLabel.font = SYSTEMSIZE(28);
         titleLabel.textColor = RGB_183;
-        titleLabel.text = titleArr[i];
+        titleLabel.text = model.title;
         [subView addSubview:titleLabel];
+        
+        UIView *icon = [[UIView alloc]initWithFrame:RECT(kSizeFrom750(20), 0, kSizeFrom750(10), kSizeFrom750(10))];
+        icon.centerY = titleLabel.centerY;
+        icon.layer.cornerRadius = kSizeFrom750(10)/2;
+        icon.layer.masksToBounds = YES;
+        icon.backgroundColor = HEXCOLOR(model.color);
+        [subView addSubview:icon];
+
         
         UILabel *contentLabel = [[UILabel alloc]initWithFrame:RECT(titleLabel.right,titleLabel.top, subView.width - titleLabel.right -kSizeFrom750(20),titleLabel.height)];
         contentLabel.font = NUMBER_FONT(30);
         contentLabel.textColor = RGB_51;
         contentLabel.textAlignment = NSTextAlignmentRight;
-        contentLabel.text = textArr[i];
+        contentLabel.text =[@"￥" stringByAppendingString:[CommonUtils getHanleNums:model.amount]];
         [subView addSubview:contentLabel];
         
-        if (i==titleArr.count-1) {
+        if (i==dataArray.count-1) {
             self.bottomView.height = subView.bottom+kSizeFrom750(20);
             self.backScroll.contentSize = CGSizeMake(screen_width, self.bottomView.bottom);
         }
@@ -139,20 +190,24 @@ Strong UIView *bottomView;
 -(void)switchBtnClick:(UIButton *)sender{
     if (self.isMyIncome) {//我的收益点击切换为总资产
         btnTitle = @"查看我的资产";
-        _switchBtn.layer.borderColor = [RGB(255, 110, 64) CGColor];;
+        self.titleString = @"我的收益";
+        self.switchBtn.layer.borderColor = [RGB(255, 110, 64) CGColor];;
         [_switchBtn setTitleColor:RGB(255, 110, 64) forState:UIControlStateNormal];
+        
     }else{
         btnTitle = @"查看我的收益";
-        _switchBtn.layer.borderColor = [RGB(103, 137, 255) CGColor];;
-        [_switchBtn setTitleColor:RGB(103, 137, 255) forState:UIControlStateNormal];
+        self.titleString = @"我的资产";
+        self.switchBtn.layer.borderColor = [RGB(103, 137, 255) CGColor];;
+        [self.switchBtn setTitleColor:RGB(103, 137, 255) forState:UIControlStateNormal];
     }
     self.isMyIncome = !self.isMyIncome;
-    [_switchBtn setTitle:btnTitle forState:UIControlStateNormal];
+    [self getRequest];
+    [self.switchBtn setTitle:btnTitle forState:UIControlStateNormal];
 }
 #pragma mark --pieChartDelegate and DataSource
 //返回value数据(NSArray必须存储NSString类型)
 - (NSArray *)valueArrayInPieChart:(ZFPieChart *)chart{
-    return @[@"0.3",@"0.2",@"0.5"];
+    return self.percentageArray;
 }
 //返回颜色数组(NSArray必须存储UIColor类型)
 - (NSArray *)colorArrayInPieChart:(ZFPieChart *)chart{
@@ -179,7 +234,34 @@ Strong UIView *bottomView;
 #pragma mark --loadRequest
 -(void)getRequest
 {
-    [self loadbottomView];
+    
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:self.isMyIncome?getMyTotalIncomeUrl:getMyTotalAmountUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:nil success:^(NSDictionary *successDic) {
+        self.baseModel = [MyIncomeModel yy_modelWithJSON:successDic];
+        [self.percentageArray removeAllObjects];
+        [self.colorsArray removeAllObjects];
+        
+        NSArray *dataArray;
+        if (self.isMyIncome) {
+            dataArray = self.baseModel.profit_amount_info;
+        }else{
+            dataArray = self.baseModel.amount_info;
+        }
+        for (int i=0; i<dataArray.count; i++) {
+            InfoContentModel *model = dataArray[i];
+            if ([model.proportion floatValue]>0.002) {
+                [self.percentageArray addObject:@"0.002"];
+                 [self.colorsArray addObject:COLOR_White];
+            }
+            [self.percentageArray addObject:model.proportion];
+            [self.colorsArray addObject:HEXCOLOR(model.color)];
+        }
+        
+       
+        [self loadbottomView];
+
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

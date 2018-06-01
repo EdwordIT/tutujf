@@ -17,21 +17,28 @@
 
 Strong ScrollerContentView *transferContentView;//转让记录
 Strong ScrollerContentView *buyContentView;//购买记录
-Assign NSInteger selectedIndex;//被选中状态
+Assign NSInteger sellSelectedIndex;//被选中状态
+Assign NSInteger buySelectedIndex;//被选中状态
+Strong NSArray *transferTitleArr;
+Strong NSArray *buyTitleArr;
 Assign BOOL isBuy;//购买记录
 Strong NavSwitchView *switchView;//标题切换
 Strong FDSlideBar *slideBar;//滑动选择bar
 Strong NSMutableArray *titleArr;//slideBar数据源
+Strong UIButton *leftBtn;
 @end
 
 @implementation TransferListController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.selectedIndex = 0;
+    self.sellSelectedIndex = 0;
+    self.buySelectedIndex = 0;
+    self.transferTitleArr = @[@"全部",@"可转让",@"转让中",@"已转让"];
+    self.buyTitleArr = @[@"全部",@"回款中",@"已回款"];
     [self.view addSubview:self.switchView];
-    [self.switchView addSubview:self.backBtn];
-    [self.backBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+    [self.switchView addSubview:self.leftBtn];
+    [self.leftBtn mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(kSizeFrom750(20));
         make.width.mas_equalTo(kSizeFrom750(50));
         make.height.mas_equalTo(kSizeFrom750(88));
@@ -43,6 +50,15 @@ Strong NSMutableArray *titleArr;//slideBar数据源
     
     // Do any additional setup after loading the view.
 }
+-(UIButton *)leftBtn{
+    if (!_leftBtn) {
+        _leftBtn = InitObject(UIButton);
+        [_leftBtn setImage:IMAGEBYENAME(@"icons_back") forState:UIControlStateNormal];
+        _leftBtn.adjustsImageWhenHighlighted = NO;
+        [_leftBtn addTarget:self action:@selector(backPressed:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _leftBtn;
+}
 #pragma mark lazyLoading
 -(NavSwitchView *)switchView{
     if (!_switchView) {
@@ -50,14 +66,16 @@ Strong NSMutableArray *titleArr;//slideBar数据源
         WEAK_SELF;
         _switchView.switchBlock = ^(NSInteger tag) {
             if (tag==0) {
-                    weakSelf.slideBar.itemsTitle = @[@"全部",@"可转让",@"转让中",@"已转让"];
+                    weakSelf.slideBar.itemsTitle = weakSelf.transferTitleArr;
                     weakSelf.isBuy = NO;
+                    [weakSelf.slideBar selectSlideBarItemAtIndex:weakSelf.sellSelectedIndex];
                     weakSelf.transferContentView.hidden = NO;
                     weakSelf.buyContentView.hidden = YES;
 
                    
             }else{
-                 weakSelf.slideBar.itemsTitle =@[@"全部",@"回款中",@"已回款"];
+                 weakSelf.slideBar.itemsTitle =weakSelf.buyTitleArr;
+                [weakSelf.slideBar selectSlideBarItemAtIndex:weakSelf.buySelectedIndex];
                 weakSelf.isBuy = YES;
                 weakSelf.transferContentView.hidden = YES;
                 weakSelf.buyContentView.hidden = NO;
@@ -75,7 +93,7 @@ Strong NSMutableArray *titleArr;//slideBar数据源
         _transferContentView.dataSource = self;
         __weak typeof(self) weakSelf = self;
         [_transferContentView slideContentViewScrollFinished:^(NSUInteger index) {
-            self.selectedIndex = index;
+            self.sellSelectedIndex = index;
             [weakSelf.slideBar selectSlideBarItemAtIndex:index];
         }];
     }
@@ -90,6 +108,7 @@ Strong NSMutableArray *titleArr;//slideBar数据源
         _buyContentView.hidden = YES;
         __weak typeof(self) weakSelf = self;
         [_buyContentView slideContentViewScrollFinished:^(NSUInteger index) {
+            self.buySelectedIndex = index;
             [weakSelf.slideBar selectSlideBarItemAtIndex:index];
         }];
     }
@@ -102,9 +121,13 @@ Strong NSMutableArray *titleArr;//slideBar数据源
         _slideBar.itemsTitle = @[@"全部",@"可转让",@"转让中",@"已转让"];
         [_slideBar slideBarItemSelectedCallback:^(NSUInteger idx) {
             if (weakSelf.isBuy) {
+                weakSelf.buySelectedIndex = idx;
                  [weakSelf.buyContentView scrollSlideContentViewToIndex:idx];
             }else
+            {
+                weakSelf.sellSelectedIndex = idx;
                 [weakSelf.transferContentView scrollSlideContentViewToIndex:idx];
+            }
         }];
     }
     return _slideBar;
@@ -124,7 +147,11 @@ Strong NSMutableArray *titleArr;//slideBar数据源
 }
 
 - (NSInteger)numOfContentView:(ScrollerContentView *)contentView {
-    return self.slideBar.itemsTitle.count;
+    if (contentView==self.transferContentView) {
+        return self.transferTitleArr.count;
+    }else{
+        return self.buyTitleArr.count;
+    }
 }
 
 

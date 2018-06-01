@@ -162,7 +162,7 @@
  */
 #define myTransferInfoUrl @"/api/transfer/myUserTransferInfo"
 /**
- 我的债权购买接口
+ 我购买的债权列表接口
  */
 #define myTransferBuyUrl @"/api/transfer/myUserTransferBuyList"
 /**
@@ -172,9 +172,17 @@
 /**
  债权转让提交接口
  */
-#define postMyTransferSubmitUrl @"/api/transfer/myTransferSubmit"
+#define postMyTransferSubmitUrl @"/api/transfer/myUserTransferSubmit"
 /**
  债权转让撤销接口
  */
 #define cancelMyTransferUrl @"/api/transfer/myUserTransferCancel"
+/**
+ 获取会员总资产
+ */
+#define getMyTotalAmountUrl @"/api/Users/getUserToAssets"
+/**
+ 获取会员总收益
+ */
+#define getMyTotalIncomeUrl @"/api/Users/getUserToProfit"
 

@@ -10,6 +10,8 @@
 /**
  可转让的标的进行债权转让
  */
+typedef void (^CompleteBlock)(void);
 @interface TransferSellDetailController : BaseViewController
 Copy NSString *tender_id;
+Copy CompleteBlock completeBlock;//详情页面操作完成之后回调
 @end

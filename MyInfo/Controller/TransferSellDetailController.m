@@ -153,8 +153,8 @@ Strong UIButton *qBtn3;
     self.transferLabel = [[UILabel alloc] init];
     self.transferLabel.font = SYSTEMSIZE(26);
     self.transferLabel.textColor =  RGB_166;
-    NSString *expect = [NSString stringWithFormat:@"%@ ￥0.0",self.model.transfer_amount.title];
-    NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:expect rang:[expect rangeOfString:@"￥0.0"] font:NUMBER_FONT(30) color:COLOR_DarkBlue spacingBeforeValue:0 lineSpace:0];
+    NSString *expect = [NSString stringWithFormat:@"%@ ￥%@",self.model.transfer_amount.title,self.model.transfer_amount.content];
+    NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:expect rang:[expect rangeOfString:[NSString stringWithFormat:@"￥%@",self.model.transfer_amount.content]] font:NUMBER_FONT(30) color:COLOR_DarkBlue spacingBeforeValue:0 lineSpace:0];
     [self.transferLabel setAttributedText:attr1];
     [self.backScroll addSubview:self.transferLabel];
     
@@ -172,9 +172,15 @@ Strong UIButton *qBtn3;
     [ self.transferBtn addTarget:self action:@selector(transferBtnClick:) forControlEvents:UIControlEventTouchUpInside];
      self.transferBtn.layer.cornerRadius =  self.transferBtn.height/2;
      self.transferBtn.layer.masksToBounds =YES;
-    [ self.transferBtn setGradientColors:@[COLOR_DarkBlue,COLOR_LightBlue]];
     [ self.transferBtn setUntouchedColor:COLOR_Btn_Unsel];
      self.transferBtn.enabled = NO;
+    if ([self.model.bt_state isEqualToString:@"2"]) {//可撤销转让
+        self.transferBtn.enabled = YES;
+        self.percentageTextField.text = [self.model.coefficient stringByAppendingString:@"%"];
+        [ self.transferBtn setGradientColors:@[[UIColor yellowColor],[UIColor yellowColor]]];
+    }else{
+        [ self.transferBtn setGradientColors:@[COLOR_DarkBlue,COLOR_LightBlue]];
+    }
     [self.backScroll addSubview: self.transferBtn];
     
     [self.transferBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -205,7 +211,7 @@ Strong UIButton *qBtn3;
 }
 #pragma mark --textField Delegate
 -(void)textFieldDidChange :(UITextField *)theTextField{
-    if ([self.model.bt_state isEqualToString:@"-1"]) {//不可操作
+    if ([self.model.bt_state isEqualToString:@"-1"]) {//不可提交
         return;
     }
     NSString *    str = [self.percentageTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -221,11 +227,11 @@ Strong UIButton *qBtn3;
             NSInteger num=[str intValue];
             if(num>=[self.model.coefficient_config.coefficient_min floatValue]&&num<=[self.model.coefficient_config.coefficient_max floatValue])
             {
-                NSString *expect = [NSString stringWithFormat:@"￥%.2f",[self.model.transfer_amount.content floatValue]*0.01*num];
+                NSString *expect = [NSString stringWithFormat:@"￥%.2f",[self.model.actual_amount_money floatValue]*0.01*num];
                 NSString *expectText = [NSString stringWithFormat:@"%@ %@",self.model.transfer_amount.title,expect];
                 NSMutableAttributedString *attr1 = [CommonUtils diffierentFontWithString:expectText rang:[expectText rangeOfString:expect] font:NUMBER_FONT(30) color:COLOR_DarkBlue spacingBeforeValue:0 lineSpace:0];
                 [self.transferLabel setAttributedText:attr1];
-                 self.transferBtn.enabled = YES;
+                self.transferBtn.enabled = YES;
             }
             else
             {
@@ -251,6 +257,39 @@ Strong UIButton *qBtn3;
 //转让按钮点击
 -(void)transferBtnClick:(UIButton *)sender
 {
+    if ([self.model.bt_state isEqualToString:@"1"]) {
+        //转让
+        NSString *coefficient = [NSString stringWithFormat:@"%.2f",[self.percentageTextField.text floatValue]];
+        NSArray *keysArr = @[@"tender_id",@"coefficient",kToken];
+        NSArray *valuesArr = @[self.tender_id,coefficient,[CommonUtils getToken]];
+        [[HttpCommunication sharedInstance] postSignRequestWithPath:postMyTransferSubmitUrl keysArray:keysArr valuesArray:valuesArr refresh:nil success:^(NSDictionary *successDic) {
+            if (self.completeBlock) {
+                self.completeBlock();
+            }
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.navigationController popViewControllerAnimated:YES];
+            });
+            
+        } failure:^(NSDictionary *errorDic) {
+            
+        }];
+    }else{
+        //撤销债权
+        NSArray *keysArr = @[@"transfer_id",kToken];
+        NSArray *valuesArr = @[self.model.transfer_id,[CommonUtils getToken]];
+        [[HttpCommunication sharedInstance] postSignRequestWithPath:cancelMyTransferUrl keysArray:keysArr valuesArray:valuesArr refresh:nil success:^(NSDictionary *successDic) {
+            
+            if (self.completeBlock) {
+                self.completeBlock();
+            }
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.navigationController popViewControllerAnimated:YES];
+            });
+            
+        } failure:^(NSDictionary *errorDic) {
+            
+        }];
+    }
     
 }
 -(void)buttonClick:(UIButton *)sender{

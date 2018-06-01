@@ -19,6 +19,7 @@ Copy NSString * coefficient_min   ;//  float    最小转让折扣：95.99
 Copy NSString * coefficient_max   ;//  float    最大转让折扣：99.99
 @end
 @interface MyTransferDetailModel : BaseModel
+Copy NSString *actual_amount_money;//债权价值
 Copy NSString * status_name  ;//  string    状态文本
 Copy NSString * transfer_id   ;// string    债权ID
 Copy NSString * loan_name   ;// string    债权名称

@@ -103,7 +103,7 @@ Assign NSInteger mainTotalPages;
     [super viewDidLoad];
     self.mainCurrentPage = 1;
     self.mainTotalPages = 1;
-    [self.titleView removeFromSuperview];
+    [self.titleView setHidden:YES];
     [self.view addSubview:self.mainTableView];
     [self loadRefresh];
     [self loadRequestAtIndex:self.selectedIndex];
@@ -309,11 +309,14 @@ Assign NSInteger mainTotalPages;
        
         TransferBuyDetailController *detail = InitObject(TransferBuyDetailController);
         detail.tender_id = model.tender_id;
-        
         [[BaseViewController appRootViewController].navigationController pushViewController:detail animated:YES];
     }else{
         TransferSellDetailController *detail = InitObject(TransferSellDetailController);
         detail.tender_id = model.tender_id;
+        detail.completeBlock = ^{
+          //刷新数据
+            [self.mainTableView.mj_header beginRefreshing];
+        };
         [[BaseViewController appRootViewController].navigationController pushViewController:detail animated:YES];
 
     }
