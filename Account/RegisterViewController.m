@@ -399,12 +399,13 @@ Strong UIWebView *loginWebView;
         AutoLoginView *loginView = [[AutoLoginView alloc]init];
         [self.view addSubview:loginView];
         [loginView setCookie];
+        WEAK_SELF;
         loginView.autoLoginBlock = ^{
             dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"changeTabbarIndex" object:@{@"tabbarIndex":@(3)}];
                     [SVProgressHUD showSuccessWithStatus:@"注册成功"];
-                    [self dismissViewControllerAnimated:YES completion:NULL];
+                    [weakSelf dismissViewControllerAnimated:YES completion:NULL];
                 });
             });
             

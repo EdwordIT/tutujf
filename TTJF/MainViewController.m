@@ -385,7 +385,7 @@ Strong UIView *functionTopView;//功能按钮
         return kSizeFrom750(88);
     }
     else{
-        return 0.01;
+        return 0;
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{

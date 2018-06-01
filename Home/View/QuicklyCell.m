@@ -403,7 +403,9 @@ Strong NSDate *nowDate;//现在的时间
         [self.typeimgsrc setImageWithString:@""];
     }
     self.timeLabel.text=[NSString stringWithFormat:@"%@",self.cellModel.period];
-    proTextLabel.text= [[NSString stringWithFormat:@"进度%@",self.cellModel.progress] stringByAppendingString:@"%"];
+    NSString *progress = [[NSString stringWithFormat:@"%@",self.cellModel.progress] stringByAppendingString:@"%"];
+    NSString *proTxt = [@"进度" stringByAppendingString:progress];
+    [proTextLabel setAttributedText:[CommonUtils diffierentFontWithString:proTxt rang:[proTxt rangeOfString:progress] font:NUMBER_FONT(26) color:RGB_51 spacingBeforeValue:0 lineSpace:0]];
     self.percentLabel.text = self.cellModel.apr_val;
     
     lab5.text=[NSString stringWithFormat:@"%@",self.cellModel.repay_type_name];

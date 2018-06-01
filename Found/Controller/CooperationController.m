@@ -249,6 +249,12 @@ Assign NSInteger countdown;
     }else{
         
     }
+    
+    if (page==self.dataArray.count-1) {
+        [self.bottomBtn setImage:IMAGEBYENAME(@"") forState:UIControlStateNormal];
+    }else{
+        [self.bottomBtn setImage:IMAGEBYENAME(@"cooperation_pull") forState:UIControlStateNormal];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

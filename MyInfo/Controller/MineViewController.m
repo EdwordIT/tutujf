@@ -453,13 +453,15 @@ Strong MyAccountModel *accountModel;//数据源
     //中间三个菜单按钮
     middleMenuArray = @[self.accountModel.bt_my_investment,self.accountModel.bt_my_red,self.accountModel.bt_my_capital_log];
     //消息个数
-    if([self.accountModel.message integerValue]==0)
-    {//隐藏红点消息
-        [self.accountTitleView.rightImage setImage:IMAGEBYENAME(@"icons_msg_unsel") forState:UIControlStateNormal];
+    if([self.accountModel.message integerValue]!=0)
+    {
+        //显示红点消息
+        [self.accountTitleView.rightImage setImage:IMAGEBYENAME(@"icons_msg_sel") forState:UIControlStateNormal];
     }
     else
-    {//显示红点消息
-        [self.accountTitleView.rightImage setImage:IMAGEBYENAME(@"icons_msg_sel") forState:UIControlStateNormal];
+    {
+        //隐藏红点消息
+        [self.accountTitleView.rightImage setImage:IMAGEBYENAME(@"icons_msg_unsel") forState:UIControlStateNormal];
     }
     //设置昵称
     [TTJFUserDefault setStr:self.accountModel.user_name key:kNikename];
