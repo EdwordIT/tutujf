@@ -96,7 +96,7 @@
  1、此链接不是接口，是web访问地址
  2、equipment不加入sign验签
  */
-#define loginWebUrl @"%@/wap/system/login2?user_name=%@&user_token=%@&sign=%@"
+#define loginWebUrl @"%@/wap/system/login2?user_name=%@&user_token=%@&sign=%@&equipment=ios"
 //获取我的账户信息相关接口
 #define getMyAccountUrl  @"/api/Users/getMyAccountData"
 /**

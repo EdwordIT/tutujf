@@ -30,6 +30,8 @@ Copy NSString *callBack;//分享之后回调方法，写入js的方法名
 Copy NSString *  returnWebUrl;//如果有标记特殊返回页面
 Strong UIButton *closeBtn;//关闭当前页面
 Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie）
+Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，此字段才会起作用
+
 @end
 @implementation HomeWebController
 - (void)dealloc {
@@ -55,7 +57,7 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
         return;
     }
     [self.view addSubview:self.mainWebView];
-    
+    self.step = 10;
     [SVProgressHUD show];
 //    _urlStr = @"https://cs.www.tutujf.com/wap/test/loginpa";//测试连接
     //添加ios客户端标识
@@ -213,8 +215,9 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
 /**
  校验链接是否跳转到原生态页面
  */
--(void)checkIsGoOriginal:(NSString *)urlPath
+-(void)checkIsGoOriginal:(NSURLRequest *)request
 {
+    NSString *urlPath =  request.URL.absoluteString;
     //跳转到系统原生页面
     if ([urlPath rangeOfString:@"tutujf:home"].location!=NSNotFound) {
         [self.mainWebView stopLoading];
@@ -345,7 +348,20 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
             [self.refreshBtn setHidden:NO];
             [self.closeBtn setHidden:YES];
         }
+    }
+   NSString *cookies = [request.allHTTPHeaderFields objectForKey:@"Cookie"];
+    //外部链接跳转内部链接，如果没写入cookie值，再下一级页面需要重新写入cookie
+    if ([urlPath hasPrefix:oyUrlAddress]){
+        if (self.step==2&&IsEmptyStr(cookies)) {//外部跳内部再跳内部,如果没有cookie 则添加cookie
+            [self.mainWebView stopLoading];
+            [self loadRequest:urlPath];
+        }else{
+            self.step++;
+        }
         
+    }else{
+        //外部链接
+        self.step = 1;
     }
   
 }
@@ -489,11 +505,18 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
 -(void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
     if (error) {
+        if (error.code==NSURLErrorCancelled) {//如果是手动取消加载，不算失败
+            return;
+        }
         NSString *errorKey = [error.userInfo objectForKey:NSURLErrorFailingURLStringErrorKey];
         if ([errorKey hasPrefix:@"tel:"]) {//调用打电话造成加载失败，不算失败
             return;
         }
         if ([errorKey rangeOfString:@"tutujf:home"].location!=NSNotFound) {//跳转原生页面停止刷新，不算失败
+            return;
+        }
+        if (error.code==NSURLErrorTimedOut) {
+            [SVProgressHUD showInfoWithStatus:@"请求超时"];
             return;
         }
     }
@@ -517,7 +540,7 @@ Strong UIButton *refreshBtn;//刷新页面（清除页面缓存，保留cookie�
     
     NSLog(@"%@",navigationAction.request.URL.absoluteString);
     //首先校验webView是否需要跳转到系统原生态页面
-    [self checkIsGoOriginal:navigationAction.request.URL.absoluteString];
+    [self checkIsGoOriginal:navigationAction.request];
     //允许跳转
     decisionHandler(WKNavigationActionPolicyAllow);
     
