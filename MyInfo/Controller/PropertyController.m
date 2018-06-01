@@ -18,10 +18,10 @@ Strong ZFPieChart *pieChartView;//饼状图
 Strong UIView *topBackView;
 Strong UIView *topView;
 Strong UIScrollView *backScroll;
-Strong UILabel *titleL;//总收益
 Strong UIButton *switchBtn;//切换收益
 Strong UIView *bottomView;
 Strong MyIncomeModel *baseModel;
+Strong UILabel *amountTitle;//
 Strong UILabel *amountLabel;//总资产、总收益
 Strong NSMutableArray *colorsArray;//颜色数组
 Strong NSMutableArray *percentageArray;//百分比
@@ -45,11 +45,17 @@ Strong NSMutableArray *percentageArray;//百分比
     [self.backScroll addSubview:self.topView];
     [self.topView addSubview:self.pieChartView];
     [self.topView addSubview:self.amountLabel];
+    [self.topView addSubview:self.amountTitle];
     [self.topView addSubview:self.switchBtn];
     [self.backScroll addSubview:self.bottomView];
   
     [self.amountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.centerY.mas_equalTo(self.pieChartView);
+        make.centerY.mas_equalTo(self.pieChartView.mas_centerY).offset(-kSizeFrom750(30));
+        make.centerX.mas_equalTo(self.pieChartView);
+    }];
+    [self.amountTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.pieChartView.mas_centerY).offset(kSizeFrom750(50));
+        make.centerX.mas_equalTo(self.pieChartView);
     }];
     [self getRequest];
     
@@ -90,11 +96,18 @@ Strong NSMutableArray *percentageArray;//百分比
     }
     return _pieChartView;
 }
+-(UILabel *)amountTitle{
+    if (!_amountTitle) {
+        _amountTitle = InitObject(UILabel);
+        _amountTitle.textColor = RGB_153;
+        _amountTitle.textAlignment = NSTextAlignmentCenter;
+    }
+    return _amountLabel;
+}
 -(UILabel *)amountLabel{
     if (!_amountLabel) {
         _amountLabel = InitObject(UILabel);
-        _amountLabel.numberOfLines = 2;
-        _amountLabel.textColor = RGB_153;
+        _amountLabel.textColor = RGB_51;
         _amountLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _amountLabel;
@@ -133,22 +146,17 @@ Strong NSMutableArray *percentageArray;//百分比
     NSString *title;
     if (self.isMyIncome) {
         dataArray = self.baseModel.profit_amount_info;
-        amount = [[CommonUtils getHanleNums:self.baseModel.total_profit_amount] stringByAppendingString:@"\n"];
+        amount = [CommonUtils getHanleNums:self.baseModel.total_profit_amount];
         title = self.baseModel.total_profit_amount_txt;
     }else
         {
-        dataArray = self.baseModel.amount_info;
-            amount = [[CommonUtils getHanleNums:self.baseModel.total_amount] stringByAppendingString:@"\n"];
+            dataArray = self.baseModel.amount_info;
+            amount = [CommonUtils getHanleNums:self.baseModel.total_amount];
             title = self.baseModel.total_amount_txt;
             
         }
-    //设置总资产
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",amount,title]];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:kLabelSpace];
-    [attributedString addAttributes:@{NSFontAttributeName:SYSTEMSIZE(28),NSForegroundColorAttributeName:RGB_153} range:NSMakeRange(0, attributedString.length)];
-    [attributedString addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle,NSForegroundColorAttributeName:RGB_51,NSFontAttributeName:NUMBER_FONT(35)} range:NSMakeRange(0, amount.length)];
-    [self.amountLabel setAttributedText:attributedString];
+    self.amountLabel.text = amount;
+    self.amountTitle.text = title;
     for (int i=0 ; i<dataArray.count; i++) {
         InfoContentModel *model = [dataArray objectAtIndex:i];
         UIView *subView = [[UIView alloc]initWithFrame:RECT(0, kSizeFrom750(100)*i, self.bottomView.width, kSizeFrom750(70))];

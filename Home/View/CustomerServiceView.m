@@ -108,7 +108,7 @@ Strong UILabel *timeLabel;//客服时间
     self.timeLabel.backgroundColor = separaterColor;
     self.timeLabel.textAlignment = NSTextAlignmentCenter;
     self.timeLabel.textColor = RGB_153;
-    self.timeLabel.font = SYSTEMSIZE(20);
+    self.timeLabel.font = SYSTEMSIZE(24);
     self.timeLabel.text = @"客服服务时间：09:00 - 18:00（工作日）";
     [self.mainView addSubview:self.timeLabel];
 

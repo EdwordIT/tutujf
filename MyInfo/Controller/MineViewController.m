@@ -356,8 +356,16 @@ Strong MyAccountModel *accountModel;//数据源
 //            HomeWebController *discountVC = [[HomeWebController alloc] init];
 //            discountVC.urlStr=self.accountModel.bt_my_capital_log.link_url;
 //            [self.navigationController pushViewController:discountVC animated:YES];
-            InvestRecordController *invest = InitObject(InvestRecordController);
-            [self.navigationController pushViewController:invest animated:YES];
+            //资金记录
+             if ([self.accountModel.is_trust_reg isEqualToString:@"1"])
+             {
+                 InvestRecordController *invest = InitObject(InvestRecordController);
+                 [self.navigationController pushViewController:invest animated:YES];
+            
+            }else{
+                [SVProgressHUD showInfoWithStatus:@"请先开通托管账户"];
+            }
+            
         }
     }
     else
@@ -365,6 +373,7 @@ Strong MyAccountModel *accountModel;//数据源
         [self goLoginVC];
     }
 }
+
 /**
  scrollView滑动动态改变导航栏内容高度
  */
