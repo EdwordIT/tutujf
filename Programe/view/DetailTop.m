@@ -275,7 +275,9 @@ Strong LoanBase *baseModel;
 {
     if(self.progressNum==0||self.progressNum<0.0001)
     {
-        self.progressLabel.text=[[NSString stringWithFormat:@"已售%.2f",self.progressView.progress*100] stringByAppendingString:@"%"];
+        NSString *progress = [[NSString stringWithFormat:@"%.2f",self.progressView.progress*100] stringByAppendingString:@"%"];
+        NSString *proTxt = [@"已售" stringByAppendingString:progress];
+        [self.progressLabel setAttributedText:[CommonUtils diffierentFontWithString:proTxt rang:[proTxt rangeOfString:progress] font:NUMBER_FONT(26) color:RGB(179,254,246) spacingBeforeValue:0 lineSpace:0]];
         self.progressLabel.left = kOriginLeft;
         [myTimer invalidate];
     }
@@ -284,11 +286,16 @@ Strong LoanBase *baseModel;
         self.progressView.progress += 0.005; // 设定步进长度
         CGFloat proLeft = screen_width*self.progressView.progress;
         self.progressTopView.frame = RECT(proLeft, self.progressTopView.top, screen_width-proLeft, self.progressTopView.height);
-        self.progressLabel.text=[[NSString stringWithFormat:@"已售%.2f",self.progressView.progress*100] stringByAppendingString:@"%"];
+        NSString *progress = [[NSString stringWithFormat:@"%.2f",self.progressView.progress*100] stringByAppendingString:@"%"];
+        NSString *proTxt = [@"已售" stringByAppendingString:progress];
+        [self.progressLabel setAttributedText:[CommonUtils diffierentFontWithString:proTxt rang:[proTxt rangeOfString:progress] font:NUMBER_FONT(26) color:RGB(179,254,246) spacingBeforeValue:0 lineSpace:0]];
         self.progressLabel.left = (screen_width - self.progressLabel.width)*self.progressView.progress;
         if (self.progressView.progress >= self.progressNum) {// 如果进度条到头了
             [myTimer invalidate];
-            self.progressLabel.text=[[NSString stringWithFormat:@"已售%.2f",self.progressNum*100] stringByAppendingString:@"%"];
+            NSString *progress1 = [[NSString stringWithFormat:@"%.2f",self.progressNum*100] stringByAppendingString:@"%"];
+            NSString *proTxt1 = [@"已售" stringByAppendingString:progress];
+            [self.progressLabel setAttributedText:[CommonUtils diffierentFontWithString:proTxt1 rang:[proTxt1 rangeOfString:progress1] font:NUMBER_FONT(26) color:RGB(179,254,246) spacingBeforeValue:0 lineSpace:0]];
+            
         }
     }
 }
