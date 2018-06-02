@@ -209,7 +209,7 @@ Strong LoanBase *baseModel;
         make.width.height.mas_equalTo(kSizeFrom750(60));
     }];
     
-    self.progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, uv.height - kSizeFrom750(45),kSizeFrom750(150), kSizeFrom750(25))];
+    self.progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, uv.height - kSizeFrom750(45),kSizeFrom750(160), kSizeFrom750(25))];
     self.progressLabel.font = SYSTEMSIZE(24);
     self.progressLabel.textColor=RGB(179,254,246);
     self.progressLabel.text=@"已售0%";
