@@ -97,6 +97,7 @@ Strong NSMutableArray *percentageArray;//百分比
         _pieChartView.delegate = self;
         _pieChartView.isShadow = NO;
         _pieChartView.isShowPercent = NO;//不显示百分比
+        _pieChartView.userInteractionEnabled = NO;
         _pieChartView.piePatternType = kPieChartPatternTypeCirque;
     }
     return _pieChartView;
@@ -203,18 +204,23 @@ Strong NSMutableArray *percentageArray;//百分比
 #pragma mark --buttonClick
 -(void)switchBtnClick:(UIButton *)sender{
     if (self.isMyIncome) {//我的收益点击切换为总资产
-     
+        sender.userInteractionEnabled = NO;
         btnTitle = @"查看我的收益";
         self.titleString = @"我的资产";
         self.amountLabel.textColor = COLOR_DarkBlue;
-        self.switchBtn.layer.borderColor = [RGB(103, 137, 255) CGColor];;
-        [self.switchBtn setTitleColor:RGB(103, 137, 255) forState:UIControlStateNormal];
+        self.switchBtn.layer.borderColor = [COLOR_Red CGColor];
+        [self.switchBtn setTitleColor:COLOR_Red forState:UIControlStateNormal];
+        [self performSelector:@selector(setEnabled) withObject:nil afterDelay:2];//2秒后可点击
+        
     }else{
+        sender.userInteractionEnabled = NO;
         btnTitle = @"查看我的资产";
         self.titleString = @"我的收益";
         self.amountLabel.textColor = COLOR_Red;
-        self.switchBtn.layer.borderColor = [RGB(255, 110, 64) CGColor];;
-        [_switchBtn setTitleColor:RGB(255, 110, 64) forState:UIControlStateNormal];
+        self.switchBtn.layer.borderColor = [COLOR_LightBlue CGColor]; 
+        [_switchBtn setTitleColor:COLOR_LightBlue forState:UIControlStateNormal];
+        [self performSelector:@selector(setEnabled) withObject:nil afterDelay:2];//2秒后可点击
+
       
     }
     self.isMyIncome = !self.isMyIncome;
@@ -222,6 +228,10 @@ Strong NSMutableArray *percentageArray;//百分比
     [self.switchBtn setTitle:btnTitle forState:UIControlStateNormal];
 }
 #pragma mark --pieChartDelegate and DataSource
+-(void)setEnabled
+{
+    self.switchBtn.userInteractionEnabled = YES;
+}
 //返回value数据(NSArray必须存储NSString类型)
 - (NSArray *)valueArrayInPieChart:(ZFPieChart *)chart{
     return self.percentageArray;

@@ -87,7 +87,6 @@ Copy NSString *balance_amount_txt;//账户余额描述
         _accountTableView = [[BaseUITableView alloc]initWithFrame:RECT(0, 0, screen_width, self.backScroll.height) style:UITableViewStyleGrouped];
         _accountTableView.delegate = self;
         _accountTableView.dataSource = self;
-        _accountTableView.rowHeight = kSizeFrom750(220);
         
     }
     return _accountTableView;
@@ -97,7 +96,6 @@ Copy NSString *balance_amount_txt;//账户余额描述
         _payTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width, 0, screen_width, self.accountTableView.height) style:UITableViewStyleGrouped];
         _payTableView.delegate = self;
         _payTableView.dataSource = self;
-        _payTableView.rowHeight = kSizeFrom750(220);
         
     }
     return _payTableView;
@@ -107,7 +105,6 @@ Copy NSString *balance_amount_txt;//账户余额描述
         _incomeTableView = [[BaseUITableView alloc]initWithFrame:RECT(screen_width*2, 0, screen_width, self.accountTableView.height) style:UITableViewStyleGrouped];
         _incomeTableView.delegate = self;
         _incomeTableView.dataSource = self;
-        _incomeTableView.rowHeight = kSizeFrom750(220);
     }
     return _incomeTableView;
 }
@@ -303,6 +300,15 @@ Copy NSString *balance_amount_txt;//账户余额描述
     NSMutableArray *selectArr = [self.dataSource objectAtIndex:self.selectedIndex];
     return selectArr.count;
 }
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    InvestRecordModel *model = [[self.dataSource objectAtIndex:self.selectedIndex] objectAtIndex:indexPath.row];
+    if (IsEmptyStr(model.loan_name)){
+        return kSizeFrom750(170);
+    }else{
+        return kSizeFrom750(220);
+    }
+}
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellId = @"InvestRecordCell";
@@ -336,7 +342,9 @@ Copy NSString *balance_amount_txt;//账户余额描述
             make.left.mas_equalTo(iconImage.mas_right).offset(kSizeFrom750(20));
             make.centerY.mas_equalTo(iconImage);
         }];
-        
+        if (IsEmptyStr(self.balance_amount)) {
+            return [UIView new];
+        }
         NSString *amount = [self.balance_amount stringByAppendingString:@"\n"];
         NSString *title = self.balance_amount_txt;
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",amount,title]];

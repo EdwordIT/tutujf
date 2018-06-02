@@ -64,7 +64,6 @@ Strong UILabel *amountLabel;
         _titleLabel = InitObject(UILabel);
         _titleLabel.font = SYSTEMSIZE(28);
         _titleLabel.textColor = RGB_51;
-        _titleLabel.text = @"提现失败解冻";
     }
     return _titleLabel;
 }
@@ -73,7 +72,6 @@ Strong UILabel *amountLabel;
         _subLabel = InitObject(UILabel);
         _subLabel.font = SYSTEMSIZE(28);
         _subLabel.textColor = RGB_158;
-        _subLabel.text = @"投资成功";
     }
     return _subLabel;
 }
@@ -89,7 +87,6 @@ Strong UILabel *amountLabel;
 -(UILabel *)balanceLabel{
     if (!_balanceLabel) {
         _balanceLabel = InitObject(UILabel);
-        _balanceLabel.text = @"余额：1234.50元";
         _balanceLabel.font = SYSTEMSIZE(26);
         _balanceLabel.textColor = RGB_166;
     }
@@ -123,11 +120,10 @@ Strong UILabel *amountLabel;
     [self.subLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.titleLabel);
         make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(kSizeFrom750(30));
-        make.height.mas_equalTo(kSizeFrom750(30));
     }];
     [self.balanceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.height.mas_equalTo(self.titleLabel);
-        make.top.mas_equalTo(self.subLabel.mas_bottom).offset(kSizeFrom750(30));
+        make.bottom.mas_equalTo(self.contentView.mas_bottom).offset(-kSizeFrom750(20));
     }];
     [self.amountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(-kOriginLeft);
