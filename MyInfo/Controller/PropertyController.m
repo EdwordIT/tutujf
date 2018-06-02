@@ -33,8 +33,11 @@ Strong NSMutableArray *percentageArray;//百分比
     [super viewDidLoad];
     if (self.isMyIncome) {
         btnTitle = @"查看我的资产";
+        self.amountLabel.textColor = COLOR_Red;
     }else{
         btnTitle = @"查看我的收益";
+        self.amountLabel.textColor = COLOR_DarkBlue;
+
     }
 
     self.colorsArray = InitObject(NSMutableArray);
@@ -51,10 +54,12 @@ Strong NSMutableArray *percentageArray;//百分比
   
     [self.amountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self.pieChartView.mas_centerY).offset(-kSizeFrom750(30));
+        make.height.mas_equalTo(kSizeFrom750(40));
         make.centerX.mas_equalTo(self.pieChartView);
     }];
     [self.amountTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.mas_equalTo(self.pieChartView.mas_centerY).offset(kSizeFrom750(50));
+        make.centerY.mas_equalTo(self.pieChartView.mas_centerY).offset(kSizeFrom750(30));
+        make.height.mas_equalTo(kSizeFrom750(40));
         make.centerX.mas_equalTo(self.pieChartView);
     }];
     [self getRequest];
@@ -100,14 +105,15 @@ Strong NSMutableArray *percentageArray;//百分比
     if (!_amountTitle) {
         _amountTitle = InitObject(UILabel);
         _amountTitle.textColor = RGB_153;
+        _amountTitle.font = SYSTEMSIZE(28);
         _amountTitle.textAlignment = NSTextAlignmentCenter;
     }
-    return _amountLabel;
+    return _amountTitle;
 }
 -(UILabel *)amountLabel{
     if (!_amountLabel) {
         _amountLabel = InitObject(UILabel);
-        _amountLabel.textColor = RGB_51;
+        _amountLabel.font = NUMBER_FONT_BOLD(40);
         _amountLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _amountLabel;
@@ -197,16 +203,19 @@ Strong NSMutableArray *percentageArray;//百分比
 #pragma mark --buttonClick
 -(void)switchBtnClick:(UIButton *)sender{
     if (self.isMyIncome) {//我的收益点击切换为总资产
-        btnTitle = @"查看我的资产";
-        self.titleString = @"我的收益";
-        self.switchBtn.layer.borderColor = [RGB(255, 110, 64) CGColor];;
-        [_switchBtn setTitleColor:RGB(255, 110, 64) forState:UIControlStateNormal];
-        
-    }else{
+     
         btnTitle = @"查看我的收益";
         self.titleString = @"我的资产";
+        self.amountLabel.textColor = COLOR_DarkBlue;
         self.switchBtn.layer.borderColor = [RGB(103, 137, 255) CGColor];;
         [self.switchBtn setTitleColor:RGB(103, 137, 255) forState:UIControlStateNormal];
+    }else{
+        btnTitle = @"查看我的资产";
+        self.titleString = @"我的收益";
+        self.amountLabel.textColor = COLOR_Red;
+        self.switchBtn.layer.borderColor = [RGB(255, 110, 64) CGColor];;
+        [_switchBtn setTitleColor:RGB(255, 110, 64) forState:UIControlStateNormal];
+      
     }
     self.isMyIncome = !self.isMyIncome;
     [self getRequest];
@@ -256,15 +265,31 @@ Strong NSMutableArray *percentageArray;//百分比
         }
         for (int i=0; i<dataArray.count; i++) {
             InfoContentModel *model = dataArray[i];
+            
             if ([model.proportion floatValue]>0.002) {
                 [self.percentageArray addObject:@"0.002"];
                  [self.colorsArray addObject:COLOR_White];
             }
             [self.percentageArray addObject:model.proportion];
             [self.colorsArray addObject:HEXCOLOR(model.color)];
+            
+        }
+        int k=0;
+        for (InfoContentModel *model in dataArray) {
+            if ([model.proportion floatValue]!=0) {
+                continue;
+            }else{
+                k++;
+            }
+        }
+        if (k==dataArray.count) {//如果数据全为0，默认显示第一个颜色的圆环
+            [self.percentageArray removeAllObjects];
+            [self.colorsArray removeAllObjects];
+            InfoContentModel *model = [dataArray firstObject];
+            [self.percentageArray addObject:@"1"];
+            [self.colorsArray addObject:HEXCOLOR(model.color)];
         }
         
-       
         [self loadbottomView];
 
     } failure:^(NSDictionary *errorDic) {

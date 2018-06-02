@@ -11,7 +11,7 @@
 Copy NSString * title ;//   string    标题
 Copy NSString * amount  ;//  string    金额
 Copy NSString *color;
-Copy NSString *proportion;
+Copy NSString *proportion;//百分比
 
 @end
 /**
