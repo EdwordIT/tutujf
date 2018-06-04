@@ -321,7 +321,7 @@
 		CBB4CD3F20BBE50600EA877B /* ZFCurveAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCFA20BBE50600EA877B /* ZFCurveAttribute.m */; };
 		CBB4CD4020BBE50600EA877B /* ZFGradientAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCFC20BBE50600EA877B /* ZFGradientAttribute.m */; };
 		CBB4CD4120BBE50600EA877B /* ZFConst.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD0120BBE50600EA877B /* ZFConst.m */; };
-		CBB4CD4220BBE50600EA877B /* ZFMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD0320BBE50600EA877B /* ZFMethod.m */; };
+		CBB4CD4220BBE50600EA877B /* ZFMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD0320BBE50600EA877B /* ZFMethod.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		CBB4CD4320BBE50600EA877B /* ZFBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD0620BBE50600EA877B /* ZFBar.m */; };
 		CBB4CD4420BBE50600EA877B /* ZFBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD0820BBE50600EA877B /* ZFBarChart.m */; };
 		CBB4CD4520BBE50600EA877B /* ZFCirque.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD0B20BBE50600EA877B /* ZFCirque.m */; };
@@ -344,6 +344,10 @@
 		CBB4CD5620BBE50600EA877B /* ZFWaveChart.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD3520BBE50600EA877B /* ZFWaveChart.m */; };
 		CBFA80FC20BFA22600CB623E /* MyTransferBuyDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */; };
 		CBFA80FF20C0E3EE00CB623E /* MyIncomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBFA80FE20C0E3EE00CB623E /* MyIncomeModel.m */; };
+		CBFA810420C29A5600CB623E /* transfer_question@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFA810020C29A5500CB623E /* transfer_question@3x.png */; };
+		CBFA810520C29A5600CB623E /* icons_purse@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFA810120C29A5500CB623E /* icons_purse@3x.png */; };
+		CBFA810620C29A5600CB623E /* icons_purse@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFA810220C29A5500CB623E /* icons_purse@2x.png */; };
+		CBFA810720C29A5600CB623E /* transfer_question@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFA810320C29A5500CB623E /* transfer_question@2x.png */; };
 		E701EDC61EA469C000DC234A /* OpenAdvertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E701EDC51EA469C000DC234A /* OpenAdvertView.m */; };
 		E70331E11EAA363F00C1FFD1 /* HomeWebController.m in Sources */ = {isa = PBXBuildFile; fileRef = E70331DF1EAA363F00C1FFD1 /* HomeWebController.m */; };
 		E7037FFF1E9C96EF00C5E13D /* HorizontalMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E7037FF91E9C96EF00C5E13D /* HorizontalMenu.m */; };
@@ -1087,6 +1091,10 @@
 		CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTransferBuyDetailModel.m; sourceTree = "<group>"; };
 		CBFA80FD20C0E3EE00CB623E /* MyIncomeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyIncomeModel.h; sourceTree = "<group>"; };
 		CBFA80FE20C0E3EE00CB623E /* MyIncomeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyIncomeModel.m; sourceTree = "<group>"; };
+		CBFA810020C29A5500CB623E /* transfer_question@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_question@3x.png"; sourceTree = "<group>"; };
+		CBFA810120C29A5500CB623E /* icons_purse@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_purse@3x.png"; sourceTree = "<group>"; };
+		CBFA810220C29A5500CB623E /* icons_purse@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_purse@2x.png"; sourceTree = "<group>"; };
+		CBFA810320C29A5500CB623E /* transfer_question@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_question@2x.png"; sourceTree = "<group>"; };
 		E701EDC41EA469C000DC234A /* OpenAdvertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenAdvertView.h; sourceTree = "<group>"; };
 		E701EDC51EA469C000DC234A /* OpenAdvertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenAdvertView.m; sourceTree = "<group>"; };
 		E70331DE1EAA363F00C1FFD1 /* HomeWebController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWebController.h; sourceTree = "<group>"; };
@@ -1866,6 +1874,10 @@
 		CB3CC5AB20B54A3500CBE5DF /* transfer */ = {
 			isa = PBXGroup;
 			children = (
+				CBFA810220C29A5500CB623E /* icons_purse@2x.png */,
+				CBFA810120C29A5500CB623E /* icons_purse@3x.png */,
+				CBFA810320C29A5500CB623E /* transfer_question@2x.png */,
+				CBFA810020C29A5500CB623E /* transfer_question@3x.png */,
 				CB3CC5B320B54A5100CBE5DF /* transfer_record_buy@2x.png */,
 				CB3CC5AF20B54A4F00CBE5DF /* transfer_record_buy@3x.png */,
 				CB3CC5B020B54A4F00CBE5DF /* transfer_record_canceled@2x.png */,
@@ -3422,6 +3434,7 @@
 				E7067B961E60C9AA00E32B86 /* icon_rating_star_half.png in Resources */,
 				E7067BC31E60C9AB00E32B86 /* icon_tabbar_merchant_normal@2x.png in Resources */,
 				CB731598209B0A2B00B3B8FA /* refresh_014.jpg in Resources */,
+				CBFA810620C29A5600CB623E /* icons_purse@2x.png in Resources */,
 				1B583B0D205F890F00CC70E4 /* home_02@3x.png in Resources */,
 				CB73158E209B0A2B00B3B8FA /* refresh_01.jpg in Resources */,
 				E7067A5D1E60C88B00E32B86 /* bt_previous@2x.png in Resources */,
@@ -3445,6 +3458,7 @@
 				CB731595209B0A2B00B3B8FA /* refresh_020.jpg in Resources */,
 				CB3CC5D420B54A8A00CBE5DF /* re_overdue_bg@2x.png in Resources */,
 				CB3CC5F920B6469300CBE5DF /* myinvest_buyback@2x.png in Resources */,
+				CBFA810720C29A5600CB623E /* transfer_question@2x.png in Resources */,
 				1B583B11205F890F00CC70E4 /* home_04@3x.png in Resources */,
 				CB3D302920A2FD7A0040FE30 /* icons_question@2x.png in Resources */,
 				E7067B971E60C9AA00E32B86 /* icon_rating_star_not_picked.png in Resources */,
@@ -3497,6 +3511,7 @@
 				1BE67346207209780003A30C /* icons_msg_sel@2x.png in Resources */,
 				E70929371E617E4500DB0753 /* Images.xcassets in Resources */,
 				E7067B5F1E60C9AA00E32B86 /* back@2x.png in Resources */,
+				CBFA810420C29A5600CB623E /* transfer_question@3x.png in Resources */,
 				CB3CC5BF20B54A5C00CBE5DF /* transfer_record_sell@3x.png in Resources */,
 				1B1E308B2088811700B3974F /* program_repayed@3x.png in Resources */,
 				CB842C2020BE877400FA42AE /* transfer_record_question@2x.png in Resources */,
@@ -3538,6 +3553,7 @@
 				1B583B26205F8D2A00CC70E4 /* wings_left@2x.png in Resources */,
 				CB3CC5BE20B54A5C00CBE5DF /* transfer_record_canceled@2x.png in Resources */,
 				CB3CC5FC20B6471E00CBE5DF /* myinvest_buybacked@2x.png in Resources */,
+				CBFA810520C29A5600CB623E /* icons_purse@3x.png in Resources */,
 				E70F3C981F92338200B4568C /* menu4.png in Resources */,
 				E70F3C961F92338200B4568C /* menu2.png in Resources */,
 				1BE6737020734F720003A30C /* menu_discover_sel@2x.png in Resources */,

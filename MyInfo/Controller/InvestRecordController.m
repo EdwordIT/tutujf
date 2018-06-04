@@ -327,8 +327,8 @@ Copy NSString *balance_amount_txt;//账户余额描述
         UIView *headerView = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(210))];
         headerView.backgroundColor = COLOR_White;
         UIImageView *iconImage = InitObject(UIImageView);
-        iconImage.frame = RECT(kSizeFrom750(230), kSizeFrom750(60), kSizeFrom750(120), kSizeFrom750(100));
-        [iconImage setImage:IMAGEBYENAME(@"icons_nodata")];
+        iconImage.frame = RECT(kSizeFrom750(230), kSizeFrom750(60), kSizeFrom750(100), kSizeFrom750(100));
+        [iconImage setImage:IMAGEBYENAME(@"icons_purse")];
         [headerView addSubview:iconImage];
         
         UILabel *remindL = [[UILabel alloc]init];

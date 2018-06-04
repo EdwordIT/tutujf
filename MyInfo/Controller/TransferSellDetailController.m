@@ -55,7 +55,7 @@ Strong UIButton *qBtn3;
 -(UIButton *)qBtn3{
     if (!_qBtn3) {
         _qBtn3 = InitObject(UIButton);
-        [_qBtn3 setImage:IMAGEBYENAME(@"transfer_record_question") forState:UIControlStateNormal];
+        [_qBtn3 setImage:IMAGEBYENAME(@"transfer_question") forState:UIControlStateNormal];
         _qBtn3.adjustsImageWhenHighlighted = NO;
         [_qBtn3 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         _qBtn3.tag = 5;
@@ -102,7 +102,7 @@ Strong UIButton *qBtn3;
             UIButton *qbtn = [[UIButton alloc]init];
             [qbtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
             qbtn.tag = i;
-            [qbtn setImage:IMAGEBYENAME(@"transfer_record_question") forState:UIControlStateNormal];
+            [qbtn setImage:IMAGEBYENAME(@"transfer_question") forState:UIControlStateNormal];
             qbtn.adjustsImageWhenHighlighted = NO;
             [topView addSubview:qbtn];
             [qbtn mas_makeConstraints:^(MASConstraintMaker *make) {
