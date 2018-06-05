@@ -29,4 +29,5 @@ pod 'XHLaunchAd', '~> 3.4.4'
 pod 'LYEmptyView', '~> 1.0.2'
 pod 'Bugly', '~> 2.5.0'
 pod 'YYCache'
+pod 'LPDQuoteImagesView'
 end

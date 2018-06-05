@@ -14,7 +14,7 @@
 #import "FoundListModel.h"
 #import "HomeWebController.h"
 #import "CooperationController.h"
-
+#import "FeedbackController.h"
 @interface FoundController ()<UITableViewDataSource,UITableViewDelegate,TreasureMiddleDelegate,TreasureListDelegate>
 {
       NSString * content_title;
@@ -205,8 +205,13 @@ Strong NSMutableArray *topArray;
 {
 
     if (index==2) {
+        //风控合作
         CooperationController *vc = InitObject(CooperationController);
         [self.navigationController pushViewController:vc animated:YES];
+    } else if(index==4){
+        //用户反馈
+        FeedbackController *feed = InitObject(FeedbackController);
+        [self.navigationController pushViewController:feed animated:YES];
     }else{
         DiscoverMenuModel * model=[self.topArray objectAtIndex:index];
     

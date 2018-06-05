@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A3B4CDDBCDD37CF154509902BB7EC6DD"
+               BlueprintIdentifier = "78C9FAEBC6FB8B269BAB2650D2714A31"
                BlueprintName = "SMPageControl"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "libSMPageControl.a">

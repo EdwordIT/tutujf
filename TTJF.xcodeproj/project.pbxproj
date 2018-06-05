@@ -247,6 +247,9 @@
 		CB3D303A20A695310040FE30 /* point_sel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303420A695300040FE30 /* point_sel@3x.png */; };
 		CB3D303B20A695310040FE30 /* getCash_remind@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303520A695310040FE30 /* getCash_remind@3x.png */; };
 		CB3D303C20A695310040FE30 /* point_sel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303620A695310040FE30 /* point_sel@2x.png */; };
+		CB5C789B20C51ECB00606811 /* FeedbackController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789A20C51ECB00606811 /* FeedbackController.m */; };
+		CB5C789E20C5206000606811 /* InputTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789C20C5205F00606811 /* InputTextView.m */; };
+		CB5C78A120C52BF300606811 /* UITextFieldDelegateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789F20C52BF300606811 /* UITextFieldDelegateModel.m */; };
 		CB6810CF20AAB7920062B7FD /* MyInvestController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810CE20AAB7920062B7FD /* MyInvestController.m */; };
 		CB6810D220AAB9190062B7FD /* MyInvestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D120AAB9190062B7FD /* MyInvestCell.m */; };
 		CB6810D520AAE21E0062B7FD /* MyInvestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D420AAE21E0062B7FD /* MyInvestModel.m */; };
@@ -939,6 +942,12 @@
 		CB3D303420A695300040FE30 /* point_sel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point_sel@3x.png"; sourceTree = "<group>"; };
 		CB3D303520A695310040FE30 /* getCash_remind@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "getCash_remind@3x.png"; sourceTree = "<group>"; };
 		CB3D303620A695310040FE30 /* point_sel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point_sel@2x.png"; sourceTree = "<group>"; };
+		CB5C789920C51ECB00606811 /* FeedbackController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedbackController.h; sourceTree = "<group>"; };
+		CB5C789A20C51ECB00606811 /* FeedbackController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackController.m; sourceTree = "<group>"; };
+		CB5C789C20C5205F00606811 /* InputTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputTextView.m; sourceTree = "<group>"; };
+		CB5C789D20C5206000606811 /* InputTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputTextView.h; sourceTree = "<group>"; };
+		CB5C789F20C52BF300606811 /* UITextFieldDelegateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITextFieldDelegateModel.m; sourceTree = "<group>"; };
+		CB5C78A020C52BF300606811 /* UITextFieldDelegateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextFieldDelegateModel.h; sourceTree = "<group>"; };
 		CB6810CD20AAB7920062B7FD /* MyInvestController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyInvestController.h; sourceTree = "<group>"; };
 		CB6810CE20AAB7920062B7FD /* MyInvestController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyInvestController.m; sourceTree = "<group>"; };
 		CB6810D020AAB9190062B7FD /* MyInvestCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyInvestCell.h; sourceTree = "<group>"; };
@@ -2835,6 +2844,8 @@
 				E70E1ABF1FBFF37300C6EFA6 /* FoundController.m */,
 				CB731553209A9CE200B3B8FA /* CooperationController.h */,
 				CB731554209A9CE200B3B8FA /* CooperationController.m */,
+				CB5C789920C51ECB00606811 /* FeedbackController.h */,
+				CB5C789A20C51ECB00606811 /* FeedbackController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2842,6 +2853,10 @@
 		E70E1ABA1FBFDDA800C6EFA6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CB5C78A020C52BF300606811 /* UITextFieldDelegateModel.h */,
+				CB5C789F20C52BF300606811 /* UITextFieldDelegateModel.m */,
+				CB5C789D20C5206000606811 /* InputTextView.h */,
+				CB5C789C20C5205F00606811 /* InputTextView.m */,
 				E70E1ABC1FBFF30E00C6EFA6 /* TreasureMiddleCell.h */,
 				E70E1ABB1FBFF30E00C6EFA6 /* TreasureMiddleCell.m */,
 				E709175B1FC2FD1D003CF8E2 /* FoundListCell.h */,
@@ -3689,6 +3704,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-TTJF/Pods-TTJF-resources.sh",
 				"${PODS_ROOT}/FontAwesome+iOS/Resources/FontAwesome.ttf",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
+				"${PODS_ROOT}/LPDQuoteImagesView/LPDQuoteImagesView/Assets/LPDImagePickerController.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 				"${PODS_ROOT}/ShareSDK3/SDK/ShareSDK/Support/Required/ShareSDK.bundle",
@@ -3698,6 +3714,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/LPDImagePickerController.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ShareSDK.bundle",
@@ -3779,6 +3796,7 @@
 				E70CFAAA1F1047A10035FC58 /* NetworkManager.m in Sources */,
 				CB1BFBA3209013830045C0F0 /* RechargeRecordCell.m in Sources */,
 				E7067AA61E60C93B00E32B86 /* UIImage+animatedGIF.m in Sources */,
+				CB5C789B20C51ECB00606811 /* FeedbackController.m in Sources */,
 				1BCF2269206E2BFD00D75662 /* DetailTop.m in Sources */,
 				CB1BFBBB20917B4C0045C0F0 /* NavSwitchView.m in Sources */,
 				CB1BFB97208EBC790045C0F0 /* RechargeController.m in Sources */,
@@ -3843,6 +3861,7 @@
 				E7067B5A1E60C9AA00E32B86 /* NavView.m in Sources */,
 				1B4EEC6A206B709000117EF0 /* ChangePasswordViewController.m in Sources */,
 				1B583B2C205FBD9600CC70E4 /* RegisterViewController.m in Sources */,
+				CB5C78A120C52BF300606811 /* UITextFieldDelegateModel.m in Sources */,
 				E70331E11EAA363F00C1FFD1 /* HomeWebController.m in Sources */,
 				CB1BFB9D208EFE2D0045C0F0 /* UIButton+button.m in Sources */,
 				CBB4CD3D20BBE50600EA877B /* ZFXAxisLine.m in Sources */,
@@ -3964,6 +3983,7 @@
 				1B19239C2064D14E005B0C57 /* UIColor+HexString.m in Sources */,
 				E7BF5F1F1E6066F200BCE81E /* main.m in Sources */,
 				CBB4CD4720BBE50600EA877B /* ZFGenericAxis.m in Sources */,
+				CB5C789E20C5206000606811 /* InputTextView.m in Sources */,
 				1B1923A62064DFF8005B0C57 /* AdverAlertView.m in Sources */,
 				1BCF2285206F361200D75662 /* BaseView.m in Sources */,
 				E7067BCB1E60C9AB00E32B86 /* ZHPickView.m in Sources */,
