@@ -26,6 +26,7 @@
 #import "InvestRecordController.h"
 #import "TransferListController.h"
 #import "PropertyController.h"
+#import "MyRegAccountController.h"
 @interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
 {
@@ -252,6 +253,9 @@ Strong MyAccountModel *accountModel;//数据源
         if ([model.title isEqualToString:@"债权转让"]) {
             TransferListController *history = InitObject(TransferListController);
             [self.navigationController pushViewController:history animated:YES];
+        }else if([model.title isEqualToString:@"托管账户"]){
+            MyRegAccountController *reg = InitObject(MyRegAccountController);
+            [self.navigationController pushViewController:reg animated:YES];
         }else{
             NSString * url=model.link_url;
             HomeWebController *discountVC = [[HomeWebController alloc] init];

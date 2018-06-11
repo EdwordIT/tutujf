@@ -36,12 +36,14 @@ Strong UIScrollView *scrollView;
 Strong     LoanBase * baseModel;
 
 
+
 @end
 
 @implementation RushPurchaseController
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    investBtn.userInteractionEnabled = YES;
      [self getRequest];//下单页面刷新内容
 }
 - (void)viewDidLoad {
@@ -335,6 +337,7 @@ Strong     LoanBase * baseModel;
                     [self getFormData];
                 }
             }else{
+                investBtn.userInteractionEnabled = NO;//不可再次点击
                 [self goWebViewWithPath:self.baseModel.trust_reg_url];
             }
            
