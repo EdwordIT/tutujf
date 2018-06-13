@@ -27,6 +27,7 @@
 #import "TransferListController.h"
 #import "PropertyController.h"
 #import "MyRegAccountController.h"
+#import "MyBankCardController.h"
 @interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
 {
@@ -255,6 +256,9 @@ Strong MyAccountModel *accountModel;//数据源
             [self.navigationController pushViewController:history animated:YES];
         }else if([model.title isEqualToString:@"托管账户"]){
             MyRegAccountController *reg = InitObject(MyRegAccountController);
+            [self.navigationController pushViewController:reg animated:YES];
+        }else if([model.title isEqualToString:@"银行卡管理"]){
+            MyBankCardController *reg = InitObject(MyBankCardController);
             [self.navigationController pushViewController:reg animated:YES];
         }else{
             NSString * url=model.link_url;

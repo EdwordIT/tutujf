@@ -247,6 +247,10 @@
 		CB3D303A20A695310040FE30 /* point_sel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303420A695300040FE30 /* point_sel@3x.png */; };
 		CB3D303B20A695310040FE30 /* getCash_remind@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303520A695310040FE30 /* getCash_remind@3x.png */; };
 		CB3D303C20A695310040FE30 /* point_sel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303620A695310040FE30 /* point_sel@2x.png */; };
+		CB4A087420CF66F900713BF1 /* MyBankCardController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087320CF66F900713BF1 /* MyBankCardController.m */; };
+		CB4A087A20CF677B00713BF1 /* MyBankCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087920CF677B00713BF1 /* MyBankCardCell.m */; };
+		CB4A087D20CF679A00713BF1 /* BankCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087C20CF679A00713BF1 /* BankCardModel.m */; };
+		CB4A088020CFAB0E00713BF1 /* BankCardRemindView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087F20CFAB0E00713BF1 /* BankCardRemindView.m */; };
 		CB5C789B20C51ECB00606811 /* FeedbackController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789A20C51ECB00606811 /* FeedbackController.m */; };
 		CB5C789E20C5206000606811 /* InputTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789C20C5205F00606811 /* InputTextView.m */; };
 		CB5C78A120C52BF300606811 /* UITextFieldDelegateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789F20C52BF300606811 /* UITextFieldDelegateModel.m */; };
@@ -943,6 +947,14 @@
 		CB3D303420A695300040FE30 /* point_sel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point_sel@3x.png"; sourceTree = "<group>"; };
 		CB3D303520A695310040FE30 /* getCash_remind@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "getCash_remind@3x.png"; sourceTree = "<group>"; };
 		CB3D303620A695310040FE30 /* point_sel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point_sel@2x.png"; sourceTree = "<group>"; };
+		CB4A087220CF66F800713BF1 /* MyBankCardController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBankCardController.h; sourceTree = "<group>"; };
+		CB4A087320CF66F900713BF1 /* MyBankCardController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyBankCardController.m; sourceTree = "<group>"; };
+		CB4A087820CF677B00713BF1 /* MyBankCardCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBankCardCell.h; sourceTree = "<group>"; };
+		CB4A087920CF677B00713BF1 /* MyBankCardCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyBankCardCell.m; sourceTree = "<group>"; };
+		CB4A087B20CF679A00713BF1 /* BankCardModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BankCardModel.h; sourceTree = "<group>"; };
+		CB4A087C20CF679A00713BF1 /* BankCardModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BankCardModel.m; sourceTree = "<group>"; };
+		CB4A087E20CFAB0E00713BF1 /* BankCardRemindView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BankCardRemindView.h; sourceTree = "<group>"; };
+		CB4A087F20CFAB0E00713BF1 /* BankCardRemindView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BankCardRemindView.m; sourceTree = "<group>"; };
 		CB5C789920C51ECB00606811 /* FeedbackController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedbackController.h; sourceTree = "<group>"; };
 		CB5C789A20C51ECB00606811 /* FeedbackController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackController.m; sourceTree = "<group>"; };
 		CB5C789C20C5205F00606811 /* InputTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputTextView.m; sourceTree = "<group>"; };
@@ -3130,6 +3142,10 @@
 				CB6810F220AEC7460062B7FD /* InvestRecordCell.m */,
 				CB6810F420AFFDFD0062B7FD /* InvestSelectView.h */,
 				CB6810F520AFFDFD0062B7FD /* InvestSelectView.m */,
+				CB4A087820CF677B00713BF1 /* MyBankCardCell.h */,
+				CB4A087920CF677B00713BF1 /* MyBankCardCell.m */,
+				CB4A087E20CFAB0E00713BF1 /* BankCardRemindView.h */,
+				CB4A087F20CFAB0E00713BF1 /* BankCardRemindView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3171,6 +3187,8 @@
 				CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */,
 				CBFA80FD20C0E3EE00CB623E /* MyIncomeModel.h */,
 				CBFA80FE20C0E3EE00CB623E /* MyIncomeModel.m */,
+				CB4A087B20CF679A00713BF1 /* BankCardModel.h */,
+				CB4A087C20CF679A00713BF1 /* BankCardModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3206,6 +3224,8 @@
 				CB842C2920BE9DB400FA42AE /* TransferSellDetailController.m */,
 				CB5C78A220C903B600606811 /* MyRegAccountController.h */,
 				CB5C78A320C903B600606811 /* MyRegAccountController.m */,
+				CB4A087220CF66F800713BF1 /* MyBankCardController.h */,
+				CB4A087320CF66F900713BF1 /* MyBankCardController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3864,6 +3884,7 @@
 				CBB4CD3820BBE50600EA877B /* UIBezierPath+Zirkfied.m in Sources */,
 				E7067A3D1E60C88B00E32B86 /* RFSegmentView.m in Sources */,
 				1B788F0E207C654400F03863 /* CountDownManager.m in Sources */,
+				CB4A088020CFAB0E00713BF1 /* BankCardRemindView.m in Sources */,
 				E7067B5A1E60C9AA00E32B86 /* NavView.m in Sources */,
 				1B4EEC6A206B709000117EF0 /* ChangePasswordViewController.m in Sources */,
 				1B583B2C205FBD9600CC70E4 /* RegisterViewController.m in Sources */,
@@ -3900,6 +3921,7 @@
 				E712F6D21FFDD73F005C8C24 /* YBLUserManageCenter.m in Sources */,
 				E7037FFF1E9C96EF00C5E13D /* HorizontalMenu.m in Sources */,
 				E73B1C571FA6144600273C89 /* NSString+Additions.m in Sources */,
+				CB4A087A20CF677B00713BF1 /* MyBankCardCell.m in Sources */,
 				CB842C2720BE92DA00FA42AE /* MyTransferDetailModel.m in Sources */,
 				E709175D1FC2FD1D003CF8E2 /* FoundListCell.m in Sources */,
 				CB3CC60720B8ECA900CBE5DF /* FDSlideBarItem.m in Sources */,
@@ -3951,6 +3973,7 @@
 				E7F81C841F8B91B200A856B3 /* ggHttpFounction.m in Sources */,
 				E7A45DEE1E74E03D0032613E /* ImmediateCell.m in Sources */,
 				CBB4CD3F20BBE50600EA877B /* ZFCurveAttribute.m in Sources */,
+				CB4A087420CF66F900713BF1 /* MyBankCardController.m in Sources */,
 				E70D1BF11F8B8E200093EE4F /* JSONKit.m in Sources */,
 				E7067A611E60C88B00E32B86 /* UIColor+ZXLazy.m in Sources */,
 				E7067AA51E60C93B00E32B86 /* UIImage+Alpha.m in Sources */,
@@ -3962,6 +3985,7 @@
 				E7625CAD1FEE9E0500403F77 /* UIViewController+Example.m in Sources */,
 				E73B1C5C1FA6144600273C89 /* UIViewController+Swizzle.m in Sources */,
 				E774100B1FC81940008861C2 /* VersionInfo.m in Sources */,
+				CB4A087D20CF679A00713BF1 /* BankCardModel.m in Sources */,
 				1B4EEC8D206E1ABE00117EF0 /* MBTabbarView.m in Sources */,
 				E7067BC91E60C9AB00E32B86 /* ImageScrollCell.m in Sources */,
 				1B788F412081E4F400F03863 /* ZFJSegmentedControl.m in Sources */,
