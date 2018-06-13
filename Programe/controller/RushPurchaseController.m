@@ -43,7 +43,6 @@ Strong     LoanBase * baseModel;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    investBtn.userInteractionEnabled = YES;
      [self getRequest];//下单页面刷新内容
 }
 - (void)viewDidLoad {
@@ -413,7 +412,6 @@ Strong     LoanBase * baseModel;
         NSString *signnew=[HttpSignCreate GetSignStr:dict_data];
         NSString * sign=[successDic objectForKey:@"sign"];
         if ([signnew isEqualToString:sign]) {//sign为服务器返回
-            self->investBtn.userInteractionEnabled = NO;//不可再次点击
             NSString *formUrl = [[HttpCommunication sharedInstance] getFormUrl:formDic];
             HomeWebController *discountVC = [[HomeWebController alloc] init];
             discountVC.urlStr=formUrl;
