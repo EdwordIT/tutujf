@@ -41,6 +41,12 @@ Strong UILabel *periodLabel;
     [super viewDidLoad];
     [self initSubViews];
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    investBtn.userInteractionEnabled = YES;//不可再次点击
+
+}
 -(void)initSubViews
 {
     self.scrollView = [[UIScrollView alloc]initWithFrame:RECT(0, kNavHight, screen_width, screen_height)];
@@ -362,6 +368,7 @@ Strong UILabel *periodLabel;
         NSString *signnew=[HttpSignCreate GetSignStr:dict_data];
         NSString * sign=[successDic objectForKey:@"sign"];
         if ([signnew isEqualToString:sign]) {
+            self->investBtn.userInteractionEnabled = NO;//不可重复点击
             NSArray *keys = [formDic allKeys];
             
             NSString * url_parame=@"";

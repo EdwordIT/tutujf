@@ -334,10 +334,10 @@ Strong     LoanBase * baseModel;
             //是否开通汇付
             if ([self.baseModel.trust_account isEqualToString:@"1"]) {
                 if ([self checkNum]) {
+                    
                     [self getFormData];
                 }
             }else{
-                investBtn.userInteractionEnabled = NO;//不可再次点击
                 [self goWebViewWithPath:self.baseModel.trust_reg_url];
             }
            
@@ -413,7 +413,7 @@ Strong     LoanBase * baseModel;
         NSString *signnew=[HttpSignCreate GetSignStr:dict_data];
         NSString * sign=[successDic objectForKey:@"sign"];
         if ([signnew isEqualToString:sign]) {//sign为服务器返回
-            
+            self->investBtn.userInteractionEnabled = NO;//不可再次点击
             NSString *formUrl = [[HttpCommunication sharedInstance] getFormUrl:formDic];
             HomeWebController *discountVC = [[HomeWebController alloc] init];
             discountVC.urlStr=formUrl;
