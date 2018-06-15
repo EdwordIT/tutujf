@@ -116,7 +116,7 @@
     if (!_titleLabel) {
         _titleLabel = InitObject(UILabel);
         _titleLabel.textAlignment = NSTextAlignmentCenter;
-        _titleLabel.font = CHINESE_SYSTEM_BOLD(Title_Font);
+        _titleLabel.font = [UIFont systemFontOfSize:Title_Font];
         _titleLabel.textColor = RGB(255, 255, 255);
     }
     return _titleLabel;
@@ -142,7 +142,7 @@
     if (!_rightBtn) {
         //右边按钮默认隐藏
         _rightBtn = InitObject(UIButton);
-        [_rightBtn.titleLabel setFont:CHINESE_SYSTEM(kSizeFrom750(30))];
+        [_rightBtn.titleLabel setFont:SYSTEMSIZE(30)];
         [_rightBtn setHidden:YES];
         _rightBtn.adjustsImageWhenHighlighted = NO;
         

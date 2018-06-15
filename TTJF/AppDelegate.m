@@ -95,19 +95,7 @@ Strong NSDictionary *notificationInfo;
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeCustom];
     [SVProgressHUD setBackgroundLayerColor:[[UIColor blackColor] colorWithAlphaComponent:0.4]];
     [SVProgressHUD setMinimumSize:CGSizeMake(kSizeFrom750(350), kSizeFrom750(240))];
-//    [[UIButton appearance] setExclusiveTouch:YES];
-//    [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
-//    [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
-//    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
-//    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeClear];
-//    [SVProgressHUD setCornerRadius:8];
-//    [SVProgressHUD setBackgroundColor:RGBA(0, 0, 0, 0.6)];
-//    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
-//    [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeNative];
-//    [SVProgressHUD setFont:CHINESE_SYSTEM(16)];
-//    [SVProgressHUD setMinimumDismissTimeInterval:1.5];
-//    CGFloat wi = screen_width/3-space;
-//    [SVProgressHUD setMinimumSize:CGSizeMake(wi, wi)];
+
     
 }
 -(void)checkNetwork

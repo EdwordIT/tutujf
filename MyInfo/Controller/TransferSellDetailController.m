@@ -176,9 +176,11 @@ Strong UIButton *qBtn3;
      self.transferBtn.enabled = NO;
     if ([self.model.bt_state isEqualToString:@"2"]) {//可撤销转让
         self.transferBtn.enabled = YES;
+        self.percentageTextField.userInteractionEnabled = NO;//不可更改
         self.percentageTextField.text = [self.model.coefficient stringByAppendingString:@"%"];
         [ self.transferBtn setGradientColors:@[[UIColor yellowColor],[UIColor yellowColor]]];
     }else{
+        self.percentageTextField.userInteractionEnabled = YES;//
         [ self.transferBtn setGradientColors:@[COLOR_DarkBlue,COLOR_LightBlue]];
     }
     [self.backScroll addSubview: self.transferBtn];

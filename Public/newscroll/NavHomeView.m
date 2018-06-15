@@ -30,7 +30,7 @@
     _navLabel.text = @"土土金服";
     _navLabel.textAlignment = NSTextAlignmentCenter;
     _navLabel.textColor = [UIColor whiteColor];
-    [_navLabel setFont:CHINESE_SYSTEM_BOLD(Title_Font)];
+    [_navLabel setFont:[UIFont systemFontOfSize:Title_Font]];
     [self addSubview:_navLabel];
     
 

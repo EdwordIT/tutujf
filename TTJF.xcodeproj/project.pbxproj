@@ -251,6 +251,7 @@
 		CB4A087A20CF677B00713BF1 /* MyBankCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087920CF677B00713BF1 /* MyBankCardCell.m */; };
 		CB4A087D20CF679A00713BF1 /* BankCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087C20CF679A00713BF1 /* BankCardModel.m */; };
 		CB4A088020CFAB0E00713BF1 /* BankCardRemindView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087F20CFAB0E00713BF1 /* BankCardRemindView.m */; };
+		CB4A088320D35DE800713BF1 /* UIFont+customFont.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A088220D35DE800713BF1 /* UIFont+customFont.m */; };
 		CB5C789B20C51ECB00606811 /* FeedbackController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789A20C51ECB00606811 /* FeedbackController.m */; };
 		CB5C789E20C5206000606811 /* InputTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789C20C5205F00606811 /* InputTextView.m */; };
 		CB5C78A120C52BF300606811 /* UITextFieldDelegateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789F20C52BF300606811 /* UITextFieldDelegateModel.m */; };
@@ -398,7 +399,6 @@
 		E7067B571E60C9AA00E32B86 /* FlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7067AC51E60C9AA00E32B86 /* FlowView.m */; };
 		E7067B581E60C9AA00E32B86 /* HeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7067AC71E60C9AA00E32B86 /* HeaderView.m */; };
 		E7067B591E60C9AA00E32B86 /* NavHomeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7067AC91E60C9AA00E32B86 /* NavHomeView.m */; };
-		E7067B5A1E60C9AA00E32B86 /* NavView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7067ACB1E60C9AA00E32B86 /* NavView.m */; };
 		E7067B5B1E60C9AA00E32B86 /* HttpSignCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = E7067ACF1E60C9AA00E32B86 /* HttpSignCreate.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		E7067B5E1E60C9AA00E32B86 /* ReturnCode.m in Sources */ = {isa = PBXBuildFile; fileRef = E7067AD61E60C9AA00E32B86 /* ReturnCode.m */; };
 		E7067B5F1E60C9AA00E32B86 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7067AD91E60C9AA00E32B86 /* back@2x.png */; };
@@ -559,7 +559,6 @@
 		E77891071F7E43DE005F4E79 /* NewImg.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E77891061F7E43DE005F4E79 /* NewImg.xcassets */; };
 		E7A45DDF1E7423C60032613E /* HomeBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A45DDD1E7423C60032613E /* HomeBanner.m */; };
 		E7A45DE21E743AB20032613E /* BannerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A45DE11E743AB20032613E /* BannerModel.m */; };
-		E7A45DE51E74AFF90032613E /* HotProgramCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A45DE41E74AFF90032613E /* HotProgramCell.m */; };
 		E7A45DE81E74B04B0032613E /* HotQueueModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A45DE71E74B04B0032613E /* HotQueueModel.m */; };
 		E7A45DEE1E74E03D0032613E /* ImmediateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A45DED1E74E03D0032613E /* ImmediateCell.m */; };
 		E7A45DF11E74E0520032613E /* ImmediateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A45DF01E74E0520032613E /* ImmediateModel.m */; };
@@ -955,6 +954,8 @@
 		CB4A087C20CF679A00713BF1 /* BankCardModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BankCardModel.m; sourceTree = "<group>"; };
 		CB4A087E20CFAB0E00713BF1 /* BankCardRemindView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BankCardRemindView.h; sourceTree = "<group>"; };
 		CB4A087F20CFAB0E00713BF1 /* BankCardRemindView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BankCardRemindView.m; sourceTree = "<group>"; };
+		CB4A088120D35DE800713BF1 /* UIFont+customFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIFont+customFont.h"; sourceTree = "<group>"; };
+		CB4A088220D35DE800713BF1 /* UIFont+customFont.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIFont+customFont.m"; sourceTree = "<group>"; };
 		CB5C789920C51ECB00606811 /* FeedbackController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedbackController.h; sourceTree = "<group>"; };
 		CB5C789A20C51ECB00606811 /* FeedbackController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackController.m; sourceTree = "<group>"; };
 		CB5C789C20C5205F00606811 /* InputTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputTextView.m; sourceTree = "<group>"; };
@@ -1275,8 +1276,6 @@
 		E7067AC71E60C9AA00E32B86 /* HeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeaderView.m; sourceTree = "<group>"; };
 		E7067AC81E60C9AA00E32B86 /* NavHomeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavHomeView.h; sourceTree = "<group>"; };
 		E7067AC91E60C9AA00E32B86 /* NavHomeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavHomeView.m; sourceTree = "<group>"; };
-		E7067ACA1E60C9AA00E32B86 /* NavView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavView.h; sourceTree = "<group>"; };
-		E7067ACB1E60C9AA00E32B86 /* NavView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavView.m; sourceTree = "<group>"; };
 		E7067ACD1E60C9AA00E32B86 /* Constant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
 		E7067ACE1E60C9AA00E32B86 /* HttpSignCreate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpSignCreate.h; sourceTree = "<group>"; };
 		E7067ACF1E60C9AA00E32B86 /* HttpSignCreate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpSignCreate.m; sourceTree = "<group>"; };
@@ -1494,8 +1493,6 @@
 		E7A45DDE1E7423C60032613E /* HomeBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeBanner.h; sourceTree = "<group>"; };
 		E7A45DE01E743AB20032613E /* BannerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerModel.h; sourceTree = "<group>"; };
 		E7A45DE11E743AB20032613E /* BannerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BannerModel.m; sourceTree = "<group>"; };
-		E7A45DE31E74AFF90032613E /* HotProgramCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotProgramCell.h; sourceTree = "<group>"; };
-		E7A45DE41E74AFF90032613E /* HotProgramCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotProgramCell.m; sourceTree = "<group>"; };
 		E7A45DE61E74B04B0032613E /* HotQueueModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotQueueModel.h; sourceTree = "<group>"; };
 		E7A45DE71E74B04B0032613E /* HotQueueModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotQueueModel.m; sourceTree = "<group>"; };
 		E7A45DEC1E74E03D0032613E /* ImmediateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImmediateCell.h; sourceTree = "<group>"; };
@@ -1631,6 +1628,8 @@
 				1B4EEC8F206E1BF200117EF0 /* UINavigationController+MBNavigation.m */,
 				CB1BFB9B208EFE2D0045C0F0 /* UIButton+button.h */,
 				CB1BFB9C208EFE2D0045C0F0 /* UIButton+button.m */,
+				CB4A088120D35DE800713BF1 /* UIFont+customFont.h */,
+				CB4A088220D35DE800713BF1 /* UIFont+customFont.m */,
 			);
 			path = Categorys;
 			sourceTree = "<group>";
@@ -2603,8 +2602,6 @@
 				E7067AC71E60C9AA00E32B86 /* HeaderView.m */,
 				E7067AC81E60C9AA00E32B86 /* NavHomeView.h */,
 				E7067AC91E60C9AA00E32B86 /* NavHomeView.m */,
-				E7067ACA1E60C9AA00E32B86 /* NavView.h */,
-				E7067ACB1E60C9AA00E32B86 /* NavView.m */,
 			);
 			path = newscroll;
 			sourceTree = "<group>";
@@ -3046,8 +3043,6 @@
 				1B583B19205F895000CC70E4 /* GuideRegisterCell.m */,
 				E7A45DDE1E7423C60032613E /* HomeBanner.h */,
 				E7A45DDD1E7423C60032613E /* HomeBanner.m */,
-				E7A45DE31E74AFF90032613E /* HotProgramCell.h */,
-				E7A45DE41E74AFF90032613E /* HotProgramCell.m */,
 				E7A45DEC1E74E03D0032613E /* ImmediateCell.h */,
 				E7A45DED1E74E03D0032613E /* ImmediateCell.m */,
 				1B4EEC8B206E1ABD00117EF0 /* MBTabbarView.h */,
@@ -3885,7 +3880,6 @@
 				E7067A3D1E60C88B00E32B86 /* RFSegmentView.m in Sources */,
 				1B788F0E207C654400F03863 /* CountDownManager.m in Sources */,
 				CB4A088020CFAB0E00713BF1 /* BankCardRemindView.m in Sources */,
-				E7067B5A1E60C9AA00E32B86 /* NavView.m in Sources */,
 				1B4EEC6A206B709000117EF0 /* ChangePasswordViewController.m in Sources */,
 				1B583B2C205FBD9600CC70E4 /* RegisterViewController.m in Sources */,
 				CB5C78A120C52BF300606811 /* UITextFieldDelegateModel.m in Sources */,
@@ -3989,6 +3983,7 @@
 				1B4EEC8D206E1ABE00117EF0 /* MBTabbarView.m in Sources */,
 				E7067BC91E60C9AB00E32B86 /* ImageScrollCell.m in Sources */,
 				1B788F412081E4F400F03863 /* ZFJSegmentedControl.m in Sources */,
+				CB4A088320D35DE800713BF1 /* UIFont+customFont.m in Sources */,
 				E7071BA11F21C30C00293B38 /* CALayer+Anim.m in Sources */,
 				1BCF2282206F357400D75662 /* BaseViewController.m in Sources */,
 				CBB4CD4A20BBE50600EA877B /* ZFHorizontalBar.m in Sources */,
@@ -4006,7 +4001,6 @@
 				1B4FC6A42057C7E100C7C88E /* LoginViewController.m in Sources */,
 				E7071BA61F21C30C00293B38 /* PCCircleViewConst.m in Sources */,
 				1B788F18207E03A600F03863 /* EmptyView.m in Sources */,
-				E7A45DE51E74AFF90032613E /* HotProgramCell.m in Sources */,
 				CBB4CD4220BBE50600EA877B /* ZFMethod.m in Sources */,
 				E7BF5F221E6066F200BCE81E /* AppDelegate.m in Sources */,
 				E70845B51FEBC2190010ADCE /* XXWebKitSupport.m in Sources */,

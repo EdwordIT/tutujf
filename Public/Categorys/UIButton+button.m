@@ -17,7 +17,7 @@
     return self;
 }
 - (NSTimeInterval)timeInterval{
-    return[objc_getAssociatedObject(self,_cmd)doubleValue];
+    return [objc_getAssociatedObject(self,_cmd)doubleValue];
 }
 - (void)setTimeInterval:(NSTimeInterval)timeInterval{
     objc_setAssociatedObject(self,@selector(timeInterval),@(timeInterval),OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -27,7 +27,7 @@
     objc_setAssociatedObject(self,@selector(isIgnoreEvent),@(isIgnoreEvent),OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 - (BOOL)isIgnoreEvent{
-    return[objc_getAssociatedObject(self,_cmd)boolValue];
+    return [objc_getAssociatedObject(self,_cmd)boolValue];
 }
 - (void)resetState{
     [self setIsIgnoreEvent:NO];
@@ -56,7 +56,7 @@
         if(self.isIgnoreEvent){
             return;
         }else if(self.timeInterval>0){
-            [self performSelector:@selector(resetState)withObject:nil afterDelay:self.timeInterval];
+            [self performSelector:@selector(resetState) withObject:nil afterDelay:self.timeInterval];
         }
     }
     //此处methodA和methodB方法IMP互换了，实际上执行sendAction；所以不会死循环

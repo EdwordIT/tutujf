@@ -28,22 +28,22 @@
         [imageView setUserInteractionEnabled:YES];
         
         self.title= [[UILabel alloc] initWithFrame:CGRectMake(20, 95,self.frame.size.width-40, 15)];
-        self.title.font = CHINESE_SYSTEM(15);
-        self.title.textColor=RGB(51,51,51);
+        self.title.font = SYSTEMSIZE(30);
+        self.title.textColor=RGB_51;
         self.title.text=@"【新功能说明】";
         self.title.textAlignment=NSTextAlignmentLeft;
         [imageView addSubview: self.title];
         
         
         UILabel * lab1 = [[UILabel alloc] initWithFrame:CGRectMake(20, 115,self.frame.size.width-40, 13)];
-        lab1.font = CHINESE_SYSTEM(13);
+        lab1.font = SYSTEMSIZE(26);
         lab1.textColor=RGB(135,135,135);
         lab1.text=@"1、修改了App应用图标";
         lab1.textAlignment=NSTextAlignmentLeft;
         [imageView addSubview: lab1];
         
         UILabel * lab2 = [[UILabel alloc] initWithFrame:CGRectMake(20, 133,self.frame.size.width-40, 13)];
-        lab2.font = CHINESE_SYSTEM(13);
+        lab2.font = SYSTEMSIZE(26);
         lab2.textColor=RGB(135,135,135);
         lab2.text=@"";
         lab2.textAlignment=NSTextAlignmentLeft;
@@ -54,7 +54,7 @@
         btn1.frame = CGRectMake(20,self.frame.size.height-48, (self.frame.size.width-40)/2-5, 33);
         
         [btn1 setTitle:@"立即升级" forState:UIControlStateNormal];
-        btn1.titleLabel.font = [UIFont systemFontOfSize:12];
+        btn1.titleLabel.font = SYSTEMBOLDSIZE(24);
         [btn1 addTarget:self action:@selector(OnSaveBtn:) forControlEvents:UIControlEventTouchUpInside];
         [btn1 setBackgroundColor:RGB(96,92,241)];
         [btn1.layer setCornerRadius:16]; //设置矩形四个圆角半径

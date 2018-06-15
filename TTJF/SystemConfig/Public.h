@@ -85,14 +85,6 @@
 //中文字体
 #define CHINESE_FONT_NAME  @"STHeitiK-Light"
 
-//#define CHINESE_SYSTEM(x) [UIFont systemFontOfSize:x]
-//#define CHINESE_SYSTEM(x) [UIFont fontWithName:@"Source Han Sans CN" size:x]
-//#define CHINESE_SYSTEM_BOLD(x) [UIFont boldSystemFontOfSize:x]
-//#define SYSTEMSIZE(x) [UIFont fontWithName:@"Source Han Sans CN" size:kSizeFrom750(x)]
-//#define SYSTEMBOLDSIZE(x)  [UIFont boldSystemFontOfSize:kSizeFrom750(x)]
-
-#define CHINESE_SYSTEM(x) [UIFont fontWithName:@"Source Han Sans CN" size:x]
-#define CHINESE_SYSTEM_BOLD(x) [UIFont boldSystemFontOfSize:x]
 #define SYSTEMSIZE(x) [UIFont fontWithName:@"Source Han Sans CN" size:kSizeFrom750(x)]
 #define SYSTEMBOLDSIZE(x)  [UIFont boldSystemFontOfSize:kSizeFrom750(x)]
 //Helvetica-Bold
@@ -107,11 +99,11 @@
 #define screen_height [UIScreen mainScreen].bounds.size.height
 
 
-//UI设计尺寸，在开发过程中需要用次方法转换
+//UI设计尺寸，在开发过程中需要用此方法转换
 #define kSizeFrom750(x) ((x) * ([UIScreen mainScreen].bounds.size.width/750.f))
 
-static CGFloat const space                   = 10;
-// 系统控件默认高度
+//static CGFloat const space = 10;
+// 系统默认状态栏高度
 #define kStatusBarHeight    (kDevice_Is_iPhoneX ? 44 : 20)
 //导航栏高度
 #define kNavHight (kSizeFrom750(88)+kStatusBarHeight)

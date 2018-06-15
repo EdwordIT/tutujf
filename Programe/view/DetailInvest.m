@@ -36,7 +36,7 @@
     {
        content.textAlignment=NSTextAlignmentCenter;
        content.textColor=RGB(83,83,83);
-       content.font=CHINESE_SYSTEM(15);
+       content.font=SYSTEMSIZE(30);
        content.text=tenderModel.not_lktenlist_title;
        [self addSubview:content];
     }
