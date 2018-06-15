@@ -160,7 +160,7 @@
         button.selected = YES;
         
     }
-    else if (_tmpBtn!= button && _tmpBtn!=nil){
+      else if (_tmpBtn!= button && _tmpBtn!=nil){
         _tmpBtn.selected = NO;
         button.selected = YES;
         _tmpBtn = button;
