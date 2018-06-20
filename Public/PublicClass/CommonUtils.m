@@ -580,6 +580,7 @@
  @param range range
  @param fontValue 字体
  @param colorString 颜色
+ @param spacingBeforeValue 首行缩进
  @return
  */
 + (NSMutableAttributedString *)diffierentFontWithString:(NSString *)string rang:(NSRange)range font:(UIFont *)font color:(UIColor *)color spacingBeforeValue:(CGFloat)spacingBeforeValue lineSpace:(CGFloat)lineSpace{

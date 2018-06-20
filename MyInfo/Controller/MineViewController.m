@@ -272,8 +272,8 @@ Strong MyAccountModel *accountModel;//数据源
         [self goLoginVC];
     }
 }
-//点击事件
--(void)didopMineAtIndex:(NSInteger)index
+//点击顶部功能事件
+-(void)didTapMineTopAtIndex:(NSInteger)index
 {
     if([CommonUtils isLogin])
     {

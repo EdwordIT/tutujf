@@ -38,14 +38,14 @@
         [data addObject:model1];
         //中间滚动视图
         _basepage=[[TopScrollBasePage alloc] initWithFrame:CGRectMake(0, topBg.height - kSizeFrom750(413), screen_width,kSizeFrom750(413)) DataArray:data selectBlock:^(TopScrollMode * data) {
-            [self.delegate didopMineAtIndex:data.index];
+            [self.delegate didTapMineTopAtIndex:data.index];
         }];
         [topBg addSubview:_basepage];
         
     
         //可用余额类容
         _account=[[TopAccount alloc] initWithFrame:CGRectMake(kSizeFrom750(30), topBg.height - kSizeFrom750(85), screen_width-kSizeFrom750(30)*2,kSizeFrom750(205))  withBlock:^(NSInteger index) {
-            [self.delegate didopMineAtIndex:index];
+            [self.delegate didTapMineTopAtIndex:index];
         }];
         _account.layer.shadowColor=RGB(214,214,214).CGColor;
         _account.layer.shadowOffset=CGSizeMake(1,1);
@@ -64,11 +64,11 @@
 }
 
 -(void)OnTapImage:(UITapGestureRecognizer *)sender{
-    [self.delegate didopMineAtIndex:sender.view.tag];
+    [self.delegate didTapMineTopAtIndex:sender.view.tag];
 }
 -(void)OnMenuBtn:(UIButton *)sender
 {
-        [self.delegate didopMineAtIndex:sender.tag];
+        [self.delegate didTapMineTopAtIndex:sender.tag];
     
 }
 -(void)setModelData:(MyAccountModel *)userinfo

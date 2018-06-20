@@ -314,8 +314,10 @@ Strong NSDate *nowDate;//现在的时间
     progressNum=[self.cellModel.progress intValue]/100;
     secondsCountDown = [self getDifferenceByDate:self.cellModel.open_up_date];//倒计时秒数(48小时换算成的秒数,项目中需要从服务器获取)
     int status = [self.cellModel.status intValue];
+    UIColor *progressColor = RGB_51;
     if( status== 4||status ==6||status==7)//如果已经满标，三种状态
     {
+        progressColor = RGB_183;
         lab5.textColor=RGB_183;
         self.percentLabel.textColor=RGB_183;
         self.timeLabel.textColor=RGB_183;
@@ -405,7 +407,7 @@ Strong NSDate *nowDate;//现在的时间
     self.timeLabel.text=[NSString stringWithFormat:@"%@",self.cellModel.period];
     NSString *progress = [[NSString stringWithFormat:@"%@",self.cellModel.progress] stringByAppendingString:@"%"];
     NSString *proTxt = [@"进度" stringByAppendingString:progress];
-    [proTextLabel setAttributedText:[CommonUtils diffierentFontWithString:proTxt rang:[proTxt rangeOfString:progress] font:NUMBER_FONT(26) color:RGB_51 spacingBeforeValue:0 lineSpace:0]];
+    [proTextLabel setAttributedText:[CommonUtils diffierentFontWithString:proTxt rang:[proTxt rangeOfString:progress] font:NUMBER_FONT(26) color:progressColor spacingBeforeValue:0 lineSpace:0]];
     self.percentLabel.text = self.cellModel.apr_val;
     
     lab5.text=[NSString stringWithFormat:@"%@",self.cellModel.repay_type_name];

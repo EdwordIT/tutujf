@@ -16,7 +16,8 @@
 @protocol MineTopDelegate <NSObject>
 
 @optional
--(void)didopMineAtIndex:(NSInteger)index;
+//点击顶部功能按钮
+-(void)didTapMineTopAtIndex:(NSInteger)index;
 
 @end
 
