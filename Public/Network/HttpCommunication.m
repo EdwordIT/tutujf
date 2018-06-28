@@ -27,20 +27,35 @@
         _manager.requestSerializer.timeoutInterval = 15;
         _manager.requestSerializer = [AFJSONRequestSerializer serializer];
         _manager.responseSerializer = [AFJSONResponseSerializer serializer];
-       // 内容类型
+//       // 内容类型
         _manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json",@"text/javascript",@"text/html", nil];
-//        NSString *certFilePath = [[NSBundle mainBundle]
-//                                  pathForResource:@"public" ofType:@"der"];
-//        NSData *certData = [NSData dataWithContentsOfFile:certFilePath];
-//        NSSet *certSet = [NSSet setWithObject:certData];
-//        //pinnedCertificates,校验服务器返回证书的证书,AF自动寻找
-//        AFSecurityPolicy *policy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey withPinnedCertificates:certSet];
-//        //因为使用自建证书，所以要开启允许非法证书
-//        policy.allowInvalidCertificates = YES;
-//        //检验证书omain字段和服务器的是否匹配
-//        policy.validatesDomainName = YES;
-//        //af2.6之后拿掉了validatesCertificateChain：检验证书链条
-//        _manager.securityPolicy = policy;
+
+//
+//        NSString*cerPath = [[NSBundle mainBundle]pathForResource:@"tutujf.cer"ofType:nil];
+//
+//        NSData *certData =[NSData dataWithContentsOfFile:cerPath];
+//
+//        NSSet *certSet = [[NSSet alloc]initWithObjects:certData,nil];
+//
+//        /**
+//        AFSSLPinningModeNone,
+//        表示不做SSL pinning，只跟浏览器一样在系统的信任机构列表里验证服务端返回的证书。若证书是信任机构签发的就会通过，若是自己服务器生成的证书，这里是不会通过的。
+//        AFSSLPinningModePublicKey,
+//        表示用证书绑定方式验证证书，需要客户端保存有服务端的证书拷贝，这里验证分两步，第一步验证证书的域名/有效期等信息，第二步是对比服务端返回的证书跟客户端返回的是否一致。
+//        AFSSLPinningModeCertificate,
+//        //这个模式同样是用证书绑定方式验证，客户端要有服务端的证书拷贝，只是验证时只验证证书里的公钥，不验证证书的有效期等信息。
+//         */
+//        AFSecurityPolicy *securityPolicy =[AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];//证书验证。
+//
+//        securityPolicy.allowInvalidCertificates = YES;//这个一属性是设置无效证书(过期、失效证书)是否认同，yes为认同，NO为不认同
+//
+//        securityPolicy.validatesDomainName = YES;//是否验证
+//
+//        [securityPolicy setPinnedCertificates:certSet];//添加证书
+//
+//        _manager.securityPolicy= securityPolicy;
+//
+
 
 
     }
@@ -89,14 +104,7 @@
         return parameters;
     }
 }
-//带sign签名的POST请求
-- (void)postSignRequestWithPath:(NSString *)urlString
-                     keysArray:(NSArray *)keys
-                   valuesArray:(NSArray *)values
-                       refresh:(UIScrollView *)scrollView
-                       success:(TTJFCallBackSuccess)success
-                       failure:(TTJFCallBackFailed)failure
-{
+-(NSMutableURLRequest *)getUrlRequestWithPath:(NSString *)urlString keysArray:(NSArray *)keys valuesArray:(NSArray *)values{
     
     urlString = [oyApiUrl stringByAppendingString:urlString];
     NSString *newPath = @"";
@@ -107,6 +115,7 @@
         newPath = [self getRequestPath:urlString keysArray:keys valuesArray:values signStr:sign];
     }
     NSLog(@"requestUrl = %@",newPath);//请求地址
+    
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:url];
@@ -119,8 +128,20 @@
         bodyStr = [newPath substringFromIndex:urlString.length+1];//请求体封装(有？的情况)
     NSData *bodyData = [bodyStr dataUsingEncoding:NSUTF8StringEncoding];
     urlRequest.HTTPBody = bodyData;
-    NSURLSession *session = [NSURLSession sharedSession];
+    return urlRequest;
+}
+//带sign签名的POST请求
+- (void)postSignRequestWithPath:(NSString *)urlString
+                     keysArray:(NSArray *)keys
+                   valuesArray:(NSArray *)values
+                       refresh:(UIScrollView *)scrollView
+                       success:(TTJFCallBackSuccess)success
+                       failure:(TTJFCallBackFailed)failure
+{
+    
 
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSMutableURLRequest *urlRequest = [self getUrlRequestWithPath:urlString keysArray:keys valuesArray:values];
     NSURLSessionDataTask *sessionDataTask  = [session dataTaskWithRequest:urlRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 
          if ([data length] >0  &&
@@ -169,7 +190,7 @@
                  NSLog(@"json格式错误");
                  [self endRefresh:scrollView];
                  dispatch_async(dispatch_get_main_queue(), ^{
-                     
+
                      if ([scrollView isKindOfClass:[UITableView class]]) {
                          [((UITableView *)scrollView) reloadData];
                      }
@@ -206,11 +227,11 @@
 
      }];
     [sessionDataTask resume];
-
+//
 //    NSDictionary *parameters = [self getParametersWithKeys:keys values:values];
 //
 //    if ([HttpCommunication isReachable]) {
-//        [_manager.operationQueue cancelAllOperations];//取消所有网络请求，然后在进行下一步的网络请求
+////        [_manager.operationQueue cancelAllOperations];//取消所有网络请求，然后在进行下一步的网络请求
 //
 //        [_manager POST:urlString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
 //            //数据请求的进度
@@ -291,7 +312,175 @@
         [scrollView.mj_footer endRefreshing];
     }
 }
+/**
+ *  获取文件上传的请求体信息(二进制)
+ *
+ *  @param serverFileName 服务器接收文件的字段名
+ *  @param filePath       要上传的文件的路径
+ *
+ *  @return 返回文件上传的请求体二进制信息
+ */
+- (NSData *)getHTTPBodyWithServerFileName:(NSString *)serverFileName imageData:(NSData *)imageData
+{
+    // 定义可变的二进制容器,拼接请求体的二进制信息
+    NSMutableData *dataM = [NSMutableData data];
+    NSDate *date = [NSDate date];
+    NSDateFormatter *formormat = [[NSDateFormatter alloc]init];
+    [formormat setDateFormat:@"HHmmss"];
+    NSString *dateString = [formormat stringFromDate:date];
+    NSString *fileName = [NSString  stringWithFormat:@"%@.png",dateString];
+    // 定义可变字符串,拼接开始的请求体字符串信息
+    NSMutableString *stringM = [NSMutableString string];
+    // 拼接文件开始上传的分隔符
+    [stringM appendString:@"--mac\r\n"];
+    // 拼接表单数据
+    [stringM appendFormat:@"Content-Disposition: form-data; name=%@; filename=%@\r\n",serverFileName,fileName];
+    // 拼接要上传的文件的类型 : 如果你不想告诉服务器你的文件类型具体是什么,就可以使用 "Content-Type: application/octet-stream"
+    [stringM appendString:@"Content-Type: image/jpg/png/jpeg\r\n"];
+    // 拼接单穿的换行
+    [stringM appendString:@"\r\n"];
+    // 在这里(拼接文件的二进制数据之前),把前面的请求体字符串转换成二进制,先拼接一次
+    NSData *stringM_data = [stringM dataUsingEncoding:NSUTF8StringEncoding];
+    [dataM appendData:stringM_data];
+    // 拼接文件的二进制数据
+    NSData *file_data = imageData;
+    [dataM appendData:file_data];
+    NSString *end = @"\r\n--mac--";
+    [dataM appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
+    return dataM.copy;
+}
+/******************************图片上传*************************************/
+- (void)uploadImageWithUrl:(NSString *)urlString
+                      keysArray:(NSArray *)keys
+                    valuesArray:(NSArray *)values
+                     image:(NSData  *)imageData
+                        success:(TTJFCallBackSuccess)success
+                        failure:(TTJFCallBackFailed)failure
+{
+    
+//    NSMutableURLRequest *urlRequest = [self getUrlRequestWithPath:urlString keysArray:keys valuesArray:values];
+//    [urlRequest setValue:@"multipart/form-data; boundary=mac" forHTTPHeaderField:@"Content-Type"];
+//    NSURLSession *session = [NSURLSession sharedSession];
+//    NSData *data = [self getHTTPBodyWithServerFileName:@"uploadimg" imageData:imageData];
+//    NSURLSessionDataTask *sessionDataTask = [session uploadTaskWithRequest:urlRequest fromData:data completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//        if ([data length] >0  &&
+//            error == nil){
+//            id resalut = [data objectFromJSONData];
+//            NSLog(@"获取数据 resalut = %@",resalut);
+//            if ([resalut isKindOfClass:[NSDictionary class]]) {
+//                NSString *resCode = [NSString stringWithFormat:@"%@",[resalut objectForKey:RESPONSE_CODE]];//状态码
+//                //返回数据正确 ，则解析到数据接收内容
+//                if([resCode integerValue]==kReqSuccess)
+//                {
+//                    //如果仅返回成功码而无其他返回内容,则resultData默认返回值为空数组
+//                    NSDictionary *dataDic = [resalut objectForKey:RESPONSE_DATA];
+//                    /**
+//                     获取后台给定的正确码0，做逻辑处理
+//                     */
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        //直接显示成功信息
+//                        if ([dataDic isKindOfClass:[NSArray class]]&&((NSArray *)dataDic).count==0) {
+//                            [SVProgressHUD showSuccessWithStatus:[resalut objectForKey:RESPONSE_MESSAGE]];
+//                        }
+//                        success(dataDic);
+//                    });
+//                }else{
+//                    /*
+//                     获取后台给定的其他错误码，做逻辑处理
+//                     */
+//                    //如果是token失效，则直接跳转到重新登录页面
+//                    if ([resCode integerValue]==kLoginError) {
+//                        [[NSNotificationCenter defaultCenter] postNotificationName:Noti_AutoLogin object:nil];
+//                    }
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        //错误信息展示（其他相关错误处理在具体的类里进行）
+//                        [SVProgressHUD showInfoWithStatus:[resalut objectForKey:RESPONSE_MESSAGE]];
+//                        failure(resalut);
+//                    });
+//                }
+//            }else{
+//                NSLog(@"json格式错误");
+//            }
+//        }else{
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                //错误信息展示（其他相关错误处理在具体的类里进行）
+//                [SVProgressHUD showInfoWithStatus:@"上传失败"];
+//            });
+//        }
+//    }];
+//    [sessionDataTask resume];
 
+    urlString = [oyApiUrl stringByAppendingString:urlString];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer.timeoutInterval = 15;
+    NSDictionary *parameters = [self getParametersWithKeys:keys values:values];
+    [manager POST:urlString parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        
+        NSDate *date = [NSDate date];
+        NSDateFormatter *formormat = [[NSDateFormatter alloc]init];
+        [formormat setDateFormat:@"HHmmss"];
+        NSString *dateString = [formormat stringFromDate:date];
+        NSString *fileName = [NSString  stringWithFormat:@"%@.png",dateString];
+        [formData  appendPartWithFileData:imageData name:@"uploadimg" fileName:fileName mimeType:@"image/jpg/png/jpeg"];
+
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        //上传进度
+        // @property int64_t totalUnitCount;     需要上传文件的总大小
+        // @property int64_t completedUnitCount; 当前已经上传的大小
+        CGFloat progress = 1.0 * uploadProgress.completedUnitCount / uploadProgress.totalUnitCount;
+        // 给Progress添加监听 KVO
+        NSLog(@"%f",progress);
+        // 回到主队列刷新UI,用户自定义的进度条
+        dispatch_async(dispatch_get_main_queue(), ^{
+//            self.progressView.progress = 1.0 *
+//            uploadProgress.completedUnitCount / uploadProgress.totalUnitCount;
+        });
+
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+                    if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                        id resalut = (NSDictionary *)responseObject;
+                        NSLog(@"获取数据 resalut = %@",resalut);
+                        NSString *resCode = [NSString stringWithFormat:@"%@",[resalut objectForKey:RESPONSE_CODE]];//状态码
+                        //返回数据正确 ，则解析到数据接收内容
+                        if([resCode integerValue]==kReqSuccess)
+                        {
+                            //如果仅返回成功码而无其他返回内容,则resultData默认返回值为空数组
+                            NSDictionary *dataDic = [resalut objectForKey:RESPONSE_DATA];
+                            /**
+                             获取后台给定的正确码0，做逻辑处理
+                             */
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                //直接显示成功信息
+                                if ([dataDic isKindOfClass:[NSArray class]]&&((NSArray *)dataDic).count==0) {
+                                    [SVProgressHUD showSuccessWithStatus:[resalut objectForKey:RESPONSE_MESSAGE]];
+                                }
+                                success(dataDic);
+                            });
+                        }else{
+                            /*
+                             获取后台给定的其他错误码，做逻辑处理
+                             */
+                            //如果是token失效，则直接跳转到重新登录页面
+                            if ([resCode integerValue]==kLoginError) {
+                                [[NSNotificationCenter defaultCenter] postNotificationName:Noti_AutoLogin object:nil];
+                            }
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                //错误信息展示（其他相关错误处理在具体的类里进行）
+                                [SVProgressHUD showInfoWithStatus:[resalut objectForKey:RESPONSE_MESSAGE]];
+                                failure(resalut);
+                            });
+                        }
+                    }else{
+                        NSLog(@"json格式错误");
+                    }
+        NSLog(@"上传成功 %@", responseObject);
+
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"上传失败 %@", error);
+        [SVProgressHUD showErrorWithStatus:@"反馈失败"];
+    }];
+}
 /*!
  
  * @brief 把格式化的JSON格式的字符串转换成字典

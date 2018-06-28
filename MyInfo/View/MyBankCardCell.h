@@ -7,14 +7,18 @@
 //
 
 #import "BaseCell.h"
-#import "BankCardModel.h"
+#import "MyBankCardModel.h"
 
 typedef void (^AddBankCardBlock)(void);
 @interface AddBankCardCell : BaseCell
 Copy AddBankCardBlock addBankCardBlock;
+-(void)loadInfoWithModel:(AddBankCardModel *)model;
 @end
 
+
+typedef void (^UnlinkBankCardBlock)(NSString *cardId);
 @interface MyBankCardCell : BaseCell
+Copy UnlinkBankCardBlock unlinkBankCardBlock;
 -(void)loadInfoWithModel:(BankCardModel *)model;
 
 @end

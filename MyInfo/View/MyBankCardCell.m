@@ -8,8 +8,10 @@
 
 #import "MyBankCardCell.h"
 #import "GradientButton.h"
+#import <UIButton+WebCache.h>
 @interface AddBankCardCell()
 Strong UIButton *addBtn;//添加银行卡
+Assign BOOL isCanAdd;//是否可添加银行卡
 @end
 
 @implementation AddBankCardCell
@@ -30,7 +32,12 @@ Strong UIButton *addBtn;//添加银行卡
     }
     return self;
 }
+-(void)loadInfoWithModel:(AddBankCardModel *)model{
+    
+    [self.addBtn setTitle:model.btaddname forState:UIControlStateNormal];
+}
 -(void)addClick:(UIButton *)sender{
+    
     if (self.addBankCardBlock) {
         self.addBankCardBlock();
     }
@@ -43,6 +50,7 @@ Strong UILabel *titleL;
 Strong UILabel *subTitleL;
 Strong UIButton *unlinkBtn;//解绑
 Strong UILabel *cardNumL;//银行卡号
+Strong BankCardModel *bankCardModel;
 @end
 @implementation MyBankCardCell
 
@@ -68,6 +76,8 @@ Strong UILabel *cardNumL;//银行卡号
     [self.bgView addSubview:self.unlinkBtn];
     
     [self.bgView addSubview:self.cardNumL];
+    
+    [self loadLayout];
     
 }
 -(GradientButton *)bgView{
@@ -107,6 +117,7 @@ Strong UILabel *cardNumL;//银行卡号
          NSMutableAttributedString *attr = [[NSMutableAttributedString alloc]initWithString:@"点击解绑"];
         [attr setAttributes:@{NSUnderlineColorAttributeName: COLOR_LightBlue,
                               NSUnderlineStyleAttributeName: @(NSUnderlinePatternSolid),NSFontAttributeName:SYSTEMSIZE(28),NSForegroundColorAttributeName:RGB(179,254,246)} range:NSMakeRange(0, 4)];
+        [_unlinkBtn addTarget:self action:@selector(unlinkBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [_unlinkBtn setAttributedTitle:attr forState:UIControlStateNormal];
         _unlinkBtn.adjustsImageWhenHighlighted = NO;
     }
@@ -150,6 +161,18 @@ Strong UILabel *cardNumL;//银行卡号
     
 }
 -(void)loadInfoWithModel:(BankCardModel *)model{
+    [self.iconImage setImageWithString:model.bank_logo];
+    [self.titleL setText:model.bank_name];
+    [self.subTitleL setText:model.express_flag_txt];
+    [self.unlinkBtn setTitle:model.relieve_txt forState:UIControlStateNormal];
+    [self.cardNumL setText:model.show_card_id];
+    self.bankCardModel = model;
+}
+-(void)unlinkBtnClick:(UIButton *)sender{
+    
+    if (self.unlinkBankCardBlock) {
+        self.unlinkBankCardBlock(self.bankCardModel.card_id);
+    }
     
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

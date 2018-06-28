@@ -7,10 +7,12 @@
 //
 
 #import "BaseView.h"
+#import "MyBankCardModel.h"
 typedef void (^BankCardRemindBlock)(NSInteger tag);
 /**
  银行解绑温馨提示
  */
 @interface BankCardRemindView : BaseView
 Copy BankCardRemindBlock remindBlock;
+-(void)loadInfoWithModel:(RelieveRemindModel *)model;
 @end

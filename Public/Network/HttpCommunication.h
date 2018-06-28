@@ -46,7 +46,12 @@ typedef NS_ENUM(NSUInteger, AnalyzeType) {
                         success:(TTJFCallBackSuccess)success
                         failure:(TTJFCallBackFailed)failure;
 
-
+- (void)uploadImageWithUrl:(NSString *)urlString
+                 keysArray:(NSArray *)keys
+               valuesArray:(NSArray *)values
+                     image:(NSData  *)imageData
+                   success:(TTJFCallBackSuccess)success
+                   failure:(TTJFCallBackFailed)failure;
 /*!
  
  * @brief 把格式化的JSON格式的字符串转换成字典

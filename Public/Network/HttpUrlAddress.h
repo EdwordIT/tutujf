@@ -186,3 +186,23 @@
  */
 #define getMyTotalIncomeUrl @"/api/Users/getUserToProfit"
 
+/*****************************************图片或者大文件上传************************************************************/
+#define uploadImagesUrl @"/api/Uploads/fileFlow"
+/**
+ 意见反馈
+ */
+#define postSuggestUrl @"/api/Feedback/addFeedback"
+/**
+ 银行卡列表
+ */
+#define getBankCardListUrl @"/api/Bank/getBankIndex"
+/**
+ 解绑银行卡
+ */
+#define relieveBankCardUrl @"/api/Bank/relieveBank"
+/**
+我的托管账户
+ */
+#define getMyRegAccountUrl @"/api/Trust/relieveBank"
+
+

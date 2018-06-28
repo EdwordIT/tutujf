@@ -68,7 +68,7 @@ Strong UIButton *qBtn3;
     topView.backgroundColor = COLOR_White;
     [self.backScroll addSubview:topView];
 
-    UILabel *title = [[UILabel alloc]initWithFrame:RECT(kOriginLeft, kSizeFrom750(35), kSizeFrom750(300), kSizeFrom750(40))];
+    UILabel *title = [[UILabel alloc]initWithFrame:RECT(kOriginLeft, kSizeFrom750(35), kContentWidth, kSizeFrom750(40))];
     [topView addSubview:title];
     title.text = self.model.loan_name;
     title.font = SYSTEMSIZE(32);

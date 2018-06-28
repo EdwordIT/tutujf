@@ -309,6 +309,7 @@
 		CB73159F209B0A2B00B3B8FA /* refresh_010.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB73157D209B0A2B00B3B8FA /* refresh_010.jpg */; };
 		CB7315A0209B0A2B00B3B8FA /* refresh_012.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB73157E209B0A2B00B3B8FA /* refresh_012.jpg */; };
 		CB7315A1209B0A2B00B3B8FA /* refresh_031.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB73157F209B0A2B00B3B8FA /* refresh_031.jpg */; };
+		CB79E2DE20DDF03F00E971D8 /* tutujf.cer in Resources */ = {isa = PBXBuildFile; fileRef = CB79E2DD20DDF03D00E971D8 /* tutujf.cer */; };
 		CB842C1F20BE877400FA42AE /* transfer_record_sold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1920BE877300FA42AE /* transfer_record_sold@2x.png */; };
 		CB842C2020BE877400FA42AE /* transfer_record_question@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1A20BE877300FA42AE /* transfer_record_question@2x.png */; };
 		CB842C2120BE877400FA42AE /* transfer_record_cantSell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1B20BE877300FA42AE /* transfer_record_cantSell@2x.png */; };
@@ -351,6 +352,8 @@
 		CBB4CD5420BBE50600EA877B /* ZFRadarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD3020BBE50600EA877B /* ZFRadarChart.m */; };
 		CBB4CD5520BBE50600EA877B /* ZFWave.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD3320BBE50600EA877B /* ZFWave.m */; };
 		CBB4CD5620BBE50600EA877B /* ZFWaveChart.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD3520BBE50600EA877B /* ZFWaveChart.m */; };
+		CBCDE6A020E0C0210032983E /* MyBankCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCDE69F20E0C0210032983E /* MyBankCardModel.m */; };
+		CBCDE6A320E0CD2E0032983E /* MyRegAccountModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCDE6A220E0CD2E0032983E /* MyRegAccountModel.m */; };
 		CBFA80FC20BFA22600CB623E /* MyTransferBuyDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */; };
 		CBFA80FF20C0E3EE00CB623E /* MyIncomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBFA80FE20C0E3EE00CB623E /* MyIncomeModel.m */; };
 		CBFA810420C29A5600CB623E /* transfer_question@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFA810020C29A5500CB623E /* transfer_question@3x.png */; };
@@ -1032,6 +1035,7 @@
 		CB73157D209B0A2B00B3B8FA /* refresh_010.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = refresh_010.jpg; sourceTree = "<group>"; };
 		CB73157E209B0A2B00B3B8FA /* refresh_012.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = refresh_012.jpg; sourceTree = "<group>"; };
 		CB73157F209B0A2B00B3B8FA /* refresh_031.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = refresh_031.jpg; sourceTree = "<group>"; };
+		CB79E2DD20DDF03D00E971D8 /* tutujf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = tutujf.cer; sourceTree = "<group>"; };
 		CB842C1920BE877300FA42AE /* transfer_record_sold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_sold@2x.png"; sourceTree = "<group>"; };
 		CB842C1A20BE877300FA42AE /* transfer_record_question@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_question@2x.png"; sourceTree = "<group>"; };
 		CB842C1B20BE877300FA42AE /* transfer_record_cantSell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_cantSell@2x.png"; sourceTree = "<group>"; };
@@ -1112,6 +1116,10 @@
 		CBB4CD3320BBE50600EA877B /* ZFWave.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFWave.m; sourceTree = "<group>"; };
 		CBB4CD3420BBE50600EA877B /* ZFWaveChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFWaveChart.h; sourceTree = "<group>"; };
 		CBB4CD3520BBE50600EA877B /* ZFWaveChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFWaveChart.m; sourceTree = "<group>"; };
+		CBCDE69E20E0C0210032983E /* MyBankCardModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBankCardModel.h; sourceTree = "<group>"; };
+		CBCDE69F20E0C0210032983E /* MyBankCardModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyBankCardModel.m; sourceTree = "<group>"; };
+		CBCDE6A120E0CD2E0032983E /* MyRegAccountModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRegAccountModel.h; sourceTree = "<group>"; };
+		CBCDE6A220E0CD2E0032983E /* MyRegAccountModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyRegAccountModel.m; sourceTree = "<group>"; };
 		CBFA80FA20BFA22600CB623E /* MyTransferBuyDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTransferBuyDetailModel.h; sourceTree = "<group>"; };
 		CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTransferBuyDetailModel.m; sourceTree = "<group>"; };
 		CBFA80FD20C0E3EE00CB623E /* MyIncomeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyIncomeModel.h; sourceTree = "<group>"; };
@@ -1670,6 +1678,7 @@
 		1B583B492063535D00CC70E4 /* SystemConfig */ = {
 			isa = PBXGroup;
 			children = (
+				CB79E2DD20DDF03D00E971D8 /* tutujf.cer */,
 				E7067ACD1E60C9AA00E32B86 /* Constant.h */,
 				E7067AD41E60C9AA00E32B86 /* Public.h */,
 				1B583B3C2060B6A600CC70E4 /* Environment.h */,
@@ -3184,6 +3193,10 @@
 				CBFA80FE20C0E3EE00CB623E /* MyIncomeModel.m */,
 				CB4A087B20CF679A00713BF1 /* BankCardModel.h */,
 				CB4A087C20CF679A00713BF1 /* BankCardModel.m */,
+				CBCDE69E20E0C0210032983E /* MyBankCardModel.h */,
+				CBCDE69F20E0C0210032983E /* MyBankCardModel.m */,
+				CBCDE6A120E0CD2E0032983E /* MyRegAccountModel.h */,
+				CBCDE6A220E0CD2E0032983E /* MyRegAccountModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3528,6 +3541,7 @@
 				E7E5866D1FA1DBB60031A71C /* menu5.png in Resources */,
 				CB3CC5F720B6469300CBE5DF /* myinvest_failed@3x.png in Resources */,
 				1B583B342060990800CC70E4 /* home_club@3x.png in Resources */,
+				CB79E2DE20DDF03F00E971D8 /* tutujf.cer in Resources */,
 				1B1923862064CF18005B0C57 /* password_insure@2x.png in Resources */,
 				E7BF5F281E6066F200BCE81E /* Main.storyboard in Resources */,
 				E7D4C11A1E717D9000E828A5 /* MoreData.plist in Resources */,
@@ -3763,6 +3777,7 @@
 				1B4EEC91206E1BF300117EF0 /* UINavigationController+MBNavigation.m in Sources */,
 				1BCF2234206E2BD300D75662 /* ProgrameDetailController.m in Sources */,
 				E70B09021F91F9F8008C9F09 /* MineTopCell.m in Sources */,
+				CBCDE6A020E0C0210032983E /* MyBankCardModel.m in Sources */,
 				E70A7D1F1FA0976700C0628A /* UserInfo.m in Sources */,
 				E7067AB21E60C93B00E32B86 /* UIImage+Resize.m in Sources */,
 				CBB4CD4620BBE50600EA877B /* ZFCirqueChart.m in Sources */,
@@ -3818,6 +3833,7 @@
 				E7067AA61E60C93B00E32B86 /* UIImage+animatedGIF.m in Sources */,
 				CB5C789B20C51ECB00606811 /* FeedbackController.m in Sources */,
 				1BCF2269206E2BFD00D75662 /* DetailTop.m in Sources */,
+				CBCDE6A320E0CD2E0032983E /* MyRegAccountModel.m in Sources */,
 				CB1BFBBB20917B4C0045C0F0 /* NavSwitchView.m in Sources */,
 				CB1BFB97208EBC790045C0F0 /* RechargeController.m in Sources */,
 				E7067AB31E60C93B00E32B86 /* UIImage+RoundedCorner.m in Sources */,

@@ -16,6 +16,7 @@ Strong UILabel *titleL;
 Strong InputTextView *inPutTextView;
 Strong LPDQuoteImagesView *imagesView;
 Strong GradientButton *uploadBtn;
+Strong NSMutableArray *imageArray;
 @end
 
 @implementation FeedbackController
@@ -23,7 +24,7 @@ Strong GradientButton *uploadBtn;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.titleString = @"意见反馈";
-    
+    self.imageArray = InitObject(NSMutableArray);
     _topView = [[UIView alloc]init];
     _topView.backgroundColor = COLOR_White;
     [self.view addSubview:self.topView];
@@ -83,12 +84,55 @@ Strong GradientButton *uploadBtn;
         }
     }
 }
+#pragma mark --buttonClick
 -(void)uploadBtnClick:(UIButton *)sender{
     
     if ([self checkInfo]) {
-        //上传内容
+        [SVProgressHUD show];
+        //先上传图片，上传完成后，返回图片地址链接地址
         NSArray *imgArr = [self getImageDataArray];
+        for (int i=0; i<imgArr.count; i++) {
+            NSData *imageData = [imgArr objectAtIndex:i];
+            NSString *file_id = [CommonUtils getRandomStringWithNum:20];
+            NSString *time_stamp = [CommonUtils getCurrentTimestamp];
+            NSArray *keysArr = @[kToken,@"file_id",@"time_stamp"];
+            NSArray *valuesArr = @[[CommonUtils getToken],file_id,time_stamp];
+            [[HttpCommunication sharedInstance] uploadImageWithUrl:uploadImagesUrl keysArray:keysArr valuesArray:valuesArr image:imageData success:^(NSDictionary *successDic) {
+                [self.imageArray addObject:[successDic objectForKey:@"uploadimg"]];
+                if (self.imageArray.count==imgArr.count) {//全部上传完毕
+                    //上传内容
+                    NSArray *contentKeysArr = @[kToken,@"content",@"arr_img_url"];
+                    NSArray *contentValuesArr = @[[CommonUtils getToken],self.inPutTextView.textView.text,[self getFeedBackStringWithArray:self.imageArray]];
+                    [[HttpCommunication sharedInstance] postSignRequestWithPath:postSuggestUrl keysArray:contentKeysArr valuesArray:contentValuesArr refresh:nil success:^(NSDictionary *successDic) {
+                        //延迟两秒后，返回上一页
+                        [self performSelector:@selector(quit) withObject:nil afterDelay:1];
+                    } failure:^(NSDictionary *errorDic) {
+                        
+                    }];
+                }
+            } failure:^(NSDictionary *errorDic) {
+                
+            }];
+            
+        }
+   
     }
+}
+-(void)quit
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+-(NSString *)getFeedBackStringWithArray:(NSArray *)array{
+    NSString *resault = @"";
+    for (int i=0; i<array.count; i++) {
+        NSString *imageUrl = [array objectAtIndex:i];
+        if (i!=array.count-1) {
+            resault = [resault stringByAppendingString:[NSString stringWithFormat:@"%@,",imageUrl]];
+        }else{
+            resault = [resault stringByAppendingString:imageUrl];
+        }
+    }
+    return resault;
 }
 #pragma mark --信息可行性校验
 -(BOOL)checkInfo
@@ -100,27 +144,26 @@ Strong GradientButton *uploadBtn;
     return YES;
 }
 //获取上送数据数组
--(NSArray<NSString *>*)getImageDataArray
+-(NSArray<NSData *>*)getImageDataArray
 {
     NSArray<UIImage *>*imageArray = [NSArray arrayWithArray:self.imagesView.selectedPhotos];
     
     //取得照片数组
     
-    NSMutableArray<NSString *>*imageDataArray = [[NSMutableArray alloc] init];
+    NSMutableArray<NSData *>*imageDataArray = [[NSMutableArray alloc] init];
     
     for(UIImage *imageObject in imageArray){
         
         NSData *imageData = UIImageJPEGRepresentation(imageObject, 0.3);
         
-        NSString *encodeData = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+//        NSString *encodeData = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
         //UIImage转换为NSData
         
-        [imageDataArray addObject:encodeData];
+        [imageDataArray addObject:imageData];
     }
     
     return imageDataArray;
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

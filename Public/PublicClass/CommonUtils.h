@@ -133,4 +133,8 @@ typedef enum{
  @return
  */
 + (NSMutableAttributedString *)diffierentFontWithString:(NSString *)string rang:(NSRange)range font:(UIFont *)font color:(UIColor *)color spacingBeforeValue:(CGFloat)spacingBeforeValue lineSpace:(CGFloat)lineSpace;
+/**
+ 获取随机数
+*/
++ (NSString *)getRandomStringWithNum:(NSInteger)num;
 @end

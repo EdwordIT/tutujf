@@ -12,6 +12,7 @@
 #import "LoginViewController.h"
 #import "ChangePasswordViewController.h"
 #import "AccountSettingCell.h"
+#import "MyBankCardController.h"
 @interface AccountInfoController ()<UITableViewDataSource, UITableViewDelegate,UIWebViewDelegate>
 {
     UIWebView * iWebView;
@@ -197,10 +198,8 @@ Strong NSArray *titleArr;
             break;
         case 4:
         {
-            //银行卡
-            HomeWebController *web = InitObject(HomeWebController);
-            web.urlStr = self.accountModel.my_bank_url;
-            [self.navigationController pushViewController:web animated:YES];
+            MyBankCardController *bankCard = InitObject(MyBankCardController);
+            [self.navigationController pushViewController:bankCard animated:YES];
             
         }
             break;

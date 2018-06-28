@@ -123,13 +123,22 @@ Strong UILabel *timeLabel;//客服时间
     [self.mainView addSubview:rightArr];
     
 }
+-(void)loadInfoWithModel:(RelieveRemindModel *)model{
+    
+    self.titleLabel.text = model.title;
+    self.subLabel.text = model.title_msg;
+    self.remindTitle.text = model.relieve_msg;
+    NSString *str = [NSString stringWithFormat:@"%@：%@",model.cust_ser_title,model.cust_ser_num];
+    [self.timeLabel setAttributedText:[CommonUtils diffierentFontWithString:str rang:[str rangeOfString:model.cust_ser_num] font:NUMBER_FONT_BOLD(30) color:RGB_153 spacingBeforeValue:0 lineSpace:0]];
+    
+}
 -(void)closeBtnClick:(UIButton *)sender{
     
     [self setHidden:YES];
 }
 -(void)buttonClick:(UIButton *)sender{
     if (self.remindBlock) {
-        self.remindBlock(sender.tag);
+        self.remindBlock(sender.tag);//0查看解绑流程 1、打服务热线
     }
 }
 @end
