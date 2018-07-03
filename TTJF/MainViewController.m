@@ -234,6 +234,7 @@ Strong UIView *functionTopView;//功能按钮
     self.adAlertView.adAlertBlock = ^{
         //跳转广告页面
         [weakSelf goWebViewWithUrl:weakSelf.homePageModel.activity_ad_info.link_url];
+        
     };
     [self.adAlertView setHidden:YES];
 }

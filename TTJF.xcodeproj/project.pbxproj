@@ -247,6 +247,10 @@
 		CB3D303A20A695310040FE30 /* point_sel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303420A695300040FE30 /* point_sel@3x.png */; };
 		CB3D303B20A695310040FE30 /* getCash_remind@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303520A695310040FE30 /* getCash_remind@3x.png */; };
 		CB3D303C20A695310040FE30 /* point_sel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D303620A695310040FE30 /* point_sel@2x.png */; };
+		CB45933D20EA1EEC0073364B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB45933C20EA1EEC0073364B /* AssetsLibrary.framework */; };
+		CB45933F20EA1F2F0073364B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB45933E20EA1F2F0073364B /* AudioToolbox.framework */; };
+		CB45934120EA1F890073364B /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CB45934020EA1F890073364B /* libxml2.tbd */; };
+		CB45934320EA1FA00073364B /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CB45934220EA1FA00073364B /* libsqlite3.0.tbd */; };
 		CB4A087420CF66F900713BF1 /* MyBankCardController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087320CF66F900713BF1 /* MyBankCardController.m */; };
 		CB4A087A20CF677B00713BF1 /* MyBankCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087920CF677B00713BF1 /* MyBankCardCell.m */; };
 		CB4A087D20CF679A00713BF1 /* BankCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087C20CF679A00713BF1 /* BankCardModel.m */; };
@@ -354,6 +358,9 @@
 		CBB4CD5620BBE50600EA877B /* ZFWaveChart.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CD3520BBE50600EA877B /* ZFWaveChart.m */; };
 		CBCDE6A020E0C0210032983E /* MyBankCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCDE69F20E0C0210032983E /* MyBankCardModel.m */; };
 		CBCDE6A320E0CD2E0032983E /* MyRegAccountModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBCDE6A220E0CD2E0032983E /* MyRegAccountModel.m */; };
+		CBCDE6A520E4D77F0032983E /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CBCDE6A420E4D77E0032983E /* libicucore.tbd */; };
+		CBCDE6A720E4D7940032983E /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBCDE6A620E4D7940032983E /* QuickLook.framework */; };
+		CBCDE89720E62CB10032983E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBCDE89620E62CB10032983E /* MobileCoreServices.framework */; };
 		CBFA80FC20BFA22600CB623E /* MyTransferBuyDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */; };
 		CBFA80FF20C0E3EE00CB623E /* MyIncomeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBFA80FE20C0E3EE00CB623E /* MyIncomeModel.m */; };
 		CBFA810420C29A5600CB623E /* transfer_question@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBFA810020C29A5500CB623E /* transfer_question@3x.png */; };
@@ -483,7 +490,6 @@
 		E70929591E617EE400DB0753 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E70929581E617EE400DB0753 /* Security.framework */; };
 		E709295B1E617F0300DB0753 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E709295A1E617F0300DB0753 /* OpenGLES.framework */; };
 		E709295D1E617F1700DB0753 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E709295C1E617F1700DB0753 /* libiconv.tbd */; };
-		E70929601E617F3700DB0753 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E709295E1E617F3700DB0753 /* libsqlite3.tbd */; };
 		E70929611E617F3700DB0753 /* libstdc++.6.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E709295F1E617F3700DB0753 /* libstdc++.6.tbd */; };
 		E70929631E617F6100DB0753 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E70929621E617F6100DB0753 /* libstdc++.6.0.9.tbd */; };
 		E70929651E617F8F00DB0753 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E70929641E617F8F00DB0753 /* libc++.tbd */; };
@@ -578,7 +584,6 @@
 		E7BF5F431E6066F200BCE81E /* TTJFUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = E7BF5F421E6066F200BCE81E /* TTJFUITests.m */; };
 		E7D4C1151E717D9000E828A5 /* city.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7D4C10F1E717D9000E828A5 /* city.plist */; };
 		E7D4C1161E717D9000E828A5 /* classCategory.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7D4C1101E717D9000E828A5 /* classCategory.plist */; };
-		E7D4C1171E717D9000E828A5 /* dingxindai.db in Resources */ = {isa = PBXBuildFile; fileRef = E7D4C1111E717D9000E828A5 /* dingxindai.db */; };
 		E7D4C1181E717D9000E828A5 /* iCategoryList.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7D4C1121E717D9000E828A5 /* iCategoryList.plist */; };
 		E7D4C1191E717D9000E828A5 /* menuData.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7D4C1131E717D9000E828A5 /* menuData.plist */; };
 		E7D4C11A1E717D9000E828A5 /* MoreData.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7D4C1141E717D9000E828A5 /* MoreData.plist */; };
@@ -949,6 +954,10 @@
 		CB3D303420A695300040FE30 /* point_sel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point_sel@3x.png"; sourceTree = "<group>"; };
 		CB3D303520A695310040FE30 /* getCash_remind@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "getCash_remind@3x.png"; sourceTree = "<group>"; };
 		CB3D303620A695310040FE30 /* point_sel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point_sel@2x.png"; sourceTree = "<group>"; };
+		CB45933C20EA1EEC0073364B /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		CB45933E20EA1F2F0073364B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		CB45934020EA1F890073364B /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		CB45934220EA1FA00073364B /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		CB4A087220CF66F800713BF1 /* MyBankCardController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBankCardController.h; sourceTree = "<group>"; };
 		CB4A087320CF66F900713BF1 /* MyBankCardController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyBankCardController.m; sourceTree = "<group>"; };
 		CB4A087820CF677B00713BF1 /* MyBankCardCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBankCardCell.h; sourceTree = "<group>"; };
@@ -1120,6 +1129,11 @@
 		CBCDE69F20E0C0210032983E /* MyBankCardModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyBankCardModel.m; sourceTree = "<group>"; };
 		CBCDE6A120E0CD2E0032983E /* MyRegAccountModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRegAccountModel.h; sourceTree = "<group>"; };
 		CBCDE6A220E0CD2E0032983E /* MyRegAccountModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyRegAccountModel.m; sourceTree = "<group>"; };
+		CBCDE6A420E4D77E0032983E /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		CBCDE6A620E4D7940032983E /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
+		CBCDE6AA20E6052F0032983E /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libopencore-amrnb.a"; path = "Pods/Meiqia/Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrnb.a"; sourceTree = "<group>"; };
+		CBCDE6AB20E6052F0032983E /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libopencore-amrwb.a"; path = "Pods/Meiqia/Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib/libopencore-amrwb.a"; sourceTree = "<group>"; };
+		CBCDE89620E62CB10032983E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		CBFA80FA20BFA22600CB623E /* MyTransferBuyDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTransferBuyDetailModel.h; sourceTree = "<group>"; };
 		CBFA80FB20BFA22600CB623E /* MyTransferBuyDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTransferBuyDetailModel.m; sourceTree = "<group>"; };
 		CBFA80FD20C0E3EE00CB623E /* MyIncomeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyIncomeModel.h; sourceTree = "<group>"; };
@@ -1530,7 +1544,6 @@
 		E7BF5F441E6066F200BCE81E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7D4C10F1E717D9000E828A5 /* city.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = city.plist; sourceTree = "<group>"; };
 		E7D4C1101E717D9000E828A5 /* classCategory.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = classCategory.plist; sourceTree = "<group>"; };
-		E7D4C1111E717D9000E828A5 /* dingxindai.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = dingxindai.db; sourceTree = "<group>"; };
 		E7D4C1121E717D9000E828A5 /* iCategoryList.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = iCategoryList.plist; sourceTree = "<group>"; };
 		E7D4C1131E717D9000E828A5 /* menuData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = menuData.plist; sourceTree = "<group>"; };
 		E7D4C1141E717D9000E828A5 /* MoreData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MoreData.plist; sourceTree = "<group>"; };
@@ -1555,6 +1568,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB45934320EA1FA00073364B /* libsqlite3.0.tbd in Frameworks */,
+				CB45934120EA1F890073364B /* libxml2.tbd in Frameworks */,
+				CB45933F20EA1F2F0073364B /* AudioToolbox.framework in Frameworks */,
+				E70929481E617EB400DB0753 /* CoreMedia.framework in Frameworks */,
+				CB45933D20EA1EEC0073364B /* AssetsLibrary.framework in Frameworks */,
+				CBCDE89720E62CB10032983E /* MobileCoreServices.framework in Frameworks */,
+				CBCDE6A720E4D7940032983E /* QuickLook.framework in Frameworks */,
+				CBCDE6A520E4D77F0032983E /* libicucore.tbd in Frameworks */,
 				E70929491E617EB400DB0753 /* CoreTelephony.framework in Frameworks */,
 				E70CFAA71F1046F80035FC58 /* SystemConfiguration.framework in Frameworks */,
 				E70CFAA51F1046E70035FC58 /* libresolv.tbd in Frameworks */,
@@ -1563,7 +1584,6 @@
 				E70929671E617FA200DB0753 /* libc++abi.tbd in Frameworks */,
 				E70929651E617F8F00DB0753 /* libc++.tbd in Frameworks */,
 				E70929631E617F6100DB0753 /* libstdc++.6.0.9.tbd in Frameworks */,
-				E70929601E617F3700DB0753 /* libsqlite3.tbd in Frameworks */,
 				E70929611E617F3700DB0753 /* libstdc++.6.tbd in Frameworks */,
 				E709295D1E617F1700DB0753 /* libiconv.tbd in Frameworks */,
 				E709295B1E617F0300DB0753 /* OpenGLES.framework in Frameworks */,
@@ -1581,7 +1601,6 @@
 				E70929461E617EB400DB0753 /* CoreImage.framework in Frameworks */,
 				E70929471E617EB400DB0753 /* CoreLocation.framework in Frameworks */,
 				E70CFAA11F1046D90035FC58 /* AlicloudHttpDNS.framework in Frameworks */,
-				E70929481E617EB400DB0753 /* CoreMedia.framework in Frameworks */,
 				E709294A1E617EB400DB0753 /* CoreText.framework in Frameworks */,
 				E709294B1E617EB400DB0753 /* CoreVideo.framework in Frameworks */,
 				E709294C1E617EB400DB0753 /* JavaScriptCore.framework in Frameworks */,
@@ -1870,6 +1889,15 @@
 		B28B5C8E4AC4252323DFDCF9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CB45934220EA1FA00073364B /* libsqlite3.0.tbd */,
+				CB45934020EA1F890073364B /* libxml2.tbd */,
+				CB45933E20EA1F2F0073364B /* AudioToolbox.framework */,
+				CB45933C20EA1EEC0073364B /* AssetsLibrary.framework */,
+				CBCDE89620E62CB10032983E /* MobileCoreServices.framework */,
+				CBCDE6AA20E6052F0032983E /* libopencore-amrnb.a */,
+				CBCDE6AB20E6052F0032983E /* libopencore-amrwb.a */,
+				CBCDE6A620E4D7940032983E /* QuickLook.framework */,
+				CBCDE6A420E4D77E0032983E /* libicucore.tbd */,
 				E70CFAA61F1046F80035FC58 /* SystemConfiguration.framework */,
 				E70CFAA41F1046E70035FC58 /* libresolv.tbd */,
 				E70DACBF1ECAC35600163EED /* CFNetwork.framework */,
@@ -3279,7 +3307,6 @@
 			children = (
 				E7D4C10F1E717D9000E828A5 /* city.plist */,
 				E7D4C1101E717D9000E828A5 /* classCategory.plist */,
-				E7D4C1111E717D9000E828A5 /* dingxindai.db */,
 				E7D4C1121E717D9000E828A5 /* iCategoryList.plist */,
 				E7D4C1131E717D9000E828A5 /* menuData.plist */,
 				E7D4C1141E717D9000E828A5 /* MoreData.plist */,
@@ -3584,7 +3611,6 @@
 				CB3CC5D120B54A8A00CBE5DF /* re_overdue@3x.png in Resources */,
 				E77891071F7E43DE005F4E79 /* NewImg.xcassets in Resources */,
 				E7067A601E60C88B00E32B86 /* SZCalendarPicker.xib in Resources */,
-				E7D4C1171E717D9000E828A5 /* dingxindai.db in Resources */,
 				1BE6736420734F720003A30C /* menu_program_sel@2x.png in Resources */,
 				CB3CC5F020B553DC00CBE5DF /* myinvest_payback@3x.png in Resources */,
 				1BE6736620734F720003A30C /* menu_program_unsel@2x.png in Resources */,
@@ -3736,7 +3762,6 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-TTJF/Pods-TTJF-resources.sh",
-				"${PODS_ROOT}/FontAwesome+iOS/Resources/FontAwesome.ttf",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/LPDQuoteImagesView/LPDQuoteImagesView/Assets/LPDImagePickerController.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
@@ -3746,7 +3771,6 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/LPDImagePickerController.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
@@ -4221,6 +4245,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/HuanXIn",
+					"$(PROJECT_DIR)/Pods/Meiqia/Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -4228,18 +4253,14 @@
 					"-ObjC",
 					"-l\"EAIntroView\"",
 					"-l\"EARestrictedScrollView\"",
-					"-l\"FMDB\"",
-					"-l\"FontAwesome+iOS\"",
 					"-l\"IQKeyboardManager\"",
 					"-l\"Masonry\"",
-					"-l\"MobClickLibrary\"",
 					"-l\"POP+MCAnimate\"",
 					"-l\"RegexKitLite-NoWarning\"",
 					"-l\"SDCycleScrollView\"",
 					"-l\"SDWebImage\"",
 					"-l\"SMPageControl\"",
 					"-l\"SVProgressHUD\"",
-					"-l\"TTTAttributedLabel\"",
 					"-l\"WeChatSDK\"",
 					"-l\"c++\"",
 					"-l\"icucore\"",
@@ -4331,6 +4352,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/HuanXIn",
+					"$(PROJECT_DIR)/Pods/Meiqia/Meiqia-SDK-files/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
@@ -4338,18 +4360,14 @@
 					"-ObjC",
 					"-l\"EAIntroView\"",
 					"-l\"EARestrictedScrollView\"",
-					"-l\"FMDB\"",
-					"-l\"FontAwesome+iOS\"",
 					"-l\"IQKeyboardManager\"",
 					"-l\"Masonry\"",
-					"-l\"MobClickLibrary\"",
 					"-l\"POP+MCAnimate\"",
 					"-l\"RegexKitLite-NoWarning\"",
 					"-l\"SDCycleScrollView\"",
 					"-l\"SDWebImage\"",
 					"-l\"SMPageControl\"",
 					"-l\"SVProgressHUD\"",
-					"-l\"TTTAttributedLabel\"",
 					"-l\"WeChatSDK\"",
 					"-l\"c++\"",
 					"-l\"icucore\"",

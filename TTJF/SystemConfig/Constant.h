@@ -34,6 +34,8 @@
 //友盟Appkey
 #define UMAPPKEY @"59d656c4a40fa356ff00016a"
 
+#define MeiChaAppKey @"bf731c974b0fdab559540c711dd37074"
+
 //友盟统计 https://itunes.apple.com/app/id1241881881
 #define kUmeng_Event_Request_Notification @"Request_Notification"
 #define kUmeng_Event_Request_RootList @"Request_RootList"

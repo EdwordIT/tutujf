@@ -59,7 +59,7 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
     [self.view addSubview:self.mainWebView];
     self.step = 10;
     [SVProgressHUD show];
-//    _urlStr = @"https://cs.www.tutujf.com/wap/test/loginpa";//测试连接
+    _urlStr = @"https://cs.www.tutujf.com/wap/test/agenttest";//测试连接
     //添加ios客户端标识
     if ([_urlStr rangeOfString:@"equipment=ios"].location==NSNotFound) {
         [self refreshUrl:_urlStr];
@@ -427,7 +427,7 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
     }
         // 注入Cookie，识别webView登录状态
     [request setValue:cookies forHTTPHeaderField:@"Cookie"];
-//    [request setValue:@"Mozilla/5.0 (iPhone; CPU iPhone like Mac OS X; zh-CN;) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/14C92 TutuBrowser/1.1.1 Mobile AliApp(TUnionSDK/0.1.12) AliApp(TUnionSDK/0.1.12)" forHTTPHeaderField:@"User-Agent"];
+    [request setValue:@"Tutu" forHTTPHeaderField:@"User-Agent"];
     [request setHTTPShouldHandleCookies:YES];
     [self.mainWebView loadRequest:request];
     
