@@ -357,8 +357,6 @@ Strong NSDictionary *notificationInfo;
     NSString *device_token = [XGPushTokenManager defaultTokenManager].deviceTokenString;
     NSLog(@"deviceToken:%@",device_token);
     NSString *str = [[NSUserDefaults standardUserDefaults] objectForKey:kDeviceToken];
-    //上传当前devicetoken到美恰后台
-     [MQManager registerDeviceToken:deviceToken];
     //如果是第一次打开应用，或者deviceToken变更，则调用此接口上送deviceToken到服务器
     if (IsEmptyStr(str)||(![str isEqualToString:device_token])) {
      /*   手机类型 1=android，2=IOS
