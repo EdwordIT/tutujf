@@ -12,6 +12,7 @@
 Strong UIButton *bgImage;
 Strong UILabel *titleLabel;//标题
 Strong UIButton *tagImage;//标签(还有XXX过期)
+Strong UILabel *tagLabel;//
 Strong UILabel *amountLabel;//金额
 Strong UILabel *amountTitle;
 Strong UIView *lineView;//分割线
@@ -37,6 +38,8 @@ Strong UIImageView *stateImage;//激活成功、已失效
     
     [self.bgImage addSubview:self.tagImage];
     
+    [self.tagImage addSubview:self.tagLabel];
+    
     [self.bgImage addSubview:self.titleLabel];
     
     [self.bgImage addSubview:self.amountLabel];
@@ -59,7 +62,6 @@ Strong UIImageView *stateImage;//激活成功、已失效
     if (!_bgImage) {
         _bgImage = InitObject(UIButton);
         [_bgImage setImage:IMAGEBYENAME(@"re_canuse_bg") forState:UIControlStateNormal];
-        [_bgImage setImage:IMAGEBYENAME(@"re_overdue_bg") forState:UIControlStateSelected];
         _bgImage.adjustsImageWhenHighlighted = NO;
     }
     return _bgImage;
@@ -67,10 +69,19 @@ Strong UIImageView *stateImage;//激活成功、已失效
 -(UIButton *)tagImage{
     if (!_tagImage) {
         _tagImage = InitObject(UIButton);
-        [_tagImage setTitle:@"5天后过期" forState:UIControlStateNormal];
         [_tagImage.titleLabel setFont:SYSTEMBOLDSIZE(20)];
     }
     return _tagImage;
+}
+-(UILabel *)tagLabel{
+    if (!_tagLabel) {
+        _tagLabel = InitObject(UILabel);
+        _tagLabel.font = SYSTEMBOLDSIZE(20);
+        _tagLabel.textColor = COLOR_White;
+        _tagLabel.textAlignment = NSTextAlignmentRight;
+        _tagLabel.text = @"5天后过期";
+    }
+    return _tagLabel;
 }
 -(UILabel *)titleLabel{
     if (!_titleLabel) {
@@ -152,9 +163,13 @@ Strong UIImageView *stateImage;//激活成功、已失效
         make.height.mas_equalTo(kSizeFrom750(325));
     }];
     [self.tagImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(0);
+        make.right.mas_equalTo(self.bgImage.mas_right).offset(-kSizeFrom750(13));
         make.top.mas_equalTo(kSizeFrom750(25));
-        make.width.mas_equalTo(kSizeFrom750(138));
+        make.width.mas_equalTo(kSizeFrom750(136));
+        make.height.mas_equalTo(kSizeFrom750(60));
+    }];
+    [self.tagLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.width.right.mas_equalTo(self.tagImage);
         make.height.mas_equalTo(kSizeFrom750(40));
     }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -213,11 +228,9 @@ Strong UIImageView *stateImage;//激活成功、已失效
     self.titleLabel.text = model.name;
     NSInteger seconds = [CommonUtils getDifferenceByDate:[[model.end_time stringByReplacingOccurrencesOfString:@"有效期至" withString:@""] stringByAppendingString:@" 00-00-00"]];
     //计算过期时间差
-//    if (seconds/DAY>0&&seconds/DAY<10) {
-//        [self.tagImage setTitle:[NSString stringWithFormat:@"%ld天后过期",seconds/DAY] forState:UIControlStateNormal];
-//    }
-    [self.tagImage setTitle:[NSString stringWithFormat:@"%ld天后过期",seconds/DAY] forState:UIControlStateNormal];
-
+    if (seconds/DAY>0&&seconds/DAY<10) {//过期时间在10天以内，则显示过期时间
+        [self.tagLabel setText:[NSString stringWithFormat:@"%ld天后过期",seconds/DAY]];
+    }
     NSString *str = [NSString stringWithFormat:@"%@元",model.amount];
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc]initWithString:str];
     [attr addAttribute:NSFontAttributeName value:NUMBER_FONT_BOLD(60) range:[str rangeOfString:model.amount]];
@@ -226,11 +239,16 @@ Strong UIImageView *stateImage;//激活成功、已失效
     [CommonUtils setAttString:[model.condition_txt stringByReplacingOccurrencesOfString:@"\\r" withString:@"\n"] withLineSpace:kLabelSpace titleLabel:self.desLabel];
     self.timeLabel.text =model.end_time;
     //状态1 可用（立刻使用）【可用】 ， 2 待激活【已使用】(等待扣款状态)， 3 激活成功【已使用】， 4 过期 ，5 失效
-    if ([model.status isEqualToString:@"1"]||[model.status isEqualToString:@"2"]) {
-        self.bgImage.selected = NO;
-        
+    if ([model.status isEqualToString:@"1"]) {//可使用
+        [self.bgImage setImage:IMAGEBYENAME(@"re_canuse_bg") forState:UIControlStateNormal];
+        [self.tagImage setImage:IMAGEBYENAME(@"re_overtime") forState:UIControlStateNormal];
+    }else if ([model.status isEqualToString:@"2"]){//待激活
+        [self.tagImage setImage:IMAGEBYENAME(@"") forState:UIControlStateNormal];
+        [self.tagLabel setText:model.status_name];
+        [self.bgImage setImage:IMAGEBYENAME(@"re_waitting_bg") forState:UIControlStateNormal];
     }else{
-        self.bgImage.selected = YES;
+        [self.tagImage setImage:IMAGEBYENAME(@"") forState:UIControlStateNormal];
+        [self.bgImage setImage:IMAGEBYENAME(@"re_overdue_bg") forState:UIControlStateNormal];//已失效、已过期
     }
     if ([model.status isEqualToString:@"1"]) {
         [self.useBtn setHidden:NO];

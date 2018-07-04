@@ -199,8 +199,6 @@
 		CB3CC5C620B54A5C00CBE5DF /* transfer_record_paidback@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5B820B54A5B00CBE5DF /* transfer_record_paidback@2x.png */; };
 		CB3CC5C720B54A5C00CBE5DF /* transfer_record_sell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5B920B54A5C00CBE5DF /* transfer_record_sell@2x.png */; };
 		CB3CC5D120B54A8A00CBE5DF /* re_overdue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5C920B54A8900CBE5DF /* re_overdue@3x.png */; };
-		CB3CC5D220B54A8A00CBE5DF /* re_canuse_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5CA20B54A8900CBE5DF /* re_canuse_bg@3x.png */; };
-		CB3CC5D320B54A8A00CBE5DF /* re_canuse_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5CB20B54A8900CBE5DF /* re_canuse_bg@2x.png */; };
 		CB3CC5D420B54A8A00CBE5DF /* re_overdue_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5CC20B54A8900CBE5DF /* re_overdue_bg@2x.png */; };
 		CB3CC5D520B54A8A00CBE5DF /* re_overdue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5CD20B54A8900CBE5DF /* re_overdue@2x.png */; };
 		CB3CC5D620B54A8A00CBE5DF /* re_canuse@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5CE20B54A8900CBE5DF /* re_canuse@2x.png */; };
@@ -251,6 +249,15 @@
 		CB45933F20EA1F2F0073364B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB45933E20EA1F2F0073364B /* AudioToolbox.framework */; };
 		CB45934120EA1F890073364B /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CB45934020EA1F890073364B /* libxml2.tbd */; };
 		CB45934320EA1FA00073364B /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CB45934220EA1FA00073364B /* libsqlite3.0.tbd */; };
+		CB45934A20EB114E0073364B /* transfer_addBankCard@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934820EB114D0073364B /* transfer_addBankCard@3x.png */; };
+		CB45934B20EB114E0073364B /* transfer_addBankCard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934920EB114E0073364B /* transfer_addBankCard@2x.png */; };
+		CB45935020EB42CE0073364B /* re_waitting_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934C20EB42CD0073364B /* re_waitting_bg@2x.png */; };
+		CB45935120EB42CE0073364B /* re_waitting_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934D20EB42CD0073364B /* re_waitting_bg@3x.png */; };
+		CB45935220EB42CE0073364B /* re_overtime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934E20EB42CD0073364B /* re_overtime@2x.png */; };
+		CB45935320EB42CE0073364B /* re_overtime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934F20EB42CD0073364B /* re_overtime@3x.png */; };
+		CB45935620EB44930073364B /* re_canuse_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45935420EB44920073364B /* re_canuse_bg@3x.png */; };
+		CB45935720EB44930073364B /* re_canuse_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45935520EB44930073364B /* re_canuse_bg@2x.png */; };
+		CB45935A20EB5ACE0073364B /* RedEnvelopeContentController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB45935920EB5ACE0073364B /* RedEnvelopeContentController.m */; };
 		CB4A087420CF66F900713BF1 /* MyBankCardController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087320CF66F900713BF1 /* MyBankCardController.m */; };
 		CB4A087A20CF677B00713BF1 /* MyBankCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087920CF677B00713BF1 /* MyBankCardCell.m */; };
 		CB4A087D20CF679A00713BF1 /* BankCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087C20CF679A00713BF1 /* BankCardModel.m */; };
@@ -893,8 +900,6 @@
 		CB3CC5B820B54A5B00CBE5DF /* transfer_record_paidback@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_paidback@2x.png"; sourceTree = "<group>"; };
 		CB3CC5B920B54A5C00CBE5DF /* transfer_record_sell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_sell@2x.png"; sourceTree = "<group>"; };
 		CB3CC5C920B54A8900CBE5DF /* re_overdue@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_overdue@3x.png"; sourceTree = "<group>"; };
-		CB3CC5CA20B54A8900CBE5DF /* re_canuse_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_canuse_bg@3x.png"; sourceTree = "<group>"; };
-		CB3CC5CB20B54A8900CBE5DF /* re_canuse_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_canuse_bg@2x.png"; sourceTree = "<group>"; };
 		CB3CC5CC20B54A8900CBE5DF /* re_overdue_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_overdue_bg@2x.png"; sourceTree = "<group>"; };
 		CB3CC5CD20B54A8900CBE5DF /* re_overdue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_overdue@2x.png"; sourceTree = "<group>"; };
 		CB3CC5CE20B54A8900CBE5DF /* re_canuse@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_canuse@2x.png"; sourceTree = "<group>"; };
@@ -958,6 +963,16 @@
 		CB45933E20EA1F2F0073364B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		CB45934020EA1F890073364B /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		CB45934220EA1FA00073364B /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		CB45934820EB114D0073364B /* transfer_addBankCard@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_addBankCard@3x.png"; sourceTree = "<group>"; };
+		CB45934920EB114E0073364B /* transfer_addBankCard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_addBankCard@2x.png"; sourceTree = "<group>"; };
+		CB45934C20EB42CD0073364B /* re_waitting_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_waitting_bg@2x.png"; sourceTree = "<group>"; };
+		CB45934D20EB42CD0073364B /* re_waitting_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_waitting_bg@3x.png"; sourceTree = "<group>"; };
+		CB45934E20EB42CD0073364B /* re_overtime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_overtime@2x.png"; sourceTree = "<group>"; };
+		CB45934F20EB42CD0073364B /* re_overtime@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_overtime@3x.png"; sourceTree = "<group>"; };
+		CB45935420EB44920073364B /* re_canuse_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_canuse_bg@3x.png"; sourceTree = "<group>"; };
+		CB45935520EB44930073364B /* re_canuse_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_canuse_bg@2x.png"; sourceTree = "<group>"; };
+		CB45935820EB5ACE0073364B /* RedEnvelopeContentController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RedEnvelopeContentController.h; sourceTree = "<group>"; };
+		CB45935920EB5ACE0073364B /* RedEnvelopeContentController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RedEnvelopeContentController.m; sourceTree = "<group>"; };
 		CB4A087220CF66F800713BF1 /* MyBankCardController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBankCardController.h; sourceTree = "<group>"; };
 		CB4A087320CF66F900713BF1 /* MyBankCardController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyBankCardController.m; sourceTree = "<group>"; };
 		CB4A087820CF677B00713BF1 /* MyBankCardCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBankCardCell.h; sourceTree = "<group>"; };
@@ -1934,6 +1949,8 @@
 		CB3CC5AB20B54A3500CBE5DF /* transfer */ = {
 			isa = PBXGroup;
 			children = (
+				CB45934920EB114E0073364B /* transfer_addBankCard@2x.png */,
+				CB45934820EB114D0073364B /* transfer_addBankCard@3x.png */,
 				CBFA810220C29A5500CB623E /* icons_purse@2x.png */,
 				CBFA810120C29A5500CB623E /* icons_purse@3x.png */,
 				CBFA810320C29A5500CB623E /* transfer_question@2x.png */,
@@ -1965,8 +1982,12 @@
 		CB3CC5C820B54A6F00CBE5DF /* redenvelope(红包) */ = {
 			isa = PBXGroup;
 			children = (
-				CB3CC5CB20B54A8900CBE5DF /* re_canuse_bg@2x.png */,
-				CB3CC5CA20B54A8900CBE5DF /* re_canuse_bg@3x.png */,
+				CB45935520EB44930073364B /* re_canuse_bg@2x.png */,
+				CB45935420EB44920073364B /* re_canuse_bg@3x.png */,
+				CB45934C20EB42CD0073364B /* re_waitting_bg@2x.png */,
+				CB45934D20EB42CD0073364B /* re_waitting_bg@3x.png */,
+				CB45934E20EB42CD0073364B /* re_overtime@2x.png */,
+				CB45934F20EB42CD0073364B /* re_overtime@3x.png */,
 				CB3CC5CE20B54A8900CBE5DF /* re_canuse@2x.png */,
 				CB3CC5CF20B54A8A00CBE5DF /* re_canuse@3x.png */,
 				CB3CC5CC20B54A8900CBE5DF /* re_overdue_bg@2x.png */,
@@ -3262,6 +3283,8 @@
 				CB5C78A320C903B600606811 /* MyRegAccountController.m */,
 				CB4A087220CF66F800713BF1 /* MyBankCardController.h */,
 				CB4A087320CF66F900713BF1 /* MyBankCardController.m */,
+				CB45935820EB5ACE0073364B /* RedEnvelopeContentController.h */,
+				CB45935920EB5ACE0073364B /* RedEnvelopeContentController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3487,6 +3510,7 @@
 				1B1E307720887E4E00B3974F /* icons_back@3x.png in Resources */,
 				CB3CC5F620B6469300CBE5DF /* myinvest_failed@2x.png in Resources */,
 				1B4FC6CD2058BC6F00C7C88E /* eye_close@2x.png in Resources */,
+				CB45935620EB44930073364B /* re_canuse_bg@3x.png in Resources */,
 				1B1E30932089873800B3974F /* mineTop_01@2x.png in Resources */,
 				CB731593209B0A2B00B3B8FA /* refresh_026.jpg in Resources */,
 				CB3CC5BD20B54A5C00CBE5DF /* transfer_record_buy@3x.png in Resources */,
@@ -3519,7 +3543,6 @@
 				CB73155C209AE9C200B3B8FA /* cooperationBottom@3x.png in Resources */,
 				E70F3C9D1F92338200B4568C /* user04.png in Resources */,
 				CB3D303C20A695310040FE30 /* point_sel@2x.png in Resources */,
-				CB3CC5D220B54A8A00CBE5DF /* re_canuse_bg@3x.png in Resources */,
 				CB731592209B0A2B00B3B8FA /* refresh_030.jpg in Resources */,
 				E70D16FE1F2303C3007F12D0 /* sns_icon_6_s.png in Resources */,
 				1BE67349207209780003A30C /* icons_msg_unsel@3x.png in Resources */,
@@ -3529,6 +3552,7 @@
 				E7D4C1151E717D9000E828A5 /* city.plist in Resources */,
 				E70828091F50576700C9F851 /* backimg.gif in Resources */,
 				E70D16F71F2303C3007F12D0 /* sns_icon_21_s@2x.png in Resources */,
+				CB45935120EB42CE0073364B /* re_waitting_bg@3x.png in Resources */,
 				E7067BC61E60C9AB00E32B86 /* icon_tabbar_onsite@2x.png in Resources */,
 				CB731595209B0A2B00B3B8FA /* refresh_020.jpg in Resources */,
 				CB3CC5D420B54A8A00CBE5DF /* re_overdue_bg@2x.png in Resources */,
@@ -3544,6 +3568,7 @@
 				CB731583209B0A2B00B3B8FA /* refresh_034.jpg in Resources */,
 				1B4FC6C82058BC6F00C7C88E /* eye_open@3x.png in Resources */,
 				E7067B8C1E60C9AA00E32B86 /* icon_arrow_dropdown_normal.png in Resources */,
+				CB45935020EB42CE0073364B /* re_waitting_bg@2x.png in Resources */,
 				CB73155D209AE9C200B3B8FA /* cooperationBottom@2x.png in Resources */,
 				E77304B71F910C1800C57FBE /* webback.jpg in Resources */,
 				1B19238E2064CF18005B0C57 /* mobile@3x.png in Resources */,
@@ -3614,6 +3639,7 @@
 				1BE6736420734F720003A30C /* menu_program_sel@2x.png in Resources */,
 				CB3CC5F020B553DC00CBE5DF /* myinvest_payback@3x.png in Resources */,
 				1BE6736620734F720003A30C /* menu_program_unsel@2x.png in Resources */,
+				CB45934A20EB114E0073364B /* transfer_addBankCard@3x.png in Resources */,
 				CB3CC5F820B6469300CBE5DF /* myinvest_buyback@3x.png in Resources */,
 				1B1923952064CF18005B0C57 /* register_red@2x.png in Resources */,
 				CB3CC5BB20B54A5C00CBE5DF /* transfer_record_selling@3x.png in Resources */,
@@ -3637,6 +3663,7 @@
 				1B583B23205F8D2A00CC70E4 /* wings_right@2x.png in Resources */,
 				E7067BC41E60C9AB00E32B86 /* icon_tabbar_mine@2x.png in Resources */,
 				E70D16FA1F2303C3007F12D0 /* sns_icon_23_s.png in Resources */,
+				CB45935720EB44930073364B /* re_canuse_bg@2x.png in Resources */,
 				CB3CC5E720B553DC00CBE5DF /* myinvest_payback@2x.png in Resources */,
 				1BE6736120734F720003A30C /* menu_home_unsel@3x.png in Resources */,
 				E7DBE59D1F2559B4000517D7 /* rechargeAmt.png in Resources */,
@@ -3667,11 +3694,13 @@
 				CB3CC5EA20B553DC00CBE5DF /* myinvest_period@2x.png in Resources */,
 				E7067B921E60C9AA00E32B86 /* icon_feedCell_star_half@2x.png in Resources */,
 				1B1923962064CF18005B0C57 /* password_lock@3x.png in Resources */,
+				CB45934B20EB114E0073364B /* transfer_addBankCard@2x.png in Resources */,
 				CB3CC5F120B553DC00CBE5DF /* myinvest_search@3x.png in Resources */,
 				E70F3CBD1F9357B400B4568C /* aslo03.png in Resources */,
 				1B1E308E2088811700B3974F /* program_full@3x.png in Resources */,
 				E70A7D261FA0C0DB00C0628A /* logo_ico02.png in Resources */,
 				E7067B911E60C9AA00E32B86 /* icon_feedCell_star_full@2x.png in Resources */,
+				CB45935320EB42CE0073364B /* re_overtime@3x.png in Resources */,
 				CB3D302F20A581700040FE30 /* recharge_remind@2x.png in Resources */,
 				1B788F2B208058FE00F03863 /* icons_code@3x.png in Resources */,
 				CB731587209B0A2B00B3B8FA /* refresh_018.jpg in Resources */,
@@ -3679,7 +3708,6 @@
 				CB731586209B0A2B00B3B8FA /* refresh_07.jpg in Resources */,
 				E7067B981E60C9AA00E32B86 /* icon_rating_star_picked.png in Resources */,
 				CB3CC5C520B54A5C00CBE5DF /* transfer_record_canceled@3x.png in Resources */,
-				CB3CC5D320B54A8A00CBE5DF /* re_canuse_bg@2x.png in Resources */,
 				1B4FC6CE2058BC6F00C7C88E /* redevenlope@2x.png in Resources */,
 				1B1923932064CF18005B0C57 /* service_unsel@3x.png in Resources */,
 				CB73158B209B0A2B00B3B8FA /* refresh_019.jpg in Resources */,
@@ -3696,6 +3724,7 @@
 				E7067BC11E60C9AB00E32B86 /* icon_listheader_animation_2@2x.png in Resources */,
 				E70F3CBC1F9357B400B4568C /* aslo02.png in Resources */,
 				E70D16F21F2303C3007F12D0 /* sns_icon_19_s.png in Resources */,
+				CB45935220EB42CE0073364B /* re_overtime@2x.png in Resources */,
 				1B788F15207DB8DB00F03863 /* icons_nodata@3x.png in Resources */,
 				CB3CC5ED20B553DC00CBE5DF /* myinvest_paidback@2x.png in Resources */,
 				1BE6736720734F720003A30C /* menu_discover_sel@3x.png in Resources */,
@@ -3887,6 +3916,7 @@
 				CB1BFBC12091C3420045C0F0 /* CreditAssignDetailController.m in Sources */,
 				1B788F432081E4F400F03863 /* JRSegmentViewController.m in Sources */,
 				1B583B472063474400CC70E4 /* SystemConfigModel.m in Sources */,
+				CB45935A20EB5ACE0073364B /* RedEnvelopeContentController.m in Sources */,
 				CB3D301020A14BBF0040FE30 /* CreditInfoModel.m in Sources */,
 				CB1BFBB82091737F0045C0F0 /* CreditAssignCell.m in Sources */,
 				E7067A291E60C88A00E32B86 /* introductoryPagesView.m in Sources */,

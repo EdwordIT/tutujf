@@ -25,7 +25,9 @@ Assign BOOL isCanAdd;//是否可添加银行卡
         _addBtn.layer.borderColor = [RGB_183 CGColor];
         _addBtn.layer.borderWidth = kLineHeight;
         [_addBtn setTitle:@"添加银行卡" forState:UIControlStateNormal];
-        [_addBtn setImage:IMAGEBYENAME(@"logo") forState:UIControlStateNormal];
+        [_addBtn setImage:IMAGEBYENAME(@"transfer_addBankCard") forState:UIControlStateNormal];
+        //
+        [_addBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, kSizeFrom750(20), 0, 0)];//标题距离图片的间距右移
         [_addBtn setBackgroundColor:RGB(249, 250, 251)];
         [_addBtn setTitleColor:RGB_183 forState:UIControlStateNormal];
         [_addBtn addTarget:self action:@selector(addClick:) forControlEvents:UIControlEventTouchUpInside];
