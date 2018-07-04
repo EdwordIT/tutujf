@@ -13,6 +13,7 @@ Strong BaseUITableView *mainTableView;//全部
 Strong NSMutableArray *mainDataArray;
 Assign NSInteger mainCurrentPage;
 Assign NSInteger mainTotalPages;
+Strong UIButton *remindButton;//
 @end
 
 @implementation RedEnvelopeContentController
@@ -21,6 +22,8 @@ Assign NSInteger mainTotalPages;
     [super viewDidLoad];
     self.mainCurrentPage = 1;
     self.mainTotalPages = 1;
+    [self.titleView setHidden:YES];
+    [self.view addSubview:self.remindButton];
     [self.view addSubview:self.mainTableView];
     [self loadRefresh];
     [self loadRequestAtIndex:self.selectedIndex];
@@ -32,9 +35,15 @@ Assign NSInteger mainTotalPages;
     }
     return _mainDataArray;
 }
+-(UIButton *)remindButton{
+    if (!_remindButton) {
+       
+    }
+    return _remindButton;
+}
 -(BaseUITableView *)mainTableView{
     if (!_mainTableView) {
-        _mainTableView = [[BaseUITableView alloc]initWithFrame:RECT(0, 0, screen_width, kViewHeight-kTitleHeight) style:UITableViewStylePlain];
+        _mainTableView = [[BaseUITableView alloc]initWithFrame:RECT(0,0, screen_width, kViewHeight-kTitleHeight) style:UITableViewStyleGrouped];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
         _mainTableView.rowHeight = kSizeFrom750(375);
@@ -108,6 +117,22 @@ Assign NSInteger mainTotalPages;
     [self loadRequestAtIndex:index];
 }
 #pragma mark -- dataSource and Delegate
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *view = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(60))];
+    
+   UIButton * remindButton = [[UIButton alloc]initWithFrame:RECT(kSizeFrom750(30), kSizeFrom750(30), kSizeFrom750(690), kSizeFrom750(30))];
+    [remindButton setImage:IMAGEBYENAME(@"transfer_question") forState:UIControlStateNormal];
+    remindButton.userInteractionEnabled = NO;
+    [remindButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kSizeFrom750(10), 0, 0)];
+    [remindButton setTitle:@"用户投资成功后，请等待标的满审通过红包将自动激活。" forState:UIControlStateNormal];
+    [remindButton setTitleColor:RGB_153 forState:UIControlStateNormal];
+    [remindButton.titleLabel setFont:SYSTEMSIZE(25)];
+    [view addSubview:remindButton];
+    return view;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return kSizeFrom750(60);
+}
 -(NSInteger )numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }

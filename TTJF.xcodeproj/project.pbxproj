@@ -320,7 +320,6 @@
 		CB73159F209B0A2B00B3B8FA /* refresh_010.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB73157D209B0A2B00B3B8FA /* refresh_010.jpg */; };
 		CB7315A0209B0A2B00B3B8FA /* refresh_012.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB73157E209B0A2B00B3B8FA /* refresh_012.jpg */; };
 		CB7315A1209B0A2B00B3B8FA /* refresh_031.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB73157F209B0A2B00B3B8FA /* refresh_031.jpg */; };
-		CB79E2DE20DDF03F00E971D8 /* tutujf.cer in Resources */ = {isa = PBXBuildFile; fileRef = CB79E2DD20DDF03D00E971D8 /* tutujf.cer */; };
 		CB842C1F20BE877400FA42AE /* transfer_record_sold@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1920BE877300FA42AE /* transfer_record_sold@2x.png */; };
 		CB842C2020BE877400FA42AE /* transfer_record_question@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1A20BE877300FA42AE /* transfer_record_question@2x.png */; };
 		CB842C2120BE877400FA42AE /* transfer_record_cantSell@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1B20BE877300FA42AE /* transfer_record_cantSell@2x.png */; };
@@ -1059,7 +1058,6 @@
 		CB73157D209B0A2B00B3B8FA /* refresh_010.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = refresh_010.jpg; sourceTree = "<group>"; };
 		CB73157E209B0A2B00B3B8FA /* refresh_012.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = refresh_012.jpg; sourceTree = "<group>"; };
 		CB73157F209B0A2B00B3B8FA /* refresh_031.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = refresh_031.jpg; sourceTree = "<group>"; };
-		CB79E2DD20DDF03D00E971D8 /* tutujf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = tutujf.cer; sourceTree = "<group>"; };
 		CB842C1920BE877300FA42AE /* transfer_record_sold@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_sold@2x.png"; sourceTree = "<group>"; };
 		CB842C1A20BE877300FA42AE /* transfer_record_question@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_question@2x.png"; sourceTree = "<group>"; };
 		CB842C1B20BE877300FA42AE /* transfer_record_cantSell@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_record_cantSell@2x.png"; sourceTree = "<group>"; };
@@ -1712,7 +1710,6 @@
 		1B583B492063535D00CC70E4 /* SystemConfig */ = {
 			isa = PBXGroup;
 			children = (
-				CB79E2DD20DDF03D00E971D8 /* tutujf.cer */,
 				E7067ACD1E60C9AA00E32B86 /* Constant.h */,
 				E7067AD41E60C9AA00E32B86 /* Public.h */,
 				1B583B3C2060B6A600CC70E4 /* Environment.h */,
@@ -3593,7 +3590,6 @@
 				E7E5866D1FA1DBB60031A71C /* menu5.png in Resources */,
 				CB3CC5F720B6469300CBE5DF /* myinvest_failed@3x.png in Resources */,
 				1B583B342060990800CC70E4 /* home_club@3x.png in Resources */,
-				CB79E2DE20DDF03F00E971D8 /* tutujf.cer in Resources */,
 				1B1923862064CF18005B0C57 /* password_insure@2x.png in Resources */,
 				E7BF5F281E6066F200BCE81E /* Main.storyboard in Resources */,
 				E7D4C11A1E717D9000E828A5 /* MoreData.plist in Resources */,
