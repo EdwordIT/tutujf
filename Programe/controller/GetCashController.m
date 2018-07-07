@@ -245,7 +245,7 @@ Strong UILabel *immediatelyLabel;//即时到账提现说明
     if (!_getCashBtn) {
         _getCashBtn = InitObject(GradientButton);
         [_getCashBtn setTitleColor:COLOR_White forState:UIControlStateNormal];
-        [_getCashBtn addTarget:self action:@selector(withDrowBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_getCashBtn addTarget:self action:@selector(getCashClick:) forControlEvents:UIControlEventTouchUpInside];
         [_getCashBtn.titleLabel setFont:SYSTEMSIZE(36)];
         [_getCashBtn setTitle:@"确认提现" forState:UIControlStateNormal];
         _getCashBtn.layer.cornerRadius = kSizeFrom750(105)/2;
@@ -502,7 +502,7 @@ Strong UILabel *immediatelyLabel;//即时到账提现说明
     
 }
 //提现按钮点击
--(void)withDrowBtnClick:(UIButton *)sender{
+-(void)getCashClick:(UIButton *)sender{
     
     if ([self checkNum]) {
         

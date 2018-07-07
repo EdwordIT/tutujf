@@ -15,6 +15,13 @@
 }
 @end
 @implementation GradientButton
+-(instancetype)init{
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
+}
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     if (gradientColors) {

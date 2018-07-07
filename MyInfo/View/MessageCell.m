@@ -25,6 +25,8 @@ Strong UIImageView *pointView;
 
 Strong UIImageView *arrowImage;
 
+Strong UIView *spaceView;
+
 @end
 @implementation MessageCell
 
@@ -55,6 +57,8 @@ Strong UIImageView *arrowImage;
     
     [self.bgView addSubview:self.arrowImage];
     
+    [self.contentView addSubview:self.spaceView];
+    
     [self loadLayout];
     
 }
@@ -62,7 +66,7 @@ Strong UIImageView *arrowImage;
 -(UILabel *)timeLabel{
     if (!_timeLabel) {
         _timeLabel = InitObject(UILabel);
-        _timeLabel.backgroundColor = RGB(221, 221, 221);
+        _timeLabel.backgroundColor = HEXCOLOR(@"#e8e8e8");
         _timeLabel.textColor = RGB(250, 250, 250);
         _timeLabel.layer.cornerRadius = kSizeFrom750(40)/2;
         _timeLabel.layer.masksToBounds = YES;
@@ -81,19 +85,26 @@ Strong UIImageView *arrowImage;
     }
     return _bgView;
 }
+-(UIView *)spaceView{
+    if (!_spaceView) {
+        _spaceView = InitObject(UIView);
+    }
+    return _spaceView;
+}
 -(UILabel *)titleLabel{
     if (!_titleLabel) {
         _titleLabel = InitObject(UILabel);
-        _titleLabel.textColor = RGB_51;
-        _titleLabel.font = SYSTEMSIZE(28);
+        _titleLabel.textColor = HEXCOLOR(@"#333333");
+        _titleLabel.font = SYSTEMSIZE(32);
     }
     return _titleLabel;
 }
 -(UILabel *)contentLabel{
     if (!_contentLabel) {
         _contentLabel = InitObject(UILabel);
-        _contentLabel.textColor = RGB_102;
-        _contentLabel.font = SYSTEMSIZE(26);
+        _contentLabel.textColor = HEXCOLOR(@"#666666");
+        _contentLabel.font = SYSTEMSIZE(28);
+        _contentLabel.lineBreakMode = NSLineBreakByCharWrapping;
         _contentLabel.numberOfLines = 0;
     }
     return _contentLabel;
@@ -101,7 +112,7 @@ Strong UIImageView *arrowImage;
 -(UILabel *)subTitleLabel{
     if (!_subTitleLabel) {
         _subTitleLabel = InitObject(UILabel);
-        _subTitleLabel.textColor = RGB_51;
+        _subTitleLabel.textColor = HEXCOLOR(@"#666666");
         _subTitleLabel.font = SYSTEMSIZE(28);
         _subTitleLabel.text = @"查看详情";
     }
@@ -118,7 +129,7 @@ Strong UIImageView *arrowImage;
     if (!_pointView) {
         _pointView = InitObject(UIImageView);
         [_pointView setBackgroundColor:COLOR_Red];
-        _pointView.layer.cornerRadius = 2;
+        _pointView.layer.cornerRadius = 3;
         _pointView.layer.masksToBounds = YES;
     }
     return _pointView;
@@ -138,33 +149,26 @@ Strong UIImageView *arrowImage;
         make.width.mas_equalTo(kSizeFrom750(300));
         make.centerX.mas_equalTo(self.contentView);
     }];
-    [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(kOriginLeft);
-        make.right.mas_equalTo(self.contentView).offset(-kOriginLeft);
-        make.top.mas_equalTo(self.timeLabel.mas_bottom).offset(kSizeFrom750(20));
-        make.height.mas_equalTo(kSizeFrom750(230));
-    }];
-    
+ 
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(kOriginLeft);
-        make.top.mas_equalTo(kSizeFrom750(20));
-        make.width.mas_equalTo(kContentWidth - kOriginLeft*2);
+        make.right.mas_equalTo(self.bgView).offset(-kSizeFrom750(42));
+        make.top.mas_equalTo(self.bgView).offset(kSizeFrom750(36));
         make.height.mas_equalTo(kSizeFrom750(30));
     }];
     [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.width.mas_equalTo(self.titleLabel);
-        make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(kSizeFrom750(20));
-        make.height.mas_equalTo(kSizeFrom750(70));
+        make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(kSizeFrom750(40));
     }];
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.width.mas_equalTo(self.titleLabel);
-        make.top.mas_equalTo(self.contentLabel.mas_bottom).offset(kSizeFrom750(20));
+        make.left.right.mas_equalTo(self.titleLabel);
+        make.top.mas_equalTo(self.contentLabel.mas_bottom).offset(kSizeFrom750(44));
         make.height.mas_equalTo(kLineHeight);
     }];
     
     [self.subTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.lineView);
-        make.top.mas_equalTo(self.lineView.mas_bottom).offset(kSizeFrom750(20));
+        make.top.mas_equalTo(self.lineView.mas_bottom).offset(kSizeFrom750(22));
         make.width.mas_equalTo(kSizeFrom750(150));
         make.height.mas_equalTo(kSizeFrom750(30));
     }];
@@ -179,9 +183,25 @@ Strong UIImageView *arrowImage;
     
     [self.pointView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(self.arrowImage.mas_left).offset(-kSizeFrom750(10));
-        make.width.height.mas_equalTo(4);
+        make.width.height.mas_equalTo(6);
         make.centerY.mas_equalTo(self.subTitleLabel.mas_centerY);
     }];
+    
+
+    [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(kOriginLeft);
+        make.right.mas_equalTo(self.contentView).offset(-kOriginLeft);
+        make.top.mas_equalTo(self.timeLabel.mas_bottom).offset(kSizeFrom750(30));
+        make.bottom.mas_equalTo(self.subTitleLabel.mas_bottom).offset(kSizeFrom750(22));
+    }];
+    
+    [self.spaceView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_equalTo(self.contentView);
+        make.top.mas_equalTo(self.subTitleLabel.mas_bottom);
+        make.bottom.mas_equalTo(-kLabelHeight);
+    }];
+    
+    
 }
 -(void)loadInfoWithModel:(MessageModel *)model
 {
@@ -190,14 +210,14 @@ Strong UIImageView *arrowImage;
     [CommonUtils setAttString:model.contents withLineSpace:kLabelSpace titleLabel:self.contentLabel];
     if ([model.status integerValue]==2) {
         //已读
-        self.titleLabel.textColor = RGB(220, 220, 220);
-        self.contentLabel.textColor = RGB(220, 220, 220);
-        self.subTitleLabel.textColor = RGB(220, 220, 220);
+        self.titleLabel.textColor = HEXCOLOR(@"#b8b8b8");
+        self.contentLabel.textColor = HEXCOLOR(@"#b8b8b8");
+        self.subTitleLabel.textColor = HEXCOLOR(@"#b8b8b8");
         [self.pointView setHidden:YES];
     }else{
-        self.titleLabel.textColor = RGB_51;
-        self.contentLabel.textColor = RGB_102;
-        self.subTitleLabel.textColor = RGB_51;
+        self.titleLabel.textColor = HEXCOLOR(@"#333333");;
+        self.contentLabel.textColor = HEXCOLOR(@"#666666");;
+        self.subTitleLabel.textColor = HEXCOLOR(@"#666666");;
         [self.pointView setHidden:NO];
     }
 }
