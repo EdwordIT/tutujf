@@ -22,6 +22,7 @@ Copy NSString * logo_url  ;//    string    logo连接
 Copy NSString * link_url  ;//    string    连接
 Copy NSString * width   ;//    string    按钮图片宽
 Copy NSString * height   ;//    string    按钮图片高
+Copy NSString * form_number;//对应原生态页面编号
 @end
 
 @interface MyAccountModel : BaseModel

@@ -26,7 +26,6 @@ Assign BOOL isCanAdd;
     self.dataArray = InitObject(NSMutableArray);
     [self.view addSubview:self.tableView];
     [SVProgressHUD show];
-    [self getRequest];
     
     //解绑页面
     self.remindView = [[BankCardRemindView alloc]initWithFrame:kScreen_Bounds];
@@ -50,12 +49,18 @@ Assign BOOL isCanAdd;
     
     // Do any additional setup after loading the view.
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self getRequest];
+}
 - (void)getRequest{
     NSArray *keysArr = @[kToken];
     NSArray *valuesArr = @[[CommonUtils getToken]];
     [self.dataArray removeAllObjects];
     [[HttpCommunication sharedInstance] postSignRequestWithPath:getBankCardListUrl keysArray:keysArr valuesArray:valuesArr refresh:self.tableView success:^(NSDictionary *successDic) {
         self.baseModel = [MyBankCardModel yy_modelWithJSON:successDic];
+        [self.dataArray removeAllObjects];
         [self.dataArray addObjectsFromArray:self.baseModel.bank_list];
         if ([self.baseModel.add_bank.is_add isEqualToString:@"-1"]) {
             self.isCanAdd = NO;//不可添加银行卡，也不显示按钮
@@ -147,8 +152,28 @@ Assign BOOL isCanAdd;
         [cell loadInfoWithModel:self.baseModel.add_bank];
         cell.addBankCardBlock = ^{
             if ([self.baseModel.add_bank.is_add isEqualToString:@"-1"]) {
-                //不可添加
-                [SVProgressHUD showInfoWithStatus:@"无法添加"];
+            
+                //不可添加,是否实名认证，是否开通托管账户
+                if ([self.baseModel.realname_status isEqualToString:@"-1"]) {
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"请先进行实名认证" preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [self goRealNameVC];
+                    }];
+                    [alertController addAction:okAction];
+                    [self presentViewController:alertController animated:YES completion:nil];
+                }else{
+                    if ([self.baseModel.trust_account isEqualToString:@"-1"]) {
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"请先开通托管账户" preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            [self goWebViewWithPath:self.baseModel.trust_reg_url];
+                        }];
+                        [alertController addAction:okAction];
+                        [self presentViewController:alertController animated:YES completion:nil];
+                    }else{
+                        [SVProgressHUD showInfoWithStatus:@"暂无法添加银行卡"];
+                    }
+                    
+                }
             }else{
                 //调取添加相关内容
             }

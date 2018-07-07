@@ -10,7 +10,9 @@
 #import "MessageCell.h"
 #import "MJRefresh.h"
 #import "HomeWebController.h"
+#import "MessageComboBoxView.h"
 @interface MessageController ()<UITableViewDelegate,UITableViewDataSource>
+Strong MessageComboBoxView *comboxView;
 Strong BaseUITableView *mainTab;
 Strong NSMutableArray *dataSource;
 Assign NSInteger currentPage;
@@ -25,19 +27,36 @@ Assign NSInteger totalPages;
     self.currentPage = 1;
     self.totalPages = 1;
     [self.rightBtn setHidden:NO];
-    [self.rightBtn setTitle:@"一键清除" forState:UIControlStateNormal];
-    self.rightBtn.titleLabel.font = SYSTEMSIZE(26);
+    [self.rightBtn setImage:IMAGEBYENAME(@"more") forState:UIControlStateNormal];
+    [self.rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.rightBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(kSizeFrom750(120));
+        make.width.mas_equalTo(kSizeFrom750(80));
         make.height.mas_equalTo(kSizeFrom750(30));
     }];
-    [self.rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.mainTab];
+    [self.view addSubview:self.comboxView];
+    [self.comboxView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(-kSizeFrom750(15));
+        make.top.mas_equalTo(self.rightBtn.mas_bottom);
+        make.width.mas_equalTo(kSizeFrom750(348));
+        make.height.mas_equalTo(kSizeFrom750(300));
+    }];
     [SVProgressHUD show];
     [self getRequest];
     // Do any additional setup after loading the view.
 }
 #pragma lazyLoading
+-(MessageComboBoxView *)comboxView{
+    if (!_comboxView) {
+        _comboxView = [[MessageComboBoxView alloc]init];
+        _comboxView.hidden = YES;
+        //消息处理事件
+        _comboxView.comboxBlock = ^(NSInteger tag) {
+            
+        };
+    }
+    return _comboxView;
+}
 -(NSMutableArray *)dataSource{
     if (!_dataSource) {
         _dataSource = InitObject(NSMutableArray);
@@ -49,8 +68,8 @@ Assign NSInteger totalPages;
         _mainTab = [[BaseUITableView alloc]initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight) style:UITableViewStylePlain];
         _mainTab.delegate = self;
         _mainTab.dataSource = self;
-        _mainTab.rowHeight = kSizeFrom750(320);
-        _mainTab.separatorStyle = UITableViewCellSeparatorStyleNone;
+//        _mainTab.estimatedRowHeight = kSizeFrom750(410);
+        [_mainTab registerClass:[MessageCell class] forCellReuseIdentifier:@"MessageCell"];
         WEAK_SELF;
         _mainTab.ly_emptyView = [EmptyView noDataRefreshBlock:^{
             weakSelf.currentPage = 1;
@@ -84,14 +103,21 @@ Assign NSInteger totalPages;
     return [UIView new];
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *cellId = @"RechargeRecordCell";
+    static NSString *cellId = @"MessageCell";
     MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (cell==nil) {
-        cell = [[MessageCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
-    }
     MessageModel *model = [self.dataSource objectAtIndex:indexPath.row];
     [cell loadInfoWithModel:model];
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    //普通的计算高度，不进行缓存
+//    return [tableView fd_heightForCellWithIdentifier:@"MessageCell" configuration:^(id cell) {
+////        ((MessageCell *)cell).fd_enforceFrameLayout = NO;
+//    }];
+  return  [tableView fd_heightForCellWithIdentifier:@"MessageCell" cacheByIndexPath:indexPath configuration:^(MessageCell *cell) {
+        [cell loadInfoWithModel:[self.dataSource objectAtIndex:indexPath.row]];
+    }];
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     MessageModel *model = [self.dataSource objectAtIndex:indexPath.row];
@@ -135,21 +161,21 @@ Assign NSInteger totalPages;
     }
 }
 -(void)rightBtnClick:(UIButton *)sender{
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"是否清除全部站内信？" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"清除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
-        [[HttpCommunication sharedInstance] postSignRequestWithPath:postMarkedAsReadedUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:nil success:^(NSDictionary *successDic) {
-            [self getRequest];
-        } failure:^(NSDictionary *errorDic) {
-            
-        }];
-        
-    }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-    [alertController addAction:alertAction];
-    [alertController addAction:cancelAction];
-    [self presentViewController:alertController animated:YES completion:nil];
+    self.comboxView.hidden = !self.comboxView.hidden;
+//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"是否清除全部站内信？" preferredStyle:UIAlertControllerStyleAlert];
+//    UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"清除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//
+//        [[HttpCommunication sharedInstance] postSignRequestWithPath:postMarkedAsReadedUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:nil success:^(NSDictionary *successDic) {
+//            [self getRequest];
+//        } failure:^(NSDictionary *errorDic) {
+//
+//        }];
+//
+//    }];
+//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+//    [alertController addAction:alertAction];
+//    [alertController addAction:cancelAction];
+//    [self presentViewController:alertController animated:YES completion:nil];
    
 }
 - (void)didReceiveMemoryWarning {

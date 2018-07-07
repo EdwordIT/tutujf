@@ -14,6 +14,8 @@ Strong UILabel *titleLabel;
 Strong NSMutableArray *buttonArray;
 Strong UITextField *startTextField;//开始时间
 Strong UITextField *endTextField;//结束时间
+Strong UIImageView *startArrow;
+Strong UIImageView *endArrow;
 Copy NSString *startTime;
 Copy NSString *endTime;
 Assign NSInteger selectTag;//选中状态
@@ -94,13 +96,19 @@ Strong UIDatePicker *datePicker;
     self.startTextField.layer.borderColor = [RGB_183 CGColor];
     self.startTextField.layer.borderWidth = kLineHeight;
     self.startTextField.layer.cornerRadius = kSizeFrom750(5);
-
+    self.startTextField.delegate = self;
+    self.startTextField.tag = 1;
     self.startTextField.font = SYSTEMSIZE(26);
     self.startTextField.placeholder = @"   选择开始时间";
     self.startTextField.textColor = RGB_183;
-    self.startTextField.delegate = self;
     self.startTextField.inputView = self.datePicker;
-    
+    self.startArrow = InitObject(UIImageView);
+    [self.startArrow setImage:IMAGEBYENAME(@"bottomArrow")];
+    [self.startTextField addSubview:self.startArrow];
+    [self.startArrow mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.startTextField);
+        make.right.mas_equalTo(self.startTextField.mas_right).offset(-kSizeFrom750(15));
+    }];
     
     UIView *sepLine = [[UIView alloc]initWithFrame:RECT(self.startTextField.right+kSizeFrom750(20), 0, kSizeFrom750(30), 1)];
     [sepLine setBackgroundColor:RGB_51];
@@ -110,6 +118,7 @@ Strong UIDatePicker *datePicker;
     self.endTextField = [[UITextField alloc]initWithFrame:RECT(sepLine.right+kSizeFrom750(20), subTitle.bottom+kSizeFrom750(30), kSizeFrom750(280), kSizeFrom750(55))];
     [self.headerView addSubview:self.endTextField];
     self.endTextField.delegate = self;
+    self.endTextField.tag = 2;
     self.endTextField.layer.borderColor = [RGB_183 CGColor];
     self.endTextField.layer.borderWidth = kLineHeight;
     self.endTextField.layer.cornerRadius = kSizeFrom750(5);
@@ -117,7 +126,16 @@ Strong UIDatePicker *datePicker;
     self.endTextField.placeholder = @"   选择结束时间";
     self.endTextField.textColor = RGB_183;
     self.endTextField.inputView = self.datePicker;
-
+    self.endArrow = InitObject(UIImageView);
+    [self.endArrow setImage:IMAGEBYENAME(@"bottomArrow")];
+    [self.endTextField addSubview:self.endArrow];
+    [self.endArrow mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.endTextField);
+        make.right.mas_equalTo(self.endTextField.mas_right).offset(-kSizeFrom750(15));
+    }];
+    
+   
+    
     
     UIButton *resetBtn = [[UIButton alloc]initWithFrame:RECT(0,self.headerView.height - kSizeFrom750(88), screen_width/2, kSizeFrom750(88))];
     [resetBtn setTitle:@"条件重置" forState:UIControlStateNormal];
@@ -151,6 +169,30 @@ Strong UIDatePicker *datePicker;
 - (void)textFieldDidBeginEditing:(UITextField *)textField;{
     //确保加载时也能获取datePicker的文字
     [self valueChange:self.datePicker];
+     [self animation:YES tag:textField.tag];
+}
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self animation:NO tag:textField.tag];
+}
+-(void)animation:(BOOL)isUp tag:(NSInteger)tag{
+    if (isUp) {
+        [UIView animateWithDuration:0.3 animations:^{
+            if (tag==1) {
+                self.startArrow.transform = CGAffineTransformMakeRotation(-M_PI);
+            }else{
+               self.endArrow.transform = CGAffineTransformMakeRotation(-M_PI);
+            }
+        }];
+    }else{
+        [UIView animateWithDuration:0.3 animations:^{
+            if (tag==1) {
+                self.startArrow.transform = CGAffineTransformMakeRotation(-2*M_PI);
+            }else{
+                self.endArrow.transform = CGAffineTransformMakeRotation(-2*M_PI);
+            }
+        }];
+    }
 }
 -(void)valueChange:(UIDatePicker *)datePicker{
     

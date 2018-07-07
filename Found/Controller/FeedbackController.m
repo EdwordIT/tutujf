@@ -91,32 +91,45 @@ Strong NSMutableArray *imageArray;
         [SVProgressHUD show];
         //先上传图片，上传完成后，返回图片地址链接地址
         NSArray *imgArr = [self getImageDataArray];
-        for (int i=0; i<imgArr.count; i++) {
-            NSData *imageData = [imgArr objectAtIndex:i];
-            NSString *file_id = [CommonUtils getRandomStringWithNum:20];
-            NSString *time_stamp = [CommonUtils getCurrentTimestamp];
-            NSArray *keysArr = @[kToken,@"file_id",@"time_stamp"];
-            NSArray *valuesArr = @[[CommonUtils getToken],file_id,time_stamp];
-            [[HttpCommunication sharedInstance] uploadImageWithUrl:uploadImagesUrl keysArray:keysArr valuesArray:valuesArr image:imageData success:^(NSDictionary *successDic) {
-                [self.imageArray addObject:[successDic objectForKey:@"uploadimg"]];
-                if (self.imageArray.count==imgArr.count) {//全部上传完毕
-                    //上传内容
-                    NSArray *contentKeysArr = @[kToken,@"content",@"arr_img_url"];
-                    NSArray *contentValuesArr = @[[CommonUtils getToken],self.inPutTextView.textView.text,[self getFeedBackStringWithArray:self.imageArray]];
-                    [[HttpCommunication sharedInstance] postSignRequestWithPath:postSuggestUrl keysArray:contentKeysArr valuesArray:contentValuesArr refresh:nil success:^(NSDictionary *successDic) {
-                        //延迟两秒后，返回上一页
-                        [self performSelector:@selector(quit) withObject:nil afterDelay:1];
-                    } failure:^(NSDictionary *errorDic) {
-                        
-                    }];
-                }
-            } failure:^(NSDictionary *errorDic) {
-                
-            }];
+        if (imgArr.count==0) {
+            //仅仅上传内容，不上传图片
+            [self postFeedBack];
             
+        }else{
+            if (self.imageArray.count==imgArr.count) {//图片已经全部上传完毕
+                [self postFeedBack];
+            }
+            for (int i=0; i<imgArr.count; i++) {
+                NSData *imageData = [imgArr objectAtIndex:i];
+                NSString *file_id = [CommonUtils getRandomStringWithNum:20];
+                NSString *time_stamp = [CommonUtils getCurrentTimestamp];
+                NSArray *keysArr = @[kToken,@"file_id",@"time_stamp"];
+                NSArray *valuesArr = @[[CommonUtils getToken],file_id,time_stamp];
+                [[HttpCommunication sharedInstance] uploadImageWithUrl:uploadImagesUrl keysArray:keysArr valuesArray:valuesArr image:imageData success:^(NSDictionary *successDic) {
+                    [self.imageArray addObject:[successDic objectForKey:@"uploadimg"]];
+                    if (self.imageArray.count==imgArr.count) {//全部上传完毕
+                        [self postFeedBack];
+                    }
+                } failure:^(NSDictionary *errorDic) {
+                    
+                }];
+                
+            }
         }
-   
     }
+}
+//上传所有反馈内容
+-(void)postFeedBack{
+    
+    //上传内容
+    NSArray *contentKeysArr = @[kToken,@"content",@"arr_img_url"];
+    NSArray *contentValuesArr = @[[CommonUtils getToken],self.inPutTextView.textView.text,[self getFeedBackStringWithArray:self.imageArray]];
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:postSuggestUrl keysArray:contentKeysArr valuesArray:contentValuesArr refresh:nil success:^(NSDictionary *successDic) {
+        //延迟两秒后，返回上一页
+        [self performSelector:@selector(quit) withObject:nil afterDelay:1];
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
 }
 -(void)quit
 {

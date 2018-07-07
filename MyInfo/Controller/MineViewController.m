@@ -251,13 +251,13 @@ Strong MyAccountModel *accountModel;//数据源
     if([CommonUtils isLogin])
     {
         UserContentModel *model = [self.accountModel.bt_user_content objectAtIndex:index];
-        if ([model.title isEqualToString:@"债权转让"]) {
+        if ([model.form_number isEqualToString:@"117"]) {//债权转让
             TransferListController *history = InitObject(TransferListController);
             [self.navigationController pushViewController:history animated:YES];
-        }else if([model.title isEqualToString:@"托管账户"]){
+        }else if([model.form_number isEqualToString:@"119"]){//托管账户
             MyRegAccountController *reg = InitObject(MyRegAccountController);
             [self.navigationController pushViewController:reg animated:YES];
-        }else if([model.title isEqualToString:@"银行卡管理"]){
+        }else if([model.form_number isEqualToString:@"118"]){//银行卡管理
             MyBankCardController *reg = InitObject(MyBankCardController);
             [self.navigationController pushViewController:reg animated:YES];
         }else{

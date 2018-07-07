@@ -7,7 +7,7 @@
 //
 
 #import "BaseViewController.h"
-/*
+/**
  我的债权转让相关内容(列表下的内容)
  */
 @interface MyTransferController : BaseViewController
