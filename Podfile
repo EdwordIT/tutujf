@@ -31,4 +31,5 @@ pod 'LPDQuoteImagesView'
 #pod 'Meiqia', '~> 3.4.5'
 #pod 'QIYU_iOS_SDK', '~> 4.2.1'
 pod 'UITableView+FDTemplateLayoutCell', '~> 1.6'
+pod 'FSCalendar', '~> 2.7.9'
 end

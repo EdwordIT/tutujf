@@ -113,10 +113,16 @@
 #define kLabelHeight kSizeFrom750(30)
 //默认主标题高度 88
 #define kTitleHeight kSizeFrom750(88)
+//默认按钮高度
+#define kButtonHeight kSizeFrom750(88)
+
 #define kContentWidth kSizeFrom750(690)
 //默认label行间距
 #define kLabelSpace kSizeFrom750(12)
+//默认圆角
+#define CORNER_RADIUS kSizeFrom750(10)
 
+#define ANIMATION_TIME 0.3
 #define kLineHeight 1.0f/[[UIScreen mainScreen] scale]
 //底部标签栏高度
 #define kTabbarHeight (kDevice_Is_iPhoneX ? 83 : 49)

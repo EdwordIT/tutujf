@@ -274,11 +274,30 @@
 		CB45938520EDA5FE0073364B /* all_readed@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45937B20EDA5FE0073364B /* all_readed@3x.png */; };
 		CB45938820EDA6F50073364B /* MessageComboBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB45938720EDA6F50073364B /* MessageComboBoxView.m */; };
 		CB4593C920EF366F0073364B /* MyPaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4593C820EF366F0073364B /* MyPaybackController.m */; };
+		CB4593CC20F093960073364B /* PaybackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4593CB20F093960073364B /* PaybackCell.m */; };
+		CB4593CF20F099890073364B /* PaybackModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4593CE20F099890073364B /* PaybackModel.m */; };
 		CB4A087420CF66F900713BF1 /* MyBankCardController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087320CF66F900713BF1 /* MyBankCardController.m */; };
 		CB4A087A20CF677B00713BF1 /* MyBankCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087920CF677B00713BF1 /* MyBankCardCell.m */; };
 		CB4A087D20CF679A00713BF1 /* BankCardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087C20CF679A00713BF1 /* BankCardModel.m */; };
 		CB4A088020CFAB0E00713BF1 /* BankCardRemindView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A087F20CFAB0E00713BF1 /* BankCardRemindView.m */; };
 		CB4A088320D35DE800713BF1 /* UIFont+customFont.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4A088220D35DE800713BF1 /* UIFont+customFont.m */; };
+		CB5A6FF520F2F33A0016C5A7 /* PaybackSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5A6FF420F2F33A0016C5A7 /* PaybackSelectView.m */; };
+		CB5A6FF920F353810016C5A7 /* SDRangeSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5A6FF820F353810016C5A7 /* SDRangeSliderView.m */; };
+		CB5A6FFD20F443FB0016C5A7 /* icons_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A6FFB20F443FA0016C5A7 /* icons_slider@2x.png */; };
+		CB5A6FFE20F443FB0016C5A7 /* icons_slider@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A6FFC20F443FA0016C5A7 /* icons_slider@3x.png */; };
+		CB5A700120F49CA20016C5A7 /* sharp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A6FFF20F49CA20016C5A7 /* sharp@2x.png */; };
+		CB5A700220F49CA20016C5A7 /* sharp@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A700020F49CA20016C5A7 /* sharp@3x.png */; };
+		CB5A700720F4A1280016C5A7 /* icons_select@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A700320F4A1250016C5A7 /* icons_select@3x.png */; };
+		CB5A700820F4A1280016C5A7 /* icons_calendar@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A700420F4A1260016C5A7 /* icons_calendar@3x.png */; };
+		CB5A700920F4A1280016C5A7 /* icons_select@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A700520F4A1270016C5A7 /* icons_select@2x.png */; };
+		CB5A700A20F4A1280016C5A7 /* icons_calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A700620F4A1270016C5A7 /* icons_calendar@2x.png */; };
+		CB5A700F20F4A2010016C5A7 /* menu_payback@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A700B20F4A1FF0016C5A7 /* menu_payback@2x.png */; };
+		CB5A701020F4A2010016C5A7 /* icons_payback@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A700C20F4A1FF0016C5A7 /* icons_payback@2x.png */; };
+		CB5A701120F4A2010016C5A7 /* menu_payback@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A700D20F4A2000016C5A7 /* menu_payback@3x.png */; };
+		CB5A701220F4A2010016C5A7 /* icons_payback@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A700E20F4A2000016C5A7 /* icons_payback@3x.png */; };
+		CB5A701520F4A2120016C5A7 /* sharp_sel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A701320F4A2120016C5A7 /* sharp_sel@2x.png */; };
+		CB5A701620F4A2120016C5A7 /* sharp_sel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB5A701420F4A2120016C5A7 /* sharp_sel@3x.png */; };
+		CB5A701920F74C140016C5A7 /* MyCalendarPaybackCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5A701820F74C140016C5A7 /* MyCalendarPaybackCell.m */; };
 		CB5C789B20C51ECB00606811 /* FeedbackController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789A20C51ECB00606811 /* FeedbackController.m */; };
 		CB5C789E20C5206000606811 /* InputTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789C20C5205F00606811 /* InputTextView.m */; };
 		CB5C78A120C52BF300606811 /* UITextFieldDelegateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789F20C52BF300606811 /* UITextFieldDelegateModel.m */; };
@@ -1005,6 +1024,10 @@
 		CB45938720EDA6F50073364B /* MessageComboBoxView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageComboBoxView.m; sourceTree = "<group>"; };
 		CB4593C720EF366F0073364B /* MyPaybackController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyPaybackController.h; sourceTree = "<group>"; };
 		CB4593C820EF366F0073364B /* MyPaybackController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyPaybackController.m; sourceTree = "<group>"; };
+		CB4593CA20F093960073364B /* PaybackCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaybackCell.h; sourceTree = "<group>"; };
+		CB4593CB20F093960073364B /* PaybackCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaybackCell.m; sourceTree = "<group>"; };
+		CB4593CD20F099890073364B /* PaybackModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaybackModel.h; sourceTree = "<group>"; };
+		CB4593CE20F099890073364B /* PaybackModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaybackModel.m; sourceTree = "<group>"; };
 		CB4A087220CF66F800713BF1 /* MyBankCardController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBankCardController.h; sourceTree = "<group>"; };
 		CB4A087320CF66F900713BF1 /* MyBankCardController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyBankCardController.m; sourceTree = "<group>"; };
 		CB4A087820CF677B00713BF1 /* MyBankCardCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBankCardCell.h; sourceTree = "<group>"; };
@@ -1015,6 +1038,26 @@
 		CB4A087F20CFAB0E00713BF1 /* BankCardRemindView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BankCardRemindView.m; sourceTree = "<group>"; };
 		CB4A088120D35DE800713BF1 /* UIFont+customFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIFont+customFont.h"; sourceTree = "<group>"; };
 		CB4A088220D35DE800713BF1 /* UIFont+customFont.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIFont+customFont.m"; sourceTree = "<group>"; };
+		CB5A6FF320F2F33A0016C5A7 /* PaybackSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaybackSelectView.h; sourceTree = "<group>"; };
+		CB5A6FF420F2F33A0016C5A7 /* PaybackSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaybackSelectView.m; sourceTree = "<group>"; };
+		CB5A6FF720F353810016C5A7 /* SDRangeSliderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDRangeSliderView.h; sourceTree = "<group>"; };
+		CB5A6FF820F353810016C5A7 /* SDRangeSliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDRangeSliderView.m; sourceTree = "<group>"; };
+		CB5A6FFB20F443FA0016C5A7 /* icons_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_slider@2x.png"; sourceTree = "<group>"; };
+		CB5A6FFC20F443FA0016C5A7 /* icons_slider@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_slider@3x.png"; sourceTree = "<group>"; };
+		CB5A6FFF20F49CA20016C5A7 /* sharp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharp@2x.png"; sourceTree = "<group>"; };
+		CB5A700020F49CA20016C5A7 /* sharp@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharp@3x.png"; sourceTree = "<group>"; };
+		CB5A700320F4A1250016C5A7 /* icons_select@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_select@3x.png"; sourceTree = "<group>"; };
+		CB5A700420F4A1260016C5A7 /* icons_calendar@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_calendar@3x.png"; sourceTree = "<group>"; };
+		CB5A700520F4A1270016C5A7 /* icons_select@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_select@2x.png"; sourceTree = "<group>"; };
+		CB5A700620F4A1270016C5A7 /* icons_calendar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_calendar@2x.png"; sourceTree = "<group>"; };
+		CB5A700B20F4A1FF0016C5A7 /* menu_payback@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_payback@2x.png"; sourceTree = "<group>"; };
+		CB5A700C20F4A1FF0016C5A7 /* icons_payback@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_payback@2x.png"; sourceTree = "<group>"; };
+		CB5A700D20F4A2000016C5A7 /* menu_payback@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu_payback@3x.png"; sourceTree = "<group>"; };
+		CB5A700E20F4A2000016C5A7 /* icons_payback@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_payback@3x.png"; sourceTree = "<group>"; };
+		CB5A701320F4A2120016C5A7 /* sharp_sel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharp_sel@2x.png"; sourceTree = "<group>"; };
+		CB5A701420F4A2120016C5A7 /* sharp_sel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sharp_sel@3x.png"; sourceTree = "<group>"; };
+		CB5A701720F74C140016C5A7 /* MyCalendarPaybackCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCalendarPaybackCell.h; sourceTree = "<group>"; };
+		CB5A701820F74C140016C5A7 /* MyCalendarPaybackCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCalendarPaybackCell.m; sourceTree = "<group>"; };
 		CB5C789920C51ECB00606811 /* FeedbackController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeedbackController.h; sourceTree = "<group>"; };
 		CB5C789A20C51ECB00606811 /* FeedbackController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeedbackController.m; sourceTree = "<group>"; };
 		CB5C789C20C5205F00606811 /* InputTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputTextView.m; sourceTree = "<group>"; };
@@ -2213,6 +2256,36 @@
 			path = "message(消息列表)";
 			sourceTree = "<group>";
 		};
+		CB5A6FF620F353810016C5A7 /* SDRangeSliderView */ = {
+			isa = PBXGroup;
+			children = (
+				CB5A6FF720F353810016C5A7 /* SDRangeSliderView.h */,
+				CB5A6FF820F353810016C5A7 /* SDRangeSliderView.m */,
+			);
+			path = SDRangeSliderView;
+			sourceTree = "<group>";
+		};
+		CB5A6FFA20F443DF0016C5A7 /* mypayback */ = {
+			isa = PBXGroup;
+			children = (
+				CB5A701320F4A2120016C5A7 /* sharp_sel@2x.png */,
+				CB5A701420F4A2120016C5A7 /* sharp_sel@3x.png */,
+				CB5A700C20F4A1FF0016C5A7 /* icons_payback@2x.png */,
+				CB5A700E20F4A2000016C5A7 /* icons_payback@3x.png */,
+				CB5A700B20F4A1FF0016C5A7 /* menu_payback@2x.png */,
+				CB5A700D20F4A2000016C5A7 /* menu_payback@3x.png */,
+				CB5A700620F4A1270016C5A7 /* icons_calendar@2x.png */,
+				CB5A700420F4A1260016C5A7 /* icons_calendar@3x.png */,
+				CB5A700520F4A1270016C5A7 /* icons_select@2x.png */,
+				CB5A700320F4A1250016C5A7 /* icons_select@3x.png */,
+				CB5A6FFF20F49CA20016C5A7 /* sharp@2x.png */,
+				CB5A700020F49CA20016C5A7 /* sharp@3x.png */,
+				CB5A6FFB20F443FA0016C5A7 /* icons_slider@2x.png */,
+				CB5A6FFC20F443FA0016C5A7 /* icons_slider@3x.png */,
+			);
+			path = mypayback;
+			sourceTree = "<group>";
+		};
 		CBB4CCE320BBE50600EA877B /* ZFChart */ = {
 			isa = PBXGroup;
 			children = (
@@ -2424,6 +2497,7 @@
 		E70679401E60C80B00E32B86 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				CB5A6FF620F353810016C5A7 /* SDRangeSliderView */,
 				CBB4CCE320BBE50600EA877B /* ZFChart */,
 				CB3CC60220B8EC9000CBE5DF /* FDSliderBar */,
 				1B4EEC7A206CEFBC00117EF0 /* SDPhotoBrowser */,
@@ -2926,6 +3000,7 @@
 		E70D16E21F2303C3007F12D0 /* Img */ = {
 			isa = PBXGroup;
 			children = (
+				CB5A6FFA20F443DF0016C5A7 /* mypayback */,
 				CB45937120EDA5680073364B /* message(消息列表) */,
 				CB3CC5FF20B69FC400CBE5DF /* myInfo */,
 				CB3CC5FE20B6481400CBE5DF /* homepage */,
@@ -3251,6 +3326,12 @@
 				CB4A087F20CFAB0E00713BF1 /* BankCardRemindView.m */,
 				CB45938620EDA6F40073364B /* MessageComboBoxView.h */,
 				CB45938720EDA6F50073364B /* MessageComboBoxView.m */,
+				CB4593CA20F093960073364B /* PaybackCell.h */,
+				CB4593CB20F093960073364B /* PaybackCell.m */,
+				CB5A6FF320F2F33A0016C5A7 /* PaybackSelectView.h */,
+				CB5A6FF420F2F33A0016C5A7 /* PaybackSelectView.m */,
+				CB5A701720F74C140016C5A7 /* MyCalendarPaybackCell.h */,
+				CB5A701820F74C140016C5A7 /* MyCalendarPaybackCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3298,6 +3379,8 @@
 				CBCDE69F20E0C0210032983E /* MyBankCardModel.m */,
 				CBCDE6A120E0CD2E0032983E /* MyRegAccountModel.h */,
 				CBCDE6A220E0CD2E0032983E /* MyRegAccountModel.m */,
+				CB4593CD20F099890073364B /* PaybackModel.h */,
+				CB4593CE20F099890073364B /* PaybackModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3513,6 +3596,7 @@
 				1BE6736B20734F720003A30C /* menu_discover_unsel@2x.png in Resources */,
 				CB3CC5D720B54A8A00CBE5DF /* re_canuse@3x.png in Resources */,
 				1BE6734F20730E5D0003A30C /* platform_data@2x.png in Resources */,
+				CB5A701220F4A2010016C5A7 /* icons_payback@3x.png in Resources */,
 				1BE6735020730E5D0003A30C /* platform_data@3x.png in Resources */,
 				1B1923882064CF18005B0C57 /* mobile@2x.png in Resources */,
 				E7067B991E60C9AA00E32B86 /* icon_search.png in Resources */,
@@ -3520,6 +3604,7 @@
 				CB842C2220BE877400FA42AE /* transfer_record_question@3x.png in Resources */,
 				1B583B15205F890F00CC70E4 /* info_disclosure@2x.png in Resources */,
 				CB731588209B0A2B00B3B8FA /* refresh_04.jpg in Resources */,
+				CB5A700A20F4A1280016C5A7 /* icons_calendar@2x.png in Resources */,
 				E7082C091F9CE3D40058D963 /* user07.png in Resources */,
 				CB3CC5D820B54A8A00CBE5DF /* re_overdue_bg@3x.png in Resources */,
 				CB842C2320BE877400FA42AE /* transfer_record_cantSell@3x.png in Resources */,
@@ -3527,6 +3612,8 @@
 				E70D16F91F2303C3007F12D0 /* sns_icon_22_s@2x.png in Resources */,
 				CB3CC5FD20B6471E00CBE5DF /* myinvest_buybacked@3x.png in Resources */,
 				1B788F2A208058FE00F03863 /* icons_code@2x.png in Resources */,
+				CB5A700120F49CA20016C5A7 /* sharp@2x.png in Resources */,
+				CB5A700720F4A1280016C5A7 /* icons_select@3x.png in Resources */,
 				E70D16FF1F2303C3007F12D0 /* sns_icon_6_s@2x.png in Resources */,
 				E7067B8B1E60C9AA00E32B86 /* film@2x.png in Resources */,
 				1B1923892064CF18005B0C57 /* logo@3x.png in Resources */,
@@ -3604,6 +3691,7 @@
 				CB45938220EDA5FE0073364B /* more@2x.png in Resources */,
 				E70D16FE1F2303C3007F12D0 /* sns_icon_6_s.png in Resources */,
 				1BE67349207209780003A30C /* icons_msg_unsel@3x.png in Resources */,
+				CB5A6FFD20F443FB0016C5A7 /* icons_slider@2x.png in Resources */,
 				CB731589209B0A2B00B3B8FA /* refresh_08.jpg in Resources */,
 				1B583B0E205F890F00CC70E4 /* home_01@2x.png in Resources */,
 				E70D17001F2303C3007F12D0 /* xb_xykhk_bg.png in Resources */,
@@ -3624,10 +3712,13 @@
 				E70D16FD1F2303C3007F12D0 /* sns_icon_24_s@2x.png in Resources */,
 				E7067B841E60C9AA00E32B86 /* icon_map_cateid_4.png in Resources */,
 				E7067B8F1E60C9AA00E32B86 /* icon_dellist_locate_refresh.png in Resources */,
+				CB5A6FFE20F443FB0016C5A7 /* icons_slider@3x.png in Resources */,
 				CB731583209B0A2B00B3B8FA /* refresh_034.jpg in Resources */,
 				1B4FC6C82058BC6F00C7C88E /* eye_open@3x.png in Resources */,
 				E7067B8C1E60C9AA00E32B86 /* icon_arrow_dropdown_normal.png in Resources */,
+				CB5A700F20F4A2010016C5A7 /* menu_payback@2x.png in Resources */,
 				CB45935020EB42CE0073364B /* re_waitting_bg@2x.png in Resources */,
+				CB5A701520F4A2120016C5A7 /* sharp_sel@2x.png in Resources */,
 				CB73155D209AE9C200B3B8FA /* cooperationBottom@2x.png in Resources */,
 				E77304B71F910C1800C57FBE /* webback.jpg in Resources */,
 				1B19238E2064CF18005B0C57 /* mobile@3x.png in Resources */,
@@ -3657,10 +3748,12 @@
 				1B1923862064CF18005B0C57 /* password_insure@2x.png in Resources */,
 				E7BF5F281E6066F200BCE81E /* Main.storyboard in Resources */,
 				E7D4C11A1E717D9000E828A5 /* MoreData.plist in Resources */,
+				CB5A701120F4A2010016C5A7 /* menu_payback@3x.png in Resources */,
 				1B4FC6D12058BC6F00C7C88E /* eye_open@2x.png in Resources */,
 				1BE6736C20734F720003A30C /* menu_my_unsel@2x.png in Resources */,
 				E7067BC21E60C9AB00E32B86 /* icon_tabbar_homepage@2x.png in Resources */,
 				E7067B7F1E60C9AA00E32B86 /* icon_map_cateid_1@2x.png in Resources */,
+				CB5A700820F4A1280016C5A7 /* icons_calendar@3x.png in Resources */,
 				CB3CC5E620B553DC00CBE5DF /* myinvest_paidback@3x.png in Resources */,
 				E70A7D251FA0C0DB00C0628A /* logo_ico05.png in Resources */,
 				CB73158A209B0A2B00B3B8FA /* refresh_015.jpg in Resources */,
@@ -3675,6 +3768,7 @@
 				CBFA810420C29A5600CB623E /* transfer_question@3x.png in Resources */,
 				CB3CC5BF20B54A5C00CBE5DF /* transfer_record_sell@3x.png in Resources */,
 				1B1E308B2088811700B3974F /* program_repayed@3x.png in Resources */,
+				CB5A700220F49CA20016C5A7 /* sharp@3x.png in Resources */,
 				CB842C2020BE877400FA42AE /* transfer_record_question@2x.png in Resources */,
 				CB73155B209AE9C200B3B8FA /* cooperation_pull@3x.png in Resources */,
 				1BE673B82074A98F0003A30C /* refresh_mine@3x.png in Resources */,
@@ -3691,6 +3785,7 @@
 				CB3CC5C720B54A5C00CBE5DF /* transfer_record_sell@2x.png in Resources */,
 				1B583B3A2060B35200CC70E4 /* service_top@2x.png in Resources */,
 				CB731599209B0A2B00B3B8FA /* refresh_011.jpg in Resources */,
+				CB5A701020F4A2010016C5A7 /* icons_payback@2x.png in Resources */,
 				E70D16F31F2303C3007F12D0 /* sns_icon_19_s@2x.png in Resources */,
 				CB3CC5D120B54A8A00CBE5DF /* re_overdue@3x.png in Resources */,
 				E77891071F7E43DE005F4E79 /* NewImg.xcassets in Resources */,
@@ -3711,6 +3806,7 @@
 				CB45937F20EDA5FE0073364B /* not_read@2x.png in Resources */,
 				E7067B861E60C9AA00E32B86 /* icon_map_cateid_78.png in Resources */,
 				E70D16F61F2303C3007F12D0 /* sns_icon_21_s.png in Resources */,
+				CB5A700920F4A1280016C5A7 /* icons_select@2x.png in Resources */,
 				1B583B26205F8D2A00CC70E4 /* wings_left@2x.png in Resources */,
 				CB3CC5BE20B54A5C00CBE5DF /* transfer_record_canceled@2x.png in Resources */,
 				CB3CC5FC20B6471E00CBE5DF /* myinvest_buybacked@2x.png in Resources */,
@@ -3724,6 +3820,7 @@
 				1B583B23205F8D2A00CC70E4 /* wings_right@2x.png in Resources */,
 				E7067BC41E60C9AB00E32B86 /* icon_tabbar_mine@2x.png in Resources */,
 				E70D16FA1F2303C3007F12D0 /* sns_icon_23_s.png in Resources */,
+				CB5A701620F4A2120016C5A7 /* sharp_sel@3x.png in Resources */,
 				CB45935720EB44930073364B /* re_canuse_bg@2x.png in Resources */,
 				CB45938320EDA5FE0073364B /* more@3x.png in Resources */,
 				CB3CC5E720B553DC00CBE5DF /* myinvest_payback@2x.png in Resources */,
@@ -3926,6 +4023,7 @@
 				CBB4CD5420BBE50600EA877B /* ZFRadarChart.m in Sources */,
 				CB3CC5AA20B3F9ED00CBE5DF /* MyInvestDetailModel.m in Sources */,
 				CBB4CD4920BBE50600EA877B /* ZFHorizontalAxis.m in Sources */,
+				CB4593CC20F093960073364B /* PaybackCell.m in Sources */,
 				1B583AFC205F64F800CC70E4 /* MessageShowCell.m in Sources */,
 				CB1BFBA9209019770045C0F0 /* GetCashRecordController.m in Sources */,
 				CBB4CD4120BBE50600EA877B /* ZFConst.m in Sources */,
@@ -3967,6 +4065,7 @@
 				E70A6DC21F9DC47D00A7B7E8 /* TopAccount.m in Sources */,
 				E77410081FC80797008861C2 /* UpdateVersion.m in Sources */,
 				1BCF2266206E2BFD00D75662 /* DetailMiddle.m in Sources */,
+				CB5A6FF520F2F33A0016C5A7 /* PaybackSelectView.m in Sources */,
 				E70B64A01ECB3D52004D5CCB /* Utils.m in Sources */,
 				E7A45DE21E743AB20032613E /* BannerModel.m in Sources */,
 				E7067B561E60C9AA00E32B86 /* EXPhotoViewer.m in Sources */,
@@ -3989,6 +4088,7 @@
 				E73B1C5A1FA6144600273C89 /* UITextField+Extension.m in Sources */,
 				E7071BA81F21C30C00293B38 /* PCLockLabel.m in Sources */,
 				CB5C78A420C903B600606811 /* MyRegAccountController.m in Sources */,
+				CB4593CF20F099890073364B /* PaybackModel.m in Sources */,
 				CB6810EA20AE9F310062B7FD /* MyRedenvelopeModel.m in Sources */,
 				E70B64B51ECB51AF004D5CCB /* RSA.m in Sources */,
 				1B6281422050E16D00ECFD8D /* TTJFUserDefault.m in Sources */,
@@ -4002,6 +4102,7 @@
 				CB1BFBB520915F4D0045C0F0 /* TTJFRefreshNormalHeader.m in Sources */,
 				1B4EEC87206CF05A00117EF0 /* RFImageView.m in Sources */,
 				E70E1AC31FC0101100C6EFA6 /* DiscoverMenuModel.m in Sources */,
+				CB5A6FF920F353810016C5A7 /* SDRangeSliderView.m in Sources */,
 				1B583B1A205F895000CC70E4 /* GuideRegisterCell.m in Sources */,
 				E7067B581E60C9AA00E32B86 /* HeaderView.m in Sources */,
 				1B23E294204E834D007F09BE /* TTJFRefreshStateHeader.m in Sources */,
@@ -4102,6 +4203,7 @@
 				CB6810D820AC047B0062B7FD /* TransferListController.m in Sources */,
 				E70B649D1ECB3D52004D5CCB /* GTMBase64.m in Sources */,
 				CB6810F020AEC7210062B7FD /* InvestRecordModel.m in Sources */,
+				CB5A701920F74C140016C5A7 /* MyCalendarPaybackCell.m in Sources */,
 				E7F81C841F8B91B200A856B3 /* ggHttpFounction.m in Sources */,
 				E7A45DEE1E74E03D0032613E /* ImmediateCell.m in Sources */,
 				CBB4CD3F20BBE50600EA877B /* ZFCurveAttribute.m in Sources */,

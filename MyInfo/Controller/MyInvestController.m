@@ -49,6 +49,7 @@ Copy NSString *endTime;
     self.endTime = @"";
     [self.rightBtn setImage:IMAGEBYENAME(@"myinvest_search") forState:UIControlStateNormal];
     [self.rightBtn setHidden:NO];
+    self.rightBtn.timeInterval = 0.6;//按钮点击间隔
     [self.rightBtn addTarget:self action:@selector(selectClick:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.segmentView];

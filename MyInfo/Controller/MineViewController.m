@@ -28,6 +28,7 @@
 #import "PropertyController.h"
 #import "MyRegAccountController.h"
 #import "MyBankCardController.h"
+#import "MyPaybackController.h"
 @interface MineViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,MineMenuDelegate,MIneMiddleDelegate,MineTopDelegate,
 OpenShowAdvertDelegate>
 {
@@ -342,9 +343,11 @@ Strong MyAccountModel *accountModel;//数据源
     {
         if(index==0)
         {
-            //我的投资
-            MyInvestController *invest = InitObject(MyInvestController);
-            [self.navigationController pushViewController:invest animated:YES];
+            MyPaybackController *payback = InitObject(MyPaybackController);
+            [self.navigationController pushViewController:payback animated:YES];
+//            //我的投资
+//            MyInvestController *invest = InitObject(MyInvestController);
+//            [self.navigationController pushViewController:invest animated:YES];
 //        HomeWebController *discountVC = [[HomeWebController alloc] init];
 //        discountVC.urlStr=self.accountModel.bt_my_investment.link_url;
 //        [self.navigationController pushViewController:discountVC animated:YES];

@@ -18,6 +18,7 @@ PODS:
   - EAIntroView (2.12.0):
     - EARestrictedScrollView (~> 1.1.0)
   - EARestrictedScrollView (1.1.0)
+  - FSCalendar (2.7.9)
   - IQKeyboardManager (6.0.4)
   - LPDQuoteImagesView (0.3.3)
   - LYEmptyView (1.0.3)
@@ -83,6 +84,7 @@ DEPENDENCIES:
   - AFNetworking (~> 3.1.0)
   - Bugly (~> 2.5.0)
   - EAIntroView
+  - FSCalendar (~> 2.7.9)
   - IQKeyboardManager
   - LPDQuoteImagesView
   - LYEmptyView (~> 1.0.2)
@@ -114,6 +116,7 @@ SPEC REPOS:
     - Bugly
     - EAIntroView
     - EARestrictedScrollView
+    - FSCalendar
     - IQKeyboardManager
     - LPDQuoteImagesView
     - LYEmptyView
@@ -140,6 +143,7 @@ SPEC CHECKSUMS:
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   EAIntroView: 249559079ddfdbe80e5bcb755c04c3b964b2ac27
   EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
+  FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   IQKeyboardManager: 29514134ef0334a6fa33cf4eee11c36c064baeaf
   LPDQuoteImagesView: a72b8a35d07e900b6a6f195e853d24ecc4fcb0d9
   LYEmptyView: 3a7d1604cff1791d207a498a42101f31e9b12b8c
@@ -161,6 +165,6 @@ SPEC CHECKSUMS:
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: d87484d12229afb80a1e6dd782dab19fcab67285
+PODFILE CHECKSUM: 3bdb5104acdd76cb2a2420af75fa5ec3e4c68cc9
 
 COCOAPODS: 1.5.3
