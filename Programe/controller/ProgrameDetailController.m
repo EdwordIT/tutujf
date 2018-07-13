@@ -93,6 +93,7 @@ Strong LoanBase *baseModel;
         _footerBtn.titleLabel.font = SYSTEMSIZE(34);
         [_footerBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _footerBtn.adjustsImageWhenHighlighted = NO;
+        _footerBtn.timeInterval = 2;//默认点击间隔2秒
         [_footerBtn addTarget:self action:@selector(footerBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _footerBtn;

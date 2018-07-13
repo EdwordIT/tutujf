@@ -154,7 +154,9 @@ Strong     LoanBase * baseModel;
     [accountRemainLabel setAttributedText:attr];
      [bottomView addSubview:accountRemainLabel];
     
-    UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(screen_width-kSizeFrom750(140),0, kSizeFrom750(120), kSizeFrom750(50))];
+    UIButton * btn1 = [[UIButton alloc]init];
+    btn1.frame = CGRectMake(screen_width-kSizeFrom750(140),0, kSizeFrom750(120), kSizeFrom750(50));
+    btn1.timeInterval = 2;//默认点击间隔为2秒
     btn1.centerY = accountRemainLabel.centerY;
     [btn1 setTitle:@"充值" forState:UIControlStateNormal];
     btn1.titleLabel.font = SYSTEMSIZE(26);
@@ -224,6 +226,7 @@ Strong     LoanBase * baseModel;
    [bottomView addSubview:expectLabel];
     
     investBtn = InitObject(GradientButton);
+    investBtn.timeInterval = 2;//默认点击间隔为2秒
     investBtn.frame = CGRectMake(kOriginLeft,expectLabel.bottom+kSizeFrom750(80), screen_width-kOriginLeft*2, kSizeFrom750(90));
     [investBtn setTitle:@"马上投标" forState:UIControlStateNormal];
     investBtn.titleLabel.font = SYSTEMSIZE(32);

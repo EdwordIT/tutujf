@@ -19,7 +19,9 @@ typedef NS_ENUM (NSInteger,LoanStatus){
 @property(nonatomic, strong) NSString *name; //名称
 @property(nonatomic, strong) NSString *activity_url_img;//名称旁边的标识图片
 @property(nonatomic, strong) NSString *apr_val; //预期利率
+@property(nonatomic, strong) NSString *apr_txt; //预期利率
 @property(nonatomic, strong) NSString * period;//理财期限
+@property(nonatomic, strong) NSString * period_txt;//理财期限文本
 @property(nonatomic, strong) NSString *progress;//进度条  %
 @property(nonatomic, strong) NSString *amount; //金额
 @property(nonatomic, strong) NSString *repay_type_name; //还款方式

@@ -114,6 +114,7 @@ Strong UIView *sepView;//分割线
 -(UIButton *)buyBtn{
     if (!_buyBtn) {
         _buyBtn = InitObject(UIButton);
+        _buyBtn.timeInterval = 2;//默认点击间隔2秒
         [_buyBtn addTarget:self action:@selector(buyBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         _buyBtn.tag=1;
         _buyBtn.adjustsImageWhenHighlighted = NO;

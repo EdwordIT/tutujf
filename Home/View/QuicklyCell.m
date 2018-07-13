@@ -28,6 +28,8 @@ Strong NSDate *nowDate;//现在的时间
     UIButton* buyBtn;
     UILabel * startLabel;
     NSInteger secondsCountDown;
+    UILabel *lab2;
+    UILabel *lab3;
     
 }
 
@@ -78,7 +80,7 @@ Strong NSDate *nowDate;//现在的时间
     
     
     
-    UILabel * lab2= [[UILabel alloc] initWithFrame:CGRectMake(self.percentLabel.left, self.percentLabel.bottom+kSizeFrom750(15),kSizeFrom750(140), kSizeFrom750(25))];
+    lab2= [[UILabel alloc] initWithFrame:CGRectMake(self.percentLabel.left, self.percentLabel.bottom+kSizeFrom750(15),kSizeFrom750(140), kSizeFrom750(25))];
     lab2.font = SYSTEMSIZE(24);
     lab2.textColor=RGB_183;
     lab2.text=@"预期利率";
@@ -92,7 +94,7 @@ Strong NSDate *nowDate;//现在的时间
     self.timeLabel.textAlignment=NSTextAlignmentCenter;
     [self.contentView addSubview:self.timeLabel];
     //
-    UILabel * lab3= [[UILabel alloc] initWithFrame:CGRectMake(0, lab2.top,lab2.width, lab2.height)];
+    lab3= [[UILabel alloc] initWithFrame:CGRectMake(0, lab2.top,lab2.width, lab2.height)];
     lab3.centerX = self.timeLabel.centerX;
     lab3.font = SYSTEMSIZE(24);
     lab3.textColor=RGB_183;
@@ -308,6 +310,8 @@ Strong NSDate *nowDate;//现在的时间
 
 -(void)setQuicklyModel:(QuicklyModel *)quickModel
 {
+    lab2.text = quickModel.apr_txt;
+    lab3.text = quickModel.period_txt;
     [buyBtn setTitle:quickModel.status_name forState:UIControlStateNormal];
     self.cellModel = quickModel;
 
