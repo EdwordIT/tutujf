@@ -115,6 +115,7 @@ Strong RechargeModel *rechargeModel;
 -(GradientButton *)rechargeBtn{
     if (!_rechargeBtn) {
         _rechargeBtn = InitObject(GradientButton);
+        _rechargeBtn.timeInterval = 2;//默认点击间隔为2秒
         [_rechargeBtn setBackgroundImage:[UIImage imageWithColor:COLOR_Red] forState:UIControlStateNormal];
         [_rechargeBtn setBackgroundImage:[UIImage imageWithColor:COLOR_Btn_Unsel] forState:UIControlStateDisabled];
         [_rechargeBtn setTitleColor:COLOR_White forState:UIControlStateNormal];

@@ -244,6 +244,7 @@ Strong UILabel *immediatelyLabel;//即时到账提现说明
 -(GradientButton *)getCashBtn{
     if (!_getCashBtn) {
         _getCashBtn = InitObject(GradientButton);
+        _getCashBtn.timeInterval = 2;//默认点击间隔为2秒
         [_getCashBtn setTitleColor:COLOR_White forState:UIControlStateNormal];
         [_getCashBtn addTarget:self action:@selector(getCashClick:) forControlEvents:UIControlEventTouchUpInside];
         [_getCashBtn.titleLabel setFont:SYSTEMSIZE(36)];
