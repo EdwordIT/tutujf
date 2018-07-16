@@ -446,21 +446,21 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
             [self.closeBtn setHidden:YES];
         }
     }
-//   NSString *cookies = [request.allHTTPHeaderFields objectForKey:@"Cookie"];
-//    //外部链接跳转内部链接，如果没写入cookie值，再下一级页面需要重新写入cookie
-//    if ([urlPath hasPrefix:oyUrlAddress]){
-//        if (self.step==2&&IsEmptyStr(cookies)) {//外部跳内部链接,如果没有cookie 则添加cookie
-//            [self.mainWebView stopLoading];
-//            [self loadRequest:urlPath];
-//        }
-//        else{
-//            self.step++;
-//        }
-//        
-//    }else{
-//        //外部链接
-//        self.step = 1;
-//    }
+   NSString *cookies = [request.allHTTPHeaderFields objectForKey:@"Cookie"];
+    //外部链接跳转内部链接，如果没写入cookie值，再下一级页面需要重新写入cookie
+    if ([urlPath hasPrefix:oyUrlAddress]){
+        if (self.step==2&&IsEmptyStr(cookies)) {//外部跳内部链接,如果没有cookie 则添加cookie
+            [self.mainWebView stopLoading];
+            [self loadRequest:urlPath];
+        }
+        else{
+            self.step++;
+        }
+        
+    }else{
+        //外部链接
+        self.step = 1;
+    }
   
 }
 -(void)refreshUrl:(NSString *)urlString{
