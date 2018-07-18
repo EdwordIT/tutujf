@@ -43,7 +43,7 @@ Strong UILabel *subLabel;
     [self.contentView addSubview:self.periodLabel];
     for (int i=0; i<2; i++) {
         UILabel *textLabel = InitObject(UILabel);
-        textLabel.font = NUMBER_FONT(40);
+        textLabel.font = NUMBER_FONT(48);
         textLabel.textColor = RGB_51;
         textLabel.textAlignment = NSTextAlignmentCenter;
         textLabel.text = [CommonUtils getHanleNums:@"101200"];
@@ -63,7 +63,7 @@ Strong UILabel *subLabel;
             [self.contentView addSubview:line];
             [line mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(kSizeFrom750(45));
-                make.left.mas_equalTo(kSizeFrom750(230)+i*kSizeFrom750(270));
+                make.left.mas_equalTo(kSizeFrom750(320)+i*kSizeFrom750(270));
                 make.width.mas_equalTo(kLineHeight);
                 make.height.mas_equalTo(kSizeFrom750(80));
             }];
@@ -191,33 +191,19 @@ Strong UILabel *subLabel;
 }
 #pragma mark --loadView
 -(void)loadInfoWithModel:(PaybackModel *)model{
-//    //投资中=tzz；已回款=yhk；投资失败=tzsb；回购中=hgz；已回购=yhg；回款中=hkz
-//    if ([model.status_rid isEqualToString:@"tzz"]) {//投资中
-//        [self.typeImage setImage:IMAGEBYENAME(@"myinvest_inInvest")];
-//    }
-//    if ([model.status_rid isEqualToString:@"yhk"]) {//已回款
-//        [self.typeImage setImage:IMAGEBYENAME(@"myinvest_paidback")];
-//    }
-//    if ([model.status_rid isEqualToString:@"hkz"]) {//回款中
-//        [self.typeImage setImage:IMAGEBYENAME(@"myinvest_payback")];
-//    }
-//    if ([model.status_rid isEqualToString:@"tzsb"]) {//投资失败
-//        [self.typeImage setImage:IMAGEBYENAME(@"myinvest_failed")];
-//    }
-//    if ([model.status_rid isEqualToString:@"yhg"]) {//已回购
-//        [self.typeImage setImage:IMAGEBYENAME(@"myinvest_buybacked")];
-//    }
-//    self.titleLabel.text = model.loan_name;
-//    self.investTimeLabel.text = model.left_bottom_txt;
-//    self.periodLabel.text = model.right_bottom_txt;
-//    NSArray *titleArr = @[model.award_interest_txt,model.amount_txt,model.apr_txt];
-//    NSArray *textArr = @[model.award_interest,model.amount,model.apr];
-//    for (int i=0; i<titleArr.count; i++) {
-//        UILabel *title = [self.titleArr objectAtIndex:i];
-//        title.text = titleArr[i];
-//        UILabel *textL = [self.textArr objectAtIndex:i];
-//        textL.text = textArr[i];
-//    }
+
+    for (int i=0; i<self.titleArr.count; i++){
+        UILabel *textL = [self.textArr objectAtIndex:i];
+        if (i==0) {
+            [textL setAttributedText:[CommonUtils diffierentFontWithString:@"10.2%" rang:[@"10.2%" rangeOfString:@"%"] font:NUMBER_FONT(30) color:RGB_51 spacingBeforeValue:0 lineSpace:0]];
+
+        }else{
+            NSString *rangeTxt = [[CommonUtils getHanleNums:@"101200"] stringByAppendingString:@"元"];
+            [textL setAttributedText:[CommonUtils diffierentFontWithString:rangeTxt rang:[rangeTxt rangeOfString:@"元"] font:SYSTEMSIZE(24) color:RGB_51 spacingBeforeValue:0 lineSpace:0]];
+
+        }
+    }
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

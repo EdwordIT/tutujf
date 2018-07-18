@@ -261,7 +261,11 @@ Strong MyAccountModel *accountModel;//数据源
         }else if([model.form_number isEqualToString:@"118"]){//银行卡管理
             MyBankCardController *reg = InitObject(MyBankCardController);
             [self.navigationController pushViewController:reg animated:YES];
-        }else{
+        }else if([model.form_number isEqualToString:@"120"]){//回款计划
+            MyPaybackController *payback = InitObject(MyPaybackController);
+            [self.navigationController pushViewController:payback animated:YES];
+        }
+        else{
             NSString * url=model.link_url;
             HomeWebController *discountVC = [[HomeWebController alloc] init];
             discountVC.urlStr=url;
@@ -343,14 +347,11 @@ Strong MyAccountModel *accountModel;//数据源
     {
         if(index==0)
         {
-            MyPaybackController *payback = InitObject(MyPaybackController);
-            [self.navigationController pushViewController:payback animated:YES];
-//            //我的投资
-//            MyInvestController *invest = InitObject(MyInvestController);
-//            [self.navigationController pushViewController:invest animated:YES];
-//        HomeWebController *discountVC = [[HomeWebController alloc] init];
-//        discountVC.urlStr=self.accountModel.bt_my_investment.link_url;
-//        [self.navigationController pushViewController:discountVC animated:YES];
+  
+            //我的投资
+            MyInvestController *invest = InitObject(MyInvestController);
+            [self.navigationController pushViewController:invest animated:YES];
+
         }
        else if(index==1)
         {
@@ -358,15 +359,9 @@ Strong MyAccountModel *accountModel;//数据源
             MyRedEnvelopeController *red = InitObject(MyRedEnvelopeController);
             [self.navigationController pushViewController:red animated:YES];
             
-//            HomeWebController *discountVC = [[HomeWebController alloc] init];
-//            discountVC.urlStr=self.accountModel.bt_my_red.link_url;
-//            [self.navigationController pushViewController:discountVC animated:YES];
         }
        else if(index==2)
         {
-//            HomeWebController *discountVC = [[HomeWebController alloc] init];
-//            discountVC.urlStr=self.accountModel.bt_my_capital_log.link_url;
-//            [self.navigationController pushViewController:discountVC animated:YES];
             //资金记录
              if ([self.accountModel.is_trust_reg isEqualToString:@"1"])
              {

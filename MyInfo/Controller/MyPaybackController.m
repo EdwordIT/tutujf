@@ -13,13 +13,13 @@
 #import <FSCalendar.h>
 #import "UIImage+Color.h"
 #import "MyCalendarPaybackCell.h"
+#import "TTJFRefreshNormalHeader.h"
 #define calendarColor RGB(234, 78, 71)
 #define sliderTag 101
 //页面两种显示方式，一种带日历，一直列表
-@interface MyPaybackController ()<UITableViewDelegate,UITableViewDataSource,FSCalendarDelegate,FSCalendarDataSource>
+@interface MyPaybackController ()<UITableViewDelegate,UITableViewDataSource,FSCalendarDelegate,FSCalendarDataSource,UIScrollViewDelegate>
 Strong UIView *listBgView;
-
-Strong UIView *calendarBgView;
+Strong UIScrollView *calendarBgView;
 Strong PaybackSelectView *selectView;
 Strong UIView *menuView;//菜单栏
 Strong NSMutableArray *btnArray;//button
@@ -132,11 +132,18 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
     }
     return _listBgView;
 }
--(UIView *)calendarBgView{
+-(UIScrollView *)calendarBgView{
     if (!_calendarBgView) {
-        _calendarBgView = [[UIView alloc]initWithFrame:RECT(0, kNavHight, screen_width, kViewHeight)];
+        _calendarBgView = [[UIScrollView alloc]initWithFrame:RECT(0, kNavHight, screen_width, kViewHeight)];
+        TTJFRefreshNormalHeader *header = [TTJFRefreshNormalHeader headerWithRefreshingBlock:^{
+            
+        }];
+        header.canRefresh = NO;
+        
+        _calendarBgView.mj_header = header;
         _calendarBgView.alpha = 0;
-        _calendarBgView.transform = CGAffineTransformScale(_calendarBgView.transform, 0.01, 0.01);
+        _calendarBgView.showsVerticalScrollIndicator = NO;
+        _calendarBgView.delegate = self;
 
     }
     return _calendarBgView;
@@ -318,6 +325,7 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
         _mainTab = [[BaseUITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
         _mainTab.delegate = self;
         _mainTab.dataSource = self;
+        _mainTab.backgroundColor = [UIColor redColor];
         _mainTab.rowHeight = kSizeFrom750(162);
         _mainTab.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
          [_mainTab registerClass:[MyCalendarPaybackCell class] forCellReuseIdentifier:@"MyCalendarPaybackCell"];
@@ -338,13 +346,8 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
         make.width.mas_equalTo(kSizeFrom750(140));
         make.height.mas_equalTo(kSizeFrom750(50));
     }];
-    [self.mainTab mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.left.mas_equalTo(self.tableHeaderView);
-        make.top.mas_equalTo(self.tableHeaderView.mas_bottom);
-        make.bottom.mas_equalTo(self.calendarBgView);
-    }];
-    
-    [self.calendarBgView layoutIfNeeded];
+
+
 }
 #pragma mark --loadUI
 -(void)loadNav{
@@ -468,18 +471,50 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
     }
     
 }
+
 #pragma mark --loadRequest
 -(void)getRequest{
-    
-    
+
+    self.calendarBgView.transform = CGAffineTransformScale(_calendarBgView.transform, 0.01, 0.01);
+
+    [self.mainTab reloadData];
+
 }
 #pragma mark --scrollViewDelegate
-
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if (scrollView==self.calendarBgView) {
+        if (scrollView.contentOffset.y>self.calendar.bottom) {
+            [self.tableHeaderView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(self.calendar.mas_bottom).offset(scrollView.contentOffset.y -self.calendar.bottom);
+            }];
+        }else{
+            [self.tableHeaderView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(self.calendar.mas_bottom);
+            }];
+        }
+    }
+}
 #pragma mark --tableView Delegate and DataSource
+
+-(void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+
+{
+    
+    if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.mainTab.frame = RECT(0, self.tableHeaderView.bottom, screen_width, tableView.contentSize.height);
+            self.calendarBgView.contentSize = CGSizeMake(screen_width, self.mainTab.bottom);
+
+        });
+        
+    }
+    
+}
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (tableView==self.mainTab) {
 //        return self.dayPaybackArray.count;
-        return 5;
+        return 10;
     }else
         return 3;
     //    return self.dataArray.count;
@@ -494,6 +529,7 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
     }else{
         static NSString *cellId = @"PaybackCell";
         PaybackCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+        [cell loadInfoWithModel:[[PaybackModel alloc]init]];
         return cell;
     }
 }
@@ -619,7 +655,7 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
 -(void)showTabBtnClick:(UIButton *)sender{
     
     sender.selected = !sender.selected;
-    
+
     if (sender.selected) {
         [UIView animateWithDuration:ANIMATION_TIME animations:^{
             sender.imageView.transform = CGAffineTransformMakeRotation(M_PI);

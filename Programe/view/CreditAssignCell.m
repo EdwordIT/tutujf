@@ -63,7 +63,7 @@ Strong UIView *sepView;//分割线
     if (!_rateLabel) {
         _rateLabel = InitObject(UILabel);
         _rateLabel.textColor = COLOR_Red;
-        _rateLabel.font = NUMBER_FONT(30);
+        _rateLabel.font = NUMBER_FONT_BOLD(34);
     }
     return _rateLabel;
 }
@@ -197,7 +197,7 @@ Strong UIView *sepView;//分割线
 -(void)loadInfoWithModel:(CreditModel *)model{
     self.titleLabel.text = model.loan_name;
     self.rateTitle.text = model.apr_txt;
-    self.rateLabel.text = model.apr;
+    [self.rateLabel setAttributedText:[CommonUtils diffierentFontWithString:model.apr rang:[model.apr rangeOfString:@"%"] font:NUMBER_FONT_BOLD(26) color:COLOR_Red spacingBeforeValue:0 lineSpace:0]];
 
     NSString *amountStr = [CommonUtils getNumberFromString:model.actual_amount];
     [self.amountLabel setAttributedText:[CommonUtils diffierentFontWithString:model.actual_amount rang:[model.actual_amount rangeOfString:amountStr] font:NUMBER_FONT(28) color:self.amountLabel.textColor spacingBeforeValue:0 lineSpace:0]];

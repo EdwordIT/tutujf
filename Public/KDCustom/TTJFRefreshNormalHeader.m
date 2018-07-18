@@ -49,6 +49,14 @@
     self.loading = loading;
     
 }
+-(void)setCanRefresh:(BOOL)canRefresh{
+    _canRefresh = canRefresh;
+    if (!canRefresh) {
+        [self.logo setHidden:YES];
+        [self.label setHidden:YES];
+        [self.loading setHidden:YES];
+    }
+}
 #pragma mark 在这里设置子控件的位置和尺寸
 - (void)placeSubviews
 {
@@ -68,6 +76,9 @@
 #pragma mark 监听控件的刷新状态
 - (void)setState:(MJRefreshState)state
 {
+    if (!self.canRefresh) {
+        return;
+    }
     MJRefreshCheckState;
     
     switch (state) {

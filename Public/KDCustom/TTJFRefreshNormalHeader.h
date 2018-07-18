@@ -9,5 +9,5 @@
 #import "MJRefreshHeader.h"
 
 @interface TTJFRefreshNormalHeader : MJRefreshHeader
-
+Assign BOOL canRefresh;
 @end

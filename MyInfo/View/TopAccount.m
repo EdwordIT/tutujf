@@ -38,7 +38,7 @@
     
     
     self.account = [[UILabel alloc] initWithFrame:CGRectMake(0, lab1.bottom+kSizeFrom750(10), lab1.width,kSizeFrom750(50))];
-    self.account.font = NUMBER_FONT(48);
+    self.account.font = NUMBER_FONT_BOLD(48);
     self.account.textAlignment=NSTextAlignmentCenter;
     self.account.textColor =  RGB(252,18,18);
     self.account.text=@"0.00";

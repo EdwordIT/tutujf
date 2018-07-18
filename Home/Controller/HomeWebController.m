@@ -30,6 +30,7 @@
 #import "MyRegAccountController.h"//我的托管账号页面
 #import "MyBankCardController.h"//我的银行卡页面
 #import "RealNameController.h"//实名认证
+#import "MyPaybackController.h"//我的回款计划
 #import <AlicloudHttpDNS/AlicloudHttpDNS.h>
 #import "ChangePasswordViewController.h"
 @interface HomeWebController ()<NSURLConnectionDelegate, NSURLConnectionDataDelegate,WKNavigationDelegate,WKScriptMessageHandler>
@@ -100,6 +101,7 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
 
 -(WKWebView *)mainWebView{
     if (!_mainWebView) {
+
         WKUserContentController *userContentController = [[WKUserContentController alloc] init];
         // WKWebView的配置
         WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
@@ -113,10 +115,20 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
         _mainWebView.navigationDelegate = self;
         [_mainWebView setUserInteractionEnabled:YES];
         _mainWebView.backgroundColor = separaterColor;
-//        [_mainWebView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(id _Nullable response, NSError * _Nullable error) {
-//            //response为获取js相关内容
-//        }];
+        // 获取默认User-Agent
+        [_mainWebView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(id result, NSError *error) {
+            NSString *oldAgent = result;
+            NSString *typeString = [NSString stringWithFormat:@"TutuBrowser/%@",kVersion_Coding];
+            if ([oldAgent rangeOfString:typeString].location!=NSNotFound) {
+                return ;
+            }
+            // 给User-Agent添加额外的信息
+            NSString *newAgent = [NSString stringWithFormat:@"%@;%@", oldAgent, typeString];
+            // 设置global User-Agent
+            NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:newAgent, @"UserAgent", nil];
+            [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 
+        }];
         
     }
     return _mainWebView;
@@ -424,7 +436,18 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
             //首页还是要返回到主页面，防止页面切换
             [nav popToRootViewControllerAnimated:NO];
             
-        }        
+        }
+       else if ([urlPath rangeOfString:@"tutujf:home.myrecover"].location!=NSNotFound) {
+           // 跳转我的投资页面
+           self.tabBarController.selectedIndex = 3;
+           UINavigationController *selNav = [self.tabBarController.viewControllers objectAtIndex:3];
+           MyPaybackController *account = InitObject(MyPaybackController);
+           account.isBackToRootVC = YES;
+           [selNav pushViewController:account animated:YES];
+           //首页还是要返回到主页面，防止页面切换
+           [nav popToRootViewControllerAnimated:NO];
+           
+       }
         return;
     }
    //既不是自己内部的url，又不是调用内部功能如打电话等，表示是汇付支付的页面，隐藏刷新按钮，显示关闭按钮
@@ -446,22 +469,8 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
             [self.closeBtn setHidden:YES];
         }
     }
-//   NSString *cookies = [request.allHTTPHeaderFields objectForKey:@"Cookie"];
-//    //外部链接跳转内部链接，如果没写入cookie值，再下一级页面需要重新写入cookie
-//    if ([urlPath hasPrefix:oyUrlAddress]){
-//        if (self.step==2&&IsEmptyStr(cookies)) {//外部跳内部链接,如果没有cookie 则添加cookie
-//            [self.mainWebView stopLoading];
-//            [self loadRequest:urlPath];
-//        }
-//        else{
-//            self.step++;
-//        }
-//        
-//    }else{
-//        //外部链接
-//        self.step = 1;
-//    }
-  
+   
+
 }
 -(void)refreshUrl:(NSString *)urlString{
     NSString *resaultUrl = @"";
@@ -525,7 +534,6 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
     }
         // 注入Cookie，识别webView登录状态
     [request setValue:cookies forHTTPHeaderField:@"Cookie"];
-//    [request setValue:@"Tutu" forHTTPHeaderField:@"User-Agent"];
     [request setHTTPShouldHandleCookies:YES];
     [self.mainWebView loadRequest:request];
     
@@ -630,8 +638,7 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
     
     //允许跳转
     decisionHandler(WKNavigationResponsePolicyAllow);
-    //不允许跳转
-    //decisionHandler(WKNavigationResponsePolicyCancel);
+
 }
 // 在发送请求之前，决定是否跳转
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler{
@@ -639,11 +646,28 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
     NSLog(@"%@",navigationAction.request.URL.absoluteString);
     //首先校验webView是否需要跳转到系统原生态页面
     [self checkIsGoOriginal:navigationAction.request];
-    //允许跳转
-    decisionHandler(WKNavigationActionPolicyAllow);
-    
-    //不允许跳转
-    //decisionHandler(WKNavigationActionPolicyCancel);
+    //外部链接，不做判断直接允许跳转
+    if (![navigationAction.request.URL.absoluteString hasPrefix:oyUrlAddress]){
+        self.step = 1;
+        decisionHandler(WKNavigationActionPolicyAllow);
+    }else{
+        //内部链接
+        if (self.step==2) {//外部链接跳转内部链接，第二个页面再添加cookie值
+            NSMutableString *cookies = [NSMutableString string];
+            NSArray *tmp = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+            for (NSHTTPCookie * cookie in tmp) {
+                [cookies appendFormat:@"%@=%@;",cookie.name,cookie.value];
+            }
+            NSMutableURLRequest *request= [NSMutableURLRequest requestWithURL:navigationAction.request.URL];
+            [request setValue:cookies forHTTPHeaderField:@"Cookie"];
+            [webView loadRequest:request];
+            decisionHandler(WKNavigationActionPolicyCancel);
+
+        }else{
+            self.step++;
+            decisionHandler(WKNavigationActionPolicyAllow);
+        }
+    }
 }
 #pragma mark --ShareSDK Delegate
 - (void)showShareActionSheet:(NSString *) titlecontent Img_url:(NSString *) img_url Link_url:(NSString *) link_url Desc:(NSString *) desc Callback:(NSString *) callback{

@@ -74,7 +74,7 @@ Strong NSDate *nowDate;//现在的时间
     
     self.percentLabel= [[UILabel alloc] initWithFrame:CGRectMake(kOriginLeft, kSizeFrom750(100),kSizeFrom750(150),kSizeFrom750(32))];
     self.percentLabel.text=@"8.23%";
-    [self.percentLabel setFont:NUMBER_FONT(30)];
+    [self.percentLabel setFont:NUMBER_FONT_BOLD(34)];
     self.percentLabel.textColor = COLOR_Red;
     [self.contentView addSubview: self.percentLabel];
     
@@ -88,7 +88,7 @@ Strong NSDate *nowDate;//现在的时间
     
     self.timeLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, self.percentLabel.top,self.percentLabel.width, self.percentLabel.height)];
     self.timeLabel.centerX = screen_width/2;
-    self.timeLabel.font = SYSTEMSIZE(24);
+    self.timeLabel.font = SYSTEMSIZE(26);
     self.timeLabel.textColor=RGB_51;
     self.timeLabel.text=@"2个月";
     self.timeLabel.textAlignment=NSTextAlignmentCenter;
@@ -410,9 +410,9 @@ Strong NSDate *nowDate;//现在的时间
     }
     self.timeLabel.text=[NSString stringWithFormat:@"%@",self.cellModel.period];
     NSString *progress = [[NSString stringWithFormat:@"%@",self.cellModel.progress] stringByAppendingString:@"%"];
-    NSString *proTxt = [@"进度" stringByAppendingString:progress];
+    NSString *proTxt = [@"进度 " stringByAppendingString:progress];
     [proTextLabel setAttributedText:[CommonUtils diffierentFontWithString:proTxt rang:[proTxt rangeOfString:progress] font:NUMBER_FONT(26) color:progressColor spacingBeforeValue:0 lineSpace:0]];
-    self.percentLabel.text = self.cellModel.apr_val;
+    [self.percentLabel setAttributedText:[CommonUtils diffierentFontWithString:self.cellModel.apr_val rang:[self.cellModel.apr_val rangeOfString:@"%"] font:NUMBER_FONT_BOLD(26) color:COLOR_Red spacingBeforeValue:0 lineSpace:0]];
     
     lab5.text=[NSString stringWithFormat:@"%@",self.cellModel.repay_type_name];
    

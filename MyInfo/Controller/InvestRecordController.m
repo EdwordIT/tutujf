@@ -351,7 +351,7 @@ Copy NSString *balance_amount_txt;//账户余额描述
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         [paragraphStyle setLineSpacing:kLabelSpace];
         [attributedString addAttributes:@{NSFontAttributeName:SYSTEMSIZE(28),NSForegroundColorAttributeName:RGB_51} range:NSMakeRange(0, attributedString.length)];
-        [attributedString addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle,NSForegroundColorAttributeName:COLOR_Red,NSFontAttributeName:NUMBER_FONT(35)} range:NSMakeRange(0, amount.length)];
+        [attributedString addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle,NSForegroundColorAttributeName:COLOR_Red,NSFontAttributeName:NUMBER_FONT_BOLD(40)} range:NSMakeRange(0, amount.length)];
         [remindL setAttributedText:attributedString];
         
         return headerView;

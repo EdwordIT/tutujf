@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1B062DDD205CF953005125C0 /* SourceHanSansCN-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1B062DDC205CF951005125C0 /* SourceHanSansCN-Regular.otf */; };
 		1B062DE0205D0237005125C0 /* TotalTradesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B062DDF205D0237005125C0 /* TotalTradesView.m */; };
 		1B1923862064CF18005B0C57 /* password_insure@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B1923722064CF12005B0C57 /* password_insure@2x.png */; };
 		1B1923872064CF18005B0C57 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B1923732064CF12005B0C57 /* logo@2x.png */; };
@@ -302,6 +301,7 @@
 		CB5C789E20C5206000606811 /* InputTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789C20C5205F00606811 /* InputTextView.m */; };
 		CB5C78A120C52BF300606811 /* UITextFieldDelegateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C789F20C52BF300606811 /* UITextFieldDelegateModel.m */; };
 		CB5C78A420C903B600606811 /* MyRegAccountController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5C78A320C903B600606811 /* MyRegAccountController.m */; };
+		CB62686120FD8F0E006A3C85 /* DIN MEDIUM.TTF in Resources */ = {isa = PBXBuildFile; fileRef = CB62686020FD8F0E006A3C85 /* DIN MEDIUM.TTF */; };
 		CB6810CF20AAB7920062B7FD /* MyInvestController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810CE20AAB7920062B7FD /* MyInvestController.m */; };
 		CB6810D220AAB9190062B7FD /* MyInvestCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D120AAB9190062B7FD /* MyInvestCell.m */; };
 		CB6810D520AAE21E0062B7FD /* MyInvestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6810D420AAE21E0062B7FD /* MyInvestModel.m */; };
@@ -656,7 +656,6 @@
 
 /* Begin PBXFileReference section */
 		07EE6D486D12BD256A2414BF /* Pods-TTJF.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TTJF.release.xcconfig"; path = "Pods/Target Support Files/Pods-TTJF/Pods-TTJF.release.xcconfig"; sourceTree = "<group>"; };
-		1B062DDC205CF951005125C0 /* SourceHanSansCN-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceHanSansCN-Regular.otf"; sourceTree = "<group>"; };
 		1B062DDE205D0237005125C0 /* TotalTradesView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TotalTradesView.h; sourceTree = "<group>"; };
 		1B062DDF205D0237005125C0 /* TotalTradesView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TotalTradesView.m; sourceTree = "<group>"; };
 		1B1923722064CF12005B0C57 /* password_insure@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "password_insure@2x.png"; sourceTree = "<group>"; };
@@ -1066,6 +1065,7 @@
 		CB5C78A020C52BF300606811 /* UITextFieldDelegateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITextFieldDelegateModel.h; sourceTree = "<group>"; };
 		CB5C78A220C903B600606811 /* MyRegAccountController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyRegAccountController.h; sourceTree = "<group>"; };
 		CB5C78A320C903B600606811 /* MyRegAccountController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyRegAccountController.m; sourceTree = "<group>"; };
+		CB62686020FD8F0E006A3C85 /* DIN MEDIUM.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DIN MEDIUM.TTF"; sourceTree = "<group>"; };
 		CB6810CD20AAB7920062B7FD /* MyInvestController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyInvestController.h; sourceTree = "<group>"; };
 		CB6810CE20AAB7920062B7FD /* MyInvestController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyInvestController.m; sourceTree = "<group>"; };
 		CB6810D020AAB9190062B7FD /* MyInvestCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyInvestCell.h; sourceTree = "<group>"; };
@@ -1777,7 +1777,7 @@
 		1B583B4020622C5D00CC70E4 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
-				1B062DDC205CF951005125C0 /* SourceHanSansCN-Regular.otf */,
+				CB62686020FD8F0E006A3C85 /* DIN MEDIUM.TTF */,
 			);
 			name = fonts;
 			sourceTree = "<group>";
@@ -3661,6 +3661,7 @@
 				E7BF5F2A1E6066F200BCE81E /* Assets.xcassets in Resources */,
 				E7067B811E60C9AA00E32B86 /* icon_map_cateid_20.png in Resources */,
 				CB73158F209B0A2B00B3B8FA /* refresh_025.jpg in Resources */,
+				CB62686120FD8F0E006A3C85 /* DIN MEDIUM.TTF in Resources */,
 				CB731581209B0A2B00B3B8FA /* refresh_024.jpg in Resources */,
 				CB3CC5BA20B54A5C00CBE5DF /* transfer_record_repay@3x.png in Resources */,
 				1B19238C2064CF18005B0C57 /* mobile_code@2x.png in Resources */,
@@ -3830,7 +3831,6 @@
 				1BE6736820734F720003A30C /* menu_my_sel@3x.png in Resources */,
 				1BE6736D20734F720003A30C /* menu_home_sel@3x.png in Resources */,
 				CB731590209B0A2B00B3B8FA /* refresh_02.jpg in Resources */,
-				1B062DDD205CF953005125C0 /* SourceHanSansCN-Regular.otf in Resources */,
 				CB45937C20EDA5FE0073364B /* all_readed@2x.png in Resources */,
 				E7067BC71E60C9AB00E32B86 /* icon_tabbar_onsite_selected@2x.png in Resources */,
 				1BE6736320734F720003A30C /* menu_home_sel@2x.png in Resources */,

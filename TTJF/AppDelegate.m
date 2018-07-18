@@ -47,6 +47,18 @@ Strong NSDictionary *notificationInfo;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+//    NSArray *familyNames = [UIFont familyNames];
+//
+//    for (NSString *familyName in familyNames) {
+//        NSLog(@"familyNames = %s\n",[familyName UTF8String]);
+//
+//        NSArray *fontNames = [UIFont fontNamesForFamilyName:familyName];
+//
+//        for (NSString *fontName in fontNames) {
+//            NSLog(@"\tfontName = %s\n",[fontName UTF8String]);
+//        }
+//    }
+
 //    //网络状态监听
 //    [self checkNetwork];
     //获取配置信息

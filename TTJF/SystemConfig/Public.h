@@ -82,14 +82,15 @@
 #define InitROOTVC(vc) [[UINavigationController alloc] initWithRootViewController:[[vc alloc]init]];
 #define WEAK_SELF __weak typeof(self) weakSelf = self
 #define Title_Font 18
-//中文字体
-#define CHINESE_FONT_NAME  @"STHeitiK-Light"
 
-#define SYSTEMSIZE(x) [UIFont fontWithName:@"Source Han Sans CN" size:kSizeFrom750(x)]
-#define SYSTEMBOLDSIZE(x)  [UIFont boldSystemFontOfSize:kSizeFrom750(x)]
+//#define SYSTEMSIZE(x) [UIFont fontWithName:@"Source Han Sans CN" size:kSizeFrom750(x)]
+//#define SYSTEMBOLDSIZE(x)  [UIFont boldSystemFontOfSize:kSizeFrom750(x)]
+
+#define SYSTEMSIZE(x) [UIFont  systemFontOfSize:kSizeFrom750(x)]
+#define SYSTEMBOLDSIZE(x) [UIFont boldSystemFontOfSize:kSizeFrom750(x)]
 //Helvetica-Bold
 #define NUMBER_FONT(x)   [UIFont fontWithName:@"Helvetica" size:kSizeFrom750(x)]
-#define NUMBER_FONT_BOLD(x)   [UIFont fontWithName:@"Helvetica-Bold" size:kSizeFrom750(x)]
+#define NUMBER_FONT_BOLD(x)  [UIFont fontWithName:@"DIN-Medium" size:kSizeFrom750(x)]
 //
 // 3.是否为4inch
 #define fourInch ([UIScreen mainScreen].bounds.size.height == 568)

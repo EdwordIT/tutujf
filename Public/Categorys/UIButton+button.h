@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define defaultInterval 0.0//默认时间间隔
+#define defaultInterval 0.01//默认时间间隔
 @interface UIButton (button)
 /**
  *  为按钮添加点击间隔 eventTimeInterval秒

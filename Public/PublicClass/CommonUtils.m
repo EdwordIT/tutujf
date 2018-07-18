@@ -160,6 +160,7 @@
     return num;
 }
 +(BOOL)isNumber:(NSString *)str {
+    
     str = [str stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
     if (str.length>0) {
         //带小数点的数字
@@ -500,7 +501,11 @@
     
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     formatter.numberStyle = kCFNumberFormatterDecimalStyle;
-    [formatter setPositiveFormat:@"###,##0.00"];//千分位格式
+    if ([numbers rangeOfString:@"."].location!=NSNotFound) {
+        [formatter setPositiveFormat:@"###,##0.00"];//千分位格式
+    }else
+        [formatter setPositiveFormat:@"###,##0"];//千分位格式,带小数点
+
     resault = [formatter stringFromNumber:[NSNumber numberWithDouble:[numbers doubleValue]]];//此处使用doublevale，防止失真
     return resault;
 

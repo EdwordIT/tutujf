@@ -44,7 +44,7 @@ Strong NSMutableArray *textArr;
     [self.contentView addSubview:self.periodLabel];
     for (int i=0; i<3; i++) {
         UILabel *textLabel = InitObject(UILabel);
-        textLabel.font = NUMBER_FONT(30);
+        textLabel.font = NUMBER_FONT_BOLD(40);
         textLabel.textColor = RGB_51;
         textLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:textLabel];
@@ -153,13 +153,13 @@ Strong NSMutableArray *textArr;
         UILabel *textL = [self.textArr objectAtIndex:i];
         [textL mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.mas_equalTo(kSizeFrom750(230));
-            make.height.mas_equalTo(kSizeFrom750(30));
+            make.height.mas_equalTo(kSizeFrom750(35));
             make.left.mas_equalTo(kOriginLeft+kSizeFrom750(230)*i);
             make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(kSizeFrom750(40));
         }];
         
         [title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(textL.mas_bottom).offset(20);
+            make.top.mas_equalTo(textL.mas_bottom).offset(10);
             make.left.width.height.mas_equalTo(textL);
         }];
     }
@@ -213,7 +213,15 @@ Strong NSMutableArray *textArr;
         UILabel *title = [self.titleArr objectAtIndex:i];
         title.text = titleArr[i];
         UILabel *textL = [self.textArr objectAtIndex:i];
-        textL.text = textArr[i];
+        NSString *txt = textArr[i];
+        if ([txt rangeOfString:@"."].location!=NSNotFound||[txt rangeOfString:@"%"].location!=NSNotFound) {//如果为数字内容
+            textL.font = NUMBER_FONT_BOLD(40);
+            [textL setAttributedText:[CommonUtils diffierentFontWithString:txt rang:[txt rangeOfString:@"%"] font:NUMBER_FONT_BOLD(28) color:RGB_51 spacingBeforeValue:0 lineSpace:0]];
+        }else{
+            textL.font = SYSTEMSIZE(28);
+            textL.text = txt;
+        }
+        
     }
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

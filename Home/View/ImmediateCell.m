@@ -46,7 +46,7 @@
     _incomeLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, lab1.bottom+kSizeFrom750(40),kSizeFrom750(200),kSizeFrom750(55))];
     _incomeLabel.centerX = lab1.centerX;
     _incomeLabel.textAlignment=NSTextAlignmentCenter;
-    _incomeLabel.font = SYSTEMBOLDSIZE(60);
+    _incomeLabel.font = NUMBER_FONT_BOLD(60);
     _incomeLabel.textColor = COLOR_Red;
     [self.contentView addSubview:_incomeLabel];
     

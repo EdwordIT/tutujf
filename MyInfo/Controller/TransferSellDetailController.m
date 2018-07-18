@@ -17,6 +17,7 @@ Strong UILabel *transferLabel;//转让价格
 Strong UILabel *remindLabel;//温馨提示
 Strong MyTransferDetailModel *model;
 Strong UIButton *qBtn3;
+
 @end
 
 @implementation TransferSellDetailController
@@ -81,7 +82,7 @@ Strong UIButton *qBtn3;
     CGFloat labelHeight = kSizeFrom750(80);
     for (int i=0; i<self.model.transfer.count; i++) {
         ContentInfoModel *infoModel = [self.model.transfer objectAtIndex:i];
-        UILabel *titleL = [[UILabel alloc]initWithFrame:RECT(kOriginLeft, line.bottom+labelHeight*i, kSizeFrom750(150), labelHeight)];
+        UILabel *titleL = [[UILabel alloc]initWithFrame:RECT(kOriginLeft, line.bottom+labelHeight*i, kSizeFrom750(180), labelHeight)];
         titleL.textColor = RGB_153;
         titleL.font = SYSTEMSIZE(30);
         titleL.text = infoModel.title;
@@ -125,12 +126,7 @@ Strong UIButton *qBtn3;
     UIView *middleView = [[UIView alloc]init];
     middleView.backgroundColor = COLOR_White;
     [self.backScroll addSubview:middleView];
-    [middleView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.top.mas_equalTo(topView.mas_bottom).offset(kOriginLeft);
-        make.width.mas_equalTo(screen_width);
-        make.height.mas_equalTo(labelHeight);
-    }];
+
     
     UILabel *transferTitle = [[UILabel alloc]initWithFrame:RECT(kOriginLeft, 0, kSizeFrom750(150), labelHeight)];
     transferTitle.textColor = RGB_153;
@@ -185,6 +181,32 @@ Strong UIButton *qBtn3;
     }
     [self.backScroll addSubview: self.transferBtn];
     
+
+    
+    
+    UILabel *remindTitle = [[UILabel alloc]init];
+    remindTitle = [[UILabel alloc]init];
+    remindTitle.font = SYSTEMSIZE(28);
+    remindTitle.textColor = RGB_153;
+    remindTitle.text = @"温馨提示：";
+    [self.backScroll addSubview:remindTitle];
+    
+    self.remindLabel = [[UILabel alloc]init];
+    self.remindLabel.font = SYSTEMSIZE(26);
+    self.remindLabel.textColor = RGB_153;
+    self.remindLabel.text = @"正在转让的债权如有回款";
+    [self.backScroll addSubview:self.remindLabel];
+    
+    [self.backScroll addSubview:self.qBtn3];
+    
+    [middleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.top.mas_equalTo(topView.mas_bottom).offset(kOriginLeft);
+        make.width.mas_equalTo(screen_width);
+        make.height.mas_equalTo(labelHeight);
+    }];
+    
+    
     [self.transferBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(kContentWidth);
         make.height.mas_equalTo(kSizeFrom750(90));
@@ -192,19 +214,18 @@ Strong UIButton *qBtn3;
         make.top.mas_equalTo(self.transferLabel.mas_bottom).offset(labelHeight);
     }];
     
-    self.remindLabel = [[UILabel alloc]init];
-    self.remindLabel.font = SYSTEMSIZE(28);
-    self.remindLabel.textColor = RGB_153;
-    [self.backScroll addSubview:self.remindLabel];
+    [remindTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.transferBtn.mas_bottom).offset(kSizeFrom750(40));
+        make.left.mas_equalTo(kOriginLeft);
+        make.height.mas_equalTo(kLabelHeight);
+    }];
     
-    [self.backScroll addSubview:self.qBtn3];
     [self.remindLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(kOriginLeft);
-        make.top.mas_equalTo(self.transferBtn.mas_bottom).offset(kSizeFrom750(30));
+        make.top.mas_equalTo(remindTitle.mas_bottom).offset(kSizeFrom750(40));
         make.width.mas_equalTo(kContentWidth);
     }];
     
-  
     [self.qBtn3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.mas_equalTo(kSizeFrom750(60));
         make.centerY.mas_equalTo(self.transferLabel);

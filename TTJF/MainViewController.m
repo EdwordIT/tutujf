@@ -119,6 +119,7 @@ Strong UIView *functionTopView;//功能按钮
     self.titleString = @"土土金服";
     clubDataArray = InitObject(NSMutableArray);
 
+    [self registerUserAgent];
     /**自定登录*/
     //如果已经存储了token值，则自动登录更新token
     if ([CommonUtils isLogin]) {
@@ -141,6 +142,25 @@ Strong UIView *functionTopView;//功能按钮
     [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_LoginChanged object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_GetSystemConfig object:nil];
 
+}
+-(void)registerUserAgent
+{
+    
+    WKWebView *  wkWebView = [[WKWebView alloc] initWithFrame:CGRectZero];
+    // 获取默认User-Agent
+    [wkWebView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(id result, NSError *error) {
+        NSString *oldAgent = result;
+        NSString *typeString = [NSString stringWithFormat:@"TutuBrowser/%@",kVersion_Coding];
+        if ([oldAgent rangeOfString:typeString].location!=NSNotFound) {
+            return ;
+        }
+        // 给User-Agent添加额外的信息
+        NSString *newAgent = [NSString stringWithFormat:@"%@;%@", oldAgent, typeString];
+        // 设置global User-Agent
+        NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:newAgent, @"UserAgent", nil];
+        [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+    }];
+    [self.view addSubview:wkWebView];
 }
 //app通过点击通知打开app，此处校验通知内容，做出相应的跳转
 -(void)checkNotification{

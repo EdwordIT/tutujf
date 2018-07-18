@@ -128,7 +128,7 @@ Strong UILabel *interestRateLabel;//近期利率指数
         make.height.mas_equalTo(kSizeFrom750(26));
     }];
     [self.totalDaysLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.totalLabel.mas_bottom).offset(kSizeFrom750(65));
+        make.top.mas_equalTo(self.totalLabel.mas_bottom).offset(kSizeFrom750(70));
         make.width.mas_equalTo(kSizeFrom750(200));
         make.left.mas_equalTo(kSizeFrom750(95));
     }];
@@ -153,11 +153,11 @@ Strong UILabel *interestRateLabel;//近期利率指数
     self.totalLabel.text = model.trans_num_txt;
     [self.titleLabel countFrom:0.00 to:total withDuration:1];
     NSString *days = [NSString stringWithFormat:@"%@\n%@",model.operate_day,model.operate_day_txt];
-    NSMutableAttributedString *attrStr = [CommonUtils diffierentFontWithString:days rang:NSMakeRange(0, model.operate_day.length) font:NUMBER_FONT_BOLD(36) color:RGB(44, 181, 251) spacingBeforeValue:0 lineSpace:kSizeFrom750(20)];
+    NSMutableAttributedString *attrStr = [CommonUtils diffierentFontWithString:days rang:NSMakeRange(0, model.operate_day.length) font:NUMBER_FONT_BOLD(36) color:RGB(44, 181, 251) spacingBeforeValue:0 lineSpace:kSizeFrom750(15)];
     [self.totalDaysLabel setAttributedText:attrStr];
     
     NSString *point = [NSString stringWithFormat:@"%@\n%@",model.average_apr,model.average_apr_txt];
-    NSMutableAttributedString *attrStr1 = [CommonUtils diffierentFontWithString:point rang:NSMakeRange(0, model.average_apr.length) font:NUMBER_FONT_BOLD(36) color:RGB(44, 181, 251) spacingBeforeValue:0 lineSpace:kSizeFrom750(20)];
+    NSMutableAttributedString *attrStr1 = [CommonUtils diffierentFontWithString:point rang:NSMakeRange(0, model.average_apr.length) font:NUMBER_FONT_BOLD(36) color:RGB(44, 181, 251) spacingBeforeValue:0 lineSpace:kSizeFrom750(15)];
     [self.totalDaysLabel setAttributedText:attrStr];
     [self.interestRateLabel setAttributedText:attrStr1];
     

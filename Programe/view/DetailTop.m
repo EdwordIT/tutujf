@@ -76,7 +76,7 @@ Strong LoanBase *baseModel;
     self.lab2.text = infoModel.transfer_ret.expire_date_txt;
     //利率
     NSString *rate = [infoModel.loan_info.apr stringByAppendingString:@"%"];
-    NSMutableAttributedString *attr = [CommonUtils diffierentFontWithString:rate  rang:NSMakeRange(rate.length-1, 1) font:NUMBER_FONT(24) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
+    NSMutableAttributedString *attr = [CommonUtils diffierentFontWithString:rate  rang:NSMakeRange(rate.length-1, 1) font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.rateLabel setAttributedText:attr];
     //债权价值
     NSString *totalAmout = [NSString stringWithFormat:@"%@ 元",[CommonUtils getHanleNums:infoModel.transfer_ret.amount_money]];
@@ -110,7 +110,7 @@ Strong LoanBase *baseModel;
 -(void)loadInfoWithModel:(LoanInfo *)infoModel{
     //利率
     NSString *rate = [infoModel.apr stringByAppendingString:@"%"];
-   NSMutableAttributedString *attr = [CommonUtils diffierentFontWithString:rate  rang:NSMakeRange(rate.length-1, 1) font:NUMBER_FONT(24) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
+   NSMutableAttributedString *attr = [CommonUtils diffierentFontWithString:rate  rang:NSMakeRange(rate.length-1, 1) font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.rateLabel setAttributedText:attr];
     //总额
     NSString *totalAmout = [NSString stringWithFormat:@"%@元",[CommonUtils getHanleNums:infoModel.amount]];
@@ -147,7 +147,7 @@ Strong LoanBase *baseModel;
     [self addSubview:uv];
 
     self.rateLabel= [[UILabel alloc] initWithFrame:CGRectMake(kSizeFrom750(100), kSizeFrom750(45),kSizeFrom750(280),kSizeFrom750(60))];
-    self.rateLabel.font = NUMBER_FONT(58);
+    self.rateLabel.font = NUMBER_FONT_BOLD(52);
     self.rateLabel.textColor = COLOR_White;
     [uv addSubview:self.rateLabel];
     
