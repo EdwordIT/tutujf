@@ -33,5 +33,7 @@ Copy NSString * bt_state  ;//  int    提交按钮状态 ，-1 不可提交，1 
 
 Copy NSString * bt_name   ;// string    按钮文字
 
+Strong ContentInfoModel *reminder_msg;//温馨提示内容
+
 
 @end

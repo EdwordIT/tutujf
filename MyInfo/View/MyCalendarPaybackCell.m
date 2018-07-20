@@ -86,7 +86,7 @@ Strong UILabel *amountDesL;
 -(UILabel *)amountDesL{
     if (!_amountDesL) {
         _amountDesL = InitObject(UILabel);
-        _amountDesL.font =  SYSTEMSIZE(24);
+        _amountDesL.font =  SYSTEMSIZE(22);
         _amountDesL.textColor = RGB_153;
         _amountDesL.textAlignment = NSTextAlignmentRight;
         _amountDesL.text = @"本金10000.00元+利息110.00元";

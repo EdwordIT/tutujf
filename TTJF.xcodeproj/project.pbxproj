@@ -363,6 +363,7 @@
 		CB842C2420BE877400FA42AE /* transfer_record_sold@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB842C1E20BE877400FA42AE /* transfer_record_sold@3x.png */; };
 		CB842C2720BE92DA00FA42AE /* MyTransferDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB842C2620BE92DA00FA42AE /* MyTransferDetailModel.m */; };
 		CB842C2A20BE9DB400FA42AE /* TransferSellDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB842C2920BE9DB400FA42AE /* TransferSellDetailController.m */; };
+		CBAD07CD2101B2D100D3DE9F /* UIViewController+Example.m in Sources */ = {isa = PBXBuildFile; fileRef = CBAD07CB2101B2D000D3DE9F /* UIViewController+Example.m */; };
 		CBB4CCE220BBE46800EA877B /* PropertyController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCE120BBE46800EA877B /* PropertyController.m */; };
 		CBB4CD3620BBE50600EA877B /* NSNumber+Zirkfied.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCE620BBE50600EA877B /* NSNumber+Zirkfied.m */; };
 		CBB4CD3720BBE50600EA877B /* NSString+Zirkfied.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCE820BBE50600EA877B /* NSString+Zirkfied.m */; };
@@ -601,7 +602,6 @@
 		E73B1C5B1FA6144600273C89 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = E73B1C521FA6144600273C89 /* UIView+Extension.m */; };
 		E73B1C5C1FA6144600273C89 /* UIViewController+Swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = E73B1C541FA6144600273C89 /* UIViewController+Swizzle.m */; };
 		E73B1C621FA6207F00273C89 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E73B1C601FA6207F00273C89 /* MBProgressHUD.m */; };
-		E7625CAD1FEE9E0500403F77 /* UIViewController+Example.m in Sources */ = {isa = PBXBuildFile; fileRef = E7625CAC1FEE9E0500403F77 /* UIViewController+Example.m */; };
 		E77304B71F910C1800C57FBE /* webback.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E77304B61F910C1800C57FBE /* webback.jpg */; };
 		E77410081FC80797008861C2 /* UpdateVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = E77410071FC80797008861C2 /* UpdateVersion.m */; };
 		E774100B1FC81940008861C2 /* VersionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E774100A1FC81940008861C2 /* VersionInfo.m */; };
@@ -1144,6 +1144,8 @@
 		CB842C2620BE92DA00FA42AE /* MyTransferDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTransferDetailModel.m; sourceTree = "<group>"; };
 		CB842C2820BE9DB400FA42AE /* TransferSellDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransferSellDetailController.h; sourceTree = "<group>"; };
 		CB842C2920BE9DB400FA42AE /* TransferSellDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferSellDetailController.m; sourceTree = "<group>"; };
+		CBAD07CB2101B2D000D3DE9F /* UIViewController+Example.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Example.m"; sourceTree = "<group>"; };
+		CBAD07CC2101B2D100D3DE9F /* UIViewController+Example.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Example.h"; sourceTree = "<group>"; };
 		CBB4CCE020BBE46800EA877B /* PropertyController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyController.h; sourceTree = "<group>"; };
 		CBB4CCE120BBE46800EA877B /* PropertyController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PropertyController.m; sourceTree = "<group>"; };
 		CBB4CCE520BBE50600EA877B /* NSNumber+Zirkfied.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Zirkfied.h"; sourceTree = "<group>"; };
@@ -1591,8 +1593,6 @@
 		E73B1C541FA6144600273C89 /* UIViewController+Swizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Swizzle.m"; sourceTree = "<group>"; };
 		E73B1C601FA6207F00273C89 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		E73B1C611FA6207F00273C89 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		E7625CAB1FEE9E0500403F77 /* UIViewController+Example.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Example.h"; sourceTree = "<group>"; };
-		E7625CAC1FEE9E0500403F77 /* UIViewController+Example.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Example.m"; sourceTree = "<group>"; };
 		E77304B61F910C1800C57FBE /* webback.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = webback.jpg; sourceTree = "<group>"; };
 		E77410061FC80797008861C2 /* UpdateVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UpdateVersion.h; sourceTree = "<group>"; };
 		E77410071FC80797008861C2 /* UpdateVersion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UpdateVersion.m; sourceTree = "<group>"; };
@@ -3090,6 +3090,8 @@
 		E73B1C431FA6144600273C89 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				CBAD07CC2101B2D100D3DE9F /* UIViewController+Example.h */,
+				CBAD07CB2101B2D000D3DE9F /* UIViewController+Example.m */,
 				1B583B4020622C5D00CC70E4 /* fonts */,
 				E712F6CD1FFDD5E6005C8C24 /* NSString+XN.h */,
 				E712F6CE1FFDD5E6005C8C24 /* NSString+XN.m */,
@@ -3270,8 +3272,6 @@
 		E7D4C0F71E71173A00E828A5 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				E7625CAB1FEE9E0500403F77 /* UIViewController+Example.h */,
-				E7625CAC1FEE9E0500403F77 /* UIViewController+Example.m */,
 				E701EDC41EA469C000DC234A /* OpenAdvertView.h */,
 				E701EDC51EA469C000DC234A /* OpenAdvertView.m */,
 			);
@@ -4016,6 +4016,7 @@
 				E7067B531E60C9AA00E32B86 /* KDGoalBarPercentLayer.m in Sources */,
 				CBB4CD5320BBE50600EA877B /* ZFRadar.m in Sources */,
 				CB731555209A9CE200B3B8FA /* CooperationController.m in Sources */,
+				CBAD07CD2101B2D100D3DE9F /* UIViewController+Example.m in Sources */,
 				CB6810F320AEC7460062B7FD /* InvestRecordCell.m in Sources */,
 				1B788F402081E4F400F03863 /* JRSegmentControl.m in Sources */,
 				E707BFBE1FA77762009BDDC7 /* AccountInfoController.m in Sources */,
@@ -4216,7 +4217,6 @@
 				1B583B3F2061F17900CC70E4 /* HttpCommunication.m in Sources */,
 				E7071B9F1F21C30C00293B38 /* GestureViewController.m in Sources */,
 				E7067A5E1E60C88B00E32B86 /* SZCalendarCell.m in Sources */,
-				E7625CAD1FEE9E0500403F77 /* UIViewController+Example.m in Sources */,
 				E73B1C5C1FA6144600273C89 /* UIViewController+Swizzle.m in Sources */,
 				E774100B1FC81940008861C2 /* VersionInfo.m in Sources */,
 				CB4A087D20CF679A00713BF1 /* BankCardModel.m in Sources */,

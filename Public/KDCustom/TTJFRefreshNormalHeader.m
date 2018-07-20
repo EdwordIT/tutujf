@@ -20,7 +20,7 @@
 - (void)prepare {
     
     [super prepare];
-    
+    _canRefresh = YES;
     UIView *view = [[UIView alloc]init];
     view.backgroundColor = navigationBarColor;
     [self addSubview:view];
@@ -51,11 +51,9 @@
 }
 -(void)setCanRefresh:(BOOL)canRefresh{
     _canRefresh = canRefresh;
-    if (!canRefresh) {
-        [self.logo setHidden:YES];
-        [self.label setHidden:YES];
-        [self.loading setHidden:YES];
-    }
+        [self.logo setHidden:!canRefresh];
+        [self.label setHidden:!canRefresh];
+        [self.loading setHidden:!canRefresh];
 }
 #pragma mark 在这里设置子控件的位置和尺寸
 - (void)placeSubviews

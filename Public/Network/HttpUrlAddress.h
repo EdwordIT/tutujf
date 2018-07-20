@@ -91,6 +91,10 @@
  即时到账提现手续费接口
  */
 #define getCashFeeAmtUrl @"/api/cash/cashFeeAmt"
+/**
+ 我的回款接口
+ */
+#define getMyRecoverUrl @"/api/tender/myRecoverList"
 /*****************************************我的************************************************************/
 //登录接口
 #define loginUrl  @"/api/Users/Login"

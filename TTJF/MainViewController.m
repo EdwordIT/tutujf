@@ -181,7 +181,7 @@ Strong UIView *functionTopView;//功能按钮
 -(void)initSubViews{
     
     footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(135))];
-    self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, 0, screen_width, screen_height - kTabbarHeight) style:UITableViewStyleGrouped];
+    self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, -1, screen_width, screen_height - kTabbarHeight+1) style:UITableViewStyleGrouped];
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -368,7 +368,7 @@ Strong UIView *functionTopView;//功能按钮
         return clubDataArray.count+(self.homePageModel?1:0);
     }
     
-    return 0.01;
+    return 0;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -394,9 +394,9 @@ Strong UIView *functionTopView;//功能按钮
         return kSizeFrom750(185);//土土咨询
     }
     else{
-        return 0.01;
+        return 0;
     }
-    return 0.01;
+    return 0;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -416,16 +416,16 @@ Strong UIView *functionTopView;//功能按钮
     }
    else if (section==1) {
        if (self.homePageModel.loan_items.count == 0) {//如果没有快速投资
-           return 0.01;
+           return 0;
        }
         return kSizeFrom750(30);
     }
     //社区不需要tablefooter
    else if (section==2) {
-        return 0.01;
+        return 0;
     }
     else
-        return kSizeFrom750(0);
+        return 0;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     if (!self.homePageModel) {
@@ -455,15 +455,31 @@ Strong UIView *functionTopView;//功能按钮
         return clubTitle;
         
     }else {
-        UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
-        header.backgroundColor = COLOR_Background;
-        return header;
+//        UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+//        header.backgroundColor = COLOR_Background;
+//        return header;
+        return nil;
     }
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footer = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
     footer.backgroundColor = COLOR_Background;
-    return footer;
+    if (section==0) {
+        return footer;
+    }
+    else if (section==1) {
+        if (self.homePageModel.loan_items.count == 0) {//如果没有快速投资
+            return footer;
+        }
+        return footer;
+    }
+    //社区不需要tablefooter
+    else if (section==2) {
+        return nil;
+    }
+    else
+        return nil;
+//    return footer;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

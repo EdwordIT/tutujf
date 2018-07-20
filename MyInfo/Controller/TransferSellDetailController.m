@@ -188,13 +188,14 @@ Strong UIButton *qBtn3;
     remindTitle = [[UILabel alloc]init];
     remindTitle.font = SYSTEMSIZE(28);
     remindTitle.textColor = RGB_153;
-    remindTitle.text = @"温馨提示：";
+    remindTitle.text = self.model.reminder_msg.title;
     [self.backScroll addSubview:remindTitle];
     
     self.remindLabel = [[UILabel alloc]init];
     self.remindLabel.font = SYSTEMSIZE(26);
+    self.remindLabel.numberOfLines = 0;
     self.remindLabel.textColor = RGB_153;
-    self.remindLabel.text = @"正在转让的债权如有回款";
+    [CommonUtils setAttString:self.model.reminder_msg.content withLineSpace:kLabelSpace titleLabel:self.remindLabel];
     [self.backScroll addSubview:self.remindLabel];
     
     [self.backScroll addSubview:self.qBtn3];
@@ -215,7 +216,7 @@ Strong UIButton *qBtn3;
     }];
     
     [remindTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.transferBtn.mas_bottom).offset(kSizeFrom750(40));
+        make.top.mas_equalTo(self.transferBtn.mas_bottom).offset(kSizeFrom750(30));
         make.left.mas_equalTo(kOriginLeft);
         make.height.mas_equalTo(kLabelHeight);
     }];

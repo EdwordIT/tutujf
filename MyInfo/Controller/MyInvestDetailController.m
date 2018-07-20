@@ -105,8 +105,8 @@ Strong MyInvestDetailModel *detailModel;
       
         
         NSArray *nameArr = @[@"回款时间",@"本金（元）",@"收益（元）",@"状态"];
-        NSArray *widthArr = @[@(160),@(220),@(140),@(200)];
-        NSArray *leftArr = @[@(30),@(190),@(410),@(550)];
+        NSArray *widthArr = @[@(160),@(220),@(150),@(190)];
+        NSArray *leftArr = @[@(30),@(190),@(410),@(560)];
         CGFloat bottom = 0;
         for (int i=0; i<nameArr.count; i++) {
             

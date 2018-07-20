@@ -16,6 +16,8 @@
 #import "TTJFRefreshNormalHeader.h"
 #define calendarColor RGB(234, 78, 71)
 #define sliderTag 101
+
+
 //页面两种显示方式，一种带日历，一直列表
 @interface MyPaybackController ()<UITableViewDelegate,UITableViewDataSource,FSCalendarDelegate,FSCalendarDataSource,UIScrollViewDelegate>
 Strong UIView *listBgView;
@@ -24,7 +26,7 @@ Strong PaybackSelectView *selectView;
 Strong UIView *menuView;//菜单栏
 Strong NSMutableArray *btnArray;//button
 Strong BaseUITableView *listTab;//常规列表
-Strong NSMutableArray *dataArray;
+Strong NSMutableArray *listDataArray;//常规数据源
 Assign BOOL isCalendar;//是否切换到带日历的内容显示页面
 
 
@@ -50,6 +52,15 @@ Strong UILabel *amountLabel;//当天待回款
 Strong BaseUITableView *mainTab;//
 Strong UIButton *showTabBtn;
 Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
+Weak UIButton *timeBtn;//时间排序按钮
+Weak UIButton *selectBtn;//筛选按钮
+//筛选条件
+Copy NSString *keyword;//关键字
+Copy NSString *startTime;
+Copy NSString *endTime;
+Assign NSInteger page;
+Assign NSInteger totalPage;
+Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_down 时间降序，amount_up 金额升序，amount_down 金额降序，apr_up 利率升序，apr_down利率降序
 
 @end
 
@@ -152,6 +163,26 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
     if (!_selectView) {
         _selectView = [[PaybackSelectView alloc]initWithFrame:RECT(0, self.menuView.bottom, screen_width, kViewHeight)];
         _selectView.hidden = YES;
+        WEAK_SELF;
+        _selectView.selectedBlock = ^(NSDate *start, NSDate *end, NSString *key) {
+            if (start==nil) {
+                weakSelf.startTime = @"";
+            }else{
+                weakSelf.startTime = [weakSelf.dateFormat stringFromDate:start];
+            }
+            if (end==nil) {
+                weakSelf.endTime = @"";
+            }else{
+                weakSelf.endTime = [weakSelf.dateFormat stringFromDate:end];
+            }
+            //点击筛选搜索之后，默认为按时间降序排列
+            weakSelf.order = @"recover_time_down";
+            weakSelf.selectBtn.selected = NO;
+            weakSelf.timeBtn.selected = YES;
+            weakSelf.timeBtn.imageView.transform = CGAffineTransformMakeRotation(0);
+            weakSelf.keyword = key;
+            [weakSelf getRequest];//筛选数据
+        };
     }
     return _selectView;
 }
@@ -162,15 +193,15 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
     }
     return _menuView;
 }
--(NSMutableArray *)dataArray{
-    if (!_dataArray) {
-        _dataArray = InitObject(NSMutableArray);
+-(NSMutableArray *)listDataArray{
+    if (!_listDataArray) {
+        _listDataArray = InitObject(NSMutableArray);
     }
-    return _dataArray;
+    return _listDataArray;
 }
 -(BaseUITableView *)listTab{
     if (!_listTab) {
-        _listTab = [[BaseUITableView alloc]initWithFrame:CGRectMake(0, self.menuView.bottom, screen_width, screen_height - self.menuView.bottom) style:UITableViewStylePlain];
+        _listTab = [[BaseUITableView alloc]initWithFrame:CGRectMake(0, self.menuView.bottom, screen_width, self.listBgView.height - self.menuView.bottom) style:UITableViewStylePlain];
         _listTab.delegate = self;
         _listTab.dataSource = self;
         [_listTab registerClass:[PaybackCell class] forCellReuseIdentifier:@"PaybackCell"];
@@ -264,7 +295,7 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
         _calendar.calendarHeaderView.alpha = 0;
         _calendar.appearance.weekdayTextColor = RGB_51;//默认星期字体颜色
         _calendar.appearance.titleDefaultColor = RGB_102;//默认内容字体颜色
-        _calendar.appearance.todayColor = calendarColor;//今天的背景颜色
+        _calendar.appearance.todayColor = [UIColor clearColor];//今天的背景颜色
         //带有事件的默认点的颜色
         _calendar.appearance.eventSelectionColor = calendarColor;//带有事件的标记点选中后的颜色
         _calendar.appearance.eventDefaultColor = calendarColor;//带有事件的标记点默认颜色
@@ -289,7 +320,6 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
         _dateLabel =  [[UILabel alloc]initWithFrame:RECT(kOriginLeft, kOriginLeft, kSizeFrom750(500), kLabelHeight)];
         _dateLabel.font = NUMBER_FONT(35);
         _dateLabel.textColor = RGB_51;
-        _dateLabel.text = @"2018-07-09";
     }
     return _dateLabel;
 }
@@ -298,7 +328,6 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
         _amountLabel =  [[UILabel alloc]initWithFrame:RECT(kOriginLeft, self.dateLabel.bottom+kSizeFrom750(20), kSizeFrom750(500), kLabelHeight)];
         _amountLabel.font = SYSTEMSIZE(28);
         _amountLabel.textColor = RGB_183;
-        _amountLabel.text = @"当天待回款30000元";
     }
     return _amountLabel;
 }
@@ -346,7 +375,8 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
         make.width.mas_equalTo(kSizeFrom750(140));
         make.height.mas_equalTo(kSizeFrom750(50));
     }];
-
+    
+    self.calendarBgView.transform = CGAffineTransformScale(_calendarBgView.transform, 0.01, 0.01);
 
 }
 #pragma mark --loadUI
@@ -358,7 +388,11 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
     self.rightBtn.timeInterval = ANIMATION_TIME;//按钮点击间隔
     [self.rightBtn addTarget:self action:@selector(calendarBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.gregorian = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-    
+    self.page = 1;
+    self.startTime = @"";
+    self.endTime = @"";
+    self.keyword = @"";
+    self.order = @"recover_time_down";//默认按时间降序排列
 }
 -(void)loadMenuView
 {
@@ -378,13 +412,16 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
         if (i==3) {
             [iconBtn setImage:IMAGEBYENAME(@"icons_select") forState:UIControlStateNormal];
             [iconBtn setImage:IMAGEBYENAME(@"icons_select") forState:UIControlStateHighlighted];
-
+            self.selectBtn = iconBtn;
             
         }else{
             [iconBtn setImage:IMAGEBYENAME(@"sharp") forState:UIControlStateNormal];
-            [iconBtn setImage:IMAGEBYENAME(@"sharp") forState:UIControlStateHighlighted];
-
             [iconBtn setImage:IMAGEBYENAME(@"sharp_sel") forState:UIControlStateSelected];
+        }
+        if (i==0) {
+            
+            iconBtn.selected = YES;//默认按时间降序排列
+            self.timeBtn = iconBtn;
         }
         [iconBtn layoutIfNeeded];
         [iconBtn setTitleEdgeInsets:UIEdgeInsetsMake(0,- kSizeFrom750(40), 0, 0)];
@@ -474,10 +511,31 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
 
 #pragma mark --loadRequest
 -(void)getRequest{
-
-    self.calendarBgView.transform = CGAffineTransformScale(_calendarBgView.transform, 0.01, 0.01);
-
-    [self.mainTab reloadData];
+    [self.listTab setContentOffset:CGPointMake(0, 0) animated:YES];//滚动到顶端
+    [SVProgressHUD show];
+    NSArray *keys = @[kToken,@"keyword",@"start_time",@"end_time",@"page",@"order"];
+    NSArray *values = @[[CommonUtils getToken],self.keyword,self.startTime,self.endTime,[NSString stringWithFormat:@"%ld",self.page],self.order];
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getMyRecoverUrl keysArray:keys valuesArray:values refresh:self.listTab success:^(NSDictionary *successDic) {
+        if (self.page==1) {
+            [self.listDataArray removeAllObjects];
+        }
+//        self.totalPage = [[successDic objectForKey:@"total_page"] integerValue];
+//        for (NSDictionary *item in successDic[@"items"]) {
+//            PaybackModel *model = [PaybackModel yy_modelWithJSON:item];
+//            [self.listDataArray addObject:model];
+//        }
+//        [self.listTab reloadData];
+        if ([successDic isKindOfClass:[NSArray class]]) {
+            for (NSDictionary *item in successDic) {
+                            PaybackModel *model = [PaybackModel yy_modelWithJSON:item];
+                            [self.listDataArray addObject:model];
+                        }
+            [self.listTab reloadData];
+        }
+        
+    } failure:^(NSDictionary *errorDic) {
+        
+    }];
 
 }
 #pragma mark --scrollViewDelegate
@@ -514,10 +572,9 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (tableView==self.mainTab) {
 //        return self.dayPaybackArray.count;
-        return 10;
-    }else
         return 3;
-    //    return self.dataArray.count;
+    }else
+        return self.listDataArray.count;
 
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -529,7 +586,7 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
     }else{
         static NSString *cellId = @"PaybackCell";
         PaybackCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-        [cell loadInfoWithModel:[[PaybackModel alloc]init]];
+        [cell loadInfoWithModel:self.listDataArray[indexPath.row]];
         return cell;
     }
 }
@@ -541,6 +598,12 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
     }
 }
 #pragma mark --FSCalendar Delegate and DataSource
+- (nullable UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date{
+    if ([self.gregorian isDateInToday:date]) {
+        return IMAGEBYENAME(@"myinvest_time");
+    }
+    return nil;
+}
 -(void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
     calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
@@ -560,6 +623,7 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
     }
     return nil;
 }
+
 //月份切换
 -(void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
@@ -638,6 +702,45 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
 
 -(void)iconsBtnClick:(UIButton *)sender
 {
+    switch (sender.tag) {
+        case 0://时间排序
+            {
+               // recover_time_up 时间升序，recover_time_down 时间降序，amount_up 金额升序，amount_down 金额降序，apr_up 利率升序，apr_down利率降序
+                if ([self.order isEqualToString:@"recover_time_down"]) {
+                    self.order = @"recover_time_up";
+                    sender.imageView.transform = CGAffineTransformMakeRotation(M_PI);
+                }else{
+                     self.order = @"recover_time_down";
+                    sender.imageView.transform = CGAffineTransformMakeRotation(0);
+                }
+            }
+            break;
+        case 1://金额排序
+        {
+            if ([self.order isEqualToString:@"amount_down"]) {
+                self.order = @"amount_up";
+                sender.imageView.transform = CGAffineTransformMakeRotation(M_PI);
+            }else{
+                self.order = @"amount_down";
+                sender.imageView.transform = CGAffineTransformMakeRotation(0);
+            }
+        }
+            break;
+        case 2://利率排序
+        {
+            if ([self.order isEqualToString:@"apr_down"]) {
+                self.order = @"apr_up";
+                sender.imageView.transform = CGAffineTransformMakeRotation(M_PI);
+            }else{
+                self.order = @"apr_down";
+                sender.imageView.transform = CGAffineTransformMakeRotation(0);
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
     for (UIButton *btn in self.btnArray) {
         if (sender.tag==btn.tag) {
             sender.selected = YES;
@@ -648,9 +751,13 @@ Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
             }
         }else{
             btn.selected = NO;
-            
         }
     }
+    
+    if (sender.tag!=3) {
+        [self getRequest];
+    }
+   
 }
 -(void)showTabBtnClick:(UIButton *)sender{
     

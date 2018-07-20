@@ -46,6 +46,7 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
 @implementation HomeWebController
 - (void)dealloc {
     [[_mainWebView configuration].userContentController removeScriptMessageHandlerForName:@"openShare"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_LoginChanged object:nil];
     
 }
 -(void)viewDidDisappear:(BOOL)animated
@@ -70,11 +71,24 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
     self.step = 10;
     [SVProgressHUD show];
 //    _urlStr = @"https://cs.www.tutujf.com/wap/test/agenttest";//测试连接
+//    _urlStr =@"http://cs.www.tutujf.com/wap/test/testjs";//测试原生跳转
     //添加ios客户端标识
     if ([_urlStr rangeOfString:@"equipment=ios"].location==NSNotFound) {
         [self refreshUrl:_urlStr];
     }else{
         [self loadRequest:_urlStr];
+    }
+    
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshLogin) name:Noti_LoginChanged object:nil];//登录状态变更，刷新数据
+}
+//登陆状态变更
+-(void)refreshLogin
+{
+    //添加ios客户端标识
+    if ([self.mainWebView.URL.absoluteString rangeOfString:@"equipment=ios"].location==NSNotFound) {
+        [self refreshUrl:self.mainWebView.URL.absoluteString];
+    }else{
+        [self loadRequest:self.mainWebView.URL.absoluteString];
     }
 }
 -(void)loadNav
@@ -258,59 +272,49 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
         
         UINavigationController *nav = self.navigationController;
         
-        if ([urlPath rangeOfString:@"tutujf:home.index"].location!=NSNotFound) {
+        if ([urlPath isEqualToString:@"tutujf:home.index"] ) {
             //跳转首页
-            self.tabBarController.selectedIndex = 0;
+            self.tabBarController.selectedIndex = TabBarHomePage;
             
             [nav popToRootViewControllerAnimated:YES];
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.loantender"].location!=NSNotFound) {
+       else if ([urlPath isEqualToString:@"tutujf:home.loantender"] ) {
             //跳转投资列表页
-            self.tabBarController.selectedIndex = 1;
+            self.tabBarController.selectedIndex = TabBarProgrameList;
             
             [nav popToRootViewControllerAnimated:YES];
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.findactivity"].location!=NSNotFound) {
+       else if ([urlPath isEqualToString:@"tutujf:home.findactivity"] ) {
             //跳转发现页面
-            self.tabBarController.selectedIndex = 2;
+            self.tabBarController.selectedIndex = TabBarDiscover;
             
             [nav popToRootViewControllerAnimated:YES];
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.memberindex"].location!=NSNotFound) {
+       else if ([urlPath isEqualToString:@"tutujf:home.memberindex"] ) {
             // 跳转我的页面
-            self.tabBarController.selectedIndex = 3;
+            self.tabBarController.selectedIndex = TabBarMine;
             
             [nav popToRootViewControllerAnimated:YES];
             
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.myaccountdata"].location!=NSNotFound) {
-            // 跳转我账号详情页面
-            self.tabBarController.selectedIndex = 3;
-            UINavigationController *selNav = [self.tabBarController.viewControllers objectAtIndex:3];
-            AccountInfoController *account = InitObject(AccountInfoController);
-            account.isBackToRootVC = YES;
-            [selNav pushViewController:account animated:YES];
-            //首页还是要返回到主页面，防止页面切换
-            [nav popToRootViewControllerAnimated:NO];
-            
+       else if ([urlPath isEqualToString:@"tutujf:home.myaccountdata"] ) {
+           //跳转用户资料页面
+           [self goOriginalVC:InitObject(AccountInfoController) isBackToRoot:YES withSelectedIndex:TabBarMine];
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.editpwd"].location!=NSNotFound) {
-            [nav popToRootViewControllerAnimated:NO];//退回到根视图，之后再决定跳转
+       else if ([urlPath isEqualToString:@"tutujf:home.editpwd"] ) {
             //跳转修改密码页面
-            ChangePasswordViewController *forget = InitObject(ChangePasswordViewController);
-            forget.isBackToRootVC = YES;
-            [self.navigationController pushViewController:forget animated:YES];
+           [self goOriginalVC:InitObject(ChangePasswordViewController) isBackToRoot:YES withSelectedIndex:TabBarMine];
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.login"].location!=NSNotFound) {
+       else if ([urlPath isEqualToString:@"tutujf:home.login"] ) {
             //跳转登录页面
             [self goLoginVC];
-            [nav popToRootViewControllerAnimated:NO];
+
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.register"].location!=NSNotFound) {
+       else if ([urlPath isEqualToString:@"tutujf:home.register"] ) {
             [nav popToRootViewControllerAnimated:NO];//退回到根视图，之后再决定跳转
             //跳转注册页面
             RegisterViewController *regis = InitObject(RegisterViewController);
@@ -318,14 +322,11 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
             [nav pushViewController:regis animated:YES];
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.seekpwd"].location!=NSNotFound) {
-            [nav popToRootViewControllerAnimated:NO];//退回到根视图，之后再决定跳转
-            //跳转找回密码页面
-            ForgetPasswordViewController *forget = InitObject(ForgetPasswordViewController);
-            forget.isBackToRootVC = YES;
-            [nav pushViewController:forget animated:YES];
+       else if ([urlPath isEqualToString:@"tutujf:home.seekpwd"] ) {
+           //找回密码
+           [self goOriginalVC:InitObject(ForgetPasswordViewController) isBackToRoot:YES withSelectedIndex:TabBarMine];
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.loaninfoview?loan_id="].location!=NSNotFound) {
+       else if ([urlPath isEqualToString:@"tutujf:home.loaninfoview?loan_id="] ) {
             
             //跳转项目详情页
             ProgrameDetailController *detail = InitObject(ProgrameDetailController);
@@ -336,7 +337,7 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
             [nav pushViewController:detail animated:YES];
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.tenderloanview?loan_id="].location!=NSNotFound) {
+       else if ([urlPath isEqualToString:@"tutujf:home.tenderloanview?loan_id="] ) {
             UINavigationController *nav = self.navigationController;
             //跳转项目快速购买页
             RushPurchaseController *purchase = InitObject(RushPurchaseController);
@@ -347,105 +348,63 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
             [nav pushViewController:purchase animated:YES];
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.approverealname"].location!=NSNotFound) {
+       else if ([urlPath isEqualToString:@"tutujf:home.approverealname"] ) {
+           
             // 跳转我实名认证
-            UINavigationController *nav = self.navigationController;
-            RealNameController *account = InitObject(RealNameController);
-            account.isBackToRootVC = YES;
-            [nav pushViewController:account animated:YES];
-            //首页还是要返回到主页面，防止页面切换
-            [nav popToRootViewControllerAnimated:NO];
+           [self goOriginalVC:InitObject(RealNameController) isBackToRoot:YES withSelectedIndex:TabBarMine];
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.recharge"].location!=NSNotFound) {
+       else if ([urlPath isEqualToString:@"tutujf:home.recharge"] ) {
+           
             // 跳转充值页面
-            RechargeController *account = InitObject(RechargeController);
-            account.isBackToRootVC = YES;
-            [nav pushViewController:account animated:YES];
-            //首页还是要返回到主页面，防止页面切换
-            [nav popToRootViewControllerAnimated:NO];
+           [self goOriginalVC:InitObject(RechargeController) isBackToRoot:YES withSelectedIndex:TabBarMine];
+
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.rechargelog"].location!=NSNotFound) {
-            // 跳转充值记录
-            RechargeRecordController *account = InitObject(RechargeRecordController);
-            account.isBackToRootVC = YES;
-            [nav pushViewController:account animated:YES];
-            //首页还是要返回到主页面，防止页面切换
-            [nav popToRootViewControllerAnimated:NO];
+       else if ([urlPath isEqualToString:@"tutujf:home.rechargelog"] ) {
+           //充值记录
+           [self goOriginalVC:InitObject(RechargeRecordController) isBackToRoot:YES withSelectedIndex:TabBarMine];
+
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.cash"].location!=NSNotFound) {
-            self.tabBarController.selectedIndex = 3;
+       else if ([urlPath isEqualToString:@"tutujf:home.cash"] ) {
             // 跳转我提现页面
-            UINavigationController *selNav = [self.tabBarController.viewControllers objectAtIndex:3];
-            GetCashController *account = InitObject(GetCashController);
-            account.isBackToRootVC = YES;
-            [selNav pushViewController:account animated:YES];
-            //首页还是要返回到主页面，防止页面切换
-            [nav popToRootViewControllerAnimated:NO];
-            
+           [self goOriginalVC:InitObject(GetCashController) isBackToRoot:YES withSelectedIndex:TabBarMine];
+
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.cashlog"].location!=NSNotFound) {
-            self.tabBarController.selectedIndex = 3;
+       else if ([urlPath isEqualToString:@"tutujf:home.cashlog"] ) {
             // 跳转提现列表
-            UINavigationController *selNav = [self.tabBarController.viewControllers objectAtIndex:3];
-            GetCashRecordController *account = InitObject(GetCashRecordController);
-            account.isBackToRootVC = YES;
-            [selNav pushViewController:account animated:YES];
-            //首页还是要返回到主页面，防止页面切换
-            [nav popToRootViewControllerAnimated:NO];
-            
+           [self goOriginalVC:InitObject(GetCashRecordController) isBackToRoot:YES withSelectedIndex:TabBarMine];
+
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.mytransfer"].location!=NSNotFound) {
-            self.tabBarController.selectedIndex = 3;
+       else if ([urlPath isEqualToString:@"tutujf:home.mytransfer"] ) {
             // 跳转我的债权转让
-            UINavigationController *selNav = [self.tabBarController.viewControllers objectAtIndex:3];
-            TransferListController *account = InitObject(TransferListController);
-            account.isBackToRootVC = YES;
-            [selNav pushViewController:account animated:YES];
-            //首页还是要返回到主页面，防止页面切换
-            [nav popToRootViewControllerAnimated:NO];
+           [self goOriginalVC:InitObject(TransferListController) isBackToRoot:YES withSelectedIndex:TabBarMine];
+
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.banklist"].location!=NSNotFound) {
+       else if ([urlPath isEqualToString:@"tutujf:home.banklist"] ) {
             // 跳转我银行卡列表
-            MyBankCardController *account = InitObject(MyBankCardController);
-            account.isBackToRootVC = YES;
-            [nav pushViewController:account animated:YES];
-            //首页还是要返回到主页面，防止页面切换
-            [nav popToRootViewControllerAnimated:NO];
+           [self goOriginalVC:InitObject(MyBankCardController) isBackToRoot:YES withSelectedIndex:TabBarMine];
+
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.mytrust"].location!=NSNotFound) {
+       else if ([urlPath isEqualToString:@"tutujf:home.mytrust"] ) {
             // 跳转托管账户
-            MyRegAccountController *account = InitObject(MyRegAccountController);
-            account.isBackToRootVC = YES;
-            [nav pushViewController:account animated:YES];
-            //首页还是要返回到主页面，防止页面切换
-            [nav popToRootViewControllerAnimated:NO];
+           [self goOriginalVC:InitObject(MyRegAccountController) isBackToRoot:YES withSelectedIndex:TabBarMine];
+
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.myinvest"].location!=NSNotFound) {
+       else if ([urlPath isEqualToString:@"tutujf:home.myinvest"] ) {
             // 跳转我的投资页面
-            self.tabBarController.selectedIndex = 3;
-            UINavigationController *selNav = [self.tabBarController.viewControllers objectAtIndex:3];
-            MyInvestController *account = InitObject(MyInvestController);
-            account.isBackToRootVC = YES;
-            [selNav pushViewController:account animated:YES];
-            //首页还是要返回到主页面，防止页面切换
-            [nav popToRootViewControllerAnimated:NO];
+           [self goOriginalVC:InitObject(MyInvestController) isBackToRoot:YES withSelectedIndex:TabBarMine];
+
             
         }
-       else if ([urlPath rangeOfString:@"tutujf:home.myrecover"].location!=NSNotFound) {
-           // 跳转我的投资页面
-           self.tabBarController.selectedIndex = 3;
-           UINavigationController *selNav = [self.tabBarController.viewControllers objectAtIndex:3];
-           MyPaybackController *account = InitObject(MyPaybackController);
-           account.isBackToRootVC = YES;
-           [selNav pushViewController:account animated:YES];
-           //首页还是要返回到主页面，防止页面切换
-           [nav popToRootViewControllerAnimated:NO];
+       else if ([urlPath isEqualToString:@"tutujf:home.myrecover"] ) {
+           // 跳转我的回款页面
+           [self goOriginalVC:InitObject(MyPaybackController) isBackToRoot:YES withSelectedIndex:TabBarMine];
+
            
        }
         return;
@@ -471,6 +430,21 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
     }
    
 
+}
+//跳转到二级原生页面
+-(void)goOriginalVC:(BaseViewController *)vc isBackToRoot:(BOOL)isBack withSelectedIndex:(NSInteger)index{
+    
+//    self.tabBarController.selectedIndex = index;
+//    UINavigationController *selNav = [self.tabBarController.viewControllers objectAtIndex:index];
+    vc.isBackToRootVC = isBack;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+//    if (self.navigationController!=selNav) {
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            //首页还是要返回到主页面，防止页面切换
+//            [self.navigationController popToRootViewControllerAnimated:NO];
+//        });
+//    }
 }
 -(void)refreshUrl:(NSString *)urlString{
     NSString *resaultUrl = @"";
@@ -521,7 +495,6 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
 - (void)loadRequest: (NSString *) urlstr {
    
     if (IsEmptyStr(urlstr)) {
-        [SVProgressHUD showInfoWithStatus:@"链接错误"];
         return;
     }
     NSURL *url = [[NSURL alloc] initWithString:urlstr];
@@ -652,7 +625,8 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
         decisionHandler(WKNavigationActionPolicyAllow);
     }else{
         //内部链接
-        if (self.step==2) {//外部链接跳转内部链接，第二个页面再添加cookie值
+
+        if (self.step==2) {//外部链接跳转内部链接，第二次跳转再添加cookie值
             NSMutableString *cookies = [NSMutableString string];
             NSArray *tmp = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
             for (NSHTTPCookie * cookie in tmp) {
@@ -661,6 +635,7 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
             NSMutableURLRequest *request= [NSMutableURLRequest requestWithURL:navigationAction.request.URL];
             [request setValue:cookies forHTTPHeaderField:@"Cookie"];
             [webView loadRequest:request];
+            self.step ++;
             decisionHandler(WKNavigationActionPolicyCancel);
 
         }else{

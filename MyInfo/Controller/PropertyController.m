@@ -174,7 +174,7 @@ Strong NSMutableArray *percentageArray;//百分比
         [self.bottomView addSubview:subView];
 
         
-        UILabel *titleLabel = [[UILabel alloc]initWithFrame:RECT(kSizeFrom750(50),kSizeFrom750(20), kSizeFrom750(200), kSizeFrom750(30))];
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:RECT(kSizeFrom750(50),kSizeFrom750(20), kSizeFrom750(300), kSizeFrom750(30))];
         titleLabel.font = SYSTEMSIZE(28);
         titleLabel.textColor = RGB_183;
         titleLabel.text = model.title;

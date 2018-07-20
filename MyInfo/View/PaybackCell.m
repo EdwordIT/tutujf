@@ -46,14 +46,13 @@ Strong UILabel *subLabel;
         textLabel.font = NUMBER_FONT(48);
         textLabel.textColor = RGB_51;
         textLabel.textAlignment = NSTextAlignmentCenter;
-        textLabel.text = [CommonUtils getHanleNums:@"101200"];
         [self.contentView addSubview:textLabel];
         [self.textArr addObject:textLabel];
         UILabel *titleL = InitObject(UILabel);
         titleL.font = SYSTEMSIZE(26);
         titleL.textColor = RGB_183;
         titleL.textAlignment = NSTextAlignmentCenter;
-        titleL.text = @"年化收益率";
+        titleL.text = @"预期利率";
         [self.contentView addSubview:titleL];
         [self.titleArr addObject:titleL];
         
@@ -69,10 +68,9 @@ Strong UILabel *subLabel;
             }];
         }else{
             _subLabel = InitObject(UILabel);
-            _subLabel.font = NUMBER_FONT(24);
+            _subLabel.font = NUMBER_FONT(22);
             _subLabel.textColor = RGB_183;
             _subLabel.textAlignment = NSTextAlignmentCenter;
-            _subLabel.text = @"本金1,000元";
             [self.contentView addSubview:self.subLabel];
             
             [self.subLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -192,16 +190,30 @@ Strong UILabel *subLabel;
 #pragma mark --loadView
 -(void)loadInfoWithModel:(PaybackModel *)model{
 
+    self.titleLabel.text = model.loan_name;
     for (int i=0; i<self.titleArr.count; i++){
+        UILabel *titleL = [self.titleArr objectAtIndex:i];
         UILabel *textL = [self.textArr objectAtIndex:i];
+        NSString *apr = [model.apr stringByAppendingString:@"%"];
         if (i==0) {
-            [textL setAttributedText:[CommonUtils diffierentFontWithString:@"10.2%" rang:[@"10.2%" rangeOfString:@"%"] font:NUMBER_FONT(30) color:RGB_51 spacingBeforeValue:0 lineSpace:0]];
+            [titleL setText:model.apr_txt];
+            [textL setAttributedText:[CommonUtils diffierentFontWithString:apr rang:[apr rangeOfString:@"%"] font:NUMBER_FONT(30) color:RGB_51 spacingBeforeValue:0 lineSpace:0]];
 
         }else{
-            NSString *rangeTxt = [[CommonUtils getHanleNums:@"101200"] stringByAppendingString:@"元"];
+            [titleL setText:model.amount_txt];
+            NSString *rangeTxt = [[CommonUtils getHanleNums:model.amount] stringByAppendingString:@"元"];
             [textL setAttributedText:[CommonUtils diffierentFontWithString:rangeTxt rang:[rangeTxt rangeOfString:@"元"] font:SYSTEMSIZE(24) color:RGB_51 spacingBeforeValue:0 lineSpace:0]];
-
+            
         }
+    }
+    
+    [self.subLabel setText:model.amount_sub_title];
+    self.investTimeLabel.text = model.recover_time_txt;
+    self.periodLabel.text = model.period_name_txt;
+    if ([model.status isEqualToString:@"1"]) {
+        [self.stateImage setImage:IMAGEBYENAME(@"icons_payback")];
+    }else{
+        [self.stateImage setImage:IMAGEBYENAME(@"")];
     }
     
 }

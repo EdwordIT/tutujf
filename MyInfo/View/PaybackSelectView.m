@@ -15,6 +15,12 @@ Strong UIButton *leftBtn;
 Strong UIButton *rightBtn;
 Strong SDRangeSliderView *sliderView;
 
+Copy NSString *keyword;//关键字
+Copy NSDate *startTime;
+Copy NSDate *endTime;
+Assign NSInteger page;
+Assign NSInteger totalPage;
+
 @end
 
 @implementation PaybackSelectView
@@ -27,6 +33,8 @@ Strong SDRangeSliderView *sliderView;
 }
 -(void)initSubViews{
     
+
+    self.keyword = @"";
     self.clipsToBounds = YES;
     self.backgroundColor = RGBA(0, 0, 0, 0.6);
     
@@ -55,7 +63,7 @@ Strong SDRangeSliderView *sliderView;
     _searchTextField.placeholder = @"请输入要搜索的关键词";
     _searchTextField.font =SYSTEMSIZE(26);
     _searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-//    [_searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [_searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [searchView addSubview:self.searchTextField];
 
     
@@ -74,6 +82,7 @@ Strong SDRangeSliderView *sliderView;
     [self.rightBtn setTitle:@"后12个月" forState:UIControlStateNormal];
     [self.rightBtn.titleLabel setFont:SYSTEMSIZE(28)];
     self.rightBtn.tag = 1;
+    self.rightBtn.selected = YES;
     [self.rightBtn setTitleColor:COLOR_DarkBlue forState:UIControlStateSelected];
     [self.rightBtn addTarget:self action:@selector(timeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -88,7 +97,7 @@ Strong SDRangeSliderView *sliderView;
     self.leftBtn.tag = 0;
     [self.leftBtn addTarget:self action:@selector(timeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.leftBtn setTitleColor:RGB_183 forState:UIControlStateNormal];
-    self.leftBtn.selected = YES;
+    self.leftBtn.selected = NO;
     [middleView addSubview:self.leftBtn];
     
    
@@ -108,10 +117,7 @@ Strong SDRangeSliderView *sliderView;
             rightCursor.timeInterval = 0;
     }];
     
-    [self.sliderView eventValueDidChanged:^(double left, double right) {
-       //左右滑动触发回调
-        NSLog(@"left=%.0f,right = %.0f",left,right);
-    }];
+   
     NSArray *sepArr = @[@"0",@"2",@"4",@"6",@"8",@"10",@"12"];
     CGFloat labelW = self.sliderView.itemSize;
     CGFloat spaceX = (kContentWidth - sepArr.count*labelW)/(sepArr.count-1);
@@ -124,10 +130,24 @@ Strong SDRangeSliderView *sliderView;
         label.textAlignment = NSTextAlignmentCenter;
         [middleView addSubview:label];
     }
+    
+    [self.sliderView eventValueDidChanged:^(double left, double right) {
+        //左右滑动触发回调
+        NSLog(@"left=%.0f,right = %.0f",left,right);
+        if (left==0&&right==4) {
+            self.leftBtn.selected = YES;
+            self.rightBtn.selected = NO;
+        }
+        if (left==0&&right==7) {
+            self.leftBtn.selected = NO;
+            self.rightBtn.selected = YES;
+        }
+        self.startTime = [self getPriousorLaterDateWwithMonth:[[sepArr objectAtIndex:left] integerValue]];
+        self.endTime = [self getPriousorLaterDateWwithMonth:[[sepArr objectAtIndex:right-1] integerValue]];
+    }];
+    
     [middleView addSubview:self.sliderView];
     [self.sliderView update];
-
-    
     
     UIButton *resetBtn = [[UIButton alloc]initWithFrame:RECT(0,self.headerView.height - kButtonHeight, kSizeFrom750(170), kButtonHeight)];
     [resetBtn setTitle:@"重置" forState:UIControlStateNormal];
@@ -148,11 +168,19 @@ Strong SDRangeSliderView *sliderView;
     searchBtn.backgroundColor = COLOR_DarkBlue;
     [self.headerView addSubview:searchBtn];
     
-    UIButton *bottomBtn = [[UIButton alloc]initWithFrame:RECT(0, kSizeFrom750(480), screen_width, screen_height - kSizeFrom750(480))];
+    UIButton *bottomBtn = [[UIButton alloc]initWithFrame:RECT(0, self.headerView.height, screen_width, self.height - self.headerView.height)];
     bottomBtn.backgroundColor = [UIColor clearColor];
     [bottomBtn addTarget:self action:@selector(bottomBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:bottomBtn];
     
+}
+#pragma mark --textField Delegate
+-(void)textFieldDidChange :(UITextField *)theTextField{
+    NSString *    str = [theTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if(str.length >0)
+    {
+        self.keyword = str;
+    }
 }
 #pragma mark --button Click
 -(void)timeBtnClick:(UIButton *)sender{
@@ -160,8 +188,12 @@ Strong SDRangeSliderView *sliderView;
     if (sender.tag==0) {
         [self.sliderView setLeftValue:0];
         [self.sliderView setRightValue:4];
+        self.startTime = [self getPriousorLaterDateWwithMonth:0];
+        self.endTime = [self getPriousorLaterDateWwithMonth:4];
         self.rightBtn.selected = NO;
     }else{
+        self.startTime = [self getPriousorLaterDateWwithMonth:0];
+        self.endTime = [self getPriousorLaterDateWwithMonth:7];
         [self.sliderView setLeftValue:0];
         [self.sliderView setRightValue:7];
         self.leftBtn.selected = NO;
@@ -170,18 +202,34 @@ Strong SDRangeSliderView *sliderView;
 //重置条件、开始搜索
 -(void)btnClick:(UIButton *)sender{
     if (sender.tag==0) {
-      
+        self.startTime = nil;
+        self.endTime = nil;
+        self.searchTextField.text = @"";
+        self.keyword = @"";
     }else{
       
-        if (self.selectedBlock) {
-//            self.selectBlock(self.selectTag,self.startTime,self.endTime);
-        }
-        [self hideSelectView:YES];
-        
     }
+    if (self.selectedBlock) {
+        self.selectedBlock(self.startTime, self.endTime, self.keyword);
+    }
+    [self hideSelectView:YES];
 }
 -(void)bottomBtnClick:(UIButton *)sender{
     [self hideSelectView:YES];
+}
+#pragma mark --custom
+-(NSDate *)getPriousorLaterDateWwithMonth:(NSInteger)month
+ {
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+
+    [comps setMonth:month];
+    
+    NSCalendar *calender = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+   
+    NSDate *mDate = [calender dateByAddingComponents:comps toDate:[NSDate date] options:0];
+  
+     return mDate;
+    
 }
 -(void)hideSelectView:(BOOL)isHide{
     
