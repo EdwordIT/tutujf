@@ -509,8 +509,6 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
         for (NSDictionary *item in successDic[RESPONSE_LIST]) {
             PaybackModel *model = [PaybackModel yy_modelWithJSON:item];
             [self.listDataArray addObject:model];
-            [self.listDataArray addObject:model];
-            [self.listDataArray addObject:model];
         }
         [self.listTab reloadData];
        
