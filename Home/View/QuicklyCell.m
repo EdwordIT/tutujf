@@ -412,7 +412,7 @@ Strong NSDate *nowDate;//现在的时间
     NSString *progress = [[NSString stringWithFormat:@"%@",self.cellModel.progress] stringByAppendingString:@"%"];
     NSString *proTxt = [@"进度 " stringByAppendingString:progress];
     [proTextLabel setAttributedText:[CommonUtils diffierentFontWithString:proTxt rang:[proTxt rangeOfString:progress] font:NUMBER_FONT(26) color:progressColor spacingBeforeValue:0 lineSpace:0]];
-    [self.percentLabel setAttributedText:[CommonUtils diffierentFontWithString:self.cellModel.apr_val rang:[self.cellModel.apr_val rangeOfString:@"%"] font:NUMBER_FONT_BOLD(26) color:COLOR_Red spacingBeforeValue:0 lineSpace:0]];
+    [self.percentLabel setAttributedText:[CommonUtils diffierentFontWithString:self.cellModel.apr_val rang:[self.cellModel.apr_val rangeOfString:@"%"] font:NUMBER_FONT_BOLD(26) color:nil spacingBeforeValue:0 lineSpace:0]];
     
     lab5.text=[NSString stringWithFormat:@"%@",self.cellModel.repay_type_name];
    

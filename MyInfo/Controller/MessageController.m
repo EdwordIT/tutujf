@@ -17,6 +17,7 @@ Strong BaseUITableView *mainTab;
 Strong NSMutableArray *dataSource;
 Assign NSInteger currentPage;
 Assign NSInteger totalPages;
+Copy NSString *status;//状态
 @end
 
 @implementation MessageController
@@ -24,6 +25,7 @@ Assign NSInteger totalPages;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.titleString = @"消息列表";
+    self.status = @"0";
     self.currentPage = 1;
     self.totalPages = 1;
     [self.rightBtn setHidden:NO];
@@ -50,9 +52,31 @@ Assign NSInteger totalPages;
     if (!_comboxView) {
         _comboxView = [[MessageComboBoxView alloc]init];
         _comboxView.hidden = YES;
+        WEAK_SELF;
         //消息处理事件
         _comboxView.comboxBlock = ^(NSInteger tag) {
-            
+            weakSelf.comboxView.hidden = YES;
+            switch (tag) {
+                case 0:
+                    {
+                        weakSelf.status = @"1";//未读消息
+                        [weakSelf getRequest];
+                    }
+                    break;
+                case 1:
+                {
+                    weakSelf.status = @"2";//已读消息
+                    [weakSelf getRequest];
+
+                }
+                    break;
+                    
+                default:{
+                    [weakSelf reloadMessage];//一键阅读
+                    
+                }
+                    break;
+            }
         };
     }
     return _comboxView;
@@ -129,22 +153,19 @@ Assign NSInteger totalPages;
 #pragma request
 //获取站内信列表
 -(void)getRequest{
-    NSArray *keys = @[@"page",kToken];
-    NSArray *values = @[[NSString stringWithFormat:@"%ld",self.currentPage],[CommonUtils getToken]];
+    NSArray *keys = @[@"version",@"page",kToken,@"status"];
+    NSArray *values = @[@"20",[NSString stringWithFormat:@"%ld",self.currentPage],[CommonUtils getToken],self.status];
     [[HttpCommunication sharedInstance] postSignRequestWithPath:getUserMessageUrl keysArray:keys valuesArray:values refresh:self.mainTab success:^(NSDictionary *successDic) {
         if (self.currentPage==1) {
             [self.dataSource removeAllObjects];
         }
         
-        self.totalPages = [[successDic objectForKey:@"total_pages"] integerValue];
-        for (NSDictionary *dic in [successDic objectForKey:@"items"]) {
+        self.totalPages = [[successDic objectForKey:RESPONSE_TOTALPAGES] integerValue];
+        for (NSDictionary *dic in [successDic objectForKey:RESPONSE_LIST]) {
             MessageModel *model = [MessageModel yy_modelWithJSON:dic];
             [self.dataSource addObject:model];
         }
-        if (self.dataSource.count==0) {
-            [self.rightBtn setHidden:YES];
-        }else
-            [self.rightBtn setHidden:NO];
+        
         [self.mainTab reloadData];
     } failure:^(NSDictionary *errorDic) {
         
@@ -161,21 +182,21 @@ Assign NSInteger totalPages;
     }
 }
 -(void)rightBtnClick:(UIButton *)sender{
+    
     self.comboxView.hidden = !self.comboxView.hidden;
-//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"是否清除全部站内信？" preferredStyle:UIAlertControllerStyleAlert];
-//    UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"清除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//
-//        [[HttpCommunication sharedInstance] postSignRequestWithPath:postMarkedAsReadedUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:nil success:^(NSDictionary *successDic) {
-//            [self getRequest];
-//        } failure:^(NSDictionary *errorDic) {
-//
-//        }];
-//
-//    }];
-//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-//    [alertController addAction:alertAction];
-//    [alertController addAction:cancelAction];
-//    [self presentViewController:alertController animated:YES completion:nil];
+    
+}
+
+-(void)reloadMessage{
+  
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:postMarkedAsReadedUrl keysArray:@[kToken] valuesArray:@[[CommonUtils getToken]] refresh:nil success:^(NSDictionary *successDic) {
+       
+        self.currentPage = 1;
+        [self getRequest];
+        
+    } failure:^(NSDictionary *errorDic) {
+
+    }];
    
 }
 - (void)didReceiveMemoryWarning {

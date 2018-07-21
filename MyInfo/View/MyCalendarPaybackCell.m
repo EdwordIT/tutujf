@@ -57,7 +57,7 @@ Strong UILabel *amountDesL;
         _subL = InitObject(UILabel);
         _subL.font =  SYSTEMSIZE(28);
         _subL.textColor = RGB_153;
-        _titleL.text = @"回款总额：";
+        _subL.text = @"回款总额：";
 
     }
     return _subL;
@@ -68,7 +68,6 @@ Strong UILabel *amountDesL;
         _nameL.font =  SYSTEMSIZE(28);
         _nameL.textColor = RGB_102;
         _nameL.textAlignment = NSTextAlignmentRight;
-        _nameL.text = @"玛莎拉蒂190921(温州)";
     }
     return _nameL;
 }
@@ -78,7 +77,6 @@ Strong UILabel *amountDesL;
         _amountL.font =  SYSTEMSIZE(28);
         _amountL.textColor = RGB_102;
         _amountL.textAlignment = NSTextAlignmentRight;
-        _amountL.text = @"10110.00元";
 
     }
     return _amountL;
@@ -89,7 +87,6 @@ Strong UILabel *amountDesL;
         _amountDesL.font =  SYSTEMSIZE(22);
         _amountDesL.textColor = RGB_153;
         _amountDesL.textAlignment = NSTextAlignmentRight;
-        _amountDesL.text = @"本金10000.00元+利息110.00元";
 
     }
     return _amountDesL;
@@ -123,6 +120,9 @@ Strong UILabel *amountDesL;
 }
 -(void)loadInfoWithModel:(PaybackModel *)model{
     
+    self.nameL.text = model.loan_name;
+    self.amountL.text = [[CommonUtils getHanleNums:model.amount] stringByAppendingString:@"元"];
+    self.amountDesL.text = model.amount_sub_title;
     
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -19,7 +19,7 @@
 
 
 //页面两种显示方式，一种带日历，一直列表
-@interface MyPaybackController ()<UITableViewDelegate,UITableViewDataSource,FSCalendarDelegate,FSCalendarDataSource,UIScrollViewDelegate>
+@interface MyPaybackController ()<UITableViewDelegate,UITableViewDataSource,FSCalendarDelegate,FSCalendarDataSource,FSCalendarDelegateAppearance,UIScrollViewDelegate>
 Strong UIView *listBgView;
 Strong UIScrollView *calendarBgView;
 Strong PaybackSelectView *selectView;
@@ -28,7 +28,7 @@ Strong NSMutableArray *btnArray;//button
 Strong BaseUITableView *listTab;//常规列表
 Strong NSMutableArray *listDataArray;//常规数据源
 Assign BOOL isCalendar;//是否切换到带日历的内容显示页面
-
+Assign BOOL isLoadCalendar;//月份数据只加载一次
 
 Strong GradientButton *headerView;
 Strong UILabel *headerTitle;
@@ -38,20 +38,20 @@ Strong UIScrollView *monthScroll;//月份
 Strong UILabel *yearLabel;//年份
 Strong FSCalendar *calendar;//日历
 Strong NSMutableArray *monthArray;
-Strong NSMutableArray *eventArray;//含有点击事件的数组：当天有回款
+Strong NSArray *eventArray;//含有点击事件的数组：当天有回款
 Strong NSCalendar *gregorian;
 Assign NSInteger year;//年份
 Strong NSDateFormatter *dateFormat;//时间格式
-Strong NSDate *currentDate;//日历滑动完成之后的日期
+Copy NSString *currentDate;//现在的日期
 Strong NSDate *lastDate;//滑动日历之前当前日期
 Strong UIButton *selectedMonth;//当前处于的月份选中按钮
 Assign BOOL isClickBtnSwap;//是否点击切换月份
 Strong UIView *tableHeaderView;//
-Strong UILabel *dateLabel;//
+Strong UILabel *dateLabel;//当天日期
 Strong UILabel *amountLabel;//当天待回款
 Strong BaseUITableView *mainTab;//
 Strong UIButton *showTabBtn;
-Strong NSMutableArray *dayPaybackArray;//当天的待回款金额
+Strong NSArray *calendarArray;//当天的待回款金额
 Weak UIButton *timeBtn;//时间排序按钮
 Weak UIButton *selectBtn;//筛选按钮
 //筛选条件
@@ -61,7 +61,6 @@ Copy NSString *endTime;
 Assign NSInteger page;
 Assign NSInteger totalPage;
 Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_down 时间降序，amount_up 金额升序，amount_down 金额降序，apr_up 利率升序，apr_down利率降序
-
 @end
 
 @implementation MyPaybackController
@@ -121,22 +120,6 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     }
     return _monthArray;
 }
--(NSMutableArray *)eventArray{
-    if (!_eventArray) {
-        _eventArray = InitObject(NSMutableArray);
-        [_eventArray addObject:@"2018-07-13"];
-        [_eventArray addObject:@"2018-07-15"];
-        [_eventArray addObject:@"2018-07-19"];
-
-    }
-    return _eventArray;
-}
--(NSMutableArray *)dayPaybackArray{
-    if (!_dayPaybackArray) {
-        _dayPaybackArray = InitObject(NSMutableArray);
-    }
-    return _dayPaybackArray;
-}
 -(UIView *)listBgView{
     if (!_listBgView) {
         _listBgView = [[UIView alloc]initWithFrame:RECT(0, kNavHight, screen_width, kViewHeight)];
@@ -150,7 +133,6 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
             
         }];
         header.canRefresh = NO;
-        
         _calendarBgView.mj_header = header;
         _calendarBgView.alpha = 0;
         _calendarBgView.showsVerticalScrollIndicator = NO;
@@ -240,15 +222,16 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     }
     return _headerTitle;
 }
-
+//当月待回款
 -(UILabel *)headerTextL{
     if (!_headerTextL) {
         _headerTextL = [[UILabel alloc]initWithFrame:RECT(screen_width/2, 0, screen_width/2 - kOriginLeft, kSizeFrom750(50))];
-        [_headerTextL setFont:SYSTEMBOLDSIZE(30)];
+        [_headerTextL setFont:SYSTEMBOLDSIZE(50)];
         _headerTextL.centerY = self.headerTitle.centerY;
         _headerTextL.textAlignment = NSTextAlignmentRight;
         _headerTextL.textColor = COLOR_White;
-        _headerTextL.text = [CommonUtils getHanleNums:@"30000"];
+        NSString *txt = [[CommonUtils getHanleNums:@"0"] stringByAppendingString:@"元"];
+        [_headerTextL setAttributedText:[CommonUtils diffierentFontWithString:txt rang:[txt rangeOfString:@"元"] font:SYSTEMSIZE(30) color:nil spacingBeforeValue:0 lineSpace:0]];
     }
     return _headerTextL;
 }
@@ -274,7 +257,6 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     if (!_monthScroll) {
         _monthScroll = [[UIScrollView alloc]initWithFrame:RECT(kSizeFrom750(200), 0, kSizeFrom750(470), self.calendarHeaderView.height)];
         _monthScroll.showsHorizontalScrollIndicator = NO;
-        _monthScroll.pagingEnabled = YES;
     }
     return _monthScroll;
 }
@@ -285,7 +267,6 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
         _calendar.dataSource = self;
         _calendar.delegate = self;
         _calendar.backgroundColor = COLOR_Background;
-        
         //默认全是灰色的日期隐藏(当月不存在的日期隐藏)
         _calendar.placeholderType = FSCalendarPlaceholderTypeNone;
         _calendar.appearance.headerMinimumDissolvedAlpha = 0;
@@ -296,13 +277,13 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
         _calendar.appearance.weekdayTextColor = RGB_51;//默认星期字体颜色
         _calendar.appearance.titleDefaultColor = RGB_102;//默认内容字体颜色
         _calendar.appearance.todayColor = [UIColor clearColor];//今天的背景颜色
+        _calendar.appearance.titleTodayColor = calendarColor;//今天标题的颜色
         //带有事件的默认点的颜色
         _calendar.appearance.eventSelectionColor = calendarColor;//带有事件的标记点选中后的颜色
         _calendar.appearance.eventDefaultColor = calendarColor;//带有事件的标记点默认颜色
         _calendar.appearance.selectionColor = calendarColor;//选中背景颜色
         _calendar.appearance.caseOptions = FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
         self.lastDate = _calendar.currentPage;
-        
     }
     return _calendar;
 }
@@ -315,19 +296,24 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     }
     return _tableHeaderView;
 }
+//当天日期
 -(UILabel *)dateLabel{
     if (!_dateLabel) {
         _dateLabel =  [[UILabel alloc]initWithFrame:RECT(kOriginLeft, kOriginLeft, kSizeFrom750(500), kLabelHeight)];
         _dateLabel.font = NUMBER_FONT(35);
         _dateLabel.textColor = RGB_51;
+        
     }
     return _dateLabel;
 }
+//当天待回款
 -(UILabel *)amountLabel{
     if (!_amountLabel) {
         _amountLabel =  [[UILabel alloc]initWithFrame:RECT(kOriginLeft, self.dateLabel.bottom+kSizeFrom750(20), kSizeFrom750(500), kLabelHeight)];
         _amountLabel.font = SYSTEMSIZE(28);
         _amountLabel.textColor = RGB_183;
+        NSString *txt = @"当天待回款 0.00 元";
+        [_amountLabel setAttributedText:[CommonUtils diffierentFontWithString:txt rang:[txt rangeOfString:@"0.00"] font:SYSTEMSIZE(30) color:COLOR_Red spacingBeforeValue:0 lineSpace:0]];
     }
     return _amountLabel;
 }
@@ -351,12 +337,15 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
 }
 -(BaseUITableView *)mainTab{
     if (!_mainTab) {
-        _mainTab = [[BaseUITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _mainTab = [[BaseUITableView alloc]initWithFrame:RECT(0, self.tableHeaderView.bottom, screen_width, 0) style:UITableViewStylePlain];
         _mainTab.delegate = self;
         _mainTab.dataSource = self;
-        _mainTab.backgroundColor = [UIColor redColor];
         _mainTab.rowHeight = kSizeFrom750(162);
+        _mainTab.estimatedRowHeight = 0;
         _mainTab.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+//        _mainTab.ly_emptyView = [EmptyView noDataRefreshBlock:^{
+//            
+//        }];//zan'wu'shu
          [_mainTab registerClass:[MyCalendarPaybackCell class] forCellReuseIdentifier:@"MyCalendarPaybackCell"];
     }
     return _mainTab;
@@ -411,7 +400,7 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
         [self.menuView addSubview:iconBtn];
         if (i==3) {
             [iconBtn setImage:IMAGEBYENAME(@"icons_select") forState:UIControlStateNormal];
-            [iconBtn setImage:IMAGEBYENAME(@"icons_select") forState:UIControlStateHighlighted];
+            [iconBtn setImage:IMAGEBYENAME(@"icons_select_sel") forState:UIControlStateSelected];
             self.selectBtn = iconBtn;
             
         }else{
@@ -464,12 +453,9 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:[NSDate date]];
     NSInteger month = [dateComponent month];//当前月份
     CGFloat btnWidth = self.monthScroll.width/4;
-    for (NSInteger i=month; i<month+25; i++) {
+    for (NSInteger i=month; i<month+13; i++) {
         NSInteger monthNumber = i;
         if (i>12) {
-            if (i>24) {
-                monthNumber = i-24;
-            }else
             monthNumber = i-12;
         }else{
             monthNumber = i;
@@ -493,16 +479,16 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
         [selImageView setImage:[UIImage imageWithColor:COLOR_DarkBlue]];
         selImageView.tag = sliderTag;
         [selImageView setHidden:YES];
-        if (i==month+12) {
+        if (i==month) {
             [selImageView setHidden:NO];
             monthBtn.selected = YES;//默认显示当前月份
             self.selectedMonth = monthBtn;
         }
         [monthBtn addSubview:selImageView];
         
-        if (i==month+24) {
+        if (i==month+12) {
             self.monthScroll.contentSize = CGSizeMake(monthBtn.right, monthBtn.height);
-            self.monthScroll.contentOffset = CGPointMake(btnWidth*12, 0);
+            self.monthScroll.contentOffset = CGPointMake(0, 0);
         }
         
     }
@@ -519,18 +505,18 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
         if (self.page==1) {
             [self.listDataArray removeAllObjects];
         }
-//        self.totalPage = [[successDic objectForKey:@"total_page"] integerValue];
-//        for (NSDictionary *item in successDic[@"items"]) {
-//            PaybackModel *model = [PaybackModel yy_modelWithJSON:item];
-//            [self.listDataArray addObject:model];
-//        }
-//        [self.listTab reloadData];
-        if ([successDic isKindOfClass:[NSArray class]]) {
-            for (NSDictionary *item in successDic) {
-                            PaybackModel *model = [PaybackModel yy_modelWithJSON:item];
-                            [self.listDataArray addObject:model];
-                        }
-            [self.listTab reloadData];
+        self.totalPage = [[successDic objectForKey:RESPONSE_TOTALPAGES] integerValue];
+        for (NSDictionary *item in successDic[RESPONSE_LIST]) {
+            PaybackModel *model = [PaybackModel yy_modelWithJSON:item];
+            [self.listDataArray addObject:model];
+            [self.listDataArray addObject:model];
+            [self.listDataArray addObject:model];
+        }
+        [self.listTab reloadData];
+       
+        if (!self.isLoadCalendar) {
+            [self reloadCalendarView];
+            self.isLoadCalendar = YES;
         }
         
     } failure:^(NSDictionary *errorDic) {
@@ -553,26 +539,30 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     }
 }
 #pragma mark --tableView Delegate and DataSource
-
--(void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    if([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.mainTab.frame = RECT(0, self.tableHeaderView.bottom, screen_width, tableView.contentSize.height);
-            self.calendarBgView.contentSize = CGSizeMake(screen_width, self.mainTab.bottom);
-
-        });
-        
+    if (tableView==self.mainTab) {
+        //去掉最后一行的分割线
+        if ([indexPath row] == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row) {
+            if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+                [cell setSeparatorInset:UIEdgeInsetsZero];
+            }
+            if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+                [cell setLayoutMargins:UIEdgeInsetsZero];
+            }
+        }
     }
-    
+   
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (tableView==self.mainTab) {
-//        return self.dayPaybackArray.count;
-        return 3;
+        for (NSArray *arr in self.calendarArray) {
+            PaybackModel *model = [arr lastObject];
+            if ([model.recover_time isEqualToString:self.currentDate] ) {
+                return arr.count;
+            }
+        }
+        return 0;
     }else
         return self.listDataArray.count;
 
@@ -582,6 +572,13 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     if (tableView==self.mainTab) {
         static NSString *cellId1 = @"MyCalendarPaybackCell";
         MyCalendarPaybackCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId1];
+        for (NSArray *arr in self.calendarArray) {
+            PaybackModel *model = [arr lastObject];
+            if ([model.recover_time isEqualToString:self.currentDate] ) {
+                PaybackModel *cellModel = [arr objectAtIndex:indexPath.row];
+                [cell loadInfoWithModel:cellModel];
+            }
+        }
         return cell;
     }else{
         static NSString *cellId = @"PaybackCell";
@@ -597,13 +594,16 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
         
     }
 }
-#pragma mark --FSCalendar Delegate and DataSource
-- (nullable UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date{
-    if ([self.gregorian isDateInToday:date]) {
-        return IMAGEBYENAME(@"myinvest_time");
+#pragma mark --FSCalendarAppearanceDelegate
+- (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date{
+    if ([self.gregorian isDateInToday:date]) {//今天的背景cycle颜色
+        return  calendarColor;
     }
     return nil;
 }
+
+
+#pragma mark --FSCalendar Delegate and DataSource
 -(void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
     calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
@@ -616,9 +616,12 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     }
     return 0;
 }
+
 - (NSString *)calendar:(FSCalendar *)calendar titleForDate:(NSDate *)date
 {
     if ([self.gregorian isDateInToday:date]) {
+        [self reloadCurrentDayInfo];
+        self.currentDate = [self.dateFormat stringFromDate:date];//当天日期
         return @"今";
     }
     return nil;
@@ -637,21 +640,25 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
         //记录最后时间
         self.lastDate = calendar.currentPage;
     }
+    [self reloadCurrentMonthInfo];
 }
 //日期点击事件
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
+    self.currentDate = [self.dateFormat stringFromDate:date];
+    [self reloadCurrentDayInfo];//刷新当天数据
     NSLog(@"-点击日期 = %@",date);
 }
-//最小日期
+//最小日期为当天
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [NSDate dateWithTimeIntervalSinceNow: -365*DAY];
+    return [NSDate date];
 }
 //最大日期为一年后
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [NSDate dateWithTimeIntervalSinceNow:DAY*365];
+    NSDate *maxDay = [self.gregorian dateByAddingUnit:NSCalendarUnitYear value:1 toDate:calendar.currentPage options:0];
+    return maxDay;
 }
 #pragma mark --buttonClick
 //切换一批月份
@@ -686,12 +693,14 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
             NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:toMonth];
             NSInteger year = [dateComponent year];//当前年份
             [self.yearLabel setText:[NSString stringWithFormat:@"%ld年",year]];
+            self.lastDate = toMonth;//月份切换完成后的日期
 
         }else{
             button.selected = NO;
             [[button viewWithTag:sliderTag] setHidden:YES];
         }
     }
+    [self reloadCurrentMonthInfo];
 }
 //切换不同视图
 -(void)calendarBtnClick:(UIButton *)sender{
@@ -776,6 +785,92 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     }
 }
 #pragma mark -- custom
+//刷新当月待回款数据
+-(void)reloadCurrentMonthInfo{
+     NSString *currentMonth =  [[self.dateFormat stringFromDate:self.lastDate] substringWithRange:NSMakeRange(0, 7)];
+    CGFloat totalAmount = 0;//
+    for (int i=0; i<self.listDataArray.count; i++) {
+        PaybackModel *model = self.listDataArray[i];
+        NSString *month = [model.recover_time substringWithRange:NSMakeRange(0, 7)];
+        if ([month isEqualToString:currentMonth]) {
+            totalAmount +=[model.amount floatValue];
+        }
+    }
+    NSString *txt = [[CommonUtils getHanleNums:[NSString stringWithFormat:@"%.2f",totalAmount]] stringByAppendingString:@"元"];
+    [self.headerTextL setAttributedText:[CommonUtils diffierentFontWithString:txt rang:[txt rangeOfString:@"元"] font:SYSTEMSIZE(30) color:nil spacingBeforeValue:0 lineSpace:0]];
+    
+}
+//刷新当天待回款数据
+-(void)reloadCurrentDayInfo{
+    
+    self.dateLabel.text = self.currentDate;
+    BOOL isHaveEvent = NO;//
+    for (int i=0; i<self.calendarArray.count; i++) {
+        NSArray *arr = self.calendarArray[i];
+        NSString *currentDate = ((PaybackModel *)[arr lastObject]).recover_time;
+        if ([currentDate isEqualToString:self.currentDate]) {
+            CGFloat totalAmount = 0;//
+            for (int i=0; i<arr.count; i++) {
+                PaybackModel *model = [arr objectAtIndex:i];
+                totalAmount+=[model.amount floatValue];
+            }
+            isHaveEvent = YES;
+            NSString *amount = [CommonUtils getHanleNums:[NSString stringWithFormat:@"%.2f",totalAmount]];
+            NSString *txt = [NSString stringWithFormat:@"当天待回款 %@ 元",amount];
+            [self.amountLabel setAttributedText:[CommonUtils diffierentFontWithString:txt rang:[txt rangeOfString:amount] font:SYSTEMSIZE(30) color:COLOR_Red spacingBeforeValue:0 lineSpace:0]];
+            self.dateLabel.text = currentDate;
+        }
+        
+    }
+    if (!isHaveEvent) {
+        NSString *txt = @"当天待回款 0.00 元";
+        [self.amountLabel setAttributedText:[CommonUtils diffierentFontWithString:txt rang:[txt rangeOfString:@"0.00"] font:SYSTEMSIZE(30) color:COLOR_Red spacingBeforeValue:0 lineSpace:0]];
+    }
+    [self.mainTab reloadData];
+    [self.mainTab layoutIfNeeded];
+    self.mainTab.frame = RECT(0, self.tableHeaderView.bottom, screen_width, self.mainTab.contentSize.height);
+    self.calendarBgView.contentSize = CGSizeMake(screen_width, self.mainTab.bottom);
+    
+    self.showTabBtn.imageView.transform = CGAffineTransformMakeRotation(2*M_PI);
+    self.showTabBtn.selected = NO;
+    
+}
+-(void)reloadCalendarView{
+    
+    //按日期区分数组
+    self.calendarArray  = [self arraySplitSubArrays:self.listDataArray];
+    [self.calendar reloadData];
+    [self reloadCurrentMonthInfo];
+    self.dateLabel.text = self.currentDate;//默认选择当天日期
+}
+- (NSMutableArray *)arraySplitSubArrays:(NSArray *)array {
+    
+    NSMutableArray *resaultArr = InitObject(NSMutableArray);
+    // 数组去重,根据数组元素对象中time字段去重
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithCapacity:0];
+    for(PaybackModel *obj in array)
+    {
+        [dic setValue:obj.recover_time forKey:obj.recover_time];
+    }
+    
+    NSMutableArray *tempArr = InitObject(NSMutableArray);
+    for (NSString *dictKey in dic) {
+        [tempArr addObject:dictKey];
+    }
+    self.eventArray = tempArr;//当天有回款
+    for (int i=0; i<[tempArr count]; i++) {
+        NSMutableArray *addArr = InitObject(NSMutableArray);
+        NSString *key = tempArr[i];
+        for (PaybackModel *model in array) {
+            if ([key isEqualToString:model.recover_time]) {
+                [addArr addObject:model];
+            }
+        }
+            [resaultArr addObject:addArr];
+    }
+
+    return resaultArr;
+}
 -(void)showCalendar:(BOOL)isShow{
     
     CGAffineTransform transform = CGAffineTransformScale(self.listBgView.transform,isShow?0.01:100,isShow?0.01:100);
@@ -822,7 +917,7 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
             [[nextBtn viewWithTag:sliderTag] setHidden:NO];
             nextBtn.selected = YES;
             self.selectedMonth = nextBtn;
-            self.monthScroll.contentOffset = CGPointMake(nextBtn.left, 0);
+            self.monthScroll.contentOffset = CGPointMake(MIN(self.monthScroll.contentSize.width - btn.width*4, nextBtn.left), 0);
             return;
         }else{
          

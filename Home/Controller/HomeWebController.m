@@ -312,6 +312,7 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
        else if ([urlPath isEqualToString:@"tutujf:home.login"] ) {
             //跳转登录页面
             [self goLoginVC];
+           [nav popToRootViewControllerAnimated:NO];
 
         }
        else if ([urlPath isEqualToString:@"tutujf:home.register"] ) {

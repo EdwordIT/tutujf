@@ -32,9 +32,9 @@ typedef NS_ENUM(NSUInteger, AnalyzeType) {
 #define RESPONSE_MESSAGE @"msg"
 #define RESPONSE_DATA @"resultData"
 #define RESPONSE_SUCCESS @"0" //服务器返回的数据成功信息1、成功，-1，异常，0，错误
-#define RESPONSE_LIST @"con"//获取数组列表
+#define RESPONSE_LIST @"items"//获取数组列表
 #define RESPONSE_OBJECT @"object"//获取字典数据
-
+#define RESPONSE_TOTALPAGES @"total_pages"//总页数
 @interface HttpCommunication : NSObject
 
 + (HttpCommunication *)sharedInstance;

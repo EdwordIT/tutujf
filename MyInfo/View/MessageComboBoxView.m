@@ -18,6 +18,7 @@
 }
 -(void)initSubViews
 {
+    self.userInteractionEnabled = YES;
     [self setImage:IMAGEBYENAME(@"comboBox")];
     
     NSArray *imageArr = @[@"not_read",@"readed",@"all_readed"];

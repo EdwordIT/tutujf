@@ -364,6 +364,8 @@
 		CB842C2720BE92DA00FA42AE /* MyTransferDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB842C2620BE92DA00FA42AE /* MyTransferDetailModel.m */; };
 		CB842C2A20BE9DB400FA42AE /* TransferSellDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB842C2920BE9DB400FA42AE /* TransferSellDetailController.m */; };
 		CBAD07CD2101B2D100D3DE9F /* UIViewController+Example.m in Sources */ = {isa = PBXBuildFile; fileRef = CBAD07CB2101B2D000D3DE9F /* UIViewController+Example.m */; };
+		CBAD07D02101C53A00D3DE9F /* icons_select_sel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBAD07CE2101C53A00D3DE9F /* icons_select_sel@2x.png */; };
+		CBAD07D12101C53A00D3DE9F /* icons_select_sel@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBAD07CF2101C53A00D3DE9F /* icons_select_sel@3x.png */; };
 		CBB4CCE220BBE46800EA877B /* PropertyController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCE120BBE46800EA877B /* PropertyController.m */; };
 		CBB4CD3620BBE50600EA877B /* NSNumber+Zirkfied.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCE620BBE50600EA877B /* NSNumber+Zirkfied.m */; };
 		CBB4CD3720BBE50600EA877B /* NSString+Zirkfied.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB4CCE820BBE50600EA877B /* NSString+Zirkfied.m */; };
@@ -1146,6 +1148,8 @@
 		CB842C2920BE9DB400FA42AE /* TransferSellDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TransferSellDetailController.m; sourceTree = "<group>"; };
 		CBAD07CB2101B2D000D3DE9F /* UIViewController+Example.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Example.m"; sourceTree = "<group>"; };
 		CBAD07CC2101B2D100D3DE9F /* UIViewController+Example.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Example.h"; sourceTree = "<group>"; };
+		CBAD07CE2101C53A00D3DE9F /* icons_select_sel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_select_sel@2x.png"; sourceTree = "<group>"; };
+		CBAD07CF2101C53A00D3DE9F /* icons_select_sel@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons_select_sel@3x.png"; sourceTree = "<group>"; };
 		CBB4CCE020BBE46800EA877B /* PropertyController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyController.h; sourceTree = "<group>"; };
 		CBB4CCE120BBE46800EA877B /* PropertyController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PropertyController.m; sourceTree = "<group>"; };
 		CBB4CCE520BBE50600EA877B /* NSNumber+Zirkfied.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Zirkfied.h"; sourceTree = "<group>"; };
@@ -2268,6 +2272,8 @@
 		CB5A6FFA20F443DF0016C5A7 /* mypayback */ = {
 			isa = PBXGroup;
 			children = (
+				CBAD07CE2101C53A00D3DE9F /* icons_select_sel@2x.png */,
+				CBAD07CF2101C53A00D3DE9F /* icons_select_sel@3x.png */,
 				CB5A701320F4A2120016C5A7 /* sharp_sel@2x.png */,
 				CB5A701420F4A2120016C5A7 /* sharp_sel@3x.png */,
 				CB5A700C20F4A1FF0016C5A7 /* icons_payback@2x.png */,
@@ -3665,6 +3671,7 @@
 				CB731581209B0A2B00B3B8FA /* refresh_024.jpg in Resources */,
 				CB3CC5BA20B54A5C00CBE5DF /* transfer_record_repay@3x.png in Resources */,
 				1B19238C2064CF18005B0C57 /* mobile_code@2x.png in Resources */,
+				CBAD07D12101C53A00D3DE9F /* icons_select_sel@3x.png in Resources */,
 				E7067B801E60C9AA00E32B86 /* icon_map_cateid_2.png in Resources */,
 				E7067BC51E60C9AB00E32B86 /* icon_tabbar_misc@2x.png in Resources */,
 				E7067B881E60C9AA00E32B86 /* icon_map_cateid_default.png in Resources */,
@@ -3892,6 +3899,7 @@
 				1BE6736720734F720003A30C /* menu_discover_sel@3x.png in Resources */,
 				1B4FC6D32058BCCC00C7C88E /* loginBtn@3x.png in Resources */,
 				1B1923872064CF18005B0C57 /* logo@2x.png in Resources */,
+				CBAD07D02101C53A00D3DE9F /* icons_select_sel@2x.png in Resources */,
 				1BE673B92074A98F0003A30C /* refresh_mine@2x.png in Resources */,
 				E70F3C991F92338200B4568C /* user05.png in Resources */,
 				CB3CC5C320B54A5C00CBE5DF /* transfer_record_paidback@3x.png in Resources */,

@@ -143,7 +143,7 @@
 /**
  一键标记为已读
  */
-#define postMarkedAsReadedUrl  @"/api/users/batchDelUserMessage"
+#define postMarkedAsReadedUrl  @"/api/users/batchReadUserMessage"
 /**
  我的投资页面接口
  */
@@ -211,5 +211,9 @@
 我的托管账户
  */
 #define getMyRegAccountUrl @"/api/Trust/relieveBank"
+
+/**
+ 我的消息一键阅读
+ */
 
 

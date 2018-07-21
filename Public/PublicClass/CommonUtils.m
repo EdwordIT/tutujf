@@ -602,7 +602,12 @@
         paragraphStyle.headIndent = 0;
         paragraphStyle.tailIndent = 0;
         paragraphStyle.alignment = NSTextAlignmentCenter;
-        [attributeString addAttributes:@{NSFontAttributeName:font, NSForegroundColorAttributeName:color, NSParagraphStyleAttributeName:paragraphStyle} range:range];
+        
+        [attributeString addAttributes:@{NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle} range:range];
+        if (color!=nil) {
+             [attributeString addAttribute:NSForegroundColorAttributeName value:color range:range];
+        }
+       
     }
     return attributeString;
 }
