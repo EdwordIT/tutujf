@@ -26,6 +26,7 @@ static const char *UIControl_enventIsIgnoreEvent = "UIControl_enventIsIgnoreEven
     return self;
 }
 -(void)setHighlighted:(BOOL)highlighted{
+    
     [super setHighlighted:NO];
 }
 // runtime 动态绑定 属性

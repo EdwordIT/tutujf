@@ -29,12 +29,12 @@ Strong UIView *backView;
 -(void)initSubViews
 {
     
-    CGFloat btnW = kSizeFrom750(138);
-    CGFloat btnH = kSizeFrom750(48);
-    CGFloat cornerRadius = kSizeFrom750(8);
+    CGFloat btnW = 69;
+    CGFloat btnH = 24;
+    CGFloat cornerRadius = 5;
     self.backView = InitObject(UIView);
     self.backView.backgroundColor = COLOR_White;
-    self.backView.frame = RECT((screen_width - btnW*nameArray.count+titleSpace*2)/2, self.height - kSizeFrom750(68)-titleSpace*2,btnW*nameArray.count+titleSpace*2, btnH+titleSpace*2);
+    self.backView.frame = RECT((screen_width - btnW*nameArray.count+titleSpace*2)/2, self.height - 34 -titleSpace*2,btnW*nameArray.count+titleSpace*2, btnH+titleSpace*2);
     self.backView.layer.cornerRadius = cornerRadius*1.2;
     self.backView.layer.masksToBounds = YES;
     [self addSubview:self.backView];
@@ -45,7 +45,7 @@ Strong UIView *backView;
         [btn setTitle:nameArray[i] forState:UIControlStateNormal];
         btn.tag = i;
         [self.backView addSubview:btn];
-        [btn.titleLabel setFont:SYSTEMSIZE(26)];
+        [btn.titleLabel setFont:[UIFont systemFontOfSize:13]];
         
         UIBezierPath *fieldPath;
         if(i==0)

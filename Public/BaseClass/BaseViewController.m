@@ -80,8 +80,8 @@
     }];
     //两个点属性连续书写会出现bug，代码崩溃，原因待查
     [self.rightBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-kSizeFrom750(20));
-        make.width.mas_equalTo(kSizeFrom750(50));
+        make.right.mas_equalTo(-kSizeFrom750(10));
+        make.width.mas_equalTo(kSizeFrom750(88));
         make.height.mas_equalTo(kSizeFrom750(88));
         make.centerY.equalTo(self.backBtn);
     }];

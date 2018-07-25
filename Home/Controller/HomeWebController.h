@@ -17,6 +17,8 @@
 
 #define s2SUrl  [oyUrlAddress stringByAppendingString:@"/trust/back/noftifyRecharge"];
 
+#define WEB_UserAgent @"#tutuWebView|IOS|%@#"
+
 #define merchantID1  @"1921470025";
 // 3DES加密密钥
 #define DES_KEY  @"mLQEQmy53ffJXQBZNu6ShwkU";

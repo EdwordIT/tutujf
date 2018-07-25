@@ -578,6 +578,7 @@
     gradientLayer.frame = view.bounds;
     [view.layer addSublayer:gradientLayer];
 }
+
 /**
  设置字符串的字体大小和颜色
  

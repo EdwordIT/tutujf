@@ -13,6 +13,7 @@
 Copy NSString * title  ;//    string    标题
 Copy NSString * sub_title  ;//    string    副标题
 Copy NSString * link_url   ;//   string    连接
+Copy NSString * count;//红包数量（仅红包有此字段）
 @end
 
 @interface UserContentModel:BaseModel

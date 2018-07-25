@@ -35,7 +35,6 @@ Strong LoanBase *baseModel;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.titleString = @"项目详情";
     secondsCountDown = 0;
     [self.view addSubview:self.scrollView];

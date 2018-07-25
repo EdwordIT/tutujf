@@ -19,7 +19,6 @@
 }
 Strong AccountModel * accountModel;
 Strong BaseUITableView *tableView;
-Strong UIButton *existBtn;//退出按钮
 Strong NSArray *titleArr;
 
 @end
@@ -48,15 +47,20 @@ Strong NSArray *titleArr;
     [self.tableView setSeparatorColor:separaterColor];
     [self.view addSubview:self.tableView];
     
-    self.existBtn = [[UIButton alloc]initWithFrame:RECT(kOriginLeft, kSizeFrom750(850), screen_width - kOriginLeft*2, kSizeFrom750(90))];
-    self.existBtn.backgroundColor = navigationBarColor;
-    [self.existBtn setTitleColor:COLOR_White forState:UIControlStateNormal];
-    [self.existBtn.titleLabel setFont:SYSTEMSIZE(34)];
-    [self.existBtn addTarget:self action:@selector(existBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.existBtn setTitle:@"退出账号" forState:UIControlStateNormal];
-    self.existBtn.layer.cornerRadius = kSizeFrom750(90)/2;
-    self.existBtn.layer.masksToBounds = YES;
-    [self.tableView addSubview:self.existBtn];
+    UIView *view = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(150))];
+    view.backgroundColor = COLOR_Background;
+    
+    UIButton *existBtn = [[UIButton alloc]initWithFrame:RECT(kOriginLeft, kSizeFrom750(30), kContentWidth, kSizeFrom750(90))];
+    existBtn.backgroundColor = navigationBarColor;
+    [existBtn setTitleColor:COLOR_White forState:UIControlStateNormal];
+    [existBtn.titleLabel setFont:SYSTEMSIZE(34)];
+    [existBtn addTarget:self action:@selector(existBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [existBtn setTitle:@"退出账号" forState:UIControlStateNormal];
+    existBtn.layer.cornerRadius = kSizeFrom750(90)/2;
+    existBtn.layer.masksToBounds = YES;
+    [view addSubview:existBtn];
+    
+    self.tableView.tableFooterView = view;
 }
 
 #pragma mark - UITableViewDataSource

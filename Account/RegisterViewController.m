@@ -11,6 +11,7 @@
 #import "HomeWebController.h"
 #import "AutoLoginView.h"
 @interface RegisterViewController ()<UITextFieldDelegate,UIWebViewDelegate>
+Strong UIScrollView *backScrollView;
 Strong UIImageView *topImageView;//
 Strong UITextField * mobileTextField;
 Strong UITextField *passwordTextField;
@@ -48,10 +49,17 @@ Strong UIWebView *loginWebView;
     }
     return _topImageView;
 }
+-(UIScrollView *)backScrollView{
+    if (!_backScrollView) {
+        _backScrollView = InitObject(UIScrollView);
+    }
+    return _backScrollView;
+}
 -(UITextField*)mobileTextField{
     if (!_mobileTextField) {
         _mobileTextField = InitObject(UITextField);
         _mobileTextField.placeholder = @"请输入手机号码";
+        _mobileTextField.font = SYSTEMSIZE(28);
         [_mobileTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         _mobileTextField.keyboardType = UIKeyboardTypePhonePad;
         _mobileTextField.delegate = self;
@@ -72,6 +80,7 @@ Strong UIWebView *loginWebView;
     if (!_codeTextField) {
         _codeTextField = InitObject(UITextField);
         _codeTextField.placeholder = @"请输入验证码";
+        _codeTextField.font = SYSTEMSIZE(28);
         [_codeTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         _codeTextField.keyboardType = UIKeyboardTypeNumberPad;
         _codeTextField.delegate = self;
@@ -93,7 +102,7 @@ Strong UIWebView *loginWebView;
     if (!_codeBtn) {
         _codeBtn = InitObject(UIButton);
         _codeBtn.backgroundColor = [UIColor clearColor];
-        _codeBtn.titleLabel.font = SYSTEMSIZE(32);
+        _codeBtn.titleLabel.font = SYSTEMSIZE(28);
         [_codeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
         [_codeBtn setTitleColor:navigationBarColor forState:UIControlStateNormal];
         [_codeBtn addTarget:self action:@selector(codeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -107,6 +116,7 @@ Strong UIWebView *loginWebView;
         _passwordTextField = InitObject(UITextField);
         _passwordTextField.placeholder = @"请设置6-15位登录密码";
         _passwordTextField.delegate = self;
+         _passwordTextField.font = SYSTEMSIZE(28);
         _passwordTextField.secureTextEntry = YES;
         [_passwordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         CALayer *layer = [CALayer layer];
@@ -177,21 +187,23 @@ Strong UIWebView *loginWebView;
     }
     [self.view addSubview:self.topImageView];
     
-    [self.view addSubview:self.mobileTextField];
+    [self.view addSubview:self.backScrollView];
     
-    [self.view addSubview:self.codeTextField];//验证码
+    [self.backScrollView addSubview:self.mobileTextField];
     
-    [self.view addSubview:self.codeBtn];//验证码获取按钮
+    [self.backScrollView addSubview:self.codeTextField];//验证码
     
-    [self.view addSubview:self.passwordTextField];
+    [self.backScrollView addSubview:self.codeBtn];//验证码获取按钮
+    
+    [self.backScrollView addSubview:self.passwordTextField];
         
-    [self.view addSubview:self.registerBtn];
+    [self.backScrollView addSubview:self.registerBtn];
     
-    [self.view addSubview:self.pwdBtn];//是否明文显示
+    [self.backScrollView addSubview:self.pwdBtn];//是否明文显示
     
-    [self.view addSubview:self.remindLabel];
+    [self.backScrollView addSubview:self.remindLabel];
     
-    [self.view addSubview:self.dealBtn];
+    [self.backScrollView addSubview:self.dealBtn];
     
     [self.view bringSubviewToFront:self.titleView];
     
@@ -208,12 +220,17 @@ Strong UIWebView *loginWebView;
         make.centerX.mas_equalTo(self.view);
     }];
     
-   
+    [self.backScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(screen_width);
+        make.top.mas_equalTo(self.topImageView.mas_bottom);
+        make.bottom.mas_equalTo(self.view);
+    }];
+    
     [self.mobileTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(kSizeFrom750(625));
         make.height.mas_equalTo(kSizeFrom750(90));
         make.centerX.mas_equalTo(self.view);
-        make.top.mas_equalTo(self.topImageView.mas_bottom).offset(kSizeFrom750(80));
+        make.top.mas_equalTo(kSizeFrom750(80));
     }];
     
     [self.codeTextField mas_makeConstraints:^(MASConstraintMaker *make) {

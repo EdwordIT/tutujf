@@ -55,6 +55,7 @@ Weak UITextField *certificationTextField;
 -(UIImageView *)remindImage{
     if (!_remindImage) {
         _remindImage = InitObject(UIImageView);
+        [_remindImage setImage:IMAGEBYENAME(@"remind_blue")];
     }
     return _remindImage;
 }

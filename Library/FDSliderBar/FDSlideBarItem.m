@@ -8,8 +8,8 @@
 
 #import "FDSlideBarItem.h"
 
-#define DEFAULT_TITLE_FONTSIZE 15
-#define DEFAULT_TITLE_SELECTED_FONTSIZE 15
+#define DEFAULT_TITLE_FONTSIZE kSizeFrom750(30)
+#define DEFAULT_TITLE_SELECTED_FONTSIZE kSizeFrom750(30)
 #define DEFAULT_TITLE_COLOR RGB(166,166,166)
 #define DEFAULT_TITLE_SELECTED_COLOR RGB(0,160,240)
 
@@ -31,6 +31,7 @@ Assign BOOL isHaveIcons;
 
 - (instancetype) init {
     if (self = [super init]) {
+        
         _fontSize = DEFAULT_TITLE_FONTSIZE;
         _selectedFontSize = DEFAULT_TITLE_SELECTED_FONTSIZE;
         _color = DEFAULT_TITLE_COLOR;

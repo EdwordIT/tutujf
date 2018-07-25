@@ -15,5 +15,6 @@
 @property(nonatomic, strong) NSString *link_url;
 @property(nonatomic, strong) NSString *width;
 @property(nonatomic, strong) NSString *height;
+Copy NSString *status;//状态标签（活动是否已经结束）
 
 @end

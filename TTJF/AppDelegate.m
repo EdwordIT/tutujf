@@ -103,6 +103,7 @@ Strong NSDictionary *notificationInfo;
     [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
     [SVProgressHUD setBorderColor:COLOR_Btn_Unsel];
     [SVProgressHUD setBorderWidth:kLineHeight];
+    [SVProgressHUD setFont:SYSTEMSIZE(28)];
     [SVProgressHUD setCornerRadius:kSizeFrom750(20)];
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeCustom];
     [SVProgressHUD setBackgroundLayerColor:[[UIColor blackColor] colorWithAlphaComponent:0.4]];

@@ -9,9 +9,9 @@
 #import "PlatformDataCell.h"
 
 @interface PlatformDataCell()
-Strong UIButton *platBtn;
+Strong UIImageView *platBtn;
 
-Strong UIButton *infoBtn;
+Strong UIImageView *infoBtn;
 @end
 
 @implementation PlatformDataCell
@@ -26,29 +26,28 @@ Strong UIButton *infoBtn;
 }
 -(void)initSubViews{
     
-    UIButton *leftBtn = [[UIButton alloc]initWithFrame:RECT(kSizeFrom750(30), kSizeFrom750(22.5), kSizeFrom750(334), kSizeFrom750(140))];
-    [leftBtn setImage:IMAGEBYENAME(@"platform_data") forState:UIControlStateNormal];
-    [leftBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    UIImageView *leftBtn = [[UIImageView alloc]initWithFrame:RECT(kSizeFrom750(30), kSizeFrom750(22.5), kSizeFrom750(334), kSizeFrom750(140))];
+    [leftBtn setImage:IMAGEBYENAME(@"platform_data")];
+    [leftBtn addTapGesture];
+    leftBtn.clickBlock = ^(UIImageView *imageView) {
+        if (self.platBlock) {
+            self.platBlock();
+        }
+    };
     [self.contentView addSubview:leftBtn];
     
-    UIButton *rightBtn = [[UIButton alloc]initWithFrame:RECT(kSizeFrom750(384), kSizeFrom750(22.5), kSizeFrom750(334), kSizeFrom750(140))];
-    [rightBtn setImage:IMAGEBYENAME(@"info_disclosure") forState:UIControlStateNormal];
-    [rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    UIImageView *rightBtn = [[UIImageView alloc]initWithFrame:RECT(kSizeFrom750(384), kSizeFrom750(22.5), kSizeFrom750(334), kSizeFrom750(140))];
+    [rightBtn setImage:IMAGEBYENAME(@"info_disclosure")];
+    [rightBtn addTapGesture];
+    rightBtn.clickBlock = ^(UIImageView *imageView) {
+        if (self.infoBlock) {
+            self.infoBlock();
+        }
+    };
     [self.contentView addSubview:rightBtn];
     
 }
--(void)leftBtnClick:(UIButton *)sender{
-    
-    if (self.platBlock) {
-        self.platBlock();
-    }
-}
--(void)rightBtnClick:(UIButton *)sender{
-    if (self.infoBlock) {
-        self.infoBlock();
-    }
-    
-}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

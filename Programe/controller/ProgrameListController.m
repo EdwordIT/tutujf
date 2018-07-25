@@ -117,7 +117,6 @@ Strong BaseUITableView *creditTabView;//债权转让
     return _creditTabView;
 }
 -(void)loadNav{
-    self.titleString = @"项目列表";
     [self.backBtn setHidden:YES];
     self.currentPage = 1;//默认选项
     self.total_pages=1;

@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+typedef void (^ImageClickBlock)(UIImageView *imageView);
 @interface UIImageView (SDImage)
--(void)setImageWithString:(NSString *)imageUrl;
 
--(void)addGesture:(SEL)touch;
+@property (nonatomic, copy) ImageClickBlock clickBlock;
+-(void)setImageWithString:(NSString *)imageUrl;
+-(void)addTapGesture;
 @end

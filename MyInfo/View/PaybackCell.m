@@ -43,7 +43,7 @@ Strong UILabel *subLabel;
     [self.contentView addSubview:self.periodLabel];
     for (int i=0; i<2; i++) {
         UILabel *textLabel = InitObject(UILabel);
-        textLabel.font = NUMBER_FONT(48);
+        textLabel.font = NUMBER_FONT_BOLD(40);
         textLabel.textColor = RGB_51;
         textLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:textLabel];

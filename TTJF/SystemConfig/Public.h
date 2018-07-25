@@ -19,6 +19,7 @@
 // 1.判断是否为iOS7
 #define iOS7 ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
 #define iOS11 ([[UIDevice currentDevice].systemVersion doubleValue] >= 11.0)
+
 //当前版本号
 #define currentVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 // 2.获得RGB颜色
@@ -72,7 +73,7 @@
 #define Copy            @property(nonatomic, copy)
 #define Assign          @property(nonatomic, assign)
 
-#define URLStr(str)     [NSURL URLWithString:str];
+#define URLStr(str)     [NSURL URLWithString:str]
 /**
  图片简写
  */
@@ -99,7 +100,7 @@
 #define screen_width [UIScreen mainScreen].bounds.size.width
 #define screen_height [UIScreen mainScreen].bounds.size.height
 
-
+#define navBarHeight   self.navigationController.navigationBar.frame.size.height
 //UI设计尺寸，在开发过程中需要用此方法转换
 #define kSizeFrom750(x) ((x) * ([UIScreen mainScreen].bounds.size.width/750.f))
 
@@ -107,7 +108,7 @@
 // 系统默认状态栏高度
 #define kStatusBarHeight    (kDevice_Is_iPhoneX ? 44 : 20)
 //导航栏高度
-#define kNavHight (kSizeFrom750(88)+kStatusBarHeight)
+#define kNavHight (kStatusBarHeight+44)
 //默认边距 30
 #define kOriginLeft kSizeFrom750(30)
 //默认行高 30
@@ -128,7 +129,6 @@
 //底部标签栏高度
 #define kTabbarHeight (kDevice_Is_iPhoneX ? 83 : 49)
 
-#define navBarHeight   self.navigationController.navigationBar.frame.size.height
 #define kViewHeight (screen_height - kNavHight)
 
 

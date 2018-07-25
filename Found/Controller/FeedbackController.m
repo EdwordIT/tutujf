@@ -52,6 +52,7 @@ Strong NSMutableArray *imageArray;
     _imagesView = [[LPDQuoteImagesView alloc]initWithFrame:CGRectMake(kOriginLeft, lineV.bottom+kSizeFrom750(20),self.inPutTextView.width,kSizeFrom750(150)) withCountPerRowInView:5 cellMargin:kSizeFrom750(20)];
     _imagesView.maxSelectedCount = 5;//最多上传5张
     _imagesView.navcDelegate = self;
+    _imagesView.collectionView.scrollEnabled = NO;
     [self.topView addSubview:_imagesView];
     // Do any additional setup after loading the view.
     

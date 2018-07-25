@@ -70,7 +70,7 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
     [self.view addSubview:self.mainWebView];
     self.step = 10;
     [SVProgressHUD show];
-//    _urlStr = @"https://cs.www.tutujf.com/wap/test/agenttest";//测试连接
+//    _urlStr = @"https://cs.www.tutujf.com/wap/test/agenttest";//测试user-agent
 //    _urlStr =@"http://cs.www.tutujf.com/wap/test/testjs";//测试原生跳转
     //添加ios客户端标识
     if ([_urlStr rangeOfString:@"equipment=ios"].location==NSNotFound) {
@@ -132,7 +132,7 @@ Assign NSInteger step;//外部链接跳转内部链接再跳转内部链接，�
         // 获取默认User-Agent
         [_mainWebView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(id result, NSError *error) {
             NSString *oldAgent = result;
-            NSString *typeString = [NSString stringWithFormat:@"TutuBrowser/%@",kVersion_Coding];
+            NSString *typeString = [NSString stringWithFormat:WEB_UserAgent,kVersion_Coding];
             if ([oldAgent rangeOfString:typeString].location!=NSNotFound) {
                 return ;
             }

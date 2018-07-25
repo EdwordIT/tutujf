@@ -153,13 +153,13 @@ Strong NSMutableArray *textArr;
         UILabel *textL = [self.textArr objectAtIndex:i];
         [textL mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.mas_equalTo(kSizeFrom750(230));
-            make.height.mas_equalTo(kSizeFrom750(35));
+            make.height.mas_equalTo(kSizeFrom750(40));
             make.left.mas_equalTo(kOriginLeft+kSizeFrom750(230)*i);
             make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(kSizeFrom750(40));
         }];
         
         [title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(textL.mas_bottom).offset(10);
+            make.top.mas_equalTo(textL.mas_bottom).offset(kSizeFrom750(10));
             make.left.width.height.mas_equalTo(textL);
         }];
     }

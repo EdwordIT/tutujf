@@ -46,7 +46,6 @@ Strong UILabel *watchTimesLabel;//浏览次数
         _titleLabel = InitObject(UILabel);
         _titleLabel.numberOfLines = 0;
         _titleLabel.textColor = RGB_51;
-        _timeLabel.text = @"银行要玩高风险投资，你还这么理财就危险了！";
         _titleLabel.font = SYSTEMSIZE(28);
     }
     return _titleLabel;

@@ -150,7 +150,7 @@ Strong UIView *functionTopView;//功能按钮
     // 获取默认User-Agent
     [wkWebView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(id result, NSError *error) {
         NSString *oldAgent = result;
-        NSString *typeString = [NSString stringWithFormat:@"TutuBrowser/%@",kVersion_Coding];
+        NSString *typeString = [NSString stringWithFormat:WEB_UserAgent,kVersion_Coding];;
         if ([oldAgent rangeOfString:typeString].location!=NSNotFound) {
             return ;
         }
@@ -216,7 +216,7 @@ Strong UIView *functionTopView;//功能按钮
     [self.view addSubview:self.functionTopView];
     
     //客服按钮
-    self.serviceBtn = [[UIButton alloc]initWithFrame:RECT(0, kNavHight - kSizeFrom750(66), kSizeFrom750(114), kSizeFrom750(46))];
+    self.serviceBtn = [[UIButton alloc]initWithFrame:RECT(0,kStatusBarHeight+((kNavHight - kStatusBarHeight) - kSizeFrom750(46))/2, kSizeFrom750(114), kSizeFrom750(46))];
     [self.serviceBtn addTarget:self action:@selector(serviceBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.serviceBtn setImage:IMAGEBYENAME(@"service_sel") forState:UIControlStateNormal];
     self.serviceBtn.adjustsImageWhenHighlighted = NO;
@@ -333,7 +333,7 @@ Strong UIView *functionTopView;//功能按钮
         if ([self.homePageModel.activity_ad_info.status integerValue]==1) {
             [self.adAlertView setHidden:NO];
             
-            self.adAlertView.frame = RECT(screen_width - [self.homePageModel.activity_ad_info.img_width floatValue] - kSizeFrom750(30), kSizeFrom750(1000), [self.homePageModel.activity_ad_info.img_width floatValue], [self.homePageModel.activity_ad_info.img_height floatValue]);
+            self.adAlertView.frame = RECT(screen_width - [self.homePageModel.activity_ad_info.img_width floatValue] - kSizeFrom750(30), screen_height - [self.homePageModel.activity_ad_info.img_height floatValue] - kTabbarHeight - kSizeFrom750(30), [self.homePageModel.activity_ad_info.img_width floatValue], [self.homePageModel.activity_ad_info.img_height floatValue]);
             [self.adAlertView.iconImage sd_setImageWithURL:[NSURL URLWithString:self.homePageModel.activity_ad_info.images_url] forState:UIControlStateNormal];
         }else
             [self.adAlertView setHidden:YES];
@@ -406,7 +406,7 @@ Strong UIView *functionTopView;//功能按钮
         return kSizeFrom750(88);
     }
     else{
-        return 0;
+        return 0.01;
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -455,9 +455,9 @@ Strong UIView *functionTopView;//功能按钮
         return clubTitle;
         
     }else {
-//        UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
-//        header.backgroundColor = COLOR_Background;
-//        return header;
+        UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+        header.backgroundColor = COLOR_Background;
+        return header;
         return nil;
     }
 }

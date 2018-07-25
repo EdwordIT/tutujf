@@ -15,6 +15,7 @@
 #import "HomeWebController.h"
 #import "CooperationController.h"
 #import "FeedbackController.h"
+#import "ActivityController.h"
 @interface FoundController ()<UITableViewDataSource,UITableViewDelegate,TreasureMiddleDelegate,TreasureListDelegate>
 {
       NSString * content_title;
@@ -74,13 +75,26 @@ Strong NSMutableArray *topArray;
 
     if (section==1) {
         headerView.height = kSizeFrom750(110);
-        UILabel *textLabel = [[UILabel alloc]initWithFrame:RECT(0, 0, screen_width,headerView.height)];
-        textLabel.textAlignment = NSTextAlignmentCenter;
+        UILabel *textLabel = [[UILabel alloc]initWithFrame:RECT(kOriginLeft, 0, kSizeFrom750(300),headerView.height)];
         textLabel.font = SYSTEMSIZE(32);
-        textLabel.textColor = RGB_166;
+        textLabel.textColor = RGB_102;
         textLabel.text = content_title;
         [headerView addSubview:textLabel];
+        
+        UIButton *moreBtn = InitObject(UIButton);
+        moreBtn.frame = RECT(headerView.width - kSizeFrom750(150), 0, kSizeFrom750(140), headerView.height);
+        [moreBtn setTitle:@"更多" forState:UIControlStateNormal];
+        [moreBtn.titleLabel setFont:SYSTEMSIZE(26)];
+        [moreBtn setTitleColor:RGB_166 forState:UIControlStateNormal];
+        moreBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [moreBtn setImageEdgeInsets:UIEdgeInsetsMake(0, kSizeFrom750(110), 0,0)];
+        [moreBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, kSizeFrom750(40), 0, 0)];
+        [moreBtn setImage:IMAGEBYENAME(@"rightArrow") forState:UIControlStateNormal];
+        [moreBtn addTarget:self action:@selector(moreBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [headerView addSubview:moreBtn];
+        
         return headerView;
+
     }
     return headerView;
 }
@@ -223,7 +237,12 @@ Strong NSMutableArray *topArray;
     }
    
 }
-
+//点击查看更多活动
+-(void)moreBtnClick:(UIButton *)sender{
+    
+    ActivityController *vc = InitObject(ActivityController);
+    [self.navigationController pushViewController:vc animated:YES];
+}
 -(void)didTreasureListDelegateIndex:(NSInteger)index
 {
     if(index>=0)

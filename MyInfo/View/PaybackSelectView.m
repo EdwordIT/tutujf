@@ -14,6 +14,7 @@ Strong UITextField *searchTextField;
 Strong UIButton *leftBtn;
 Strong UIButton *rightBtn;
 Strong SDRangeSliderView *sliderView;
+Strong NSMutableArray *sepLabelArr;
 
 Copy NSString *keyword;//关键字
 Copy NSDate *startTime;
@@ -30,6 +31,12 @@ Assign NSInteger totalPage;
         [self initSubViews];
     }
     return self;
+}
+-(NSMutableArray *)sepLabelArr{
+    if (!_sepLabelArr) {
+        _sepLabelArr = InitObject(NSMutableArray);
+    }
+    return _sepLabelArr;
 }
 -(void)initSubViews{
     
@@ -107,7 +114,7 @@ Assign NSInteger totalPage;
     self.sliderView.minimumSize = 1;
     self.sliderView.highlightLineColor = COLOR_DarkBlue;
     self.sliderView.lineColor = RGB_183;
-    self.sliderView.maxValue = 7;//分为6段
+    self.sliderView.maxValue = 12;//分为6段
     self.sliderView.lineHeight = kSizeFrom750(10);
     [self.sliderView usingValueUnequal];//使用游标的中心取值
     [self.sliderView customUIUsingBlock:^(UIButton *leftCursor, UIButton *rightCursor) {
@@ -118,32 +125,24 @@ Assign NSInteger totalPage;
     }];
     
    
-    NSArray *sepArr = @[@"0",@"2",@"4",@"6",@"8",@"10",@"12"];
     CGFloat labelW = self.sliderView.itemSize;
-    CGFloat spaceX = (kContentWidth - sepArr.count*labelW)/(sepArr.count-1);
-    for (int i=0; i<sepArr.count; i++) {
+    CGFloat spaceX = (kContentWidth - 7*labelW)/(6);
+    for (int i=0; i<7; i++) {
         UILabel *label = InitObject(UILabel);
         label.frame = RECT(self.sliderView.left+(labelW+spaceX)*i, self.sliderView.bottom+kSizeFrom750(20), labelW, kSizeFrom750(30));
         label.textColor = RGB_153;
         label.font = NUMBER_FONT(25);
-        label.text = sepArr[i];
+        label.text = [NSString stringWithFormat:@"%d",i*2];
         label.textAlignment = NSTextAlignmentCenter;
         [middleView addSubview:label];
+        [self.sepLabelArr addObject:label];
     }
     
     [self.sliderView eventValueDidChanged:^(double left, double right) {
         //左右滑动触发回调
         NSLog(@"left=%.0f,right = %.0f",left,right);
-        if (left==0&&right==4) {
-            self.leftBtn.selected = YES;
-            self.rightBtn.selected = NO;
-        }
-        if (left==0&&right==7) {
-            self.leftBtn.selected = NO;
-            self.rightBtn.selected = YES;
-        }
-        self.startTime = [self getPriousorLaterDateWwithMonth:[[sepArr objectAtIndex:left] integerValue]];
-        self.endTime = [self getPriousorLaterDateWwithMonth:[[sepArr objectAtIndex:right-1] integerValue]];
+        self.startTime = [self getPriousorLaterDateWwithMonth:left];
+        self.endTime = [self getPriousorLaterDateWwithMonth:right-1];
     }];
     
     [middleView addSubview:self.sliderView];
@@ -186,16 +185,28 @@ Assign NSInteger totalPage;
 -(void)timeBtnClick:(UIButton *)sender{
     sender.selected = YES;
     if (sender.tag==0) {
-        [self.sliderView setLeftValue:0];
-        [self.sliderView setRightValue:4];
-        self.startTime = [self getPriousorLaterDateWwithMonth:0];
-        self.endTime = [self getPriousorLaterDateWwithMonth:4];
-        self.rightBtn.selected = NO;
-    }else{
-        self.startTime = [self getPriousorLaterDateWwithMonth:0];
-        self.endTime = [self getPriousorLaterDateWwithMonth:7];
+        for (int i=0; i<self.sepLabelArr.count; i++) {
+            UILabel *label = self.sepLabelArr[i];
+            label.text = [NSString stringWithFormat:@"%d",i];
+        }
+        self.sliderView.minValue = 0;
+        self.sliderView.maxValue = 7;
         [self.sliderView setLeftValue:0];
         [self.sliderView setRightValue:7];
+        self.startTime = [self getPriousorLaterDateWwithMonth:0];
+        self.endTime = [self getPriousorLaterDateWwithMonth:7];
+        self.rightBtn.selected = NO;
+    }else{
+        for (int i=0; i<self.sepLabelArr.count; i++) {
+            UILabel *label = self.sepLabelArr[i];
+            label.text = [NSString stringWithFormat:@"%d",i*2];
+        }
+        self.sliderView.minValue = 0;
+        self.sliderView.maxValue = 13;
+        self.startTime = [self getPriousorLaterDateWwithMonth:0];
+        self.endTime = [self getPriousorLaterDateWwithMonth:13];
+        [self.sliderView setLeftValue:0];
+        [self.sliderView setRightValue:13];
         self.leftBtn.selected = NO;
     }
 }
@@ -206,6 +217,7 @@ Assign NSInteger totalPage;
         self.endTime = nil;
         self.searchTextField.text = @"";
         self.keyword = @"";
+        [self timeBtnClick:self.rightBtn];
     }else{
       
     }

@@ -30,6 +30,10 @@
 //获取发现页面数据
 #define getDiscoverUrl  @"/api/Platform/GetFindActivity"
 /**
+ 活动列表
+ */
+#define getActivityListUrl @"/api/Articles/findActivityList"
+/**
  获取项目列表的数据接口 Get
  */
 #define getLoanListUrl  @"/api/Loan/LoanList"

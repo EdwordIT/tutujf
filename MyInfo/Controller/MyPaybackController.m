@@ -14,6 +14,7 @@
 #import "UIImage+Color.h"
 #import "MyCalendarPaybackCell.h"
 #import "TTJFRefreshNormalHeader.h"
+#import "UIButton+Gradient.h"
 #define calendarColor RGB(234, 78, 71)
 #define sliderTag 101
 
@@ -30,7 +31,7 @@ Strong NSMutableArray *listDataArray;//常规数据源
 Assign BOOL isCalendar;//是否切换到带日历的内容显示页面
 Assign BOOL isLoadCalendar;//月份数据只加载一次
 
-Strong GradientButton *headerView;
+Strong UIButton *headerView;
 Strong UILabel *headerTitle;
 Strong UILabel *headerTextL;
 Strong UIView *calendarHeaderView;//日历标题
@@ -105,7 +106,6 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     [self loadLayout];
     
     [self getRequest];
-    // Do any additional setup after loading the view.
 }
 #pragma mark --lazyLoading
 -(NSMutableArray *)btnArray{
@@ -137,7 +137,6 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
         _calendarBgView.alpha = 0;
         _calendarBgView.showsVerticalScrollIndicator = NO;
         _calendarBgView.delegate = self;
-
     }
     return _calendarBgView;
 }
@@ -192,6 +191,7 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     return _listTab;
 }
 #pragma mark --load Calendar
+//时间格式：精确到天
 -(NSDateFormatter *)dateFormat{
     if (!_dateFormat) {
         _dateFormat = InitObject(NSDateFormatter);
@@ -200,12 +200,11 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     }
     return _dateFormat;
 }
--(GradientButton *)headerView
+-(UIButton *)headerView
 {
     if (!_headerView) {
-        _headerView = [[GradientButton alloc]init];
-        _headerView.frame =RECT(0, 0, screen_width, kSizeFrom750(110));
-        [_headerView setGradientColors:@[COLOR_DarkBlue,COLOR_LightBlue]];
+        _headerView = [[UIButton alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(110))];
+        [_headerView gradientButtonWithSize:_headerView.frame.size colorArray:@[COLOR_DarkBlue,COLOR_LightBlue] percentageArray:@[@(0.5),@(1)] gradientType:GradientFromTopToBottom];
         [_headerView addSubview:self.headerTitle];
         [_headerView addSubview:self.headerTextL];
         
@@ -594,7 +593,7 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
 }
 #pragma mark --FSCalendarAppearanceDelegate
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date{
-    if ([self.gregorian isDateInToday:date]) {//今天的背景cycle颜色
+    if ([self.gregorian isDateInToday:date]) {//今天的背景layer的颜色
         return  calendarColor;
     }
     return nil;
@@ -602,9 +601,17 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
 
 
 #pragma mark --FSCalendar Delegate and DataSource
+//calendar的frame发生变化会调用此方法
 -(void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
     calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
+    [self.calendarBgView layoutIfNeeded];
+    if (self.showTabBtn.selected==NO) {//tableView隐藏状态下，不刷新mainTab的位置
+        self.mainTab.frame = RECT(0, self.tableHeaderView.bottom, screen_width, self.mainTab.contentSize.height);
+    }else{
+        self.mainTab.frame = RECT(0,self.tableHeaderView.bottom-self.mainTab.contentSize.height, screen_width, self.mainTab.contentSize.height);
+    }
+    
 }
 - (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date
 {
@@ -655,7 +662,7 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
 //最大日期为一年后
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    NSDate *maxDay = [self.gregorian dateByAddingUnit:NSCalendarUnitYear value:1 toDate:calendar.currentPage options:0];
+    NSDate *maxDay = [self.gregorian dateByAddingUnit:NSCalendarUnitYear value:1 toDate:[NSDate date] options:0];
     return maxDay;
 }
 #pragma mark --buttonClick
