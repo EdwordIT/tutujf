@@ -80,14 +80,13 @@ Strong NSDate *nowDate;//现在的时间
     
     
     
-    lab2= [[UILabel alloc] initWithFrame:CGRectMake(self.percentLabel.left, self.percentLabel.bottom+kSizeFrom750(15),kSizeFrom750(140), kSizeFrom750(25))];
+    lab2= [[UILabel alloc] initWithFrame:CGRectMake(self.percentLabel.left, self.percentLabel.bottom+kSizeFrom750(15),self.percentLabel.width, kSizeFrom750(25))];
     lab2.font = SYSTEMSIZE(24);
     lab2.textColor=RGB_183;
     lab2.text=@"预期利率";
     [self.contentView addSubview:lab2];
     
-    self.timeLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, self.percentLabel.top,self.percentLabel.width, self.percentLabel.height)];
-    self.timeLabel.centerX = screen_width/2;
+    self.timeLabel= [[UILabel alloc] initWithFrame:CGRectMake(kSizeFrom750(270), self.percentLabel.top,self.percentLabel.width, self.percentLabel.height)];
     self.timeLabel.font = SYSTEMSIZE(26);
     self.timeLabel.textColor=RGB_51;
     self.timeLabel.text=@"2个月";
@@ -110,7 +109,7 @@ Strong NSDate *nowDate;//现在的时间
     [self.contentView addSubview:lab5];
     
     buyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    buyBtn.frame = CGRectMake(screen_width-kSizeFrom750(216),kSizeFrom750(100), kSizeFrom750(168), kSizeFrom750(60));
+    buyBtn.frame = CGRectMake(screen_width-kSizeFrom750(220),kSizeFrom750(100), kSizeFrom750(170), kSizeFrom750(60));
     [buyBtn addTarget:self action:@selector(button_event:) forControlEvents:UIControlEventTouchUpInside];
     buyBtn.tag=1;
     buyBtn.adjustsImageWhenHighlighted = NO;
