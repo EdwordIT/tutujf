@@ -9,6 +9,7 @@
 #import "ChangePasswordViewController.h"
 
 @interface ChangePasswordViewController ()<UITextFieldDelegate>
+Strong UIScrollView *backScrollView;
 Strong UIImageView *topImageView;//
 Strong UITextField *oldPasswordTextField;//旧密码
 Strong UITextField *passwordTextField;//新密码
@@ -31,6 +32,12 @@ Strong UIButton *completeBtn;//完成注册
     [self initSubViews];
     // Do any additional setup after loading the view.
 }
+-(UIScrollView *)backScrollView{
+    if (!_backScrollView) {
+        _backScrollView = InitObject(UIScrollView);
+    }
+    return _backScrollView;
+}
 -(UIImageView *)topImageView
 {
     if (!_topImageView) {
@@ -44,6 +51,7 @@ Strong UIButton *completeBtn;//完成注册
     if (!_oldPasswordTextField) {
         _oldPasswordTextField = InitObject(UITextField);
         _oldPasswordTextField.placeholder = @"请输入原密码";
+        _oldPasswordTextField.font = SYSTEMSIZE(28);
         _oldPasswordTextField.delegate = self;
         _oldPasswordTextField.secureTextEntry = YES;
         CALayer *layer = [CALayer layer];
@@ -64,6 +72,7 @@ Strong UIButton *completeBtn;//完成注册
         _passwordTextField.placeholder = @"请输入新密码";
         _passwordTextField.delegate = self;
         _passwordTextField.secureTextEntry = YES;
+        _passwordTextField.font = SYSTEMSIZE(28);
         CALayer *layer = [CALayer layer];
         layer.frame = CGRectMake(0, kSizeFrom750(90), kSizeFrom750(625), kLineHeight);
         layer.backgroundColor = [RGB(229, 230, 231) CGColor];
@@ -79,6 +88,7 @@ Strong UIButton *completeBtn;//完成注册
     if (!_insurePasswordTextField) {
         _insurePasswordTextField = InitObject(UITextField);
         _insurePasswordTextField.placeholder = @"请确认新密码";
+        _insurePasswordTextField.font = SYSTEMSIZE(28);
         _insurePasswordTextField.delegate = self;
         [_insurePasswordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 
@@ -146,21 +156,23 @@ Strong UIButton *completeBtn;//完成注册
 -(void)initSubViews{
     
     
-    [self.view addSubview:self.topImageView];
+    [self.view addSubview:self.backScrollView];
     
-    [self.view addSubview:self.oldPasswordTextField];//旧密码
+    [self.backScrollView addSubview:self.topImageView];
     
-    [self.view addSubview:self.passwordTextField];
+    [self.backScrollView addSubview:self.oldPasswordTextField];//旧密码
     
-    [self.view addSubview:self.insurePasswordTextField];//确认密码
+    [self.backScrollView addSubview:self.passwordTextField];
+    
+    [self.backScrollView addSubview:self.insurePasswordTextField];//确认密码
 
-    [self.view addSubview:self.completeBtn];
+    [self.backScrollView addSubview:self.completeBtn];
     
-    [self.view addSubview:self.pwdBtn];//是否明文显示
+    [self.backScrollView addSubview:self.pwdBtn];//是否明文显示
     
-    [self.view addSubview:self.pwdBtn1];//是否明文显示
+    [self.backScrollView addSubview:self.pwdBtn1];//是否明文显示
 
-    [self.view addSubview:self.pwdBtn2];//是否明文显示
+    [self.backScrollView addSubview:self.pwdBtn2];//是否明文显示
 
     
     [self.view bringSubviewToFront:self.titleView];
@@ -171,10 +183,16 @@ Strong UIButton *completeBtn;//完成注册
 -(void)makeViewConstraints
 {
     
+    [self.backScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(kNavHight);
+        make.width.mas_equalTo(screen_width);
+        make.height.mas_equalTo(kViewHeight);
+    }];
+    
     [self.topImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(kSizeFrom750(232));
         make.height.mas_equalTo(kSizeFrom750(232));
-        make.top.mas_equalTo(kNavHight+kSizeFrom750(75));
+        make.top.mas_equalTo(kSizeFrom750(75));
         make.centerX.mas_equalTo(self.view);
     }];
     
@@ -222,6 +240,9 @@ Strong UIButton *completeBtn;//完成注册
         make.width.height.mas_equalTo(kSizeFrom750(60));
     }];
     
+    [self.backScrollView layoutIfNeeded];
+    
+    self.backScrollView.contentSize = CGSizeMake(screen_width, self.completeBtn.bottom+kSizeFrom750(30));
     
 }
 #pragma mark --textfieldDelegate

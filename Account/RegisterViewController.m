@@ -185,9 +185,10 @@ Strong UIWebView *loginWebView;
     if (_isRootVC) {
         [self.backBtn setImage:IMAGEBYENAME(@"icons_close") forState:UIControlStateNormal];
     }
-    [self.view addSubview:self.topImageView];
     
     [self.view addSubview:self.backScrollView];
+    
+    [self.backScrollView addSubview:self.topImageView];
     
     [self.backScrollView addSubview:self.mobileTextField];
     
@@ -213,24 +214,25 @@ Strong UIWebView *loginWebView;
 -(void)makeViewConstraints
 {
     
-    [self.topImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(kSizeFrom750(258));
-        make.height.mas_equalTo(kSizeFrom750(228));
-        make.top.mas_equalTo(kNavHight+kSizeFrom750(75));
-        make.centerX.mas_equalTo(self.view);
-    }];
     
     [self.backScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(screen_width);
-        make.top.mas_equalTo(self.topImageView.mas_bottom);
+        make.top.mas_equalTo(kNavHight);
         make.bottom.mas_equalTo(self.view);
+    }];
+    
+    [self.topImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(kSizeFrom750(258));
+        make.height.mas_equalTo(kSizeFrom750(228));
+        make.top.mas_equalTo(kSizeFrom750(75));
+        make.centerX.mas_equalTo(self.view);
     }];
     
     [self.mobileTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(kSizeFrom750(625));
         make.height.mas_equalTo(kSizeFrom750(90));
         make.centerX.mas_equalTo(self.view);
-        make.top.mas_equalTo(kSizeFrom750(80));
+        make.top.mas_equalTo(self.topImageView.mas_bottom).offset(kSizeFrom750(80));
     }];
     
     [self.codeTextField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -276,7 +278,8 @@ Strong UIWebView *loginWebView;
         make.top.height.mas_equalTo(self.remindLabel);
         make.width.mas_equalTo(kSizeFrom750(280));
     }];
-    
+    [self.backScrollView layoutIfNeeded];
+    self.backScrollView.contentSize = CGSizeMake(screen_width, self.dealBtn.bottom+kSizeFrom750(30));
     
 }
 #pragma mark --textfieldDelegate
@@ -305,7 +308,6 @@ Strong UIWebView *loginWebView;
     [self.codeBtn setTitle:num forState:UIControlStateNormal];
   
     CALayer *layer = self.codeBtn.layer;
-    layer.frame = self.codeBtn.bounds;
     layer.cornerRadius = kSizeFrom750(25);
     layer.borderColor = [navigationBarColor CGColor];
     layer.borderWidth = kLineHeight;
@@ -313,7 +315,6 @@ Strong UIWebView *loginWebView;
     if (self.countDownNum == 0)
     {
         CALayer *layer = self.codeBtn.layer;
-        layer.frame = self.codeBtn.bounds;
         layer.cornerRadius = kSizeFrom750(25);
         layer.borderColor = [[UIColor clearColor] CGColor];
         layer.borderWidth = 0;

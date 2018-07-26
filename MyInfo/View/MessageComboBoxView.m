@@ -12,6 +12,7 @@
 -(instancetype)init{
     self = [super init];
     if (self) {
+//        self.clipsToBounds = YES;
         [self initSubViews];
     }
     return self;

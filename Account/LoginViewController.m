@@ -64,6 +64,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 -(UIScrollView *)backScrollView{
     if (!_backScrollView) {
         _backScrollView = InitObject(UIScrollView);
+        _backScrollView.bounces = NO;
     }
     return _backScrollView;
 }
@@ -78,6 +79,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     if (!_mobileTextField) {
         _mobileTextField = InitObject(UITextField);
         _mobileTextField.placeholder = @"请输入手机号码/邮箱";
+        _mobileTextField.font = SYSTEMSIZE(28);
         if ([TTJFUserDefault strForKey:kUsername]!=nil) {
             _mobileTextField.text = [TTJFUserDefault strForKey:kUsername];
         }
@@ -94,6 +96,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     if (!_passwordTextField) {
         _passwordTextField = InitObject(UITextField);
         _passwordTextField.placeholder = @"请输入登录密码";
+        _passwordTextField.font = SYSTEMSIZE(28);
         _passwordTextField.delegate = self;
         _passwordTextField.secureTextEntry = YES;
         [_passwordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -163,9 +166,9 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 -(void)initSubViews{
     
     
-    [self.view addSubview:self.titleImgView];
-    
     [self.view addSubview:self.backScrollView];
+    
+    [self.backScrollView addSubview:self.titleImgView];
     
     [self.backScrollView addSubview:self.mobileTextField];
     
@@ -185,23 +188,23 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 {
 
     
+    [self.backScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.width.mas_equalTo(self.titleImgView);
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(self.view);
+    }];
+    
     [self.titleImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.mas_equalTo(0);
         make.width.mas_equalTo(screen_width);
         make.height.mas_equalTo(kSizeFrom750(453));
     }];
     
-    [self.backScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.width.mas_equalTo(self.titleImgView);
-        make.top.mas_equalTo(self.titleImgView.mas_bottom);
-        make.bottom.mas_equalTo(self.view);
-    }];
-    
     [self.mobileTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(kSizeFrom750(625));
         make.height.mas_equalTo(kSizeFrom750(90));
         make.centerX.mas_equalTo(self.backScrollView);
-        make.top.mas_equalTo(kSizeFrom750(60));
+        make.top.mas_equalTo(self.titleImgView.mas_bottom).offset(kSizeFrom750(60));
     }];
     
     [self.passwordTextField mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -224,7 +227,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     [self.forgetPdwBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(kSizeFrom750(170));
         make.height.mas_equalTo(kSizeFrom750(60));
-        make.bottom.mas_equalTo(self.view).offset(-kSizeFrom750(50));
+        make.top.mas_equalTo(self.registerBtn.mas_bottom).offset(kSizeFrom750(180));
         make.centerX.mas_equalTo(self.view);
     }];
     
@@ -236,7 +239,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
     
     [self.backScrollView layoutIfNeeded];
     
-    self.backScrollView.contentSize = CGSizeMake(screen_width, self.pwdBtn.bottom+kSizeFrom750(30));
+    self.backScrollView.contentSize = CGSizeMake(screen_width, self.forgetPdwBtn.bottom+kSizeFrom750(30));
 }
 #pragma mark --textfieldDelegate
 

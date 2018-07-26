@@ -23,7 +23,6 @@ Strong UIButton *remindButton;//
     self.mainCurrentPage = 1;
     self.mainTotalPages = 1;
     [self.titleView setHidden:YES];
-    [self.view addSubview:self.remindButton];
     [self.view addSubview:self.mainTableView];
     [self loadRefresh];
     [self loadRequestAtIndex:self.selectedIndex];
@@ -35,12 +34,7 @@ Strong UIButton *remindButton;//
     }
     return _mainDataArray;
 }
--(UIButton *)remindButton{
-    if (!_remindButton) {
-       
-    }
-    return _remindButton;
-}
+
 -(BaseUITableView *)mainTableView{
     if (!_mainTableView) {
         _mainTableView = [[BaseUITableView alloc]initWithFrame:RECT(0,0, screen_width, kViewHeight-kTitleHeight) style:UITableViewStyleGrouped];
@@ -89,7 +83,8 @@ Strong UIButton *remindButton;//
     NSArray *keysArr = @[kToken,@"page",@"use_type"];
     NSArray *valuesArr = @[[CommonUtils getToken],page,use_type];
     [[HttpCommunication sharedInstance] postSignRequestWithPath:myRedEnvelopeUrl keysArray:keysArr valuesArray:valuesArr refresh:self.mainTableView success:^(NSDictionary *successDic) {
-        
+        //红包规则
+        [self.remindButton setTitle:[successDic objectForKey:@"rule_txt"] forState:UIControlStateNormal];
        self.mainTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
         NSArray *items =  [successDic objectForKey:@"items"];
        
@@ -120,14 +115,14 @@ Strong UIButton *remindButton;//
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *view = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(60))];
     
-   UIButton * remindButton = [[UIButton alloc]initWithFrame:RECT(kSizeFrom750(30), kSizeFrom750(30), kSizeFrom750(690), kSizeFrom750(30))];
-    [remindButton setImage:IMAGEBYENAME(@"transfer_question") forState:UIControlStateNormal];
-    remindButton.userInteractionEnabled = NO;
-    [remindButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kSizeFrom750(10), 0, 0)];
-    [remindButton setTitle:@"用户投资成功后，请等待标的满审通过红包将自动激活。" forState:UIControlStateNormal];
-    [remindButton setTitleColor:RGB_153 forState:UIControlStateNormal];
-    [remindButton.titleLabel setFont:SYSTEMSIZE(25)];
-    [view addSubview:remindButton];
+    self.remindButton = [[UIButton alloc]initWithFrame:RECT(kSizeFrom750(30), kSizeFrom750(30), kSizeFrom750(690), kSizeFrom750(30))];
+    [self.remindButton setImage:IMAGEBYENAME(@"remind_blue") forState:UIControlStateNormal];
+    self.remindButton.userInteractionEnabled = NO;
+    [self.remindButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kSizeFrom750(10), 0, 0)];
+    [self.remindButton setTitle:@"用户投资成功后，请等待标的满审通过红包将自动激活。" forState:UIControlStateNormal];
+    [self.remindButton setTitleColor:RGB_153 forState:UIControlStateNormal];
+    [self.remindButton.titleLabel setFont:SYSTEMSIZE(25)];
+    [view addSubview:self.remindButton];
     return view;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{

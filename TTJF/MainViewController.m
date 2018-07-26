@@ -210,11 +210,13 @@ Strong UIView *functionTopView;//功能按钮
     self.tradesView = [[TotalTradesView alloc]initWithFrame: RECT(kSizeFrom750(50), kSizeFrom750(342), screen_width - kSizeFrom750(100), kSizeFrom750(290))];
     [CommonUtils setShadowCornerRadiusToView:self.tradesView];
     self.tradesView.hidden = YES;
-    [self.tableView addSubview:self.tradesView];
+    [self.view addSubview:self.tradesView];
     
     self.functionTopView = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kNavHight)];
     [self.view addSubview:self.functionTopView];
     
+     [self.view bringSubviewToFront:self.titleView];
+     [self.view bringSubviewToFront:self.functionTopView];
     //客服按钮
     self.serviceBtn = [[UIButton alloc]initWithFrame:RECT(0,kStatusBarHeight+((kNavHight - kStatusBarHeight) - kSizeFrom750(46))/2, kSizeFrom750(114), kSizeFrom750(46))];
     [self.serviceBtn addTarget:self action:@selector(serviceBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -271,7 +273,7 @@ Strong UIView *functionTopView;//功能按钮
     NSArray *values = @[version,device_id,user_token];
     
     [[HttpCommunication sharedInstance] postSignRequestWithPath:getHomePageInfoUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
-        if (self.serviceView==nil) {
+        if (!self.tradesView) {
             [self initCustomView];
         }
         [[CountDownManager manager] start];
@@ -302,20 +304,17 @@ Strong UIView *functionTopView;//功能按钮
     
     [footerView removeAllSubViews];
     
-    CGFloat ww=[self.homePageModel.guarantee_txt length]*SYSTEMSIZE(25).lineHeight;
-    UILabel * title= [[UILabel alloc] initWithFrame:CGRectMake((screen_width-ww)/2, kSizeFrom750(30),ww,kSizeFrom750(30))];
-    title.textAlignment=NSTextAlignmentCenter;
-    title.textColor=RGB_153;
-    title.font=SYSTEMSIZE(25);
-    title.text=self.homePageModel.guarantee_txt;
-    [footerView addSubview:title];
-    UIImageView *typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake((screen_width-ww)/2-kSizeFrom750(50), 5,kSizeFrom750(35), kSizeFrom750(39))];
-    typeimgsrc.centerY = title.centerY;
-    [typeimgsrc setImage:[UIImage imageNamed:@"icons_safe"]];
-    [footerView addSubview:typeimgsrc];
+    UIButton *btn = [[UIButton alloc]initWithFrame:RECT(0, kSizeFrom750(20), screen_width, kSizeFrom750(40))];
+    [btn setTitle:self.homePageModel.guarantee_txt forState:UIControlStateNormal];
+    btn.userInteractionEnabled = NO;
+    [btn.titleLabel setFont:SYSTEMSIZE(25)];
+    [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -kSizeFrom750(10))];
+    [btn setImage:IMAGEBYENAME(@"icons_safe") forState:UIControlStateNormal];
+    [btn setTitleColor:RGB_153 forState:UIControlStateNormal];
+    [footerView addSubview:btn];
     
     UILabel *remindLabel = InitObject(UILabel);
-    remindLabel.frame = RECT(0, title.bottom+kSizeFrom750(20), screen_width, kSizeFrom750(20));
+    remindLabel.frame = RECT(0, btn.bottom+kSizeFrom750(20), screen_width, kSizeFrom750(20));
     remindLabel.textAlignment = NSTextAlignmentCenter;
     remindLabel.textColor=RGB(204, 204, 204);
     remindLabel.font = SYSTEMSIZE(20);
@@ -681,8 +680,11 @@ Strong UIView *functionTopView;//功能按钮
 }
 //滚动视图
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
+    if (scrollView!=self.tableView) {
+        return;
+    }
     CGFloat offsetY = scrollView.contentOffset.y - scrollView.top;
+    self.tradesView.top = kSizeFrom750(342) - offsetY;//交易view
     if (offsetY <= kNavHight && offsetY > 0) {
         self.titleView.alpha = offsetY/kNavHight;
     }else if(offsetY > kNavHight){

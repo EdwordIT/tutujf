@@ -422,6 +422,9 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
             [self.menuView addSubview:line];
         }
     }
+    UIView *lineView = [[UIView alloc]initWithFrame:RECT(0, self.menuView.height - kLineHeight, screen_width, kLineHeight)];
+    lineView.backgroundColor = separaterColor;
+    [self.menuView addSubview:lineView];
 }
 //加载月份切换菜单栏
 -(void)loadCalendarHeader{

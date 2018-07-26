@@ -31,19 +31,20 @@ Copy NSString *status;//状态
     [self.rightBtn setHidden:NO];
     [self.rightBtn setImage:IMAGEBYENAME(@"more") forState:UIControlStateNormal];
     [self.rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.rightBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(kSizeFrom750(80));
-        make.height.mas_equalTo(kSizeFrom750(30));
-    }];
+//    [self.rightBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.width.mas_equalTo(kSizeFrom750(80));
+//        make.height.mas_equalTo(kSizeFrom750(30));
+//    }];
     [self.view addSubview:self.mainTab];
     [self.view addSubview:self.comboxView];
     [self.comboxView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-kSizeFrom750(15));
-        make.top.mas_equalTo(self.rightBtn.mas_bottom);
+        make.right.mas_equalTo(-kSizeFrom750(15) + kSizeFrom750(180));
+        make.top.mas_equalTo(self.rightBtn.mas_bottom).offset(-kSizeFrom750(180));
         make.width.mas_equalTo(kSizeFrom750(348));
         make.height.mas_equalTo(kSizeFrom750(300));
     }];
     [SVProgressHUD show];
+
     [self getRequest];
     // Do any additional setup after loading the view.
 }
@@ -51,11 +52,13 @@ Copy NSString *status;//状态
 -(MessageComboBoxView *)comboxView{
     if (!_comboxView) {
         _comboxView = [[MessageComboBoxView alloc]init];
+        _comboxView.layer.anchorPoint = CGPointMake(1, 0);
+        _comboxView.transform = CGAffineTransformScale(self.comboxView.transform,0.01,0.01);
         _comboxView.hidden = YES;
         WEAK_SELF;
         //消息处理事件
         _comboxView.comboxBlock = ^(NSInteger tag) {
-            weakSelf.comboxView.hidden = YES;
+            [weakSelf showComboxView:NO];
             switch (tag) {
                 case 0:
                     {
@@ -182,9 +185,30 @@ Copy NSString *status;//状态
     }
 }
 -(void)rightBtnClick:(UIButton *)sender{
+    BOOL isHidden = self.comboxView.hidden;
+    if (isHidden) {
+        self.comboxView.hidden = NO;
+    }
+    [UIView animateWithDuration:ANIMATION_TIME animations:^{
+            self.comboxView.transform = CGAffineTransformScale(self.comboxView.transform,isHidden?100:0.01,isHidden?100:0.01);
+
+    } completion:^(BOOL finished) {
+        self.comboxView.hidden = !isHidden;
+    }];
     
-    self.comboxView.hidden = !self.comboxView.hidden;
+}
+-(void)showComboxView:(BOOL)isShow{
     
+    BOOL isHidden = self.comboxView.hidden;
+    if (isHidden) {
+        self.comboxView.hidden = NO;
+    }
+    [UIView animateWithDuration:ANIMATION_TIME animations:^{
+        self.comboxView.transform = CGAffineTransformScale(self.comboxView.transform,isHidden?100:0.01,isHidden?100:0.01);
+        
+    } completion:^(BOOL finished) {
+        self.comboxView.hidden = !isHidden;
+    }];
 }
 
 -(void)reloadMessage{

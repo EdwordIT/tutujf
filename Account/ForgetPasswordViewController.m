@@ -9,6 +9,7 @@
 #import "ForgetPasswordViewController.h"
 
 @interface ForgetPasswordViewController ()<UITextFieldDelegate>
+Strong UIScrollView *backScrollView;
 Strong UIImageView *topImageView;//
 Strong UITextField * mobileTextField;
 Strong UITextField *passwordTextField;
@@ -30,6 +31,12 @@ Strong UIButton *completeBtn;//完成注册
     [self initSubViews];
     // Do any additional setup after loading the view.
 }
+-(UIScrollView *)backScrollView{
+    if (!_backScrollView) {
+        _backScrollView = InitObject(UIScrollView);
+    }
+    return _backScrollView;
+}
 -(UIImageView *)topImageView
 {
     if (!_topImageView) {
@@ -42,6 +49,7 @@ Strong UIButton *completeBtn;//完成注册
     if (!_mobileTextField) {
         _mobileTextField = InitObject(UITextField);
         _mobileTextField.placeholder = @"请输入手机号码";
+        _mobileTextField.font = SYSTEMSIZE(28);
         _mobileTextField.keyboardType = UIKeyboardTypePhonePad;
         _mobileTextField.delegate = self;
         CALayer *layer = [CALayer layer];
@@ -62,6 +70,7 @@ Strong UIButton *completeBtn;//完成注册
     if (!_codeTextField) {
         _codeTextField = InitObject(UITextField);
         _codeTextField.placeholder = @"请输入验证码";
+        _codeTextField.font = SYSTEMSIZE(28);
         _codeTextField.keyboardType = UIKeyboardTypeNumberPad;
         _codeTextField.delegate = self;
         CALayer *layer = [CALayer layer];
@@ -83,7 +92,7 @@ Strong UIButton *completeBtn;//完成注册
     if (!_codeBtn) {
         _codeBtn = InitObject(UIButton);
         _codeBtn.backgroundColor = [UIColor clearColor];
-        _codeBtn.titleLabel.font = SYSTEMSIZE(30);
+        _codeBtn.titleLabel.font = SYSTEMSIZE(26);
         [_codeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
         [_codeBtn setTitleColor:RGB(3, 147, 247) forState:UIControlStateNormal];
         [_codeBtn addTarget:self action:@selector(codeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -96,6 +105,7 @@ Strong UIButton *completeBtn;//完成注册
     if (!_passwordTextField) {
         _passwordTextField = InitObject(UITextField);
         _passwordTextField.placeholder = @"请设置6-15位登录密码";
+        _passwordTextField.font = SYSTEMSIZE(28);
         _passwordTextField.delegate = self;
         _passwordTextField.secureTextEntry = YES;
         [_passwordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
@@ -142,20 +152,21 @@ Strong UIButton *completeBtn;//完成注册
 -(void)initSubViews{
     
     self.countDownNum = 60;
+    [self.view addSubview:self.backScrollView];
     
-    [self.view addSubview:self.topImageView];
+    [self.backScrollView addSubview:self.topImageView];
     
-    [self.view addSubview:self.mobileTextField];
+    [self.backScrollView addSubview:self.mobileTextField];
     
-    [self.view addSubview:self.codeTextField];//验证码
+    [self.backScrollView addSubview:self.codeTextField];//验证码
     
-    [self.view addSubview:self.codeBtn];//验证码获取按钮
+    [self.backScrollView addSubview:self.codeBtn];//验证码获取按钮
     
-    [self.view addSubview:self.passwordTextField];
+    [self.backScrollView addSubview:self.passwordTextField];
     
-    [self.view addSubview:self.completeBtn];
+    [self.backScrollView addSubview:self.completeBtn];
     
-    [self.view addSubview:self.pwdBtn];//是否明文显示
+    [self.backScrollView addSubview:self.pwdBtn];//是否明文显示
  
     [self.view bringSubviewToFront:self.titleView];
     
@@ -165,10 +176,16 @@ Strong UIButton *completeBtn;//完成注册
 -(void)makeViewConstraints
 {
     
+    [self.backScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(kNavHight);
+        make.width.mas_equalTo(screen_width);
+        make.height.mas_equalTo(kViewHeight);
+    }];
+    
     [self.topImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(kSizeFrom750(232));
         make.height.mas_equalTo(kSizeFrom750(232));
-        make.top.mas_equalTo(kNavHight+kSizeFrom750(75));
+        make.top.mas_equalTo(kSizeFrom750(75));
         make.centerX.mas_equalTo(self.view);
     }];
     
@@ -212,6 +229,10 @@ Strong UIButton *completeBtn;//完成注册
         make.right.mas_equalTo(self.passwordTextField.mas_right);
         make.width.height.mas_equalTo(kSizeFrom750(60));
     }];
+    
+    [self.backScrollView layoutIfNeeded];
+    
+    self.backScrollView.contentSize = CGSizeMake(screen_width, self.completeBtn.bottom+kSizeFrom750(30));
    
 }
 #pragma mark --textfieldDelegate
@@ -240,8 +261,18 @@ Strong UIButton *completeBtn;//完成注册
                 self.countDownNum --;
                 NSString * num = [NSString stringWithFormat:@"%lds",self.countDownNum];
                 [self.codeBtn setTitle:num forState:UIControlStateNormal];
+                self.codeBtn.userInteractionEnabled = NO;
+                CALayer *layer = self.codeBtn.layer;
+                layer.cornerRadius = kSizeFrom750(25);
+                layer.borderColor = [navigationBarColor CGColor];
+                layer.borderWidth = kLineHeight;
+                
                 if (self.countDownNum == 0)
                 {
+                    CALayer *layer = self.codeBtn.layer;
+                    layer.cornerRadius = kSizeFrom750(25);
+                    layer.borderColor = [[UIColor clearColor] CGColor];
+                    layer.borderWidth = 0;
                     [self.codeTime invalidate];
                     self.countDownNum = 60;
                     [self.codeBtn setTitle:@"重新获取" forState:UIControlStateNormal];

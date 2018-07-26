@@ -143,17 +143,15 @@ Weak UITextField *certificationTextField;
     [CommonUtils setAttString:remindText withLineSpace:kLabelSpace titleLabel:self.remindLabel];
     [CommonUtils setAttString:nextText withLineSpace:kLabelSpace titleLabel:self.messageLabel];
     NSString *regText = @"您的资产由汇付支付托管系统全程监管";
-    CGFloat ww=[regText length]*SYSTEMSIZE(25).lineHeight;
-    UILabel * title= [[UILabel alloc] initWithFrame:CGRectMake((screen_width-ww)/2, screen_height - kSizeFrom750(80),ww,kSizeFrom750(30))];
-    title.textAlignment=NSTextAlignmentCenter;
-    title.textColor=RGB_166;
-    title.font=SYSTEMSIZE(25);
-    title.text=regText;
-    [self.view addSubview:title];
-    UIImageView *typeimgsrc= [[UIImageView alloc] initWithFrame:CGRectMake((screen_width-ww)/2-kSizeFrom750(50), 0,kSizeFrom750(35), kSizeFrom750(39))];
-    typeimgsrc.centerY = title.centerY;
-    [typeimgsrc setImage:[UIImage imageNamed:@"y.png"]];
-    [self.view addSubview:typeimgsrc];
+    
+    UIButton *btn = [[UIButton alloc]initWithFrame:RECT(0, screen_height - kSizeFrom750(80), screen_width, kSizeFrom750(40))];
+    [btn setTitle:regText forState:UIControlStateNormal];
+    btn.userInteractionEnabled = NO;
+    [btn.titleLabel setFont:SYSTEMSIZE(25)];
+    [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -kSizeFrom750(10))];
+    [btn setImage:IMAGEBYENAME(@"icons_safe") forState:UIControlStateNormal];
+    [btn setTitleColor:RGB_153 forState:UIControlStateNormal];
+    [self.view addSubview:btn];
     
     NSArray *nameArr = @[@"真实姓名",@"证件类型",@"证件号码"];
     NSArray *placeholderArr = @[@"请输入您的真实姓名",@"",@"请输入您的身份证号码"];
