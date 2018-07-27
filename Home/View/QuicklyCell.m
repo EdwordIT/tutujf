@@ -117,7 +117,7 @@ Strong NSDate *nowDate;//现在的时间
     [buyBtn.titleLabel setFont:SYSTEMSIZE(30)];
     [buyBtn setTitleColor:RGB(255,255,255) forState:UIControlStateNormal];//title color
     buyBtn.backgroundColor=COLOR_Btn_Unsel;
-    buyBtn.layer.masksToBounds = YES;
+    buyBtn.layer.masksToBounds = YES; 
     [buyBtn.layer setCornerRadius:kSizeFrom750(60)/2]; //设置矩形四个圆角半径
     [self.contentView addSubview:buyBtn];
     

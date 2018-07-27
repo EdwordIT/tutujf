@@ -76,6 +76,7 @@ Strong MyAccountModel *accountModel;//数据源
         self.accountModel.total_amount=@"0.0";
         self.accountModel.to_interest_award=@"0.0";
         self.accountModel.balance_amount=@"0.00";
+        self.accountModel.bt_my_red.count = @"0";//红包数量清零
         self.accountModel.bt_user_content = nil;
 
         [self.tableView reloadData];

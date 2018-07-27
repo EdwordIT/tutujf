@@ -188,7 +188,7 @@ Strong UIImageView *stateImage;//激活成功、已失效
     }];
     [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(kSizeFrom750(110));
-        make.left.mas_equalTo(self.amountLabel.mas_right).offset(kSizeFrom750(40));
+        make.left.mas_equalTo(kSizeFrom750(210));
         make.width.mas_equalTo(kLineHeight);
         make.height.mas_equalTo(kSizeFrom750(90));
     }];

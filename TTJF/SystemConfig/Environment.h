@@ -9,7 +9,7 @@
 #ifndef Environment_h
 #define Environment_h
 
-#define App_Environment 1 //1.正式环境 2.测试环境
+#define App_Environment 2 //1.正式环境 2.测试环境
 //webView页面跳转域名校验
 #define urlCheckAddress @"tutujf.com"
 #if(App_Environment==1)

@@ -64,6 +64,7 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 -(UIScrollView *)backScrollView{
     if (!_backScrollView) {
         _backScrollView = InitObject(UIScrollView);
+        _backScrollView.showsVerticalScrollIndicator = NO;
         _backScrollView.bounces = NO;
     }
     return _backScrollView;
@@ -189,8 +190,8 @@ Strong UIButton *pwdBtn;//切换是否明文显示
 
     
     [self.backScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.width.mas_equalTo(self.titleImgView);
-        make.top.mas_equalTo(0);
+        make.left.top.mas_equalTo(0);
+        make.width.mas_equalTo(screen_width);
         make.bottom.mas_equalTo(self.view);
     }];
     

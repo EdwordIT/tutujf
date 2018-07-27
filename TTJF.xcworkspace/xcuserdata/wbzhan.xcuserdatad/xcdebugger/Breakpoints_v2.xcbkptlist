@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyInfo/Controller/MineViewController.m"
-            timestampString = "554275909.444991"
+            timestampString = "554350697.017621"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "350"
-            endingLineNumber = "350"
+            startingLineNumber = "351"
+            endingLineNumber = "351"
             landmarkName = "-didTapMIneMiddleAtIndex:"
             landmarkType = "7">
          </BreakpointContent>

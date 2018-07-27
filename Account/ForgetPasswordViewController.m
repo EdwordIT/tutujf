@@ -34,6 +34,8 @@ Strong UIButton *completeBtn;//完成注册
 -(UIScrollView *)backScrollView{
     if (!_backScrollView) {
         _backScrollView = InitObject(UIScrollView);
+        _backScrollView.showsVerticalScrollIndicator = NO;
+
     }
     return _backScrollView;
 }
