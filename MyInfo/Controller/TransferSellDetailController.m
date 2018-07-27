@@ -165,20 +165,30 @@ Strong UIButton *qBtn3;
     self.transferBtn = InitObject(GradientButton);
     [ self.transferBtn setTitle:self.model.bt_name forState:UIControlStateNormal];
      self.transferBtn.titleLabel.font = SYSTEMSIZE(32);
+    self.transferBtn.layer.cornerRadius = CORNER_RADIUS;
+    self.transferBtn.layer.masksToBounds = YES;
     [ self.transferBtn addTarget:self action:@selector(transferBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-     self.transferBtn.layer.cornerRadius =  self.transferBtn.height/2;
-     self.transferBtn.layer.masksToBounds =YES;
+
     [ self.transferBtn setUntouchedColor:COLOR_Btn_Unsel];
      self.transferBtn.enabled = NO;
-    if ([self.model.bt_state isEqualToString:@"2"]) {//可撤销转让
-        self.transferBtn.enabled = YES;
-        self.percentageTextField.userInteractionEnabled = NO;//不可更改
+  
+    if ([self.state isEqualToString:@"-1"]||[self.state isEqualToString:@"3"]) {
         self.percentageTextField.text = [self.model.coefficient stringByAppendingString:@"%"];
-        [ self.transferBtn setGradientColors:@[[UIColor yellowColor],[UIColor yellowColor]]];
-    }else{
-        self.percentageTextField.userInteractionEnabled = YES;//
-        [ self.transferBtn setGradientColors:@[COLOR_DarkBlue,COLOR_LightBlue]];
+        self.percentageTextField.userInteractionEnabled = NO;//不可更改
+    }else if([self.state isEqualToString:@"1"]){//可转让
+        [self.transferBtn setGradientColors:@[COLOR_DarkBlue,COLOR_LightBlue]];
+        self.percentageTextField.userInteractionEnabled = YES;
+        [self.percentageTextField becomeFirstResponder];
+    }else{//可撤销
+        self.percentageTextField.text = [self.model.coefficient stringByAppendingString:@"%"];
+        self.percentageTextField.userInteractionEnabled = NO;//不可更改
+         self.transferBtn.enabled = YES;
+         [self.transferBtn setTitleColor:COLOR_DarkBlue forState:UIControlStateNormal];
+        self.transferBtn.layer.borderWidth = kLineHeight;
+        self.transferBtn.layer.borderColor = [COLOR_DarkBlue CGColor];
+      
     }
+
     [self.backScroll addSubview: self.transferBtn];
     
 
@@ -235,7 +245,7 @@ Strong UIButton *qBtn3;
 }
 #pragma mark --textField Delegate
 -(void)textFieldDidChange :(UITextField *)theTextField{
-    if ([self.model.bt_state isEqualToString:@"-1"]) {//不可提交
+    if (![self.state isEqualToString:@"1"]) {//不可提交、可撤销转让、已转让
         return;
     }
     NSString *    str = [self.percentageTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];

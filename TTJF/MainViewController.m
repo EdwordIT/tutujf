@@ -210,7 +210,7 @@ Strong UIView *functionTopView;//功能按钮
     self.tradesView = [[TotalTradesView alloc]initWithFrame: RECT(kSizeFrom750(50), kSizeFrom750(342), screen_width - kSizeFrom750(100), kSizeFrom750(290))];
     [CommonUtils setShadowCornerRadiusToView:self.tradesView];
     self.tradesView.hidden = YES;
-    [self.view addSubview:self.tradesView];
+    [self.tableView addSubview:self.tradesView];
     
     self.functionTopView = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kNavHight)];
     [self.view addSubview:self.functionTopView];
@@ -299,6 +299,7 @@ Strong UIView *functionTopView;//功能按钮
         //service客服页面
         [self.serviceView reloadInfoWithModel:self.configModel];
     }
+    self.tradesView.top = kSizeFrom750(342);
     //总金额
     [self.tradesView loadInfoWithModel:self.homePageModel];
     
@@ -684,7 +685,7 @@ Strong UIView *functionTopView;//功能按钮
         return;
     }
     CGFloat offsetY = scrollView.contentOffset.y - scrollView.top;
-    self.tradesView.top = kSizeFrom750(342) - offsetY;//交易view
+//    self.tradesView.top = kSizeFrom750(342) - offsetY;//交易view
     if (offsetY <= kNavHight && offsetY > 0) {
         self.titleView.alpha = offsetY/kNavHight;
     }else if(offsetY > kNavHight){

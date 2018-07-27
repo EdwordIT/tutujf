@@ -312,6 +312,7 @@ Assign NSInteger mainTotalPages;
         [[BaseViewController appRootViewController].navigationController pushViewController:detail animated:YES];
     }else{
         TransferSellDetailController *detail = InitObject(TransferSellDetailController);
+        detail.state = model.status;
         detail.tender_id = model.tender_id;
         detail.completeBlock = ^{
           //刷新数据
