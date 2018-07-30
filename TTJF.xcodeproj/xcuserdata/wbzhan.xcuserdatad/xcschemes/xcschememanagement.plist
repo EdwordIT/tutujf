@@ -6,12 +6,29 @@
 	<dict>
 		<key>TTJF.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
-			<integer>21</integer>
+			<integer>0</integer>
+		</dict>
+		<key>TTJFDev.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>24</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>CB12572C210EAE7F0063CA4D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CB1259A1210EAFA20063CA4D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>E7BF5F191E6066F200BCE81E</key>
 		<dict>
 			<key>primary</key>
