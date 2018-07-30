@@ -26,6 +26,7 @@ Strong DetailBottom * bottomView;
 Strong UIScrollView *scrollView;
 Strong UIButton *footerBtn;//立即投资、满标待审
 Strong LoanBase *baseModel;
+Strong UIView *footerView;
 @end
 
 @implementation ProgrameDetailController
@@ -39,7 +40,8 @@ Strong LoanBase *baseModel;
     secondsCountDown = 0;
     [self.view addSubview:self.scrollView];
     [self initScrollView];
-    [self.view addSubview:self.footerBtn];
+    [self.view addSubview:self.footerView];
+    [self.footerView addSubview:self.footerBtn];
     [SVProgressHUD show];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countDownFinished:) name:Noti_CountDownFinished object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getRequest) name:Noti_LoginChanged object:nil];//登录状态变更，刷新数据
@@ -84,14 +86,23 @@ Strong LoanBase *baseModel;
     }
     return _scrollView;
 }
+-(UIView *)footerView{
+    if (!_footerView) {
+        _footerView = [[UIView alloc]initWithFrame:RECT(0, screen_height -kTabbarHeight, screen_width, kTabbarHeight)];
+        _footerView.backgroundColor = COLOR_White;
+    }
+    return _footerView;
+}
 -(UIButton *)footerBtn
 {
     if (!_footerBtn) {
         _footerBtn = InitObject(UIButton);
-        _footerBtn.frame = RECT(0, screen_height - kTabbarHeight, screen_width, kTabbarHeight);
+        _footerBtn.frame = RECT(kSizeFrom750(20), kSizeFrom750(10), screen_width - kSizeFrom750(20)*2, 39);
         _footerBtn.titleLabel.font = SYSTEMSIZE(34);
         [_footerBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _footerBtn.adjustsImageWhenHighlighted = NO;
+        _footerBtn.layer.cornerRadius = CORNER_RADIUS;
+        _footerBtn.layer.masksToBounds = YES;
         _footerBtn.timeInterval = 2;//默认点击间隔2秒
         [_footerBtn addTarget:self action:@selector(footerBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -193,7 +204,7 @@ Strong LoanBase *baseModel;
 }
 -(void)didSelectedBottomAtIndex:(NSInteger)index height:(CGFloat)height
 {
-    CGFloat segmentControlHeight = kSizeFrom750(120);
+    CGFloat segmentControlHeight = kSizeFrom750(120)+kSizeFrom750(40);
     
     [self.bottomView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(height+segmentControlHeight);

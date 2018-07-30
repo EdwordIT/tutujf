@@ -210,7 +210,7 @@ Strong LoanBase *baseModel;
     }];
     
     self.progressLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, uv.height - kSizeFrom750(45),kSizeFrom750(150), kSizeFrom750(25))];
-    self.progressLabel.font = SYSTEMSIZE(24);
+    self.progressLabel.font = NUMBER_FONT(24);
     self.progressLabel.textColor=RGB(179,254,246);
     self.progressLabel.text=@"已售0%";
     self.progressLabel.textAlignment = NSTextAlignmentCenter;
@@ -293,6 +293,9 @@ Strong LoanBase *baseModel;
         if (self.progressView.progress >= self.progressNum) {// 如果进度条到头了
             [myTimer invalidate];
             NSString *progress1 = [[NSString stringWithFormat:@"%.2f",self.progressNum*100] stringByAppendingString:@"%"];
+            if ([progress isEqualToString:@"100.00%"]) {
+                progress = @"100%";
+            }
             NSString *proTxt1 = [@"已售" stringByAppendingString:progress];
             [self.progressLabel setAttributedText:[CommonUtils diffierentFontWithString:proTxt1 rang:[proTxt1 rangeOfString:progress1] font:NUMBER_FONT(26) color:RGB(179,254,246) spacingBeforeValue:0 lineSpace:0]];
             

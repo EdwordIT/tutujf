@@ -30,7 +30,13 @@
     
     return [EmptyView emptyViewWithImageStr:@"icons_nodata"
                                    titleStr:@"暂无数据"
-                                  detailStr:@"请检查您的网络连接是否正确!"];
+                                  detailStr:@""];
+}
++(instancetype)emptyWithRefreshBlock:(EmptyRefreshBlock)refreshBlock{
+    
+    return [EmptyView emptyActionViewWithImageStr:@"icons_nodata" titleStr:@"暂无数据" detailStr:@"" btnTitleStr:@"刷新数据" btnClickBlock:^{
+                refreshBlock();
+            }];
 }
 
 //带刷新的nodataView

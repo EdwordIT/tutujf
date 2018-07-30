@@ -50,7 +50,7 @@
             [menuView.layer addSublayer:rightLayer];
         }
        //最下排元素不加
-        if ((data.count - (i/3)*3)/3!=0) {
+        if (i/3!=1) {
             CALayer *bottomLayer = [CALayer layer];
             bottomLayer.frame = RECT(0, menuHeight-1, menuWidth, lineWidth);
             bottomLayer.backgroundColor = [separaterColor CGColor];

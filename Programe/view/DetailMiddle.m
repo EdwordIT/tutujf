@@ -57,7 +57,7 @@
     if (secondsCountDown>0) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countDownNotification:) name:Noti_CountDown object:nil];
     }
-    if ([programModel.loan_info.open_up_status isEqualToString:@"-1"]) {//可购买，显示购买倒计时，此处项目持续时间不可添加
+    if ([programModel.loan_info.open_up_status isEqualToString:@"-1"]&&[programModel.loan_info.buy_state isEqualToString:@"1"]) {//可购买，显示购买倒计时，此处项目持续时间不可添加
         [self mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(kSizeFrom750(520));
         }];

@@ -24,30 +24,37 @@ Weak UIView *rightCycleView;//前轮
     // 添加label
     UILabel *label = [[UILabel alloc] init];
     label.textColor = RGB_102;
-    label.font = [UIFont systemFontOfSize:9];
-    label.textAlignment = NSTextAlignmentCenter;
+    label.font = SYSTEMSIZE(26);
+//    label.textAlignment = NSTextAlignmentCenter;
     [self addSubview:label];
     self.textLabel = label;
 
-    UIView *left = [[UIView alloc]initWithFrame:RECT(0, 0, 12, 12)];
-    [self addSubview:left];
-    self.leftCycleView = left;
-    
-    UIView *right= [[UIView alloc]initWithFrame:RECT(0, 0, 12, 12)];
-    [self addSubview:right];
-    self.rightCycleView = right;
+//    UIView *left = [[UIView alloc]initWithFrame:RECT(0, 0, 12, 12)];
+//    [self addSubview:left];
+//    self.leftCycleView = left;
+//
+//    UIView *right= [[UIView alloc]initWithFrame:RECT(0, 0, 12, 12)];
+//    [self addSubview:right];
+//    self.rightCycleView = right;
 
     // 初始化间距
     //设置普通状态的动画图片
+//    NSMutableArray *idleImages = [NSMutableArray array];
+//    [idleImages addObject:IMAGEBYENAME(@"refresh_15")];
+//    for (NSInteger i = 1; i<=15; i++) {
+//        UIImage *image = nil;
+//        if (i<10) {
+//            image =  [UIImage imageNamed:[NSString stringWithFormat:@"refresh_0%ld",i]];
+//        }else
+//            image =  [UIImage imageNamed:[NSString stringWithFormat:@"refresh_%ld",i]];
+//        [idleImages addObject:image];
+//    }
+    //设置普通状态的动画图片
     NSMutableArray *idleImages = [NSMutableArray array];
-    [idleImages addObject:IMAGEBYENAME(@"refresh_15")];
-    for (NSInteger i = 1; i<=15; i++) {
+    for (NSInteger i = 1; i<=4; i++) {
         UIImage *image = nil;
-        if (i<10) {
-            image =  [UIImage imageNamed:[NSString stringWithFormat:@"refresh_0%ld",i]];
-        }else
-            image =  [UIImage imageNamed:[NSString stringWithFormat:@"refresh_%ld",i]];
-        [idleImages addObject:image];
+        image =  [UIImage imageNamed:[NSString stringWithFormat:@"refresh_%ld",i]];
+         [idleImages addObject:image];
     }
     // 隐藏更新时间
     self.lastUpdatedTimeLabel.hidden = YES;
@@ -56,13 +63,13 @@ Weak UIView *rightCycleView;//前轮
     //拖动渐隐效果
     self.automaticallyChangeAlpha = YES;
     // 普通状态
-    [self setImages:idleImages forState:MJRefreshStateIdle];
+    [self setImages:idleImages duration:4 forState:MJRefreshStateIdle];
     // 即将刷新状态(超过下拉区间，准备开始刷新显示的动画)
-    [self setImages:@[IMAGEBYENAME(@"refresh_15")] duration:5  forState:MJRefreshStatePulling];
+    [self setImages:idleImages duration:4  forState:MJRefreshStatePulling];
     // 正在刷新状态
-    [self setImages:@[IMAGEBYENAME(@"refresh_15")] forState:MJRefreshStateRefreshing];
+    [self setImages:idleImages duration:4 forState:MJRefreshStateRefreshing];
     
-     [self setImages:@[IMAGEBYENAME(@"refresh_15")] forState:MJRefreshStateWillRefresh];
+     [self setImages:idleImages duration:4 forState:MJRefreshStateWillRefresh];
 
 }
 //刷新图片尺寸1242*400
@@ -84,7 +91,7 @@ Weak UIView *rightCycleView;//前轮
 //自定义动画
 -(void)loadCycleView:(CGFloat)progress view:(UIView *)cycleView{
     
-    if (progress==0) {
+    if (progress<=0) {
         return;
     }
     //移除图层
@@ -97,7 +104,7 @@ Weak UIView *rightCycleView;//前轮
     }];
     
     CAShapeLayer *layer = [CAShapeLayer new];
-    layer.lineWidth = kLineHeight*1.5;
+    layer.lineWidth = kLineHeight*2;
     //圆环的颜色
     layer.strokeColor = RGB_153.CGColor;
     //背景填充色
@@ -114,14 +121,17 @@ Weak UIView *rightCycleView;//前轮
 - (void)placeSubviews
 {
     [super placeSubviews];
-    CGPoint center = self.gifView.center;
-    center.y +=3;
-    self.gifView.center = center;
-    //540*72
-    self.textLabel.frame = RECT(0, 0, 300, 15);
-    self.textLabel.center = CGPointMake(self.gifView.centerX, self.gifView.centerY+5);
-    self.leftCycleView.center = CGPointMake(self.gifView.centerX - 38, self.gifView.centerY +16);
-    self.rightCycleView.center = CGPointMake(self.gifView.centerX+42, self.leftCycleView.centerY);
+    self.mj_h = kSizeFrom750(80);
+    self.gifView.frame = RECT(screen_width/2 - kSizeFrom750(100), (self.mj_h - kSizeFrom750(36))/2, kSizeFrom750(36), kSizeFrom750(36));
+    self.textLabel.frame = RECT(self.gifView.right+kSizeFrom750(15), self.gifView.top, 300, self.gifView.height);
+    
+//    center.y +=3;
+//    self.gifView.center = center;
+//    //540*72
+//    self.textLabel.frame = RECT(0, 0, 300, 15);
+//    self.textLabel.center = CGPointMake(self.gifView.centerX, self.gifView.centerY+5);
+//    self.leftCycleView.center = CGPointMake(self.gifView.centerX - 38, self.gifView.centerY +16);
+//    self.rightCycleView.center = CGPointMake(self.gifView.centerX+42, self.leftCycleView.centerY);
 }
 
 #pragma mark 监听控件的刷新状态
@@ -138,12 +148,12 @@ Weak UIView *rightCycleView;//前轮
             break;
         case MJRefreshStatePulling:
         {
-            self.textLabel.text = @"松开即可加载";
+            self.textLabel.text = @"释放开始刷新";
         }
             break;
         case MJRefreshStateRefreshing:
         {
-            self.textLabel.text = @"数据加载中";
+            self.textLabel.text = @"数据加载中...";
         }
             break;
         default:
@@ -154,10 +164,10 @@ Weak UIView *rightCycleView;//前轮
 - (void)scrollViewContentOffsetDidChange:(NSDictionary *)change
 {
     [super scrollViewContentOffsetDidChange:change];
-    CGFloat progress = MIN((-self.scrollView.contentOffset.y)/self.mj_h, 1);
-    [self loadCycleView:progress view:self.leftCycleView];
-    [self loadCycleView:progress view:self.rightCycleView];
-    
+//    CGFloat progress = MIN((-self.scrollView.contentOffset.y)/self.mj_h, 1);
+//    [self loadCycleView:progress view:self.leftCycleView];
+//    [self loadCycleView:progress view:self.rightCycleView];
+//
 
 }
 @end

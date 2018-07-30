@@ -16,6 +16,7 @@
 #import "RepayModel.h"
 
 @interface DetailBottom ()<HeightDelegate>
+
 {
     CGFloat defaultHeight;
      ZFJSegmentedControl *sectionSeg ;
@@ -28,7 +29,7 @@
     CGFloat investHeight;
     CGFloat repayHeight;
 }
-
+Strong UILabel *remindView;
 @end
 
 @implementation DetailBottom
@@ -125,6 +126,18 @@
     sectionSeg.selectType = ^(NSInteger selectIndex,NSString *selectIndexTitle){
         [weakSelf showView:selectIndex isTrans:isTransfer];
     };
+    
+    self.remindView = [[UILabel alloc]init];
+    self.remindView.backgroundColor = COLOR_Background;
+    self.remindView.text = @"市场有风险，投资需谨慎！";
+    self.remindView.textAlignment = NSTextAlignmentCenter;
+    self.remindView.textColor = RGB_183;
+    self.remindView.font = SYSTEMSIZE(20);
+    [self addSubview:self.remindView];
+    [self.remindView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.bottom.left.mas_equalTo(self);
+        make.height.mas_equalTo(kSizeFrom750(40));
+    }];
 }
 -(void)showView:(NSInteger )index isTrans:(BOOL)isTransfer{
     switch (index) {
@@ -154,11 +167,12 @@
             if (isTransfer) {//如果是债权转让，不要投资记录，即为还款计划内容前移一位
                 [repay setHidden:NO];
                 [invest setHidden:YES];
+                 [self.delegate didSelectedBottomAtIndex:index height:repayHeight];
             }else{
                 [invest setHidden:NO];
                 [repay setHidden:YES];
+                [self.delegate didSelectedBottomAtIndex:index height:investHeight];
             }
-            [self.delegate didSelectedBottomAtIndex:index height:investHeight];
 
         }
             break;

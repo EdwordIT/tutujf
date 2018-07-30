@@ -22,6 +22,7 @@ Strong     DetailTop * topView;
 Strong DetailMiddle * middleView;
 Strong DetailBottom * bottomView;
 Strong UIScrollView *scrollView;
+Strong UIView *footerView;
 Strong UIButton *footerBtn;//立即购买
 Strong LoanBase *baseModel;
 @end
@@ -36,7 +37,8 @@ Strong LoanBase *baseModel;
     self.titleString = @"债权详情";
     [self.view addSubview:self.scrollView];
     [self initScrollView];
-    [self.view addSubview:self.footerBtn];
+    [self.view addSubview:self.footerView];
+    [self.footerView addSubview:self.footerBtn];
     [SVProgressHUD show];
     [SVProgressHUD showWithStatus:@"数据加载中..."];
     [self getRequest];
@@ -76,14 +78,23 @@ Strong LoanBase *baseModel;
     }
     return _scrollView;
 }
+-(UIView *)footerView{
+    if (!_footerView) {
+        _footerView = [[UIView alloc]initWithFrame:RECT(0, screen_height -kTabbarHeight, screen_width, kTabbarHeight)];
+        _footerView.backgroundColor = COLOR_White;
+    }
+    return _footerView;
+}
 -(UIButton *)footerBtn
 {
     if (!_footerBtn) {
         _footerBtn = InitObject(UIButton);
-        _footerBtn.frame = RECT(0, screen_height - kTabbarHeight, screen_width, kTabbarHeight);
+        _footerBtn.frame = RECT(kSizeFrom750(10), kSizeFrom750(10), screen_width - kSizeFrom750(10)*2, kTabbarHeight - kSizeFrom750(20));
         _footerBtn.titleLabel.font = SYSTEMSIZE(34);
         [_footerBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _footerBtn.adjustsImageWhenHighlighted = NO;
+        _footerBtn.layer.cornerRadius = CORNER_RADIUS;
+        _footerBtn.layer.masksToBounds = YES;
         [_footerBtn addTarget:self action:@selector(footerBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _footerBtn;
@@ -172,7 +183,7 @@ Strong LoanBase *baseModel;
 }
 -(void)didSelectedBottomAtIndex:(NSInteger)index height:(CGFloat)height
 {
-    CGFloat segmentControlHeight = kSizeFrom750(120);
+    CGFloat segmentControlHeight = kSizeFrom750(120)+kSizeFrom750(40);
     
     [self.bottomView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(height+segmentControlHeight);

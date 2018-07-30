@@ -174,6 +174,10 @@
 		CB033322210AF88F00E965EC /* refresh_06@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB033313210AF88E00E965EC /* refresh_06@3x.png */; };
 		CB033323210AF88F00E965EC /* refresh_02@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB033314210AF88F00E965EC /* refresh_02@3x.png */; };
 		CB033326210B095600E965EC /* CycleView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB033325210B095600E965EC /* CycleView.m */; };
+		CB03332B210C670500E965EC /* refresh_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB033327210C670400E965EC /* refresh_1@2x.png */; };
+		CB03332C210C670500E965EC /* refresh_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB033328210C670400E965EC /* refresh_3@2x.png */; };
+		CB03332D210C670500E965EC /* refresh_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB033329210C670500E965EC /* refresh_2@2x.png */; };
+		CB03332E210C670500E965EC /* refresh_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB03332A210C670500E965EC /* refresh_4@2x.png */; };
 		CB1BFB97208EBC790045C0F0 /* RechargeController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB96208EBC790045C0F0 /* RechargeController.m */; };
 		CB1BFB9A208EBD040045C0F0 /* GetCashController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB99208EBD040045C0F0 /* GetCashController.m */; };
 		CB1BFB9D208EFE2D0045C0F0 /* UIButton+button.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB9C208EFE2D0045C0F0 /* UIButton+button.m */; };
@@ -875,6 +879,10 @@
 		CB033314210AF88F00E965EC /* refresh_02@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh_02@3x.png"; sourceTree = "<group>"; };
 		CB033324210B095600E965EC /* CycleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CycleView.h; sourceTree = "<group>"; };
 		CB033325210B095600E965EC /* CycleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CycleView.m; sourceTree = "<group>"; };
+		CB033327210C670400E965EC /* refresh_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh_1@2x.png"; sourceTree = "<group>"; };
+		CB033328210C670400E965EC /* refresh_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh_3@2x.png"; sourceTree = "<group>"; };
+		CB033329210C670500E965EC /* refresh_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh_2@2x.png"; sourceTree = "<group>"; };
+		CB03332A210C670500E965EC /* refresh_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh_4@2x.png"; sourceTree = "<group>"; };
 		CB1BFB95208EBC790045C0F0 /* RechargeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeController.h; sourceTree = "<group>"; };
 		CB1BFB96208EBC790045C0F0 /* RechargeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeController.m; sourceTree = "<group>"; };
 		CB1BFB98208EBD040045C0F0 /* GetCashController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetCashController.h; sourceTree = "<group>"; };
@@ -1882,6 +1890,10 @@
 		1BE67371207470E80003A30C /* MJRefresh */ = {
 			isa = PBXGroup;
 			children = (
+				CB033327210C670400E965EC /* refresh_1@2x.png */,
+				CB033329210C670500E965EC /* refresh_2@2x.png */,
+				CB033328210C670400E965EC /* refresh_3@2x.png */,
+				CB03332A210C670500E965EC /* refresh_4@2x.png */,
 				CB033310210AF88E00E965EC /* refresh_01@3x.png */,
 				CB033314210AF88F00E965EC /* refresh_02@3x.png */,
 				CB033309210AF88D00E965EC /* refresh_03@3x.png */,
@@ -3607,6 +3619,7 @@
 				1B583B25205F8D2A00CC70E4 /* wings_right@3x.png in Resources */,
 				E70D16F51F2303C3007F12D0 /* sns_icon_1_s@2x.png in Resources */,
 				1B1E307720887E4E00B3974F /* icons_back@3x.png in Resources */,
+				CB03332C210C670500E965EC /* refresh_3@2x.png in Resources */,
 				CB3CC5F620B6469300CBE5DF /* myinvest_failed@2x.png in Resources */,
 				CB45938120EDA5FE0073364B /* readed@2x.png in Resources */,
 				CB45935620EB44930073364B /* re_canuse_bg@3x.png in Resources */,
@@ -3634,10 +3647,12 @@
 				CBFA810620C29A5600CB623E /* icons_purse@2x.png in Resources */,
 				1B583B0D205F890F00CC70E4 /* home_02@3x.png in Resources */,
 				E7067A5D1E60C88B00E32B86 /* bt_previous@2x.png in Resources */,
+				CB03332B210C670500E965EC /* refresh_1@2x.png in Resources */,
 				CB3CC5EF20B553DC00CBE5DF /* myinvest_time@2x.png in Resources */,
 				CB842C1F20BE877400FA42AE /* transfer_record_sold@2x.png in Resources */,
 				CB45937D20EDA5FE0073364B /* not_read@3x.png in Resources */,
 				CB73155C209AE9C200B3B8FA /* cooperationBottom@3x.png in Resources */,
+				CB03332E210C670500E965EC /* refresh_4@2x.png in Resources */,
 				CB3D303C20A695310040FE30 /* point_sel@2x.png in Resources */,
 				CB45938220EDA5FE0073364B /* more@2x.png in Resources */,
 				E70D16FE1F2303C3007F12D0 /* sns_icon_6_s.png in Resources */,
@@ -3836,6 +3851,7 @@
 				1BE6736720734F720003A30C /* menu_discover_sel@3x.png in Resources */,
 				1B1923872064CF18005B0C57 /* logo@2x.png in Resources */,
 				CBAD07D02101C53A00D3DE9F /* icons_select_sel@2x.png in Resources */,
+				CB03332D210C670500E965EC /* refresh_2@2x.png in Resources */,
 				1BE673B92074A98F0003A30C /* refresh_mine@2x.png in Resources */,
 				CB3CC5C320B54A5C00CBE5DF /* transfer_record_paidback@3x.png in Resources */,
 				1B1E308F2088811700B3974F /* program_payback@2x.png in Resources */,

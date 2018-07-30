@@ -12,4 +12,5 @@ typedef void (^EmptyRefreshBlock)(void);
 @interface EmptyView : LYEmptyView
 +(instancetype)noDataEmpty;
 +(instancetype)noDataRefreshBlock:(EmptyRefreshBlock)refreshBlock;
++(instancetype)emptyWithRefreshBlock:(EmptyRefreshBlock)refreshBlock;//点击刷新数据
 @end

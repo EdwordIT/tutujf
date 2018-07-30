@@ -263,7 +263,7 @@ Strong NSDictionary *notificationInfo;
     MineViewController *VC4= [[MineViewController alloc] init];
     UINavigationController *nav4 = [[UINavigationController alloc] initWithRootViewController:VC4];
     VC1.title = @"首页";
-    VC2.title = @"项目";
+    VC2.title = @"理财";
     VC3.title = @"发现";
     VC4.title = @"我的";
     //2.

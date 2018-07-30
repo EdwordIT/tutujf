@@ -15,10 +15,11 @@ Strong UIButton *leftBtn;
 Strong UIButton *rightBtn;
 Strong SDRangeSliderView *sliderView;
 Strong NSMutableArray *sepLabelArr;
+Strong NSDateFormatter *dateFormat;
 
 Copy NSString *keyword;//关键字
-Copy NSDate *startTime;
-Copy NSDate *endTime;
+Copy NSString *startTime;
+Copy NSString *endTime;
 Assign NSInteger page;
 Assign NSInteger totalPage;
 
@@ -37,6 +38,14 @@ Assign NSInteger totalPage;
         _sepLabelArr = InitObject(NSMutableArray);
     }
     return _sepLabelArr;
+}
+-(NSDateFormatter *)dateFormat{
+    if (!_dateFormat) {
+        _dateFormat = InitObject(NSDateFormatter);
+        _dateFormat.dateFormat = @"yyyy-MM-dd";
+        
+    }
+    return _dateFormat;
 }
 -(void)initSubViews{
     
@@ -114,7 +123,7 @@ Assign NSInteger totalPage;
     self.sliderView.minimumSize = 1;
     self.sliderView.highlightLineColor = COLOR_DarkBlue;
     self.sliderView.lineColor = RGB_183;
-    self.sliderView.maxValue = 12;//分为6段
+    self.sliderView.maxValue = 13;//分为12段
     self.sliderView.lineHeight = kSizeFrom750(10);
     [self.sliderView usingValueUnequal];//使用游标的中心取值
     [self.sliderView customUIUsingBlock:^(UIButton *leftCursor, UIButton *rightCursor) {
@@ -172,6 +181,9 @@ Assign NSInteger totalPage;
     [bottomBtn addTarget:self action:@selector(bottomBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:bottomBtn];
     
+    self.startTime = @"";
+    self.endTime = @"";
+    
 }
 #pragma mark --textField Delegate
 -(void)textFieldDidChange :(UITextField *)theTextField{
@@ -213,11 +225,11 @@ Assign NSInteger totalPage;
 //重置条件、开始搜索
 -(void)btnClick:(UIButton *)sender{
     if (sender.tag==0) {
-        self.startTime = nil;
-        self.endTime = nil;
+        [self timeBtnClick:self.rightBtn];//重置为12个月筛选选项
+        self.startTime = @"";
+        self.endTime = @"";
         self.searchTextField.text = @"";
         self.keyword = @"";
-        [self timeBtnClick:self.rightBtn];
     }else{
       
     }
@@ -230,7 +242,7 @@ Assign NSInteger totalPage;
     [self hideSelectView:YES];
 }
 #pragma mark --custom
--(NSDate *)getPriousorLaterDateWwithMonth:(NSInteger)month
+-(NSString *)getPriousorLaterDateWwithMonth:(NSInteger)month
  {
     NSDateComponents *comps = [[NSDateComponents alloc] init];
 
@@ -240,7 +252,7 @@ Assign NSInteger totalPage;
    
     NSDate *mDate = [calender dateByAddingComponents:comps toDate:[NSDate date] options:0];
   
-     return mDate;
+     return [self.dateFormat stringFromDate:mDate];
     
 }
 -(void)hideSelectView:(BOOL)isHide{

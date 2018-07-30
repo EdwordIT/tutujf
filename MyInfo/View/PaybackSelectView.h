@@ -8,7 +8,7 @@
 
 #import "BaseView.h"
 
-typedef void (^PaybackSelectBlock)(NSDate *startTime,NSDate *endTime,NSString *keyWord);
+typedef void (^PaybackSelectBlock)(NSString *startTime,NSString *endTime,NSString *keyWord);
 /**
  回款筛选
  */
