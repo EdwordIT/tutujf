@@ -156,10 +156,10 @@ Strong UIImageView *stateImage;//激活成功、已失效
 -(void)loadLayout
 {
     [self.bgImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(kOriginLeft);
+        make.top.mas_equalTo(kSizeFrom750(0));
         make.left.mas_equalTo(kOriginLeft);
         make.right.mas_equalTo(-kOriginLeft);
-        make.height.mas_equalTo(kSizeFrom750(325));
+        make.height.mas_equalTo(kSizeFrom750(320));
     }];
     [self.tagImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(self.bgImage.mas_right).offset(-kSizeFrom750(13));

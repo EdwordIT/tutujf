@@ -10,7 +10,6 @@
 #import "DetailTop.h"
 #import "DetailMiddle.h"
 #import "DetailBottom.h"
-#import "LoanBase.h"
 #import "RepayModel.h"
 #import "TenderModel.h"
 #import "RushPurchaseController.h"
@@ -25,7 +24,6 @@ Strong DetailMiddle * middleView;
 Strong DetailBottom * bottomView;
 Strong UIScrollView *scrollView;
 Strong UIButton *footerBtn;//立即投资、满标待审
-Strong LoanBase *baseModel;
 Strong UIView *footerView;
 @end
 
@@ -42,10 +40,17 @@ Strong UIView *footerView;
     [self initScrollView];
     [self.view addSubview:self.footerView];
     [self.footerView addSubview:self.footerBtn];
-    [SVProgressHUD show];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countDownFinished:) name:Noti_CountDownFinished object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getRequest) name:Noti_LoginChanged object:nil];//登录状态变更，刷新数据
-    [SVProgressHUD showWithStatus:@"数据加载中..."];
+    
+    if (self.baseModel) {//数据预加载
+        [self.topView loadInfoWithModel:self.baseModel.loan_info];
+        [self.middleView loadInfoWithModel:self.baseModel];
+    }else{
+        [SVProgressHUD show];
+    }
+   
+//    [SVProgressHUD showWithStatus:@"数据加载中..."];
     [self getRequest];
 
     
@@ -78,7 +83,7 @@ Strong UIView *footerView;
         _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight - kTabbarHeight)];
         _scrollView.backgroundColor =COLOR_Background;
         _scrollView.delegate = self;
-        _scrollView.hidden = YES;
+//        _scrollView.hidden = YES;
         WEAK_SELF;
         _scrollView.mj_header = [TTJFRefreshNormalHeader headerWithRefreshingBlock:^{
             [weakSelf getRequest];

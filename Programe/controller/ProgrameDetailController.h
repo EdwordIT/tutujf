@@ -7,9 +7,9 @@
 //项目详情页面
 
 #import "BaseViewController.h"
-
+#import "LoanBase.h"
 @interface ProgrameDetailController : BaseViewController
 
-@property(nonatomic, strong)     NSString * loan_id;
-
+@property(nonatomic, strong) NSString * loan_id;
+Strong LoanBase *baseModel;
 @end

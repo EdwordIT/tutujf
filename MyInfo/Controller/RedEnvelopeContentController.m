@@ -13,7 +13,7 @@ Strong BaseUITableView *mainTableView;//全部
 Strong NSMutableArray *mainDataArray;
 Assign NSInteger mainCurrentPage;
 Assign NSInteger mainTotalPages;
-Strong UIButton *remindButton;//
+Copy NSString *remindString;
 @end
 
 @implementation RedEnvelopeContentController
@@ -40,7 +40,7 @@ Strong UIButton *remindButton;//
         _mainTableView = [[BaseUITableView alloc]initWithFrame:RECT(0,0, screen_width, kViewHeight-kTitleHeight) style:UITableViewStyleGrouped];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
-        _mainTableView.rowHeight = kSizeFrom750(375);
+        _mainTableView.rowHeight = kSizeFrom750(360);
         
     }
     return _mainTableView;
@@ -84,7 +84,8 @@ Strong UIButton *remindButton;//
     NSArray *valuesArr = @[[CommonUtils getToken],page,use_type];
     [[HttpCommunication sharedInstance] postSignRequestWithPath:myRedEnvelopeUrl keysArray:keysArr valuesArray:valuesArr refresh:self.mainTableView success:^(NSDictionary *successDic) {
         //红包规则
-        [self.remindButton setTitle:[successDic objectForKey:@"rule_txt"] forState:UIControlStateNormal];
+        self.remindString = [successDic objectForKey:@"rule_txt"];
+        
        self.mainTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
         NSArray *items =  [successDic objectForKey:@"items"];
        
@@ -113,20 +114,20 @@ Strong UIButton *remindButton;//
 }
 #pragma mark -- dataSource and Delegate
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIView *view = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(60))];
-    
-    self.remindButton = [[UIButton alloc]initWithFrame:RECT(kSizeFrom750(30), kSizeFrom750(30), kSizeFrom750(690), kSizeFrom750(30))];
-    [self.remindButton setImage:IMAGEBYENAME(@"remind_blue") forState:UIControlStateNormal];
-    self.remindButton.userInteractionEnabled = NO;
-    [self.remindButton setTitleEdgeInsets:UIEdgeInsetsMake(0, kSizeFrom750(10), 0, 0)];
-    [self.remindButton setTitle:@"用户投资成功后，请等待标的满审通过红包将自动激活。" forState:UIControlStateNormal];
-    [self.remindButton setTitleColor:RGB_153 forState:UIControlStateNormal];
-    [self.remindButton.titleLabel setFont:SYSTEMSIZE(25)];
-    [view addSubview:self.remindButton];
+    UIView *view = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(120))];
+    UIButton *remind = [[UIButton alloc]initWithFrame:RECT(kSizeFrom750(30), kSizeFrom750(30), kSizeFrom750(690), kSizeFrom750(60))];
+    [remind setImage:IMAGEBYENAME(@"remind_blue") forState:UIControlStateNormal];
+    remind.userInteractionEnabled = NO;
+    remind.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    [remind setTitleEdgeInsets:UIEdgeInsetsMake(0, kSizeFrom750(20), 0, 0)];
+    [remind setTitleColor:RGB_153 forState:UIControlStateNormal];
+    [remind.titleLabel setFont:SYSTEMSIZE(25)];
+    [remind setTitle:self.remindString forState:UIControlStateNormal];
+    [view addSubview:remind];
     return view;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return kSizeFrom750(60);
+    return kSizeFrom750(120);
 }
 -(NSInteger )numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;

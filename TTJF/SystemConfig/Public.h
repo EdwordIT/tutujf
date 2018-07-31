@@ -196,8 +196,12 @@
 //宏定义检测block是否可用
 #define BLOCK_EXEC(block, ...) if (block) { block(__VA_ARGS__); };
 //自定义NSLog
-#ifdef DEBUG
+#ifdef DEBUG//debug模式下
 #define NSLog(...) NSLog(__VA_ARGS__)
+
+#elif TTJF_DEV//开发环境下
+#define NSLog(...) NSLog(__VA_ARGS__)
+
 #else
 #define NSLog(...) {}
 #endif

@@ -671,7 +671,20 @@ Strong UIView *functionTopView;//功能按钮
 {
     QuicklyModel * model=[self.homePageModel.loan_items objectAtIndex:index];
     ProgrameDetailController * vc=[[ProgrameDetailController alloc] init];
-    vc.loan_id=model.loan_id;
+    LoanBase *base = InitObject(LoanBase);
+    LoanInfo *info = InitObject(LoanInfo);
+    
+    info.apr = model.apr_val;
+    info.progress = model.progress;
+    info.period = model.period;
+    info.amount = model.amount;
+    info.name = model.name;
+    info.status_name = model.status_name;
+    info.tender_amount_min = @"";
+    base.repay_type_name = model.repay_type_name;
+    base.loan_info = info;
+    vc.baseModel = base;
+    vc.loan_id = model.loan_id;
     [self.navigationController pushViewController:vc animated:YES];
 }
 //社区事件点击

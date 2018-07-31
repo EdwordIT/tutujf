@@ -30,6 +30,7 @@ Copy NSString *status;//状态
     self.totalPages = 1;
     [self.rightBtn setHidden:NO];
     [self.rightBtn setImage:IMAGEBYENAME(@"more") forState:UIControlStateNormal];
+    self.rightBtn.timeInterval = ANIMATION_TIME;
     [self.rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 //    [self.rightBtn mas_updateConstraints:^(MASConstraintMaker *make) {
 //        make.width.mas_equalTo(kSizeFrom750(80));

@@ -55,6 +55,9 @@
     endTimeMenu = [menuArray objectAtIndex:nameArray.count];
     secondsCountDown = [CommonUtils getDifferenceByDate:info.overdue_time_date];//倒计时秒数(48小时换算成的秒数,项目中需要从服务器获取)
     if (secondsCountDown>0) {
+       
+         [[NSNotificationCenter defaultCenter] removeObserver:self name:Noti_CountDown object:nil];//移除通知监听，防止重复添加
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countDownNotification:) name:Noti_CountDown object:nil];
     }
     if ([programModel.loan_info.open_up_status isEqualToString:@"-1"]&&[programModel.loan_info.buy_state isEqualToString:@"1"]) {//可购买，显示购买倒计时，此处项目持续时间不可添加

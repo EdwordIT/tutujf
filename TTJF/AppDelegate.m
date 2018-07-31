@@ -401,10 +401,8 @@ Strong NSDictionary *notificationInfo;
 
 //如果deviceToken获取不到会进入此事件
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
-    
-    NSString *str = [NSString stringWithFormat: @"Error: %@",err];
-    
-    NSLog(@"[XGPush]token获取失败%@",str);
+        
+    NSLog(@"[XGPush]token获取失败%@", [NSString stringWithFormat: @"Error: %@",err]);
     
 }
 /** APP已经接收到“远程”通知(推送) - 透传推送消息  */

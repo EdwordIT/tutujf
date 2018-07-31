@@ -7,7 +7,7 @@
 //
 
 #import "NavSwitchView.h"
-#define titleSpace 2
+#define titleSpace 1
 @interface NavSwitchView()
 Strong UIView *backView;
 @end
@@ -30,12 +30,13 @@ Strong UIView *backView;
 {
     
     CGFloat btnW = 69;
-    CGFloat btnH = 24;
+    CGFloat btnH = 24;//按钮高度
+    CGFloat viewBottomH = 9;//view距离navigationbar底部距离
     CGFloat cornerRadius = 5;
     self.backView = InitObject(UIView);
     self.backView.backgroundColor = COLOR_White;
-    self.backView.frame = RECT((screen_width - btnW*nameArray.count+titleSpace*2)/2, self.height - 34 -titleSpace*2,btnW*nameArray.count+titleSpace*2, btnH+titleSpace*2);
-    self.backView.layer.cornerRadius = cornerRadius*1.2;
+    self.backView.frame = RECT((screen_width - btnW*nameArray.count+titleSpace*2)/2, self.height - btnH -titleSpace*2 -viewBottomH,btnW*nameArray.count+titleSpace*2, btnH+titleSpace*2);
+    self.backView.layer.cornerRadius = cornerRadius;
     self.backView.layer.masksToBounds = YES;
     [self addSubview:self.backView];
     for (int i=0; i<nameArray.count; i++) {

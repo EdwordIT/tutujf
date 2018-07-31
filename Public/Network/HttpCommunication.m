@@ -427,14 +427,14 @@
         //上传进度
         // @property int64_t totalUnitCount;     需要上传文件的总大小
         // @property int64_t completedUnitCount; 当前已经上传的大小
-        CGFloat progress = 1.0 * uploadProgress.completedUnitCount / uploadProgress.totalUnitCount;
-        // 给Progress添加监听 KVO
-        NSLog(@"%f",progress);
+//        CGFloat progress = 1.0 * uploadProgress.completedUnitCount / uploadProgress.totalUnitCount;
+//        // 给Progress添加监听 KVO
+//        NSLog(@"%f",progress);
         // 回到主队列刷新UI,用户自定义的进度条
-        dispatch_async(dispatch_get_main_queue(), ^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
 //            self.progressView.progress = 1.0 *
 //            uploadProgress.completedUnitCount / uploadProgress.totalUnitCount;
-        });
+//        });
 
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

@@ -131,10 +131,10 @@ Strong LoanBase *baseModel;
     NSMutableAttributedString *attr2 = [CommonUtils diffierentFontWithString:remain  rang:[remain rangeOfString:[CommonUtils getHanleNums:infoModel.left_amount]] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
     [self.programRemainLabel setAttributedText:attr2];
     
-    //投资人数
-    NSString *invest = [NSString stringWithFormat:@"已经有%@位投资人",infoModel.tender_count];
-    NSMutableAttributedString *attr3 = [CommonUtils diffierentFontWithString:invest  rang:[invest rangeOfString:infoModel.tender_count] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
-    [self.investLabel setAttributedText:attr3];
+//    //投资人数
+//    NSString *invest = [NSString stringWithFormat:@"已经有%@位投资人",infoModel.tender_count];
+//    NSMutableAttributedString *attr3 = [CommonUtils diffierentFontWithString:invest  rang:[invest rangeOfString:infoModel.tender_count] font:NUMBER_FONT(28) color:COLOR_White spacingBeforeValue:0 lineSpace:0];
+//    [self.investLabel setAttributedText:attr3];
 
 
      
@@ -282,15 +282,19 @@ Strong LoanBase *baseModel;
         [myTimer invalidate];
     }
     else{
-        
-        self.progressView.progress += 0.005; // 设定步进长度
+        CGFloat endProgress = [[NSString stringWithFormat:@"%.4f",self.progressView.progress+0.005] floatValue];
+        if (endProgress<=self.progressNum) {
+            self.progressView.progress = endProgress;
+        }else{
+            
+        }
         CGFloat proLeft = screen_width*self.progressView.progress;
         self.progressTopView.frame = RECT(proLeft, self.progressTopView.top, screen_width-proLeft, self.progressTopView.height);
         NSString *progress = [[NSString stringWithFormat:@"%.2f",self.progressView.progress*100] stringByAppendingString:@"%"];
         NSString *proTxt = [@"已售" stringByAppendingString:progress];
         [self.progressLabel setAttributedText:[CommonUtils diffierentFontWithString:proTxt rang:[proTxt rangeOfString:progress] font:NUMBER_FONT(26) color:RGB(179,254,246) spacingBeforeValue:0 lineSpace:0]];
         self.progressLabel.left = (screen_width - self.progressLabel.width)*self.progressView.progress;
-        if (self.progressView.progress >= self.progressNum) {// 如果进度条到头了
+        if (endProgress >= self.progressNum) {// 如果进度条到头了
             [myTimer invalidate];
             NSString *progress1 = [[NSString stringWithFormat:@"%.2f",self.progressNum*100] stringByAppendingString:@"%"];
             if ([progress isEqualToString:@"100.00%"]) {
