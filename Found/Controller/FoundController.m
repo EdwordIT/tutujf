@@ -7,23 +7,23 @@
 //
 
 #import "FoundController.h"
-#import "TreasureMiddleCell.h"
 #import "FoundListCell.h"
-#import "FoundListModel.h"
 #import "DiscoverMenuModel.h"
 #import "FoundListModel.h"
+//#import "DisSectionView.h"
 #import "HomeWebController.h"
 #import "CooperationController.h"
 #import "FeedbackController.h"
-#import "ActivityController.h"
-@interface FoundController ()<UITableViewDataSource,UITableViewDelegate,TreasureMiddleDelegate,TreasureListDelegate>
-{
-      NSString * content_title;
-}
-@property(nonatomic, strong) BaseUITableView *tableView;
+#import "TreasureMiddleCell.h"
+@interface FoundController ()<UITableViewDataSource,UITableViewDelegate,TreasureListDelegate,TreasureMiddleDelegate>
+
+//Strong DisSectionView *sectionsView;//顶部区块
+Strong BaseUITableView *tableView;
 Strong NSMutableArray *dataSourceArray;
 Strong NSMutableArray *topArray;
-
+Copy NSString *activityTitle;
+Assign NSInteger currentPage;
+Assign NSInteger totalPages;
 @end
 
 @implementation FoundController
@@ -31,72 +31,116 @@ Strong NSMutableArray *topArray;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.titleString = @"发现";
+    self.currentPage = 1;
     [self.backBtn setHidden:YES];
-    [self initData];
-    [self initTableView];
-    [SVProgressHUD showWithStatus:@"数据加载中..."];
+    self.activityTitle=@"活动中心";
+    [self initSubViews];
     [self getRequest];
     // Do any additional setup after loading the view.
 }
-
-
--(void)initData{
-    self.dataSourceArray = [[NSMutableArray alloc] init];
-    self.topArray= [[NSMutableArray alloc] init];
-    content_title=@"活动中心";
+-(NSMutableArray *)dataSourceArray{
+    if(!_dataSourceArray){
+        _dataSourceArray = InitObject(NSMutableArray);
+    }
+    return _dataSourceArray;
+}
+-(NSMutableArray *)topArray{
+    if (!_topArray) {
+        _topArray = InitObject(NSMutableArray);
+    }
+    return _topArray;
+}
+//-(DisSectionView *)sectionsView{
+//    if (!_sectionsView) {
+//        _sectionsView = InitObject(DisSectionView);
+//        _sectionsView.delegate = self;
+//        _sectionsView.backgroundColor = COLOR_White;
+//        [self.sectionsView loadSectionWithArray:self.topArray];
+//    }
+//    return _sectionsView;
+//}
+-(BaseUITableView *)tableView{
+    
+    if (!_tableView) {
+        _tableView =  [[BaseUITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+//        _tableView.rowHeight = kSizeFrom750(420);
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.showsVerticalScrollIndicator = YES;
+        WEAK_SELF;
+        TTJFRefreshStateHeader *header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
+            [weakSelf refreshRequest];
+        }];
+        _tableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
+            [weakSelf refreshRequest];
+        }];
+        _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+            weakSelf.currentPage  ++;
+            [weakSelf loadMoreData];
+        }];
+        [_tableView ly_startLoading];
+        _tableView.mj_header = header;
+    }
+    return _tableView;
+}
+-(void)loadMoreData{
+    if(self.currentPage<=self.totalPages)
+    {
+        __weak __typeof(self) weakSelf = self;
+        [weakSelf getRequest];
+    }
+    else{
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+    }
 }
 /**表格数据操作**/
 //初始化主界面
--(void)initTableView{
-  
-    self.tableView = [[BaseUITableView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight-kTabbarHeight) style:UITableViewStyleGrouped];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.showsVerticalScrollIndicator = NO;
+-(void)initSubViews{
+    
+//    [self.view addSubview:self.backScroll];
+    
+//    [self.view addSubview:self.sectionsView];
+    
     [self.view addSubview:self.tableView];
-    WEAK_SELF;
-    TTJFRefreshStateHeader *header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
-        [weakSelf getRequest];
+//
+//    [self.sectionsView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(0);
+//        make.left.mas_equalTo(0);
+//        make.width.mas_equalTo(screen_width);
+//        make.height.mas_equalTo(kSizeFrom750(384));
+//    }];
+    
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(kNavHight);
+        make.width.mas_equalTo(screen_width);
+        make.bottom.mas_equalTo(self.view).offset(-kTabbarHeight);
     }];
-    self.tableView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
-        [weakSelf getRequest];
-    }];
-    [self.tableView ly_startLoading];
-    self.tableView.mj_header = header;
+//    [self.view bringSubviewToFront:self.titleView];
+    
 }
-
+#pragma mark --scrollViewDeleagte
+//-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+//    if (scrollView==self.tableView) {
+//            [self.sectionsView mas_updateConstraints:^(MASConstraintMaker *make) {
+//                make.top.mas_equalTo(MIN(kNavHight ,kNavHight-scrollView.contentOffset.y));
+//            }];
+//    }
+//}
+#pragma mark --tableViewDelegate
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
-    if (self.dataSourceArray.count==0) {
+    if (section==0) {
         return nil;
-    }
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
-    headerView.backgroundColor =COLOR_Background;
-
-    if (section==1) {
-        headerView.height = kSizeFrom750(110);
+    }else{
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(110))];
+        headerView.backgroundColor =COLOR_Background;
         UILabel *textLabel = [[UILabel alloc]initWithFrame:RECT(kOriginLeft, 0, kSizeFrom750(300),headerView.height)];
         textLabel.font = SYSTEMSIZE(32);
         textLabel.textColor = RGB_102;
-        textLabel.text = content_title;
+        textLabel.text = self.activityTitle;
         [headerView addSubview:textLabel];
-        
-        UIButton *moreBtn = InitObject(UIButton);
-        moreBtn.frame = RECT(headerView.width - kSizeFrom750(150), 0, kSizeFrom750(140), headerView.height);
-        [moreBtn setTitle:@"更多" forState:UIControlStateNormal];
-        [moreBtn.titleLabel setFont:SYSTEMSIZE(26)];
-        [moreBtn setTitleColor:RGB_166 forState:UIControlStateNormal];
-        moreBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        [moreBtn setImageEdgeInsets:UIEdgeInsetsMake(0, kSizeFrom750(110), 0,0)];
-        [moreBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, kSizeFrom750(40), 0, 0)];
-        [moreBtn setImage:IMAGEBYENAME(@"rightArrow") forState:UIControlStateNormal];
-        [moreBtn addTarget:self action:@selector(moreBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-        [headerView addSubview:moreBtn];
-        
         return headerView;
-
     }
-    return headerView;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen_width, 0)];
@@ -107,65 +151,46 @@ Strong NSMutableArray *topArray;
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
 }
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-     if (section ==0 ){
-         return self.topArray.count>0?1:0;
-     }
-    return [self.dataSourceArray count];
- 
-}
-
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 1) {
-        {
-                return  kSizeFrom750(420);
-        }
+    if (indexPath.section==0) {
+        return kSizeFrom750(192)*((self.topArray.count-1)/3+1);
+    }else{
+        return kSizeFrom750(420);
     }
-    else{
-     
-        return kSizeFrom750(192)*self.topArray.count/3;
-      
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if (section==0) {
+        return 1;
     }
+    return [self.dataSourceArray count];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if (section == 1) {
-        
+  
+    if (section==0) {
+        return 0;
+    }else
         return kSizeFrom750(110);
-        
-    }
-    
-    else{
-        return 0.01;
-    }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-        return 0.01;
+    return 0;
 }
 #pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (indexPath.section == 1) {
-        [self didTreasureListDelegateIndex:indexPath.row];
-    }
+    [self didTreasureListDelegateIndex:indexPath.row];
 }
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section ==0) {
-        static  NSString *cellIndentifier1 = @"TreasureMiddleCell";
-        TreasureMiddleCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier1];
-        if(cell == nil){
-            cell = [[TreasureMiddleCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIndentifier1];
-        }
-        cell.delegate=self;
-        if([self.topArray count]>0)
-            [cell setDataBind:self.topArray];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    if (indexPath.section==0) {
+        NSString *cellId = @"TreasureMiddleCell";
+        TreasureMiddleCell *cell = [[TreasureMiddleCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
+        cell.delegate = self;
+        [cell setDataBind:self.topArray];
         return cell;
-    }
-    if (indexPath.section ==1) {
+    }else{
         NSString *cellIndentifier = @"FoundListCell";
         FoundListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
         if(cell == nil)
@@ -182,9 +207,7 @@ Strong NSMutableArray *topArray;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
-    return nil;
 }
-
 
 #pragma mark 数据获取
 -(void)getRequest{
@@ -198,8 +221,8 @@ Strong NSMutableArray *topArray;
             DiscoverMenuModel * model=[DiscoverMenuModel yy_modelWithJSON:dic];
             [self.topArray addObject: model];
         }
-        self->content_title=[successDic objectForKey:@"content_title"];
-        
+        self.activityTitle=[successDic objectForKey:@"content_title"];
+//        [self.sectionsView loadSectionWithArray:self.topArray];
         NSArray * ary1=[successDic objectForKey:@"activity_list"];
         for(int k=0;k<[ary1 count];k++)
         {
@@ -210,14 +233,35 @@ Strong NSMutableArray *topArray;
         [self.tableView reloadData];
         
     } failure:^(NSDictionary *errorDic) {
-       
+        
+    }];
+}
+//刷新
+-(void)refreshRequest{
+    
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getActivityListUrl keysArray:@[@"page"] valuesArray:@[[NSString stringWithFormat:@"%ld",self.currentPage]] refresh:self.tableView success:^(NSDictionary *successDic) {
+        if (self.currentPage==1) {
+            [self.dataSourceArray removeAllObjects];
+        }
+        self.totalPages = [[successDic objectForKey:RESPONSE_TOTALPAGES] integerValue];
+        NSArray * ary1=[successDic objectForKey:RESPONSE_LIST];
+        for(int k=0;k<[ary1 count];k++)
+        {
+            NSDictionary * dic=[ary1 objectAtIndex:k];
+            FoundListModel * model=[FoundListModel yy_modelWithJSON:dic];
+            [self.dataSourceArray addObject: model];
+        }
+        [self.tableView reloadData];
+        
+    } failure:^(NSDictionary *errorDic) {
+        
     }];
 }
 
 
 -(void)didTreasureMiddleIndex:(NSInteger)index
 {
-
+    
     if (index==2) {
         //风控合作
         CooperationController *vc = InitObject(CooperationController);
@@ -228,20 +272,10 @@ Strong NSMutableArray *topArray;
         [self.navigationController pushViewController:feed animated:YES];
     }else{
         DiscoverMenuModel * model=[self.topArray objectAtIndex:index];
-    
         HomeWebController *discountVC = [[HomeWebController alloc] init];
-    
         discountVC.urlStr=model.link_url;
-    
         [self.navigationController pushViewController:discountVC animated:YES];
     }
-   
-}
-//点击查看更多活动
--(void)moreBtnClick:(UIButton *)sender{
-    
-    ActivityController *vc = InitObject(ActivityController);
-    [self.navigationController pushViewController:vc animated:YES];
 }
 -(void)didTreasureListDelegateIndex:(NSInteger)index
 {
@@ -255,13 +289,13 @@ Strong NSMutableArray *topArray;
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

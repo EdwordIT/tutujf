@@ -10,7 +10,6 @@
 #import "DetailTop.h"
 #import "DetailMiddle.h"
 #import "DetailBottom.h"
-#import "LoanBase.h"
 #import "RepayModel.h"
 #import "TenderModel.h"
 #import "BuyCreditAssignController.h"
@@ -24,7 +23,6 @@ Strong DetailBottom * bottomView;
 Strong UIScrollView *scrollView;
 Strong UIView *footerView;
 Strong UIButton *footerBtn;//立即购买
-Strong LoanBase *baseModel;
 @end
 
 @implementation CreditAssignDetailController
@@ -39,8 +37,12 @@ Strong LoanBase *baseModel;
     [self initScrollView];
     [self.view addSubview:self.footerView];
     [self.footerView addSubview:self.footerBtn];
-    [SVProgressHUD show];
-    [SVProgressHUD showWithStatus:@"数据加载中..."];
+    if(self.baseModel){
+        [self.topView loadCreditInfoWithModel:self.baseModel];
+        
+        [self.middleView loadCreditInfoWithModel:self.baseModel];
+    }else
+        [SVProgressHUD show];
     [self getRequest];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getRequest) name:Noti_LoginChanged object:nil];//登录状态变更，刷新数据
 }
@@ -70,7 +72,6 @@ Strong LoanBase *baseModel;
         _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, kNavHight, screen_width, kViewHeight - kTabbarHeight)];
         _scrollView.backgroundColor =COLOR_Background;
         _scrollView.delegate = self;
-        _scrollView.hidden = YES;
         WEAK_SELF;
         _scrollView.mj_header = [TTJFRefreshNormalHeader headerWithRefreshingBlock:^{
             [weakSelf getRequest];
@@ -203,7 +204,6 @@ Strong LoanBase *baseModel;
         self.baseModel = [LoanBase yy_modelWithJSON:successDic];
         self.baseModel.repay_type_name=[[successDic objectForKey:@"repay_type"] objectForKey:@"name"];
         [self reloadInfo];
-        [self.scrollView setHidden:NO];
     } failure:^(NSDictionary *errorDic) {
         
     }];

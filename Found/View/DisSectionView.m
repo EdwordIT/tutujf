@@ -1,35 +1,26 @@
 //
-//  TreasureMiddleCell.m
-//  DingXinDai
+//  DisSectionView.m
+//  TTJF
 //
-//  Created by 占碧光 on 2016/12/8.
-//  Copyright © 2016年 占碧光. All rights reserved.
+//  Created by wbzhan on 2018/7/31.
+//  Copyright © 2018年 TTJF. All rights reserved.
 //
 
-#import "TreasureMiddleCell.h"
-#import "DiscoverMenuModel.h"
-@implementation TreasureMiddleCell
-
--(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+#import "DisSectionView.h"
+@implementation DisSectionView
+-(instancetype)init
+{
+    self = [super init];
     if (self) {
-      
-      
     }
     return self;
 }
--(void)menuClick:(UITapGestureRecognizer *)ges{
-    
-    if ([self.delegate respondsToSelector:@selector(didTreasureMiddleIndex:)]) {
-        [self.delegate didTreasureMiddleIndex:ges.view.tag];
-    }
-}
-
-
-
--(void) setDataBind:(NSMutableArray *) data
+-(void)loadSectionWithArray:(NSArray  *)data
 {
-    [self.contentView removeAllSubViews];
+    [self removeAllSubViews];
+    CGFloat menuWidth = screen_width/3;
+    CGFloat menuHeight = kSizeFrom750(192);
+    CGFloat lineWidth = kLineHeight;
     if (!data) {
         NSArray *arr = @[@"关于土土",@"行业资讯",@"风控合作",@"运营报告",@"意见反馈",@"帮助中心"];
         NSMutableArray *mArr = InitObject(NSMutableArray);
@@ -40,17 +31,14 @@
         }
         data = mArr;
     }
-    CGFloat menuWidth = screen_width/3;
-    CGFloat menuHeight = kSizeFrom750(192);
-    CGFloat lineWidth = kLineHeight;
     for (int i=0; i<data.count; i++) {
         
         DiscoverMenuModel * model=[data objectAtIndex:i];
-
+        
         UIView *menuView = InitObject(UIView);
         menuView.frame = RECT((i%3)*menuWidth, (i/3)*menuHeight, menuWidth, menuHeight);
         menuView.tag = i;
-        [self.contentView addSubview:menuView];
+        [self addSubview:menuView];
         
         //最右边儿元素不加
         if (i%3!=2) {
@@ -59,7 +47,7 @@
             rightLayer.backgroundColor = [separaterColor CGColor];
             [menuView.layer addSublayer:rightLayer];
         }
-       //最下排元素不加
+        //最下排元素不加
         if (i/3!=1) {
             CALayer *bottomLayer = [CALayer layer];
             bottomLayer.frame = RECT(0, menuHeight-1, menuWidth, lineWidth);
@@ -87,18 +75,19 @@
     }
     
 }
-
-
-
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
+-(void)menuClick:(UITapGestureRecognizer *)ges{
+    
+    if ([self.delegate respondsToSelector:@selector(didTapSectionButton:)]) {
+        [self.delegate didTapSectionButton:ges.view.tag];
+    }
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
 }
+*/
 
 @end

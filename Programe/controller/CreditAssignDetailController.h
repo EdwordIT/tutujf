@@ -7,9 +7,11 @@
 //
 
 #import "BaseViewController.h"
+#import "LoanBase.h"
 /**
  债权转让详情
  */
 @interface CreditAssignDetailController : BaseViewController
 Copy NSString *transfer_id;//转让标的id
+Strong LoanBase *baseModel;
 @end

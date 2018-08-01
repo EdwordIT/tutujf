@@ -225,8 +225,20 @@ Strong BaseUITableView *creditTabView;//债权转让
         [self.navigationController pushViewController:vc animated:YES];
     }else{
         //债权转让
-        CreditModel *model = [self.creditDataArray objectAtIndex:indexPath.row];
         CreditAssignDetailController *detail = InitObject(CreditAssignDetailController);
+        CreditModel *model = [self.creditDataArray objectAtIndex:indexPath.row];
+        LoanBase *base = InitObject(LoanBase);
+        LoanInfo *info = InitObject(LoanInfo);
+        info.apr = model.apr;
+        info.name = model.loan_name;
+        info.status_name = model.status_name;
+        CreditInfoModel *credit = InitObject(CreditInfoModel);
+        credit.actual_amount = model.actual_amount;
+        credit.expire_date = model.expire_date;
+        credit.expire_date_txt = model.expire_date_txt;
+        base.loan_info = info;
+        
+        detail.baseModel = base;
         detail.transfer_id = model.transfer_id;
         [self.navigationController pushViewController:detail animated:YES];
     }

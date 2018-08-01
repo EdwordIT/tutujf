@@ -793,6 +793,8 @@
 		CB125995210EAE7F0063CA4D /* menuData.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7D4C1131E717D9000E828A5 /* menuData.plist */; };
 		CB12599C210EAEF90063CA4D /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7BF5F2E1E6066F200BCE81E /* Info.plist */; };
 		CB12599D210EAEFA0063CA4D /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7BF5F2E1E6066F200BCE81E /* Info.plist */; };
+		CB1259AE211030380063CA4D /* DisSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1259AD211030380063CA4D /* DisSectionView.m */; };
+		CB1259AF211035B20063CA4D /* DisSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1259AD211030380063CA4D /* DisSectionView.m */; };
 		CB1BFB97208EBC790045C0F0 /* RechargeController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB96208EBC790045C0F0 /* RechargeController.m */; };
 		CB1BFB9A208EBD040045C0F0 /* GetCashController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB99208EBD040045C0F0 /* GetCashController.m */; };
 		CB1BFB9D208EFE2D0045C0F0 /* UIButton+button.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB9C208EFE2D0045C0F0 /* UIButton+button.m */; };
@@ -1500,6 +1502,8 @@
 		CB03332A210C670500E965EC /* refresh_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refresh_4@2x.png"; sourceTree = "<group>"; };
 		CB12599A210EAE7F0063CA4D /* TTJFDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TTJFDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB12599B210EAE800063CA4D /* TTJFDev.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = TTJFDev.plist; path = /Users/wbzhan/tutujf/TTJFDev.plist; sourceTree = "<absolute>"; };
+		CB1259AC211030380063CA4D /* DisSectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DisSectionView.h; sourceTree = "<group>"; };
+		CB1259AD211030380063CA4D /* DisSectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DisSectionView.m; sourceTree = "<group>"; };
 		CB1BFB95208EBC790045C0F0 /* RechargeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeController.h; sourceTree = "<group>"; };
 		CB1BFB96208EBC790045C0F0 /* RechargeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeController.m; sourceTree = "<group>"; };
 		CB1BFB98208EBD040045C0F0 /* GetCashController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetCashController.h; sourceTree = "<group>"; };
@@ -3716,6 +3720,8 @@
 				E70E1ABB1FBFF30E00C6EFA6 /* TreasureMiddleCell.m */,
 				E709175B1FC2FD1D003CF8E2 /* FoundListCell.h */,
 				E709175C1FC2FD1D003CF8E2 /* FoundListCell.m */,
+				CB1259AC211030380063CA4D /* DisSectionView.h */,
+				CB1259AD211030380063CA4D /* DisSectionView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -5220,6 +5226,7 @@
 				CB125817210EAE7F0063CA4D /* UIImage+Alpha.m in Sources */,
 				CB125818210EAE7F0063CA4D /* ZFCirque.m in Sources */,
 				CB125819210EAE7F0063CA4D /* TotalTradesView.m in Sources */,
+				CB1259AF211035B20063CA4D /* DisSectionView.m in Sources */,
 				CB12581A210EAE7F0063CA4D /* HttpCommunication.m in Sources */,
 				CB12581B210EAE7F0063CA4D /* GestureViewController.m in Sources */,
 				CB12581C210EAE7F0063CA4D /* SZCalendarCell.m in Sources */,
@@ -5502,6 +5509,7 @@
 				E7067AA51E60C93B00E32B86 /* UIImage+Alpha.m in Sources */,
 				CBB4CD4520BBE50600EA877B /* ZFCirque.m in Sources */,
 				1B062DE0205D0237005125C0 /* TotalTradesView.m in Sources */,
+				CB1259AE211030380063CA4D /* DisSectionView.m in Sources */,
 				1B583B3F2061F17900CC70E4 /* HttpCommunication.m in Sources */,
 				E7071B9F1F21C30C00293B38 /* GestureViewController.m in Sources */,
 				E7067A5E1E60C88B00E32B86 /* SZCalendarCell.m in Sources */,
