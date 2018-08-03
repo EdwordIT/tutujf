@@ -8,10 +8,11 @@
 
 #import "DisSectionView.h"
 @implementation DisSectionView
--(instancetype)init
+-(instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
+        self.backgroundColor = COLOR_White;
     }
     return self;
 }
@@ -21,11 +22,11 @@
     CGFloat menuWidth = screen_width/3;
     CGFloat menuHeight = kSizeFrom750(192);
     CGFloat lineWidth = kLineHeight;
-    if (!data) {
+    if (data.count==0) {
         NSArray *arr = @[@"关于土土",@"行业资讯",@"风控合作",@"运营报告",@"意见反馈",@"帮助中心"];
         NSMutableArray *mArr = InitObject(NSMutableArray);
         for (int i=0; i<arr.count; i++) {
-            DiscoverMenuModel * model;
+            DiscoverMenuModel * model = InitObject(DiscoverMenuModel);
             model.title = arr[i];
             [mArr addObject:model];
         }
@@ -77,11 +78,10 @@
 }
 -(void)menuClick:(UITapGestureRecognizer *)ges{
     
-    if ([self.delegate respondsToSelector:@selector(didTapSectionButton:)]) {
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(didTapSectionButton:)]) {
         [self.delegate didTapSectionButton:ges.view.tag];
     }
 }
-
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

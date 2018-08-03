@@ -7,7 +7,8 @@
 //
 
 #import "BaseViewController.h"
-
+typedef void (^RefreshRemindBlock)(NSString *remindTxt);
 @interface RedEnvelopeContentController : BaseViewController
+Copy RefreshRemindBlock remindBlock;
 Assign NSInteger selectedIndex;
 @end

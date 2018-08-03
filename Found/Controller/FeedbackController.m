@@ -168,7 +168,7 @@ Strong NSMutableArray *imageArray;
     
     for(UIImage *imageObject in imageArray){
         
-        NSData *imageData = UIImageJPEGRepresentation(imageObject, 0.3);
+        NSData *imageData = UIImageJPEGRepresentation(imageObject, 0.1);
         
 //        NSString *encodeData = [imageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
         //UIImage转换为NSData

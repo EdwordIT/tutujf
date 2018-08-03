@@ -16,7 +16,8 @@ Strong FDSlideBar *slideBar;//滑动选择bar
 Strong ScrollerContentView *contentView;//内容页面
 Strong NSMutableArray *titleArr;//slideBar数据源
 Assign NSInteger selectedIndex;//被选中状态
-
+Strong UIView *headerView;
+Strong UIButton *remindBtn;
 Assign BOOL isused;
 Assign BOOL isoverdued;
 @end
@@ -31,6 +32,10 @@ Assign BOOL isoverdued;
 
     [self.view addSubview:self.slideBar];
     
+    [self.view addSubview:self.headerView];
+    
+    [self.headerView addSubview:self.remindBtn];
+    
     [self.view addSubview:self.contentView];
     
     // Do any additional setup after loading the view.
@@ -41,7 +46,7 @@ Assign BOOL isoverdued;
     if (!_contentView) {
         
         _contentView = [[ScrollerContentView alloc] init];
-        _contentView.frame = RECT(0, self.slideBar.bottom, screen_width, screen_height - self.slideBar.bottom);
+        _contentView.frame = RECT(0, self.headerView.bottom, screen_width, screen_height - self.headerView.bottom);
         _contentView.dataSource = self;
         __weak typeof(self) weakSelf = self;
         [_contentView slideContentViewScrollFinished:^(NSUInteger index) {
@@ -64,13 +69,36 @@ Assign BOOL isoverdued;
     }
     return _slideBar;
 }
-
+-(UIView *)headerView{
+    if (!_headerView) {
+        _headerView = [[UIView alloc]initWithFrame:RECT(0, self.slideBar.bottom, screen_width, kSizeFrom750(120))];
+    }
+    return _headerView;
+    
+}
+-(UIButton *)remindBtn{
+    if (!_remindBtn) {
+        _remindBtn = [[UIButton alloc]initWithFrame:RECT(kSizeFrom750(30), kSizeFrom750(30), kSizeFrom750(690), kSizeFrom750(60))];
+        [_remindBtn setImage:IMAGEBYENAME(@"remind_blue") forState:UIControlStateNormal];
+        _remindBtn.userInteractionEnabled = NO;
+        _remindBtn.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
+        [_remindBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, kSizeFrom750(20), 0, 0)];
+        [_remindBtn setImageEdgeInsets:UIEdgeInsetsMake(-kSizeFrom750(30), 0, 0, 0)];
+        [_remindBtn setTitleColor:RGB_153 forState:UIControlStateNormal];
+        [_remindBtn.titleLabel setFont:SYSTEMSIZE(25)];
+        [_remindBtn setTitle:@"投资成功后红包进入待激活状态，平台审核通过后将发放到账户余额。" forState:UIControlStateNormal];
+    }
+    return _remindBtn;
+}
 #pragma mark -- ScrollerContentViewDataSource
 - (UIViewController *)slideContentView:(ScrollerContentView *)contentView viewControllerForIndex:(NSUInteger)index {
     //显示内容的控制器
     RedEnvelopeContentController *contentVC = [[RedEnvelopeContentController alloc] init];
     contentVC.selectedIndex = index;
-    
+    WEAK_SELF;
+    contentVC.remindBlock = ^(NSString *remindTxt) {
+         [weakSelf.remindBtn setTitle:remindTxt forState:UIControlStateNormal];
+    };
     return contentVC;
 }
 

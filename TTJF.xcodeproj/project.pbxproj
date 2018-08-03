@@ -744,7 +744,6 @@
 		CB125964210EAE7F0063CA4D /* myinvest_search@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5E520B553DC00CBE5DF /* myinvest_search@3x.png */; };
 		CB125965210EAE7F0063CA4D /* program_full@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B1E30882088811700B3974F /* program_full@3x.png */; };
 		CB125966210EAE7F0063CA4D /* icon_feedCell_star_full@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7067B0D1E60C9AA00E32B86 /* icon_feedCell_star_full@2x.png */; };
-		CB125967210EAE7F0063CA4D /* re_overtime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934F20EB42CD0073364B /* re_overtime@3x.png */; };
 		CB125968210EAE7F0063CA4D /* recharge_remind@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3D302D20A5816F0040FE30 /* recharge_remind@2x.png */; };
 		CB125969210EAE7F0063CA4D /* icons_code@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B788F29208058FD00F03863 /* icons_code@3x.png */; };
 		CB12596A210EAE7F0063CA4D /* icon_rating_star_picked.png in Resources */ = {isa = PBXBuildFile; fileRef = E7067B141E60C9AA00E32B86 /* icon_rating_star_picked.png */; };
@@ -766,7 +765,6 @@
 		CB12597A210EAE7F0063CA4D /* home_01@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B583B08205F890E00CC70E4 /* home_01@3x.png */; };
 		CB12597B210EAE7F0063CA4D /* icon_listheader_animation_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7067B3F1E60C9AA00E32B86 /* icon_listheader_animation_2@2x.png */; };
 		CB12597C210EAE7F0063CA4D /* sns_icon_19_s.png in Resources */ = {isa = PBXBuildFile; fileRef = E70D16E31F2303C3007F12D0 /* sns_icon_19_s.png */; };
-		CB12597D210EAE7F0063CA4D /* re_overtime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934E20EB42CD0073364B /* re_overtime@2x.png */; };
 		CB12597E210EAE7F0063CA4D /* icons_nodata@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B788F13207DB8DB00F03863 /* icons_nodata@3x.png */; };
 		CB12597F210EAE7F0063CA4D /* my_redevenlope@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB449CCC2108209B001507D1 /* my_redevenlope@2x.png */; };
 		CB125980210EAE7F0063CA4D /* myinvest_paidback@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5E120B553DB00CBE5DF /* myinvest_paidback@2x.png */; };
@@ -795,6 +793,12 @@
 		CB12599D210EAEFA0063CA4D /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E7BF5F2E1E6066F200BCE81E /* Info.plist */; };
 		CB1259AE211030380063CA4D /* DisSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1259AD211030380063CA4D /* DisSectionView.m */; };
 		CB1259AF211035B20063CA4D /* DisSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1259AD211030380063CA4D /* DisSectionView.m */; };
+		CB125A522112CF430063CA4D /* DisListView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB125A512112CF430063CA4D /* DisListView.m */; };
+		CB125A532112CF430063CA4D /* DisListView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB125A512112CF430063CA4D /* DisListView.m */; };
+		CB125A562113FC1A0063CA4D /* re_overtime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB125A542113FC190063CA4D /* re_overtime@2x.png */; };
+		CB125A572113FC1A0063CA4D /* re_overtime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB125A542113FC190063CA4D /* re_overtime@2x.png */; };
+		CB125A582113FC1A0063CA4D /* re_overtime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB125A552113FC1A0063CA4D /* re_overtime@3x.png */; };
+		CB125A592113FC1A0063CA4D /* re_overtime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB125A552113FC1A0063CA4D /* re_overtime@3x.png */; };
 		CB1BFB97208EBC790045C0F0 /* RechargeController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB96208EBC790045C0F0 /* RechargeController.m */; };
 		CB1BFB9A208EBD040045C0F0 /* GetCashController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB99208EBD040045C0F0 /* GetCashController.m */; };
 		CB1BFB9D208EFE2D0045C0F0 /* UIButton+button.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB9C208EFE2D0045C0F0 /* UIButton+button.m */; };
@@ -900,8 +904,6 @@
 		CB45934B20EB114E0073364B /* transfer_addBankCard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934920EB114E0073364B /* transfer_addBankCard@2x.png */; };
 		CB45935020EB42CE0073364B /* re_waitting_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934C20EB42CD0073364B /* re_waitting_bg@2x.png */; };
 		CB45935120EB42CE0073364B /* re_waitting_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934D20EB42CD0073364B /* re_waitting_bg@3x.png */; };
-		CB45935220EB42CE0073364B /* re_overtime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934E20EB42CD0073364B /* re_overtime@2x.png */; };
-		CB45935320EB42CE0073364B /* re_overtime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45934F20EB42CD0073364B /* re_overtime@3x.png */; };
 		CB45935620EB44930073364B /* re_canuse_bg@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45935420EB44920073364B /* re_canuse_bg@3x.png */; };
 		CB45935720EB44930073364B /* re_canuse_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB45935520EB44930073364B /* re_canuse_bg@2x.png */; };
 		CB45935A20EB5ACE0073364B /* RedEnvelopeContentController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB45935920EB5ACE0073364B /* RedEnvelopeContentController.m */; };
@@ -1504,6 +1506,10 @@
 		CB12599B210EAE800063CA4D /* TTJFDev.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = TTJFDev.plist; path = /Users/wbzhan/tutujf/TTJFDev.plist; sourceTree = "<absolute>"; };
 		CB1259AC211030380063CA4D /* DisSectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DisSectionView.h; sourceTree = "<group>"; };
 		CB1259AD211030380063CA4D /* DisSectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DisSectionView.m; sourceTree = "<group>"; };
+		CB125A502112CF430063CA4D /* DisListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DisListView.h; sourceTree = "<group>"; };
+		CB125A512112CF430063CA4D /* DisListView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DisListView.m; sourceTree = "<group>"; };
+		CB125A542113FC190063CA4D /* re_overtime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_overtime@2x.png"; sourceTree = "<group>"; };
+		CB125A552113FC1A0063CA4D /* re_overtime@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_overtime@3x.png"; sourceTree = "<group>"; };
 		CB1BFB95208EBC790045C0F0 /* RechargeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeController.h; sourceTree = "<group>"; };
 		CB1BFB96208EBC790045C0F0 /* RechargeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeController.m; sourceTree = "<group>"; };
 		CB1BFB98208EBD040045C0F0 /* GetCashController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetCashController.h; sourceTree = "<group>"; };
@@ -1641,8 +1647,6 @@
 		CB45934920EB114E0073364B /* transfer_addBankCard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "transfer_addBankCard@2x.png"; sourceTree = "<group>"; };
 		CB45934C20EB42CD0073364B /* re_waitting_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_waitting_bg@2x.png"; sourceTree = "<group>"; };
 		CB45934D20EB42CD0073364B /* re_waitting_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_waitting_bg@3x.png"; sourceTree = "<group>"; };
-		CB45934E20EB42CD0073364B /* re_overtime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_overtime@2x.png"; sourceTree = "<group>"; };
-		CB45934F20EB42CD0073364B /* re_overtime@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_overtime@3x.png"; sourceTree = "<group>"; };
 		CB45935420EB44920073364B /* re_canuse_bg@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_canuse_bg@3x.png"; sourceTree = "<group>"; };
 		CB45935520EB44930073364B /* re_canuse_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_canuse_bg@2x.png"; sourceTree = "<group>"; };
 		CB45935820EB5ACE0073364B /* RedEnvelopeContentController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RedEnvelopeContentController.h; sourceTree = "<group>"; };
@@ -2672,12 +2676,12 @@
 		CB3CC5C820B54A6F00CBE5DF /* redenvelope(红包) */ = {
 			isa = PBXGroup;
 			children = (
+				CB125A542113FC190063CA4D /* re_overtime@2x.png */,
+				CB125A552113FC1A0063CA4D /* re_overtime@3x.png */,
 				CB45935520EB44930073364B /* re_canuse_bg@2x.png */,
 				CB45935420EB44920073364B /* re_canuse_bg@3x.png */,
 				CB45934C20EB42CD0073364B /* re_waitting_bg@2x.png */,
 				CB45934D20EB42CD0073364B /* re_waitting_bg@3x.png */,
-				CB45934E20EB42CD0073364B /* re_overtime@2x.png */,
-				CB45934F20EB42CD0073364B /* re_overtime@3x.png */,
 				CB3CC5CE20B54A8900CBE5DF /* re_canuse@2x.png */,
 				CB3CC5CF20B54A8A00CBE5DF /* re_canuse@3x.png */,
 				CB3CC5CC20B54A8900CBE5DF /* re_overdue_bg@2x.png */,
@@ -3722,6 +3726,8 @@
 				E709175C1FC2FD1D003CF8E2 /* FoundListCell.m */,
 				CB1259AC211030380063CA4D /* DisSectionView.h */,
 				CB1259AD211030380063CA4D /* DisSectionView.m */,
+				CB125A502112CF430063CA4D /* DisListView.h */,
+				CB125A512112CF430063CA4D /* DisListView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4405,6 +4411,7 @@
 				CB1258F5210EAE7F0063CA4D /* activity_over@3x.png in Resources */,
 				CB1258F6210EAE7F0063CA4D /* mineTop_02@2x.png in Resources */,
 				CB1258F7210EAE7F0063CA4D /* myinvest_failed@3x.png in Resources */,
+				CB125A592113FC1A0063CA4D /* re_overtime@3x.png in Resources */,
 				CB1258F8210EAE7F0063CA4D /* my_amountrecord@3x.png in Resources */,
 				CB1258F9210EAE7F0063CA4D /* home_club@3x.png in Resources */,
 				CB1258FA210EAE7F0063CA4D /* password_insure@2x.png in Resources */,
@@ -4513,11 +4520,11 @@
 				CB125960210EAE7F0063CA4D /* myinvest_period@2x.png in Resources */,
 				CB125961210EAE7F0063CA4D /* icon_feedCell_star_half@2x.png in Resources */,
 				CB125962210EAE7F0063CA4D /* password_lock@3x.png in Resources */,
+				CB125A572113FC1A0063CA4D /* re_overtime@2x.png in Resources */,
 				CB125963210EAE7F0063CA4D /* transfer_addBankCard@2x.png in Resources */,
 				CB125964210EAE7F0063CA4D /* myinvest_search@3x.png in Resources */,
 				CB125965210EAE7F0063CA4D /* program_full@3x.png in Resources */,
 				CB125966210EAE7F0063CA4D /* icon_feedCell_star_full@2x.png in Resources */,
-				CB125967210EAE7F0063CA4D /* re_overtime@3x.png in Resources */,
 				CB125968210EAE7F0063CA4D /* recharge_remind@2x.png in Resources */,
 				CB125969210EAE7F0063CA4D /* icons_code@3x.png in Resources */,
 				CB12596A210EAE7F0063CA4D /* icon_rating_star_picked.png in Resources */,
@@ -4539,7 +4546,6 @@
 				CB12597A210EAE7F0063CA4D /* home_01@3x.png in Resources */,
 				CB12597B210EAE7F0063CA4D /* icon_listheader_animation_2@2x.png in Resources */,
 				CB12597C210EAE7F0063CA4D /* sns_icon_19_s.png in Resources */,
-				CB12597D210EAE7F0063CA4D /* re_overtime@2x.png in Resources */,
 				CB12597E210EAE7F0063CA4D /* icons_nodata@3x.png in Resources */,
 				CB12597F210EAE7F0063CA4D /* my_redevenlope@2x.png in Resources */,
 				CB125980210EAE7F0063CA4D /* myinvest_paidback@2x.png in Resources */,
@@ -4713,6 +4719,7 @@
 				CB6D9B1821032EBA00E312C3 /* activity_over@3x.png in Resources */,
 				1B1E30942089873800B3974F /* mineTop_02@2x.png in Resources */,
 				CB3CC5F720B6469300CBE5DF /* myinvest_failed@3x.png in Resources */,
+				CB125A582113FC1A0063CA4D /* re_overtime@3x.png in Resources */,
 				CB449CD72108209C001507D1 /* my_amountrecord@3x.png in Resources */,
 				1B583B342060990800CC70E4 /* home_club@3x.png in Resources */,
 				1B1923862064CF18005B0C57 /* password_insure@2x.png in Resources */,
@@ -4821,11 +4828,11 @@
 				CB3CC5EA20B553DC00CBE5DF /* myinvest_period@2x.png in Resources */,
 				E7067B921E60C9AA00E32B86 /* icon_feedCell_star_half@2x.png in Resources */,
 				1B1923962064CF18005B0C57 /* password_lock@3x.png in Resources */,
+				CB125A562113FC1A0063CA4D /* re_overtime@2x.png in Resources */,
 				CB45934B20EB114E0073364B /* transfer_addBankCard@2x.png in Resources */,
 				CB3CC5F120B553DC00CBE5DF /* myinvest_search@3x.png in Resources */,
 				1B1E308E2088811700B3974F /* program_full@3x.png in Resources */,
 				E7067B911E60C9AA00E32B86 /* icon_feedCell_star_full@2x.png in Resources */,
-				CB45935320EB42CE0073364B /* re_overtime@3x.png in Resources */,
 				CB3D302F20A581700040FE30 /* recharge_remind@2x.png in Resources */,
 				1B788F2B208058FE00F03863 /* icons_code@3x.png in Resources */,
 				E7067B981E60C9AA00E32B86 /* icon_rating_star_picked.png in Resources */,
@@ -4847,7 +4854,6 @@
 				1B583B14205F890F00CC70E4 /* home_01@3x.png in Resources */,
 				E7067BC11E60C9AB00E32B86 /* icon_listheader_animation_2@2x.png in Resources */,
 				E70D16F21F2303C3007F12D0 /* sns_icon_19_s.png in Resources */,
-				CB45935220EB42CE0073364B /* re_overtime@2x.png in Resources */,
 				1B788F15207DB8DB00F03863 /* icons_nodata@3x.png in Resources */,
 				CB449CD22108209C001507D1 /* my_redevenlope@2x.png in Resources */,
 				CB3CC5ED20B553DC00CBE5DF /* myinvest_paidback@2x.png in Resources */,
@@ -5104,6 +5110,7 @@
 				CB12579D210EAE7F0063CA4D /* MyRedenvelopeModel.m in Sources */,
 				CB12579E210EAE7F0063CA4D /* RSA.m in Sources */,
 				CB12579F210EAE7F0063CA4D /* TTJFUserDefault.m in Sources */,
+				CB125A532112CF430063CA4D /* DisListView.m in Sources */,
 				CB1257A0210EAE7F0063CA4D /* SDBrowserImageView.m in Sources */,
 				CB1257A1210EAE7F0063CA4D /* MineMenuCell.m in Sources */,
 				CB1257A2210EAE7F0063CA4D /* FlowView.m in Sources */,
@@ -5387,6 +5394,7 @@
 				CB6810EA20AE9F310062B7FD /* MyRedenvelopeModel.m in Sources */,
 				E70B64B51ECB51AF004D5CCB /* RSA.m in Sources */,
 				1B6281422050E16D00ECFD8D /* TTJFUserDefault.m in Sources */,
+				CB125A522112CF430063CA4D /* DisListView.m in Sources */,
 				1B4EEC84206CEFF800117EF0 /* SDBrowserImageView.m in Sources */,
 				E70B09081F91FA33008C9F09 /* MineMenuCell.m in Sources */,
 				E7067B571E60C9AA00E32B86 /* FlowView.m in Sources */,

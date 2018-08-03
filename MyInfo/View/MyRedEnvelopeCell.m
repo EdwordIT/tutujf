@@ -76,7 +76,7 @@ Strong UIImageView *stateImage;//激活成功、已失效
 -(UILabel *)tagLabel{
     if (!_tagLabel) {
         _tagLabel = InitObject(UILabel);
-        _tagLabel.font = SYSTEMBOLDSIZE(20);
+        _tagLabel.font = SYSTEMBOLDSIZE(22);
         _tagLabel.textColor = COLOR_White;
         _tagLabel.textAlignment = NSTextAlignmentRight;
     }
@@ -156,16 +156,16 @@ Strong UIImageView *stateImage;//激活成功、已失效
 -(void)loadLayout
 {
     [self.bgImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(kSizeFrom750(0));
-        make.left.mas_equalTo(kOriginLeft);
+        make.top.mas_equalTo(0);
+        make.left.mas_equalTo(kSizeFrom750(20));
         make.right.mas_equalTo(-kOriginLeft);
-        make.height.mas_equalTo(kSizeFrom750(320));
+        make.height.mas_equalTo(kSizeFrom750(350));
     }];
     [self.tagImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(self.bgImage.mas_right).offset(-kSizeFrom750(13));
         make.top.mas_equalTo(kSizeFrom750(25));
-        make.width.mas_equalTo(kSizeFrom750(136));
-        make.height.mas_equalTo(kSizeFrom750(60));
+        make.width.mas_equalTo(kSizeFrom750(148));
+        make.height.mas_equalTo(kSizeFrom750(64));
     }];
     [self.tagLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.width.right.mas_equalTo(self.tagImage);
@@ -173,13 +173,13 @@ Strong UIImageView *stateImage;//激活成功、已失效
     }];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(kSizeFrom750(55));
-        make.top.mas_equalTo(kSizeFrom750(25));
+        make.top.mas_equalTo(kSizeFrom750(40));
         make.height.mas_equalTo(kSizeFrom750(35));
     }];
     [self.amountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(kSizeFrom750(30));
         make.left.mas_equalTo(self.titleLabel);
-        make.height.mas_equalTo(kSizeFrom750(70));
+        make.height.mas_equalTo(kSizeFrom750(65));
     }];
     [self.amountTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(self.amountLabel);
@@ -198,13 +198,13 @@ Strong UIImageView *stateImage;//激活成功、已失效
     }];
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(kSizeFrom750(35));
-        make.top.mas_equalTo(kSizeFrom750(250));
+        make.top.mas_equalTo(kSizeFrom750(270));
         make.height.mas_equalTo(kSizeFrom750(30));
     }];
     
     [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(self.bgImage.mas_right).offset(-kOriginLeft);
-        make.centerY.mas_equalTo(self.timeLabel.mas_centerY).offset(-kSizeFrom750(5));
+        make.centerY.mas_equalTo(self.timeLabel.mas_centerY).offset(-kSizeFrom750(3));
         make.height.mas_equalTo(kSizeFrom750(44));
         make.width.mas_equalTo(kSizeFrom750(180));
     }];
@@ -225,7 +225,7 @@ Strong UIImageView *stateImage;//激活成功、已失效
 -(void)loadInfoWithModel:(MyRedenvelopeModel *)model
 {
     self.titleLabel.text = model.name;
-    NSInteger seconds = [CommonUtils getDifferenceByDate:[[model.end_time stringByReplacingOccurrencesOfString:@"有效期至" withString:@""] stringByAppendingString:@" 00-00-00"]];
+    NSInteger seconds = [CommonUtils getDifferenceByDate:model.end_time];
     //计算过期时间差
     if (seconds/DAY>0&&seconds/DAY<10) {//过期时间在10天以内，则显示过期时间
         [self.tagImage setImage:IMAGEBYENAME(@"re_overtime") forState:UIControlStateNormal];//显示过期时间
@@ -233,18 +233,18 @@ Strong UIImageView *stateImage;//激活成功、已失效
         [self.tagLabel setText:[NSString stringWithFormat:@"%ld天后过期",seconds/DAY]];
         [self.tagLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.tagImage);
-            make.right.mas_equalTo(self.tagImage.mas_right).offset(-kSizeFrom750(5));
+            make.right.mas_equalTo(self.tagImage.mas_right).offset(-kSizeFrom750(8));
         }];
     }else{
         [self.tagImage setImage:IMAGEBYENAME(@"") forState:UIControlStateNormal];
     }
     NSString *str = [NSString stringWithFormat:@"%@元",model.amount];
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc]initWithString:str];
-    [attr addAttribute:NSFontAttributeName value:NUMBER_FONT_BOLD(60) range:[str rangeOfString:model.amount]];
+    [attr addAttribute:NSFontAttributeName value:NUMBER_FONT_BOLD(65) range:[str rangeOfString:model.amount]];
     [self.amountLabel setAttributedText:attr];
     self.amountTitle.text = model.type_name;
     [CommonUtils setAttString:[model.condition_txt stringByReplacingOccurrencesOfString:@"\\r" withString:@"\n"] withLineSpace:kLabelSpace titleLabel:self.desLabel];
-    self.timeLabel.text =model.end_time;
+    self.timeLabel.text =model.end_time_txt;
     //状态1 可用（立刻使用）【可用】 ， 2 待激活【已使用】(等待扣款状态)， 3 激活成功【已使用】， 4 过期 ，5 失效
     if ([model.status isEqualToString:@"1"]) {//可使用
         [self.bgImage setImage:IMAGEBYENAME(@"re_canuse_bg") forState:UIControlStateNormal];
@@ -253,7 +253,7 @@ Strong UIImageView *stateImage;//激活成功、已失效
         [self.tagLabel setText:model.status_name];
         self.tagLabel.textColor = COLOR_DarkBlue;
         [self.tagLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.tagImage).offset(kSizeFrom750(5));
+            make.top.mas_equalTo(self.tagImage).offset(kSizeFrom750(8));
             make.right.mas_equalTo(self.tagImage.mas_right).offset(-kSizeFrom750(10));
         }];
         [self.bgImage setImage:IMAGEBYENAME(@"re_waitting_bg") forState:UIControlStateNormal];

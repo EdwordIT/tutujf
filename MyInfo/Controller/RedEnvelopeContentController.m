@@ -13,7 +13,8 @@ Strong BaseUITableView *mainTableView;//全部
 Strong NSMutableArray *mainDataArray;
 Assign NSInteger mainCurrentPage;
 Assign NSInteger mainTotalPages;
-Copy NSString *remindString;
+
+
 @end
 
 @implementation RedEnvelopeContentController
@@ -34,10 +35,9 @@ Copy NSString *remindString;
     }
     return _mainDataArray;
 }
-
 -(BaseUITableView *)mainTableView{
     if (!_mainTableView) {
-        _mainTableView = [[BaseUITableView alloc]initWithFrame:RECT(0,0, screen_width, kViewHeight-kTitleHeight) style:UITableViewStyleGrouped];
+        _mainTableView = [[BaseUITableView alloc]initWithFrame:RECT(0,0, screen_width, kViewHeight - kTitleHeight - kSizeFrom750(120)) style:UITableViewStylePlain];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
         _mainTableView.rowHeight = kSizeFrom750(360);
@@ -84,9 +84,11 @@ Copy NSString *remindString;
     NSArray *valuesArr = @[[CommonUtils getToken],page,use_type];
     [[HttpCommunication sharedInstance] postSignRequestWithPath:myRedEnvelopeUrl keysArray:keysArr valuesArray:valuesArr refresh:self.mainTableView success:^(NSDictionary *successDic) {
         //红包规则
-        self.remindString = [successDic objectForKey:@"rule_txt"];
-        
-       self.mainTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
+        NSString *remindStr = [successDic objectForKey:@"rule_txt"];
+        if (self.remindBlock) {
+            self.remindBlock(remindStr);
+        }
+        self.mainTotalPages = [[successDic objectForKey:@"total_pages"] integerValue];
         NSArray *items =  [successDic objectForKey:@"items"];
        
         if ([page integerValue]==1) {
@@ -113,22 +115,6 @@ Copy NSString *remindString;
     [self loadRequestAtIndex:index];
 }
 #pragma mark -- dataSource and Delegate
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UIView *view = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(120))];
-    UIButton *remind = [[UIButton alloc]initWithFrame:RECT(kSizeFrom750(30), kSizeFrom750(30), kSizeFrom750(690), kSizeFrom750(60))];
-    [remind setImage:IMAGEBYENAME(@"remind_blue") forState:UIControlStateNormal];
-    remind.userInteractionEnabled = NO;
-    remind.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
-    [remind setTitleEdgeInsets:UIEdgeInsetsMake(0, kSizeFrom750(20), 0, 0)];
-    [remind setTitleColor:RGB_153 forState:UIControlStateNormal];
-    [remind.titleLabel setFont:SYSTEMSIZE(25)];
-    [remind setTitle:self.remindString forState:UIControlStateNormal];
-    [view addSubview:remind];
-    return view;
-}
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return kSizeFrom750(120);
-}
 -(NSInteger )numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
