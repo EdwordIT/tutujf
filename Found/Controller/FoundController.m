@@ -65,8 +65,9 @@ Assign NSInteger totalPages;
         _listView = InitObject(DisListView);
         _listView.delegate = self;
         _listView.listDelegate = self;
+        [_listView loadInfoWithArray:self.dataSourceArray andTitle:self.activityTitle];
         WEAK_SELF;
-        TTJFRefreshStateHeader *header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
+        _listView.mj_header = [TTJFRefreshStateHeader headerWithRefreshingBlock:^{
             [weakSelf refreshRequest];
         }];
         _listView.ly_emptyView = [EmptyView noDataRefreshBlock:^{
@@ -77,7 +78,7 @@ Assign NSInteger totalPages;
             [weakSelf loadMoreData];
         }];
         [_listView ly_startLoading];
-        _listView.mj_header = header;
+        
     }
     return _listView;
 }
@@ -173,7 +174,7 @@ Assign NSInteger totalPages;
 #pragma mark --sectionViewDelegate
 -(void)didTapSectionButton:(NSInteger)index
 {
-    
+  
     if (index==2) {
         //风控合作
         CooperationController *vc = InitObject(CooperationController);

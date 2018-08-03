@@ -524,12 +524,18 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
 #pragma mark --loadRequest
 
 -(void)getRequest{
-   
-   
-    NSArray *keys = @[kToken,@"keyword",@"start_time",@"end_time",@"page",@"order"];
-    NSArray *values = @[[CommonUtils getToken],self.keyword,self.startTime,self.endTime,[NSString stringWithFormat:@"%ld",self.page],self.order];
-    [[HttpCommunication sharedInstance] postSignRequestWithPath:getMyRecoverUrl keysArray:keys valuesArray:values refresh:self.listTab success:^(NSDictionary *successDic) {
+    NSArray *keys = @[kToken,@"keyword",@"start_time",@"end_time",@"page",@"limit",@"order"];
+    NSArray *values;
+    if (self.isCalendar) {
+        if (self.dayDataArray.count>0) {
+            return;//如果数据加载过，则不重新加载
+        }
+        values = @[[CommonUtils getToken],@"",@"",@"",@"1",@"1000",@"recover_time_up"];
+    }else
+        values = @[[CommonUtils getToken],self.keyword,self.startTime,self.endTime,[NSString stringWithFormat:@"%ld",self.page],Page_Count,self.order];
     
+    [[HttpCommunication sharedInstance] postSignRequestWithPath:getMyRecoverUrl keysArray:keys valuesArray:values refresh:self.listTab success:^(NSDictionary *successDic) {
+        
         if (self.page==1&&!self.isCalendar) {//列表页显示的时候
             [self.listTab setContentOffset:CGPointMake(0, 0) animated:YES];//滚动到顶端
             [self.listDataArray removeAllObjects];
@@ -545,7 +551,7 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
             [self.calendar reloadData];
             [self reloadCalendarView];
         }else{
-        
+            
             for (NSDictionary *item in successDic[RESPONSE_LIST]) {
                 PaybackModel *model = [PaybackModel yy_modelWithJSON:item];
                 [self.listDataArray addObject:model];
@@ -556,7 +562,7 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     } failure:^(NSDictionary *errorDic) {
         
     }];
-
+    
 }
 #pragma mark --scrollViewDelegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -668,25 +674,9 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     }
     return nil;
 }
--(void)getStartAndEndTime{
-    self.startTime = [self.dateFormat stringFromDate:self.calendar.currentPage];//获取当前月份第一天
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDate *firstDay;
-    [calendar rangeOfUnit:NSCalendarUnitMonth startDate:&firstDay interval:nil forDate:self.calendar.currentPage];
-    NSDateComponents *lastDateComponents = [calendar components:NSCalendarUnitMonth | NSCalendarUnitYear |NSCalendarUnitDay fromDate:firstDay];
-    NSUInteger dayNumberOfMonth = [calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:self.calendar.currentPage].length;
-    NSInteger day = [lastDateComponents day];
-    [lastDateComponents setDay:day+dayNumberOfMonth-1];
-    NSDate *lastDay = [calendar dateFromComponents:lastDateComponents];
-    self.endTime = [self.dateFormat stringFromDate:lastDay];//获取当前月份最后一天
-}
 //月份切换
 -(void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-   
-    //筛选日历选择
-    [self getStartAndEndTime];
-    [self getRequest];
     if (self.isClickBtnSwap) {//点击切换月份
         self.lastDate = calendar.currentPage;
         //刷新当前月份数据
@@ -697,6 +687,7 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
         //记录最后时间
         self.lastDate = calendar.currentPage;
     }
+    [self reloadCurrentMonthInfo];
 }
 //日期点击事件
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
@@ -763,11 +754,7 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     
     self.isCalendar = !sender.selected;
     if (!sender.selected) {
-        //将要显示日历，日历页面不显示排序等信息，只显示筛选当月所有内容
-        self.page = 1;
-        self.keyword = @"";
-        self.order = @"recover_time_up";//默认按时间降序排列
-        [self getStartAndEndTime];
+        //将要显示日历，日历页面不显示排序等信息,只显示总体内容
         [self getRequest];
     }
     sender.selected = !sender.selected;
@@ -863,7 +850,9 @@ Assign NSString *order;//排序 ：recover_time_up 时间升序，recover_time_d
     CGFloat totalAmount = 0;//
     for (int i=0; i<self.calendarDataArray.count; i++) {
         PaybackModel *model = self.calendarDataArray[i];
-        totalAmount +=[model.amount floatValue];
+        if ([[model.recover_time substringWithRange:NSMakeRange(0, 7)] isEqualToString:currentMonth]) {
+            totalAmount +=[model.amount floatValue];
+        }
     }
     NSString *txt = [[CommonUtils getHanleNums:[NSString stringWithFormat:@"%.2f",totalAmount]] stringByAppendingString:@"元"];
     [self.headerTextL setAttributedText:[CommonUtils diffierentFontWithString:txt rang:[txt rangeOfString:@"元"] font:SYSTEMSIZE(30) color:nil spacingBeforeValue:0 lineSpace:0]];

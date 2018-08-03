@@ -66,6 +66,7 @@
 //淡灰色背景
 #define RGB_240 RGB(240 ,240, 240)
 
+#define Page_Count @"15"//默认每页数据15条
 //**  简单的property 定义
 #define Strong          @property(nonatomic, strong)
 #define Weak            @property(nonatomic, weak)
@@ -142,37 +143,6 @@
 #define IS_IPhone6plus (736 == [[UIScreen mainScreen] bounds].size.height ? YES : NO)
 #define kDevice_Is_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
 
-
-//重新设定view的Y值
-/*
-#define setFrameY(view, newY) view.frame = CGRectMake(view.frame.origin.x, newY, view.frame.size.width, view.frame.size.height)
-#define setFrameX(view, newX) view.frame = CGRectMake(newX, view.frame.origin.y, view.frame.size.width, view.frame.size.height)
-#define setFrameH(view, newH) view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, newH)
-*/
-
-//取view的坐标及长宽
-/*
-#define W(view)    view.frame.size.width
-#define H(view)    view.frame.size.height
-#define X(view)    view.frame.origin.x
-#define Y(view)    view.frame.origin.y
- */
-
-//5.常用对象
-//#define APPDELEGATE ((AppDelegate *)[UIApplication sharedApplication].delegate)
-
-//6.经纬度
-#define LATITUDE_DEFAULT 39.983497
-#define LONGITUDE_DEFAULT 116.318042
-/*
-#define kPaddingLeftWidth 15.0
-#define kLoginPaddingLeftWidth 18.0
-#define kMySegmentControl_Height 44.0
-#define kMySegmentControlIcon_Height 70.0
-
-#define  kBackButtonFontSize 16
-#define  kNavTitleFontSize 18
- */
 #define LocalVersion @"20"  //当前内部版本号
 //7.系统版本号
 #define IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]

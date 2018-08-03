@@ -25,30 +25,9 @@ Weak UIView *rightCycleView;//前轮
     UILabel *label = [[UILabel alloc] init];
     label.textColor = RGB_102;
     label.font = SYSTEMSIZE(26);
-//    label.textAlignment = NSTextAlignmentCenter;
     [self addSubview:label];
     self.textLabel = label;
 
-//    UIView *left = [[UIView alloc]initWithFrame:RECT(0, 0, 12, 12)];
-//    [self addSubview:left];
-//    self.leftCycleView = left;
-//
-//    UIView *right= [[UIView alloc]initWithFrame:RECT(0, 0, 12, 12)];
-//    [self addSubview:right];
-//    self.rightCycleView = right;
-
-    // 初始化间距
-    //设置普通状态的动画图片
-//    NSMutableArray *idleImages = [NSMutableArray array];
-//    [idleImages addObject:IMAGEBYENAME(@"refresh_15")];
-//    for (NSInteger i = 1; i<=15; i++) {
-//        UIImage *image = nil;
-//        if (i<10) {
-//            image =  [UIImage imageNamed:[NSString stringWithFormat:@"refresh_0%ld",i]];
-//        }else
-//            image =  [UIImage imageNamed:[NSString stringWithFormat:@"refresh_%ld",i]];
-//        [idleImages addObject:image];
-//    }
     //设置普通状态的动画图片
     NSMutableArray *idleImages = [NSMutableArray array];
     for (NSInteger i = 1; i<=4; i++) {
@@ -73,21 +52,7 @@ Weak UIView *rightCycleView;//前轮
 
 }
 //刷新图片尺寸1242*400
-//-(void)placeSubviews
-//{
-//    [super placeSubviews];
-//    CGFloat plusHeight = 280*(screen_width/1242);
-//    CGRect gifViewFrame = self.gifView.frame;
-//    gifViewFrame.size.width = screen_width;
-//    gifViewFrame.size.height = plusHeight;
-//    self.gifView.frame = gifViewFrame;
-//    self.gifView.contentMode = UIViewContentModeScaleAspectFill;
-//
-//    self.mj_w = screen_width;
-//    self.mj_h = plusHeight;
-//    self.gifView.mj_w = screen_width;
-//
-//}
+
 //自定义动画
 -(void)loadCycleView:(CGFloat)progress view:(UIView *)cycleView{
     
