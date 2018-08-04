@@ -86,7 +86,7 @@ Assign BOOL isoverdued;
         [_remindBtn setImageEdgeInsets:UIEdgeInsetsMake(-kSizeFrom750(30), 0, 0, 0)];
         [_remindBtn setTitleColor:RGB_153 forState:UIControlStateNormal];
         [_remindBtn.titleLabel setFont:SYSTEMSIZE(25)];
-        [_remindBtn setTitle:@"投资成功后红包进入待激活状态，平台审核通过后将发放到账户余额。" forState:UIControlStateNormal];
+        [_remindBtn setTitle:@"投资成功后红包进入待激活状态，平台审核通过后将发放到账号余额。" forState:UIControlStateNormal];
     }
     return _remindBtn;
 }

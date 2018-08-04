@@ -26,6 +26,7 @@ Assign NSInteger mainTotalPages;
     [self.titleView setHidden:YES];
     [self.view addSubview:self.mainTableView];
     [self loadRefresh];
+    [SVProgressHUD show];
     [self loadRequestAtIndex:self.selectedIndex];
     // Do any additional setup after loading the view.
 }
