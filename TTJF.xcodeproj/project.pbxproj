@@ -799,6 +799,10 @@
 		CB125A572113FC1A0063CA4D /* re_overtime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB125A542113FC190063CA4D /* re_overtime@2x.png */; };
 		CB125A582113FC1A0063CA4D /* re_overtime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB125A552113FC1A0063CA4D /* re_overtime@3x.png */; };
 		CB125A592113FC1A0063CA4D /* re_overtime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB125A552113FC1A0063CA4D /* re_overtime@3x.png */; };
+		CB125A5C211586050063CA4D /* UIView+LineView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB125A5B211586050063CA4D /* UIView+LineView.m */; };
+		CB125A5D211586050063CA4D /* UIView+LineView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB125A5B211586050063CA4D /* UIView+LineView.m */; };
+		CB125A60211589930063CA4D /* TotolAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB125A5F211589930063CA4D /* TotolAmountCell.m */; };
+		CB125A61211589930063CA4D /* TotolAmountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CB125A5F211589930063CA4D /* TotolAmountCell.m */; };
 		CB1BFB97208EBC790045C0F0 /* RechargeController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB96208EBC790045C0F0 /* RechargeController.m */; };
 		CB1BFB9A208EBD040045C0F0 /* GetCashController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB99208EBD040045C0F0 /* GetCashController.m */; };
 		CB1BFB9D208EFE2D0045C0F0 /* UIButton+button.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFB9C208EFE2D0045C0F0 /* UIButton+button.m */; };
@@ -814,6 +818,8 @@
 		CB1BFBBE2091AFE00045C0F0 /* CreditModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBBD2091AFE00045C0F0 /* CreditModel.m */; };
 		CB1BFBC12091C3420045C0F0 /* CreditAssignDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBC02091C3420045C0F0 /* CreditAssignDetailController.m */; };
 		CB1BFBC42091C55F0045C0F0 /* BuyCreditAssignController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1BFBC32091C55F0045C0F0 /* BuyCreditAssignController.m */; };
+		CB3684722117E3F30023474C /* MainPayBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3684712117E3F30023474C /* MainPayBackView.m */; };
+		CB3684732117E3F30023474C /* MainPayBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3684712117E3F30023474C /* MainPayBackView.m */; };
 		CB3CC5A720B3F97F00CBE5DF /* MyInvestDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3CC5A620B3F97F00CBE5DF /* MyInvestDetailController.m */; };
 		CB3CC5AA20B3F9ED00CBE5DF /* MyInvestDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3CC5A920B3F9ED00CBE5DF /* MyInvestDetailModel.m */; };
 		CB3CC5BA20B54A5C00CBE5DF /* transfer_record_repay@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB3CC5AC20B54A4E00CBE5DF /* transfer_record_repay@3x.png */; };
@@ -1510,6 +1516,10 @@
 		CB125A512112CF430063CA4D /* DisListView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DisListView.m; sourceTree = "<group>"; };
 		CB125A542113FC190063CA4D /* re_overtime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_overtime@2x.png"; sourceTree = "<group>"; };
 		CB125A552113FC1A0063CA4D /* re_overtime@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "re_overtime@3x.png"; sourceTree = "<group>"; };
+		CB125A5A211586050063CA4D /* UIView+LineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+LineView.h"; sourceTree = "<group>"; };
+		CB125A5B211586050063CA4D /* UIView+LineView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+LineView.m"; sourceTree = "<group>"; };
+		CB125A5E211589930063CA4D /* TotolAmountCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TotolAmountCell.h; sourceTree = "<group>"; };
+		CB125A5F211589930063CA4D /* TotolAmountCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TotolAmountCell.m; sourceTree = "<group>"; };
 		CB1BFB95208EBC790045C0F0 /* RechargeController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RechargeController.h; sourceTree = "<group>"; };
 		CB1BFB96208EBC790045C0F0 /* RechargeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RechargeController.m; sourceTree = "<group>"; };
 		CB1BFB98208EBD040045C0F0 /* GetCashController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetCashController.h; sourceTree = "<group>"; };
@@ -1540,6 +1550,8 @@
 		CB1BFBC02091C3420045C0F0 /* CreditAssignDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CreditAssignDetailController.m; sourceTree = "<group>"; };
 		CB1BFBC22091C55F0045C0F0 /* BuyCreditAssignController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BuyCreditAssignController.h; sourceTree = "<group>"; };
 		CB1BFBC32091C55F0045C0F0 /* BuyCreditAssignController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BuyCreditAssignController.m; sourceTree = "<group>"; };
+		CB3684702117E3F30023474C /* MainPayBackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainPayBackView.h; sourceTree = "<group>"; };
+		CB3684712117E3F30023474C /* MainPayBackView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainPayBackView.m; sourceTree = "<group>"; };
 		CB3CC5A520B3F97F00CBE5DF /* MyInvestDetailController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyInvestDetailController.h; sourceTree = "<group>"; };
 		CB3CC5A620B3F97F00CBE5DF /* MyInvestDetailController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyInvestDetailController.m; sourceTree = "<group>"; };
 		CB3CC5A820B3F9ED00CBE5DF /* MyInvestDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyInvestDetailModel.h; sourceTree = "<group>"; };
@@ -2397,6 +2409,8 @@
 				CB1BFB9C208EFE2D0045C0F0 /* UIButton+button.m */,
 				CB4A088120D35DE800713BF1 /* UIFont+customFont.h */,
 				CB4A088220D35DE800713BF1 /* UIFont+customFont.m */,
+				CB125A5A211586050063CA4D /* UIView+LineView.h */,
+				CB125A5B211586050063CA4D /* UIView+LineView.m */,
 			);
 			path = Categorys;
 			sourceTree = "<group>";
@@ -3894,6 +3908,10 @@
 				E7039A911E751FCF00436715 /* QuicklyCell.m */,
 				1B062DDE205D0237005125C0 /* TotalTradesView.h */,
 				1B062DDF205D0237005125C0 /* TotalTradesView.m */,
+				CB125A5E211589930063CA4D /* TotolAmountCell.h */,
+				CB125A5F211589930063CA4D /* TotolAmountCell.m */,
+				CB3684702117E3F30023474C /* MainPayBackView.h */,
+				CB3684712117E3F30023474C /* MainPayBackView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -5039,6 +5057,7 @@
 				CB125756210EAE7F0063CA4D /* AutoLoginView.m in Sources */,
 				CB125757210EAE7F0063CA4D /* ZFRadarChart.m in Sources */,
 				CB125758210EAE7F0063CA4D /* MyInvestDetailModel.m in Sources */,
+				CB3684732117E3F30023474C /* MainPayBackView.m in Sources */,
 				CB125759210EAE7F0063CA4D /* ZFHorizontalAxis.m in Sources */,
 				CB12575A210EAE7F0063CA4D /* PaybackCell.m in Sources */,
 				CB12575B210EAE7F0063CA4D /* MessageShowCell.m in Sources */,
@@ -5123,6 +5142,7 @@
 				CB1257A9210EAE7F0063CA4D /* DiscoverMenuModel.m in Sources */,
 				CB1257AA210EAE7F0063CA4D /* SDRangeSliderView.m in Sources */,
 				CB1257AB210EAE7F0063CA4D /* GuideRegisterCell.m in Sources */,
+				CB125A61211589930063CA4D /* TotolAmountCell.m in Sources */,
 				CB1257AC210EAE7F0063CA4D /* HeaderView.m in Sources */,
 				CB1257AD210EAE7F0063CA4D /* TTJFRefreshStateHeader.m in Sources */,
 				CB1257AE210EAE7F0063CA4D /* GestureVerifyViewController.m in Sources */,
@@ -5202,6 +5222,7 @@
 				CB1257F8210EAE7F0063CA4D /* HYSegmentedControl.m in Sources */,
 				CB1257F9210EAE7F0063CA4D /* ZFGradientAttribute.m in Sources */,
 				CB1257FA210EAE7F0063CA4D /* UIImage+Color.m in Sources */,
+				CB125A5D211586050063CA4D /* UIView+LineView.m in Sources */,
 				CB1257FB210EAE7F0063CA4D /* MyTransferModel.m in Sources */,
 				CB1257FC210EAE7F0063CA4D /* RepayModel.m in Sources */,
 				CB1257FD210EAE7F0063CA4D /* CustomURLProtocol.m in Sources */,
@@ -5323,6 +5344,7 @@
 				1B4EEC6D206BADFA00117EF0 /* AutoLoginView.m in Sources */,
 				CBB4CD5420BBE50600EA877B /* ZFRadarChart.m in Sources */,
 				CB3CC5AA20B3F9ED00CBE5DF /* MyInvestDetailModel.m in Sources */,
+				CB3684722117E3F30023474C /* MainPayBackView.m in Sources */,
 				CBB4CD4920BBE50600EA877B /* ZFHorizontalAxis.m in Sources */,
 				CB4593CC20F093960073364B /* PaybackCell.m in Sources */,
 				1B583AFC205F64F800CC70E4 /* MessageShowCell.m in Sources */,
@@ -5407,6 +5429,7 @@
 				E70E1AC31FC0101100C6EFA6 /* DiscoverMenuModel.m in Sources */,
 				CB5A6FF920F353810016C5A7 /* SDRangeSliderView.m in Sources */,
 				1B583B1A205F895000CC70E4 /* GuideRegisterCell.m in Sources */,
+				CB125A60211589930063CA4D /* TotolAmountCell.m in Sources */,
 				E7067B581E60C9AA00E32B86 /* HeaderView.m in Sources */,
 				1B23E294204E834D007F09BE /* TTJFRefreshStateHeader.m in Sources */,
 				E7071B9E1F21C30C00293B38 /* GestureVerifyViewController.m in Sources */,
@@ -5486,6 +5509,7 @@
 				1B788F422081E4F400F03863 /* HYSegmentedControl.m in Sources */,
 				CBB4CD4020BBE50600EA877B /* ZFGradientAttribute.m in Sources */,
 				E7067AAA1E60C93B00E32B86 /* UIImage+Color.m in Sources */,
+				CB125A5C211586050063CA4D /* UIView+LineView.m in Sources */,
 				CB6810DE20AC0ED50062B7FD /* MyTransferModel.m in Sources */,
 				1BCF2248206E2BE700D75662 /* RepayModel.m in Sources */,
 				E70C2A901F1E6126005BA9EF /* CustomURLProtocol.m in Sources */,

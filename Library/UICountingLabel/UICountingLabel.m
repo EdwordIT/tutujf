@@ -243,27 +243,38 @@
 
 - (void)setTextValue:(CGFloat)value
 {
+    CGFloat charSpace = kSizeFrom750(6);//字体间距
     if (self.attributedFormatBlock != nil) {
         self.attributedText = self.attributedFormatBlock(value);
+//        self.attributedText = [[NSMutableAttributedString alloc]initWithString:self.attributedFormatBlock(value) attributes:@{NSKernAttributeName:@(kSizeFrom750(10))}];
     }
     else if(self.formatBlock != nil)
     {
-        self.text = self.formatBlock(value);
+//        self.text = self.formatBlock(value);
+       self.attributedText = [[NSMutableAttributedString alloc]initWithString:self.formatBlock(value) attributes:@{NSKernAttributeName:@(charSpace)}];
     }
     else
     {
         // check if counting with ints - cast to int
         if([self.format rangeOfString:@"%(.*)d" options:NSRegularExpressionSearch].location != NSNotFound || [self.format rangeOfString:@"%(.*)i"].location != NSNotFound )
         {
-            self.text = [NSString stringWithFormat:self.format,(int)value];
+//            self.text = [NSString stringWithFormat:self.format,(int)value];
+            self.attributedText = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:self.format,(int)value] attributes:@{NSKernAttributeName:@(charSpace)}];
+
         }
         else
         {
             if (self.positiveFormat.length>0) {
                 //转化为千分位数字
-                self.text = [CommonUtils getHanleNums:[NSString stringWithFormat:@"%.2f",value]];
+//                self.text = [CommonUtils getHanleNums:[NSString stringWithFormat:@"%.2f",value]];
+                self.attributedText = [[NSMutableAttributedString alloc]initWithString:[CommonUtils getHanleNums:[NSString stringWithFormat:@"%.2f",value]] attributes:@{NSKernAttributeName:@(charSpace)}];
+
+                
             }else{
-                self.text = [NSString stringWithFormat:self.format,value];
+//                self.text = [NSString stringWithFormat:self.format,value];
+                self.attributedText = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:self.format,value] attributes:@{NSKernAttributeName:@(charSpace)}];
+
+                
             }
         }
     }

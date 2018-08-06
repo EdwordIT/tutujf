@@ -44,9 +44,6 @@
   //  cycleScrollView2.titlesGroup = titles;
     cycleScrollView2.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
     [demoContainerView addSubview:cycleScrollView2];
-    
-    cycleScrollView2.pageControlBottomOffset = kSizeFrom750(30);
-    
     //         --- 模拟加载延迟
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self ->cycleScrollView2.imageURLStringsGroup = imagesURLStrings;

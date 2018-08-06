@@ -7,7 +7,6 @@
 //倒计时管理类，保证在一个主线程中只有一个倒计时在进行
 
 #import <Foundation/Foundation.h>
-#define Noti_CountDown @"countDownNotification"
 @interface CountDownManager : NSObject
 Assign NSTimeInterval timeInterval;
 +(instancetype)manager;

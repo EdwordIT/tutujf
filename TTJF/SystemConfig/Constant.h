@@ -24,6 +24,8 @@
 //登录状态发生变化全局通知
 #define Noti_LoginChanged @"LoginStatusChanged"//改变首页数据显示
 
+#define Noti_CountDown @"countDownNotification"//心跳
+
 #define Noti_CountDownFinished @"CountDownFinished"//项目持续倒计时结束，发送通知使按钮无法点击
 //token失效重新登录通知
 #define Noti_AutoLogin @"autoLogin"

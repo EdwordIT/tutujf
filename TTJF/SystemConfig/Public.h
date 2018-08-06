@@ -88,6 +88,7 @@
 //#define SYSTEMSIZE(x) [UIFont fontWithName:@"Source Han Sans CN" size:kSizeFrom750(x)]
 //#define SYSTEMBOLDSIZE(x)  [UIFont boldSystemFontOfSize:kSizeFrom750(x)]
 
+#define UIFontFromPixel(pixel) ([UIFont systemFontOfSize:pixel*3/4])
 #define SYSTEMSIZE(x) [UIFont  systemFontOfSize:kSizeFrom750(x)]
 #define SYSTEMBOLDSIZE(x) [UIFont boldSystemFontOfSize:kSizeFrom750(x)]
 //Helvetica-Bold

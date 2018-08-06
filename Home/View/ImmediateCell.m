@@ -7,7 +7,12 @@
 //
 
 #import "ImmediateCell.h"
+@interface ImmediateCell()
 
+Strong UIImageView *rectView;
+Strong UILabel *incomeTitle;
+Strong UILabel *subTitle;
+@end
 
 @implementation ImmediateCell
 {
@@ -26,31 +31,36 @@
 
 -(void)initViews {
 
-   UIImageView * leftImage=[[UIImageView alloc] initWithFrame:CGRectMake(kSizeFrom750(160), kSizeFrom750(290), kSizeFrom750(75), kSizeFrom750(25))];
-    [leftImage setImage:[UIImage imageNamed:@"wings_left"]];
-    [self.contentView addSubview:leftImage];
+    self.rectView = InitObject(UIImageView);
+    self.rectView.frame = RECT(kSizeFrom750(40), kSizeFrom750(50), kSizeFrom750(670), kSizeFrom750(340));
+    [self.contentView addSubview:self.rectView];
+    [CommonUtils setShadowCornerRadiusToView:self.rectView];
+
     
+    self.incomeTitle = [[UILabel alloc]initWithFrame:RECT(0, kSizeFrom750(50), kSizeFrom750(250), kSizeFrom750(70))];
+    self.incomeTitle.centerX = self.rectView.width/2;
+    self.incomeTitle.font = SYSTEMSIZE(34);
+    self.incomeTitle.textColor = RGB_51;
+    self.incomeTitle.text = @"新手专享体验标";
+    [self.rectView addSubview:self.incomeTitle];
     
-    UILabel * lab1=  [[UILabel alloc] initWithFrame:CGRectMake(leftImage.right, leftImage.top - kSizeFrom750(5),kSizeFrom750(280),kSizeFrom750(30))];
-    lab1.font = SYSTEMBOLDSIZE(32);
-    lab1.textColor=RGB_102;
-    NSAttributedString *attr = [CommonUtils diffierentFontWithString:@"新手专享 为您特供" rang:NSMakeRange(0, 4) font:SYSTEMBOLDSIZE(32) color:COLOR_Red spacingBeforeValue:0 lineSpace:0];
-    lab1.attributedText=attr;
-    lab1.textAlignment=NSTextAlignmentCenter;
-    [self.contentView addSubview:lab1];
-    
-    rightimg=[[UIImageView alloc] initWithFrame:CGRectMake(screen_width - kSizeFrom750(160)- kSizeFrom750(75), leftImage.top, leftImage.width, leftImage.height)];
-    [rightimg setImage:[UIImage imageNamed:@"wings_right"]];
-    [self.contentView addSubview:rightimg];
-    
-    _incomeLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, lab1.bottom+kSizeFrom750(40),kSizeFrom750(200),kSizeFrom750(55))];
-    _incomeLabel.centerX = lab1.centerX;
+    _incomeLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, self.incomeTitle.bottom+kSizeFrom750(60),kSizeFrom750(200),kSizeFrom750(40))];
+    _incomeLabel.centerX = self.incomeTitle.centerX;
     _incomeLabel.textAlignment=NSTextAlignmentCenter;
     _incomeLabel.font = NUMBER_FONT_BOLD(60);
     _incomeLabel.textColor = COLOR_Red;
     [self.contentView addSubview:_incomeLabel];
     
-     self.minPointLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, _incomeLabel.bottom+kSizeFrom750(40),screen_width/2, kSizeFrom750(25))];
+    self.subTitle = [[UILabel alloc]initWithFrame:RECT(0, self.incomeLabel.bottom+kSizeFrom750(16), kSizeFrom750(250), kSizeFrom750(70))];
+    self.subTitle.centerX = self.rectView.width/2;
+    self.subTitle.font = SYSTEMSIZE(34);
+    self.subTitle.textColor = HEXCOLOR(@"#b8b8b8");
+    self.subTitle.text = @"预期利率";
+    [self.rectView addSubview:self.subTitle];
+    
+    
+    
+     self.minPointLabel= [[UILabel alloc] initWithFrame:CGRectMake(0, self.subTitle.bottom+kSizeFrom750(40),screen_width/2, kSizeFrom750(25))];
      self.minPointLabel.font = NUMBER_FONT_BOLD(26);
     self.minPointLabel.textColor=RGB(54,54,54);
      self.minPointLabel.textAlignment=NSTextAlignmentCenter;
@@ -67,18 +77,6 @@
     self.timeLabel.textAlignment=NSTextAlignmentCenter;
     [self.contentView addSubview:self.timeLabel];
     
-    UIButton* btn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn1.frame = CGRectMake(0,self.timeLabel.bottom+kSizeFrom750(35),kSizeFrom750(450), kSizeFrom750(72));
-    btn1.centerX = self.incomeLabel.centerX;
-    [btn1 addTarget:self action:@selector(button_event:) forControlEvents:UIControlEventTouchUpInside];
-    btn1.tag=1;
-    [btn1 setTitle:@"立即投资" forState:UIControlStateNormal];//button title
-     [btn1.titleLabel setFont:SYSTEMSIZE(28)];
-    [btn1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];//title color
-    btn1.backgroundColor=COLOR_Red;
-    [btn1.layer setCornerRadius:btn1.height/2]; //设置矩形四个圆角半径
-
-    [self.contentView addSubview:btn1];
 
 }
 

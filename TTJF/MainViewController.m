@@ -1,9 +1,8 @@
 //
 //  MainViewController.m
-//    改版的B版效果 是参照国美在线头部搜索 C 版 是 我主良缘
 //
-//  Created by 占碧光 on 2017/2/26.
-//  Copyright © 2017年 占碧光. All rights reserved.
+//  Created by wbzhan on 2017/2/26.
+//  Copyright © 2018年 TTJF. All rights reserved.
 //
 
 #import "MainViewController.h"
@@ -20,13 +19,14 @@
 #import "RushPurchaseController.h"
 #import "ProgrameDetailController.h"
 #import "RegisterViewController.h"//注册页面
-#import "TotalTradesView.h"//总成交金额
-#import "CustomerServiceView.h"//客户服务
+//#import "CustomerServiceView.h"//客户服务
 #import "AdverAlertView.h"//广告浮层
 #import "HomepageModel.h"
 #import <UIButton+WebCache.h>
 #import "SystemConfigModel.h"
 #import "CountDownManager.h"
+#import "TotolAmountCell.h"
+#import "MainPayBackView.h"
 
 @interface MainViewController ()<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,UIWebViewDelegate,BannerDelegate,ImmediateDelegate,OpenShowAdvertDelegate,UIAlertViewDelegate>
 {
@@ -37,23 +37,18 @@
 
 }
 Strong BaseUITableView *tableView;
-Strong TotalTradesView *tradesView;//交易总金额视图
-Strong CustomerServiceView *serviceView;//客服热线
 Strong AdverAlertView *adAlertView;//广告浮层
-Strong UIButton *serviceBtn;//客服按钮
 Strong UIButton *messageBtn;//消息按钮
 Strong HomepageModel *homePageModel;//数据源
 Strong SystemConfigModel *configModel;//
 Strong UIView *functionTopView;//功能按钮
+Weak TotolAmountCell *countCell;
 @end
 
 
 @implementation MainViewController
 #pragma mark --buttonClick
--(void)serviceBtnClick:(UIButton *)sender{
-    
-    [self.serviceView setHidden:NO];
-}
+
 -(void)messageBtnClick:(UIButton *)sender{
     //消息按钮点击
     [self goWebViewWithUrl:self.homePageModel.unread_msg_link];
@@ -186,7 +181,7 @@ Strong UIView *functionTopView;//功能按钮
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorColor = separaterColor;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     // 设置表格尾部
     [self.tableView setTableFooterView:footerView];
     [self.view addSubview:self.tableView];
@@ -206,51 +201,23 @@ Strong UIView *functionTopView;//功能按钮
 //自定义视图
 -(void)initCustomView
 {
-    //累计成交总额
-    self.tradesView = [[TotalTradesView alloc]initWithFrame: RECT(kSizeFrom750(50), kSizeFrom750(342), screen_width - kSizeFrom750(100), kSizeFrom750(290))];
-    [CommonUtils setShadowCornerRadiusToView:self.tradesView];
-    self.tradesView.hidden = YES;
-    [self.tableView addSubview:self.tradesView];
     
     self.functionTopView = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kNavHight)];
     [self.view addSubview:self.functionTopView];
     
      [self.view bringSubviewToFront:self.titleView];
      [self.view bringSubviewToFront:self.functionTopView];
-    //客服按钮
-    self.serviceBtn = [[UIButton alloc]initWithFrame:RECT(0,kStatusBarHeight+((kNavHight - kStatusBarHeight) - kSizeFrom750(46))/2, kSizeFrom750(114), kSizeFrom750(46))];
-    [self.serviceBtn addTarget:self action:@selector(serviceBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.serviceBtn setImage:IMAGEBYENAME(@"service_sel") forState:UIControlStateNormal];
-    self.serviceBtn.adjustsImageWhenHighlighted = NO;
-    [self.functionTopView addSubview:self.serviceBtn];
+
     
     //消息按钮
-    self.messageBtn = [[UIButton alloc]initWithFrame:RECT(screen_width - kSizeFrom750(60), self.serviceBtn.top, kSizeFrom750(46), kSizeFrom750(46))];
-    self.messageBtn.centerY = self.serviceBtn.centerY;
+    self.messageBtn = [[UIButton alloc]initWithFrame:RECT(screen_width - kSizeFrom750(60), kStatusBarHeight+((kNavHight - kStatusBarHeight) - kSizeFrom750(46))/2, kSizeFrom750(46), kSizeFrom750(46))];
     [self.messageBtn addTarget:self action:@selector(messageBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.messageBtn setImage:IMAGEBYENAME(@"message_noPoint") forState:UIControlStateNormal];
     self.messageBtn.adjustsImageWhenHighlighted = NO;
     [self.functionTopView addSubview:self.messageBtn];
-    //客服页面
-    self.serviceView = [[CustomerServiceView alloc]initWithFrame:kScreen_Bounds];
-    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    [keyWindow addSubview:self.serviceView];
-    [self.serviceView setHidden:YES];
+   
+   
     WEAK_SELF;
-    self.serviceView.serviceBlock = ^(NSInteger tag) {
-        
-        [weakSelf.serviceView setHidden:YES];
-        //
-        if (tag==1) {
-            //拨打客服电话
-            NSMutableString *str=[[NSMutableString alloc]initWithFormat:@"tel:%@",IsEmptyStr(weakSelf.configModel.cust_serv_tel)?@"400-000-9899":weakSelf.configModel.cust_serv_tel];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-        }else{
-            //跳转到常见问题界面
-            [weakSelf goWebViewWithUrl:weakSelf.configModel.com_problem_link];
-        }
-    };
-    
     self.adAlertView  = [[AdverAlertView alloc]initWithFrame:RECT(screen_width - kSizeFrom750(180), kSizeFrom750(1000), kSizeFrom750(150), kSizeFrom750(150))];
     [self.view addSubview:self.adAlertView];
     self.adAlertView.adAlertBlock = ^{
@@ -273,12 +240,8 @@ Strong UIView *functionTopView;//功能按钮
     NSArray *values = @[version,device_id,user_token];
     
     [[HttpCommunication sharedInstance] postSignRequestWithPath:getHomePageInfoUrl keysArray:keys valuesArray:values refresh:self.tableView success:^(NSDictionary *successDic) {
-        if (!self.tradesView) {
-            [self initCustomView];
-        }
         [[CountDownManager manager] start];
         self.homePageModel = [HomepageModel yy_modelWithJSON:successDic];
-        [self.tradesView setHidden:NO];
         [self ->clubDataArray removeAllObjects];
         if (self.homePageModel.notice_items!=nil) {
             [self ->clubDataArray addObjectsFromArray:self.homePageModel.notice_items];
@@ -295,14 +258,7 @@ Strong UIView *functionTopView;//功能按钮
 }
 //刷新自定义控件内容
 -(void)reloadCustomData{
-    if (self.configModel) {
-        //service客服页面
-        [self.serviceView reloadInfoWithModel:self.configModel];
-    }
-    self.tradesView.top = kSizeFrom750(342);
-    //总金额
-    [self.tradesView loadInfoWithModel:self.homePageModel];
-    
+
     [footerView removeAllSubViews];
     
     UIButton *btn = [[UIButton alloc]initWithFrame:RECT(0, kSizeFrom750(20), screen_width, kSizeFrom750(40))];
@@ -353,19 +309,24 @@ Strong UIView *functionTopView;//功能按钮
 }
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return 5;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    if (section ==0 ){//banner
+    if (section ==0 ){//banner+总交易
         return self.homePageModel?2:0;
     }
-    else if (section ==1 ){//快速投资
+    else if (section ==1 ){//新手标+今日回款
+        return 1;
+    }
+    else if (section ==2 ){//快速投资
         return self.homePageModel.loan_items.count;
     }
-    else if (section ==2 ){//土土社区+平台数据和信息披露
-        return clubDataArray.count+(self.homePageModel?1:0);
+    else if (section ==3 ){//土土社区
+        return clubDataArray.count;
+    }else if (section ==4 ){//查看更多信息
+        return 1;
     }
     
     return 0;
@@ -375,55 +336,50 @@ Strong UIView *functionTopView;//功能按钮
     if (indexPath.section == 0) {
             if(indexPath.row==0)
                 return kSizeFrom750(380);//banner高度
-            else if(indexPath.row==1){ //新手专享或者注册通知
-                if (![CommonUtils isLogin]) {
-                    return kSizeFrom750(650);//引导注册
-                }else{
-                    if ([self.homePageModel.novice_loan_data.additional_status integerValue]==0){
-                        return kSizeFrom750(280);//用户已经登录，但是新手专享无数据
-                    }else
-                    return kSizeFrom750(650);//用户已经登录，并且有新手标
-                }
-        }
-    }else if(indexPath.section == 1){//快速投资
-        return kSizeFrom750(258);
-    }else if (indexPath.section == 2){
-        if (indexPath.row==0) {
-            return kSizeFrom750(140);
-        }else
-        return kSizeFrom750(185);//土土咨询
+            else
+                return kSizeFrom750(262);//总交易额
+    }else if(indexPath.section==1){
+        return kSizeFrom750(390);//新手标+注册提示
     }
-    else{
+    else if(indexPath.section == 2){//快速投资
+        return kSizeFrom750(256);
+    }else if (indexPath.section == 3){//土土社区
+            return kSizeFrom750(236);
+    }else if(indexPath.section==4){
+        return kSizeFrom750(230);
+    }else
         return 0;
-    }
-    return 0;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     
-    
-    if (section == 2) {//社区
-        return kSizeFrom750(88);
+    if (section==1) {//今日回款
+        return kSizeFrom750(152);
+    }
+    if (section == 3) {//社区
+        return kSizeFrom750(102);
     }
     else{
-        return 0.01;
+        return 0;
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    
-    if (section==0) {
-        return kSizeFrom750(30);
+    if (section==1) {
+        return kSizeFrom750(152);
     }
-   else if (section==1) {
+    if (section==2) {//快速投资
        if (self.homePageModel.loan_items.count == 0) {//如果没有快速投资
            return 0;
        }
         return kSizeFrom750(30);
     }
-    //社区不需要tablefooter
-   else if (section==2) {
-        return 0;
+    //社区
+   else if (section==3) {
+        return kSizeFrom750(30);
     }
+   else if(section==4){//了解更多信息披露
+       return kSizeFrom750(86);
+   }
     else
         return 0;
 }
@@ -433,24 +389,21 @@ Strong UIView *functionTopView;//功能按钮
         header.backgroundColor = COLOR_Background;
         return header;
     }
-    if (section==2) {
-        UIView *clubTitle = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(88))];
+    if (section==1)//回款计划
+    {
+        MainPayBackView *payback = [[MainPayBackView alloc]init];
+        payback.backgroundColor = COLOR_Background;
+        payback.frame = RECT(0, 0, screen_width, kSizeFrom750(152));
+        [payback loadInfoWithDic:[NSArray array]];
+        return payback;
+    }
+    if (section==3) {
+        UIView *clubTitle = [[UIView alloc]initWithFrame:RECT(0, 0, screen_width, kSizeFrom750(102))];
         clubTitle.backgroundColor = [UIColor whiteColor];
-        CALayer *layer = [CALayer layer];
-        layer.frame = RECT(0, kSizeFrom750(88) - 0.5, screen_width, 0.5);
-        [layer setBackgroundColor:[RGB_166 CGColor]];
-        layer.opacity = 0.3;
-        [clubTitle.layer addSublayer:layer];
         
-        UIButton *title = [[UIButton alloc]initWithFrame:RECT(kSizeFrom750(30), 0, kSizeFrom750(180), kSizeFrom750(40))];
-        title.centerY = clubTitle.centerY;
-        [title setImage:IMAGEBYENAME(@"home_club") forState:UIControlStateNormal];
-        title.userInteractionEnabled = NO;
-        [title setTitle:@"土土社区" forState:UIControlStateNormal];
-        [title.titleLabel setFont:SYSTEMBOLDSIZE(25)];
-        [title setTitleColor:RGB_51 forState:UIControlStateNormal];
-        [title setTitleEdgeInsets:UIEdgeInsetsMake(0, -kSizeFrom750(20), 0, 0)];
-        [title setImageEdgeInsets:UIEdgeInsetsMake(0, -(title.width-title.imageView.width - title.titleLabel.width), 0, 0)];
+        UILabel *title = [[UILabel alloc]initWithFrame:RECT(kOriginLeft, kSizeFrom750(50), kSizeFrom750(180), kSizeFrom750(38))];
+        [title setText:@"理财社区"];
+        [title setFont:SYSTEMBOLDSIZE(38)];
         [clubTitle addSubview:title];
         return clubTitle;
         
@@ -464,22 +417,26 @@ Strong UIView *functionTopView;//功能按钮
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
     UIView *footer = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
     footer.backgroundColor = COLOR_Background;
-    if (section==0) {
-        return footer;
-    }
-    else if (section==1) {
+    if (section==2) {
         if (self.homePageModel.loan_items.count == 0) {//如果没有快速投资
-            return footer;
+            return nil;
         }
         return footer;
     }
-    //社区不需要tablefooter
-    else if (section==2) {
-        return nil;
+    //社区
+    else if (section==3) {
+        return footer;
     }
-    else
+    else if(section==4){
+        
+        UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, screen_width, kSizeFrom750(86))];
+        [btn setTitle:@"了解更多信息披露" forState:UIControlStateNormal];
+        [btn.titleLabel setFont:SYSTEMSIZE(28)];
+        [btn setTitleColor:HEXCOLOR(@"#999999") forState:UIControlStateNormal];
+        return btn;
+        
+    }
         return nil;
-//    return footer;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -506,25 +463,35 @@ Strong UIView *functionTopView;//功能按钮
             return bannerCell;
             
         }else{
-            if (![CommonUtils isLogin]) {
-                //注册提示
-                return  [self registerRegisterTableView:tableView indexPath:indexPath];
-            }else{
-                //新手专享
-                static NSString *cellIndentifier = @"ImmediateCell";
-                ImmediateCell *cell = [[ImmediateCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIndentifier];
-                cell.delegate=self;
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                BOOL isHaveData = [self.homePageModel.novice_loan_data.additional_status integerValue]==1?YES:NO;
-                [cell hiddenSubViews:isHaveData];
-                [cell setImmediateModel:self.homePageModel.novice_loan_data];
-                return cell;
+            static NSString *cellId = @"";
+            TotolAmountCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+            if (cell==nil) {
+                cell = [[TotolAmountCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
             }
+            self.countCell = cell;
+            [cell loadInfoWithModel:self.homePageModel];
+            return cell;
         }
         
-        
-    }//快速投资
-    else if (indexPath.section == 1){
+    }
+    else if(indexPath.section==1){
+        if (![CommonUtils isLogin]) {
+            //注册提示
+            return  [self registerRegisterTableView:tableView indexPath:indexPath];
+        }else{
+            //新手专享
+            static NSString *cellIndentifier = @"ImmediateCell";
+            ImmediateCell *cell = [[ImmediateCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIndentifier];
+            cell.delegate=self;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            BOOL isHaveData = [self.homePageModel.novice_loan_data.additional_status integerValue]==1?YES:NO;
+            [cell hiddenSubViews:isHaveData];
+            [cell setImmediateModel:self.homePageModel.novice_loan_data];
+            return cell;
+        }
+    }
+    //快速投资
+    else if (indexPath.section == 2){
         
         NSString *cellIndentifier = @"QuicklyCell";
         QuicklyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
@@ -545,14 +512,15 @@ Strong UIView *functionTopView;//功能按钮
         return cell;
         
     }
-    //土土社区
-    else if(indexPath.section ==2){
+    //理财社区
+    else if(indexPath.section ==3){
         
         if (indexPath.row==clubDataArray.count) {
             return [self registerPlatTableView:tableView indexPath:indexPath];//平台数据
         }else
             return  [self registerClubTableView:tableView indexPath:indexPath];//社区内容
-    }else{
+    }else if(indexPath.section==4){
+        return [[UITableViewCell alloc]init];
     }
     return nil;
 }
@@ -567,6 +535,9 @@ Strong UIView *functionTopView;//功能按钮
     ClubeCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (cell==nil) {
         cell = [[ClubeCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
+        if (indexPath.row!=clubDataArray.count-1) {
+            [cell.contentView addCellSeparatorView];
+        }
     }
         NoticeModel *model = [clubDataArray objectAtIndex:indexPath.row];
         [cell loadInfoWithModel:model];
@@ -615,15 +586,15 @@ Strong UIView *functionTopView;//功能按钮
 }
 -(void)setBanndrNum
 {
-    [self.tradesView countTradeNum];
+    [self.countCell countTradeNum];
 }
 #pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //关闭选中效果
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (indexPath.section == 1) {
+    if (indexPath.section == 2) {
         [self  didSelectedQuicklyAtIndex1:indexPath.row];
-    }else if(indexPath.section==2)//土土社区
+    }else if(indexPath.section==3)//土土社区
     {
         [self didSelectedClubAtIndexPath:indexPath.row];
     }
@@ -698,29 +669,12 @@ Strong UIView *functionTopView;//功能按钮
         return;
     }
     CGFloat offsetY = scrollView.contentOffset.y - scrollView.top;
-//    self.tradesView.top = kSizeFrom750(342) - offsetY;//交易view
     if (offsetY <= kNavHight && offsetY > 0) {
         self.titleView.alpha = offsetY/kNavHight;
     }else if(offsetY > kNavHight){
         self.titleView.alpha = 1.0f;
     }else{
         self.titleView.alpha = 0;
-    }
-
-    CGFloat halfNav = kNavHight/2.0f;
-    if(offsetY<=0){//下拉刷新时候
-        [self.serviceBtn setImage:IMAGEBYENAME(@"service_sel") forState:UIControlStateNormal];
-        self.serviceBtn.alpha = 1;
-    }
-   else if (offsetY<=halfNav&&offsetY>0) {
-       [self.serviceBtn setImage:IMAGEBYENAME(@"service_sel") forState:UIControlStateNormal];
-        self.serviceBtn.alpha = 1-offsetY/halfNav;
-    }else if(offsetY>halfNav&&offsetY<=kNavHight){
-        [self.serviceBtn setImage:IMAGEBYENAME(@"service_unsel") forState:UIControlStateNormal];
-        self.serviceBtn.alpha = (offsetY-halfNav)/halfNav;
-    }else{
-        [self.serviceBtn setImage:IMAGEBYENAME(@"service_unsel") forState:UIControlStateNormal];
-        self.serviceBtn.alpha = 1;
     }
     
     //客服按钮
