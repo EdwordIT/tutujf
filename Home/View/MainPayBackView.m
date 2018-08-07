@@ -17,6 +17,7 @@ Weak UIButton* topBtn;
 Weak UIButton* bottomBtn;
 Strong NSMutableArray *dataArray;
 Assign NSInteger currentIndex;
+Assign NSInteger unitCount;
 @end
 
 @implementation MainPayBackView
@@ -31,11 +32,11 @@ Assign NSInteger currentIndex;
         
         [self.backView addSubview:self.transformView];
         
-        self.currentIndex = 1;
+        self.currentIndex = 0;
+        
+        self.unitCount = 0;
         
         [self loadLayout];
-        
-        self.dataArray =[NSMutableArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7", nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countDown:) name:Noti_CountDown object:nil];
     }
@@ -45,9 +46,7 @@ Assign NSInteger currentIndex;
     if (!_backView) {
         _backView = [[UIView alloc]init];
         _backView.layer.cornerRadius = CORNER_RADIUS;
-        _backView.layer.borderColor = [separaterColor CGColor];
-        _backView.layer.borderWidth = kLineHeight;
-        _backView.backgroundColor = COLOR_White;
+
     }
     return _backView;
     
@@ -56,6 +55,7 @@ Assign NSInteger currentIndex;
 {
     if (!_transformView) {
         _transformView = InitObject(UIView);
+        _transformView.backgroundColor = [UIColor whiteColor];
     }
     return _transformView;
 }
@@ -65,10 +65,21 @@ Assign NSInteger currentIndex;
         make.right.mas_equalTo(-kOriginLeft);
         make.height.mas_equalTo(kSizeFrom750(120));
     }];
+    
+    [self.transformView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(kSizeFrom750(140));
+        make.top.mas_equalTo(0);
+        make.width.mas_equalTo(kSizeFrom750(470));
+        make.height.mas_equalTo(self.backView);
+    }];
 }
 -(void)loadInfoWithDic:(NSArray *)paybackList{
-    if (!self.topBtn) {
+    
+    
+    if (self.dataArray.count==0) {
+        self.dataArray =[NSMutableArray arrayWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7", nil];
         UIButton *top = [UIButton buttonWithType:UIButtonTypeCustom];
+        [top setTitleColor:HEXCOLOR(@"#666666") forState:UIControlStateNormal];
         [self.transformView addSubview:top];
         self.topBtn = top;
         [top mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -79,6 +90,7 @@ Assign NSInteger currentIndex;
         }];
         
         UIButton *bottom = [UIButton buttonWithType:UIButtonTypeCustom];
+        [bottom setTitleColor:HEXCOLOR(@"#666666") forState:UIControlStateNormal];
         [self.transformView addSubview:bottom];
         self.bottomBtn = bottom;
         [bottom mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -86,40 +98,13 @@ Assign NSInteger currentIndex;
             make.left.width.height.mas_equalTo(top);
         }];
     }
-    
-    UISwipeGestureRecognizer *leftSwipeGesture=[[UISwipeGestureRecognizer  alloc]initWithTarget:self action:@selector(leftSwipe:)];
-    
-    leftSwipeGesture.direction=UISwipeGestureRecognizerDirectionLeft;
-    
-    [self.transformView addGestureRecognizer:leftSwipeGesture];
-    
-    
-    
-    UISwipeGestureRecognizer *rightSwipeGesture=[[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(rightSwipe:)];
-    
-    rightSwipeGesture.direction=UISwipeGestureRecognizerDirectionRight;
-    
-    [self.transformView addGestureRecognizer:rightSwipeGesture];
-    
+    if (self.dataArray.count%2==1) {
+        [self.dataArray addObject:[self.dataArray firstObject]];
+    }
     
 }
 
--(void)leftSwipe:(UISwipeGestureRecognizer *)gesture{
-    
-    [self transitionAnimation:YES];
-    
-}
-
-
-
-#pragma mark 向右滑动浏览上一张条数据
-
--(void)rightSwipe:(UISwipeGestureRecognizer *)gesture{
-    
-    [self transitionAnimation:NO];
-    
-}
--(void)transitionAnimation:(BOOL)isNext{
+-(void)transitionAnimation{
     
     //1.创建转场动画对象
     
@@ -148,15 +133,12 @@ Assign NSInteger currentIndex;
         
     } AnimationType;
     //设置子类型
-    if (isNext) {
-        transition.subtype=kCATransitionFromRight;
-    }else{
-        transition.subtype=kCATransitionFromLeft;
-    }
+
+    transition.subtype=kCATransitionFromTop;
     //设置动画时常
     transition.duration=ANIMATION_TIME;
     //3.设置转场后的新视图添加转场动画
-    [self.backView.layer addAnimation:transition forKey:@"KCTransitionAnimation"];
+    [self.backView.layer addAnimation:transition forKey:kCATransitionMoveIn];
     [self.topBtn setTitle:[self.dataArray objectAtIndex:(self.currentIndex%self.dataArray.count)] forState:UIControlStateNormal];
     [self.bottomBtn setTitle:[self.dataArray objectAtIndex:(self.currentIndex%self.dataArray.count)+1] forState:UIControlStateNormal];
     self.currentIndex += 2;
@@ -165,11 +147,10 @@ Assign NSInteger currentIndex;
 
 
 -(void)countDown:(NSNotification *)noti{
-    
-    [self.topBtn setTitle:[self.dataArray objectAtIndex:(self.currentIndex%self.dataArray.count)-1] forState:UIControlStateNormal];
-    [self.bottomBtn setTitle:[self.dataArray objectAtIndex:(self.currentIndex%self.dataArray.count)] forState:UIControlStateNormal];
-    self.currentIndex += 2;
-
+    if (self.unitCount%3==0) {//3秒一次心跳
+        [self transitionAnimation];
+    }
+    self.unitCount++;
 }
 /*
 // Only override drawRect: if you perform custom drawing.
